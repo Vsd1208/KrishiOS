@@ -47,10 +47,13 @@ class SoilSampleService(BaseService):
         return await self.soil_samples.list(offset=offset, limit=limit)
 
     async def get_soil_sample(self, sample_id: int) -> SoilSample:
-        return await self._get_required(self.soil_samples, sample_id, "SoilSample")  # type: ignore[return-value]
+        return await self._get_required(  # type: ignore[return-value]
+            self.soil_samples,
+            sample_id,
+            "SoilSample",
+        )
 
     async def delete_soil_sample(self, sample_id: int) -> None:
         sample = await self.get_soil_sample(sample_id)
         await self.soil_samples.soft_delete(sample)
         await self._commit()
-

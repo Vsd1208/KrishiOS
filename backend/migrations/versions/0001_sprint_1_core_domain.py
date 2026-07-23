@@ -25,6 +25,7 @@ def upgrade() -> None:
         "HARVESTED",
         "FAILED",
         name="field_crop_status",
+        create_type=False,
     )
     soil_sample_status = postgresql.ENUM(
         "COLLECTED",
@@ -33,6 +34,7 @@ def upgrade() -> None:
         "COMPLETED",
         "DELIVERED",
         name="soil_sample_status",
+        create_type=False,
     )
     field_crop_status.create(op.get_bind(), checkfirst=True)
     soil_sample_status.create(op.get_bind(), checkfirst=True)
@@ -48,7 +50,10 @@ def upgrade() -> None:
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
         sa.CheckConstraint("latitude >= -90 AND latitude <= 90", name="ck_district_latitude_range"),
-        sa.CheckConstraint("longitude >= -180 AND longitude <= 180", name="ck_district_longitude_range"),
+        sa.CheckConstraint(
+            "longitude >= -180 AND longitude <= 180",
+            name="ck_district_longitude_range",
+        ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("state", "district_name", name="uq_district_state_name"),
     )
@@ -138,7 +143,10 @@ def upgrade() -> None:
         sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
         sa.CheckConstraint("area > 0", name="ck_field_area_positive"),
         sa.CheckConstraint("latitude >= -90 AND latitude <= 90", name="ck_field_latitude_range"),
-        sa.CheckConstraint("longitude >= -180 AND longitude <= 180", name="ck_field_longitude_range"),
+        sa.CheckConstraint(
+            "longitude >= -180 AND longitude <= 180",
+            name="ck_field_longitude_range",
+        ),
         sa.ForeignKeyConstraint(["farmer_id"], ["farmer.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("farmer_id", "field_name", name="uq_field_farmer_name"),
@@ -186,15 +194,25 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
-        sa.CheckConstraint("latitude >= -90 AND latitude <= 90", name="ck_soil_sample_latitude_range"),
-        sa.CheckConstraint("longitude >= -180 AND longitude <= 180", name="ck_soil_sample_longitude_range"),
+        sa.CheckConstraint(
+            "latitude >= -90 AND latitude <= 90",
+            name="ck_soil_sample_latitude_range",
+        ),
+        sa.CheckConstraint(
+            "longitude >= -180 AND longitude <= 180",
+            name="ck_soil_sample_longitude_range",
+        ),
         sa.ForeignKeyConstraint(["collector_id"], ["officer.id"], ondelete="RESTRICT"),
         sa.ForeignKeyConstraint(["farmer_id"], ["farmer.id"], ondelete="RESTRICT"),
         sa.ForeignKeyConstraint(["field_id"], ["field.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("sample_id"),
         sa.UniqueConstraint("sample_uuid"),
     )
-    op.create_index("ix_soil_sample_collector_date", "soil_sample", ["collector_id", "collection_date"])
+    op.create_index(
+        "ix_soil_sample_collector_date",
+        "soil_sample",
+        ["collector_id", "collection_date"],
+    )
     op.create_index("ix_soil_sample_collector_id", "soil_sample", ["collector_id"])
     op.create_index("ix_soil_sample_farmer_date", "soil_sample", ["farmer_id", "collection_date"])
     op.create_index("ix_soil_sample_farmer_id", "soil_sample", ["farmer_id"])
@@ -245,4 +263,3 @@ def downgrade() -> None:
 
     postgresql.ENUM(name="soil_sample_status").drop(op.get_bind(), checkfirst=True)
     postgresql.ENUM(name="field_crop_status").drop(op.get_bind(), checkfirst=True)
-

@@ -29,6 +29,9 @@ class District(TimestampMixin, SoftDeleteMixin, Base):
     __table_args__ = (
         UniqueConstraint("state", "district_name", name="uq_district_state_name"),
         CheckConstraint("latitude >= -90 AND latitude <= 90", name="ck_district_latitude_range"),
-        CheckConstraint("longitude >= -180 AND longitude <= 180", name="ck_district_longitude_range"),
+        CheckConstraint(
+            "longitude >= -180 AND longitude <= 180",
+            name="ck_district_longitude_range",
+        ),
         Index("ix_district_state_name", "state", "district_name"),
     )

@@ -61,8 +61,16 @@ async def request_validation_exception_handler(
     )
 
 
-async def entity_not_found_exception_handler(request: Request, exc: EntityNotFoundError) -> JSONResponse:
-    logger.info("Entity not found: method={} path={} detail={}", request.method, request.url.path, str(exc))
+async def entity_not_found_exception_handler(
+    request: Request,
+    exc: EntityNotFoundError,
+) -> JSONResponse:
+    logger.info(
+        "Entity not found: method={} path={} detail={}",
+        request.method,
+        request.url.path,
+        str(exc),
+    )
     return JSONResponse(
         status_code=status.HTTP_404_NOT_FOUND,
         content={
@@ -74,8 +82,16 @@ async def entity_not_found_exception_handler(request: Request, exc: EntityNotFou
     )
 
 
-async def entity_conflict_exception_handler(request: Request, exc: EntityConflictError) -> JSONResponse:
-    logger.info("Entity conflict: method={} path={} detail={}", request.method, request.url.path, str(exc))
+async def entity_conflict_exception_handler(
+    request: Request,
+    exc: EntityConflictError,
+) -> JSONResponse:
+    logger.info(
+        "Entity conflict: method={} path={} detail={}",
+        request.method,
+        request.url.path,
+        str(exc),
+    )
     return JSONResponse(
         status_code=status.HTTP_409_CONFLICT,
         content={

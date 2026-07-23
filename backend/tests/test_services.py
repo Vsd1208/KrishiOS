@@ -33,10 +33,14 @@ async def test_farmer_service_rejects_duplicate_phone(mock_session: AsyncMock) -
 
 
 @pytest.mark.asyncio
-async def test_soil_sample_service_requires_field_to_belong_to_farmer(mock_session: AsyncMock) -> None:
+async def test_soil_sample_service_requires_field_to_belong_to_farmer(
+    mock_session: AsyncMock,
+) -> None:
     service = SoilSampleService(mock_session)
     service.farmers = SimpleNamespace(get=AsyncMock(return_value=SimpleNamespace(id=1)))
-    service.fields = SimpleNamespace(get=AsyncMock(return_value=SimpleNamespace(id=2, farmer_id=99)))
+    service.fields = SimpleNamespace(
+        get=AsyncMock(return_value=SimpleNamespace(id=2, farmer_id=99)),
+    )
     service.officers = SimpleNamespace(get=AsyncMock(return_value=SimpleNamespace(id=3)))
 
     payload = SoilSampleCreate(

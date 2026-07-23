@@ -2,7 +2,16 @@
 
 from fastapi import APIRouter
 
-from app.api.routes import crops, districts, farmers, field_crops, fields, health, officers, soil_samples
+from app.api.routes import (
+    crops,
+    districts,
+    farmers,
+    field_crops,
+    fields,
+    health,
+    officers,
+    soil_samples,
+)
 
 api_router = APIRouter()
 api_router.include_router(health.router)
@@ -13,4 +22,3 @@ api_router.include_router(fields.router)
 api_router.include_router(crops.router)
 api_router.include_router(field_crops.router)
 api_router.include_router(soil_samples.router)
-

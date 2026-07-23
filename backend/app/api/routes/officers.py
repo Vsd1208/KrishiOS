@@ -12,7 +12,9 @@ from app.services.officer import OfficerService
 router = APIRouter(prefix="/officers", tags=["Officers"])
 
 
-def get_officer_service(session: Annotated[AsyncSession, Depends(get_db_session)]) -> OfficerService:
+def get_officer_service(
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+) -> OfficerService:
     """Build the officer service for request-scoped database access."""
     return OfficerService(session)
 
@@ -58,4 +60,3 @@ async def delete_officer(
 ) -> Response:
     await service.delete_officer(officer_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-

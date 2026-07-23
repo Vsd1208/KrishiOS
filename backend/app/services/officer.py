@@ -48,7 +48,11 @@ class OfficerService(BaseService):
         return await self.officers.list(offset=offset, limit=limit)
 
     async def get_officer(self, officer_id: int) -> Officer:
-        return await self._get_required(self.officers, officer_id, "Officer")  # type: ignore[return-value]
+        return await self._get_required(  # type: ignore[return-value]
+            self.officers,
+            officer_id,
+            "Officer",
+        )
 
     async def delete_officer(self, officer_id: int) -> None:
         officer = await self.get_officer(officer_id)
@@ -60,4 +64,3 @@ class OfficerService(BaseService):
             raise EntityConflictError("Officer email is already registered")
         if await self.officers.get_by_phone(phone) is not None:
             raise EntityConflictError("Officer phone number is already registered")
-

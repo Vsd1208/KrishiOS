@@ -12,7 +12,9 @@ from app.services.district import DistrictService
 router = APIRouter(prefix="/districts", tags=["Districts"])
 
 
-def get_district_service(session: Annotated[AsyncSession, Depends(get_db_session)]) -> DistrictService:
+def get_district_service(
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+) -> DistrictService:
     """Build the district service for request-scoped database access."""
     return DistrictService(session)
 
@@ -58,4 +60,3 @@ async def delete_district(
 ) -> Response:
     await service.delete_district(district_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-

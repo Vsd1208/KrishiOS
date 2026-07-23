@@ -58,10 +58,13 @@ class FieldCropService(BaseService):
         return await self.field_crops.list(offset=offset, limit=limit)
 
     async def get_field_crop(self, field_crop_id: int) -> FieldCrop:
-        return await self._get_required(self.field_crops, field_crop_id, "FieldCrop")  # type: ignore[return-value]
+        return await self._get_required(  # type: ignore[return-value]
+            self.field_crops,
+            field_crop_id,
+            "FieldCrop",
+        )
 
     async def delete_field_crop(self, field_crop_id: int) -> None:
         field_crop = await self.get_field_crop(field_crop_id)
         await self.field_crops.soft_delete(field_crop)
         await self._commit()
-

@@ -45,10 +45,13 @@ class FarmerService(BaseService):
         return await self.farmers.list(offset=offset, limit=limit)
 
     async def get_farmer(self, farmer_id: int) -> Farmer:
-        return await self._get_required(self.farmers, farmer_id, "Farmer")  # type: ignore[return-value]
+        return await self._get_required(  # type: ignore[return-value]
+            self.farmers,
+            farmer_id,
+            "Farmer",
+        )
 
     async def delete_farmer(self, farmer_id: int) -> None:
         farmer = await self.get_farmer(farmer_id)
         await self.farmers.soft_delete(farmer)
         await self._commit()
-

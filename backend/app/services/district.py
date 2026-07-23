@@ -43,10 +43,13 @@ class DistrictService(BaseService):
         return await self.districts.list(offset=offset, limit=limit)
 
     async def get_district(self, district_id: int) -> District:
-        return await self._get_required(self.districts, district_id, "District")  # type: ignore[return-value]
+        return await self._get_required(  # type: ignore[return-value]
+            self.districts,
+            district_id,
+            "District",
+        )
 
     async def delete_district(self, district_id: int) -> None:
         district = await self.get_district(district_id)
         await self.districts.soft_delete(district)
         await self._commit()
-

@@ -60,7 +60,12 @@ class BaseRepository(Generic[ModelT]):
     async def exists(self, entity_id: Any) -> bool:
         return await self.get(entity_id) is not None
 
-    def _filter_deleted(self, statement: Select[tuple[ModelT]], *, include_deleted: bool) -> Select[tuple[ModelT]]:
+    def _filter_deleted(
+        self,
+        statement: Select[tuple[ModelT]],
+        *,
+        include_deleted: bool,
+    ) -> Select[tuple[ModelT]]:
         if include_deleted or not hasattr(self.model, "deleted_at"):
             return statement
         return statement.where(self.model.deleted_at.is_(None))
@@ -68,4 +73,3 @@ class BaseRepository(Generic[ModelT]):
     async def _scalar_one_or_none(self, statement: Select[tuple[ModelT]]) -> ModelT | None:
         result = await self.session.scalars(statement)
         return result.one_or_none()
-

@@ -48,10 +48,13 @@ class FieldService(BaseService):
         return await self.fields.list(offset=offset, limit=limit)
 
     async def get_field(self, field_id: int) -> Field:
-        return await self._get_required(self.fields, field_id, "Field")  # type: ignore[return-value]
+        return await self._get_required(  # type: ignore[return-value]
+            self.fields,
+            field_id,
+            "Field",
+        )
 
     async def delete_field(self, field_id: int) -> None:
         field = await self.get_field(field_id)
         await self.fields.soft_delete(field)
         await self._commit()
-
