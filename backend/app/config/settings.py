@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     API_PREFIX: str = "/api/v1"
     BACKEND_CORS_ORIGINS: list[str] = Field(default_factory=list)
 
+    # ── PostgreSQL ────────────────────────────────────────────────────────────
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "krishios"
@@ -29,11 +30,26 @@ class Settings(BaseSettings):
     POSTGRES_POOL_SIZE: int = 10
     POSTGRES_MAX_OVERFLOW: int = 20
 
+    # ── Redis ─────────────────────────────────────────────────────────────────
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
     REDIS_DB: int = 0
     REDIS_PASSWORD: str | None = None
 
+    # ── Qdrant (Sprint 2) ─────────────────────────────────────────────────────
+    QDRANT_HOST: str = "localhost"
+    QDRANT_PORT: int = 6333
+    QDRANT_COLLECTION: str = "krishios_documents"
+
+    # ── Embedding model (Sprint 2) ────────────────────────────────────────────
+    EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
+    EMBEDDING_MODEL_VERSION: str = "v1"
+
+    # ── Document storage (Sprint 2) ───────────────────────────────────────────
+    DOCUMENT_STORAGE_PATH: str = "/data/documents"
+    MAX_UPLOAD_SIZE_MB: int = 50
+
+    # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     LOG_JSON: bool = False
 
@@ -64,3 +80,4 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
