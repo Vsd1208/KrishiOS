@@ -41,6 +41,21 @@ class Settings(BaseSettings):
     QDRANT_PORT: int = 6333
     QDRANT_COLLECTION: str = "krishios_documents"
 
+    RETRIEVAL_INDEX_PREFIX: str = "krishios-index"
+    RETRIEVAL_LIVE_ALIAS: str = "krishios-live"
+    RETRIEVAL_DELTA_ALIAS: str = "krishios-delta"
+    RERANKER_MODEL_NAME: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+    RETRIEVAL_CACHE_TTL_SECONDS: int = 300
+
+    RANKING_WEIGHT_SEMANTIC: float = 0.45
+    RANKING_WEIGHT_AUTHORITY: float = 0.15
+    RANKING_WEIGHT_FRESHNESS: float = 0.15
+    RANKING_WEIGHT_CROP: float = 0.08
+    RANKING_WEIGHT_STATE: float = 0.05
+    RANKING_WEIGHT_DISTRICT: float = 0.05
+    RANKING_WEIGHT_SEASON: float = 0.04
+    RANKING_WEIGHT_LANGUAGE: float = 0.03
+
     # ── Embedding model (Sprint 2) ────────────────────────────────────────────
     EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
     EMBEDDING_MODEL_VERSION: str = "v1"

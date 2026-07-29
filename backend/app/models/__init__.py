@@ -12,6 +12,13 @@ from app.models.field import Field
 from app.models.field_crop import FieldCrop, FieldCropStatus
 from app.models.knowledge_document import DocumentStatus, KnowledgeDocument
 from app.models.officer import Officer
+from app.models.retrieval_index import (
+    IndexedDocumentState,
+    RetrievalBuildMode,
+    RetrievalIndexKind,
+    RetrievalIndexStatus,
+    RetrievalIndexVersion,
+)
 from app.models.soil_sample import SoilSample, SoilSampleStatus
 
 __all__ = [
@@ -28,5 +35,10 @@ __all__ = [
     # Sprint 2 — knowledge
     "DocumentChunk",
     "DocumentStatus",
+    "IndexedDocumentState",
     "KnowledgeDocument",
+    "RetrievalBuildMode",
+    "RetrievalIndexKind",
+    "RetrievalIndexStatus",
+    "RetrievalIndexVersion",
 ]

@@ -13,6 +13,7 @@ from app.api.routes import (
     officers,
     soil_samples,
 )
+from app.retrieval.api.routes import router as retrieval_router
 
 api_router = APIRouter()
 # Sprint 0/1 — domain routes
@@ -26,3 +27,4 @@ api_router.include_router(field_crops.router)
 api_router.include_router(soil_samples.router)
 # Sprint 2 — knowledge infrastructure
 api_router.include_router(documents.router)
+api_router.include_router(retrieval_router)
