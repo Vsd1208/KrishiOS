@@ -10,6 +10,7 @@ from app.retrieval.interfaces.types import Citation, RetrievalFilters, Retrieval
 from app.retrieval.ranking.engine import RankingEngine
 from app.retrieval.retrieval.context import ContextBuilder
 from app.retrieval.retrieval.metadata import QueryMetadataExtractor
+from app.retrieval.retrieval.multi_index import MultiIndexRetriever
 
 
 @dataclass(frozen=True, slots=True)
@@ -47,6 +48,7 @@ class EnterpriseRetrievalPipeline:
         metadata_extractor: QueryMetadataExtractor,
         live_alias: str,
         delta_alias: str,
+        multi_index_retriever: MultiIndexRetriever | None = None,
     ) -> None:
         self._embedding_provider = embedding_provider
         self._vector_store = vector_store
@@ -57,6 +59,7 @@ class EnterpriseRetrievalPipeline:
         self._metadata_extractor = metadata_extractor
         self._live_alias = live_alias
         self._delta_alias = delta_alias
+        self._multi_index_retriever = multi_index_retriever
 
     async def search(
         self,
@@ -86,6 +89,14 @@ class EnterpriseRetrievalPipeline:
         score_threshold: float,
         include_delta: bool,
     ) -> list[RetrievalHit]:
+        if self._multi_index_retriever is not None:
+            return await self._multi_index_retriever.search_all_domains(
+                query=" ".join(filter(None, [query, filters.crop, filters.state, filters.district, filters.season] )),
+                filters=filters,
+                top_k=top_k,
+                score_threshold=score_threshold,
+            )
+
         live_hits = await self._vector_store.search_alias(
             self._live_alias,
             query_vector,

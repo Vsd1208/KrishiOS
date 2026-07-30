@@ -88,11 +88,14 @@ class MultiIndexRetriever:
     def _select_aliases(self, target_domains: list[str] | None) -> list[str]:
         if not target_domains:
             return list(self._domain_aliases.values())
-        return [
-            self._domain_aliases[domain]
-            for domain in target_domains
-            if domain in self._domain_aliases
-        ]
+
+        selected: list[str] = []
+        for domain in target_domains:
+            if domain in self._domain_aliases:
+                selected.append(self._domain_aliases[domain])
+            elif domain in self._domain_aliases.values():
+                selected.append(domain)
+        return selected
 
     @staticmethod
     def _deduplicate_and_sort(hits: list[RetrievalHit], top_k: int) -> list[RetrievalHit]:
