@@ -156,3 +156,105 @@ class CalculatorTool(BaseTool):
                 duration_ms=(perf_counter() - t0) * 1000,
                 error_message=str(exc),
             )
+
+
+class VisionModelTool(BaseTool):
+    """Interface tool for crop disease and pest image analysis."""
+
+    def __init__(self) -> None:
+        metadata = ToolMetadata(
+            name="vision_model",
+            description="Analyze crop images for disease, pest, and nutrient deficiency detection.",
+            parameters={
+                "type": "object",
+                "properties": {
+                    "image_url": {"type": "string"},
+                    "crop": {"type": "string"},
+                },
+                "required": ["image_url"],
+            },
+            supported_agent_types=["crop_advisory_agent", "knowledge_retrieval_agent"],
+        )
+        super().__init__(metadata)
+
+    async def execute(self, parameters: dict[str, Any]) -> ToolResult:
+        t0 = perf_counter()
+        return ToolResult(
+            tool_name=self.metadata.name,
+            success=True,
+            data={
+                "image_url": parameters.get("image_url"),
+                "analysis": "Image analysis interface ready for future vision model integration.",
+                "detected_issues": [],
+                "confidence": 0.0,
+            },
+            duration_ms=(perf_counter() - t0) * 1000,
+        )
+
+
+class SpeechModelTool(BaseTool):
+    """Interface tool for speech-to-text and text-to-speech conversion."""
+
+    def __init__(self) -> None:
+        metadata = ToolMetadata(
+            name="speech_model",
+            description="Convert farmer voice queries to text and responses to spoken audio.",
+            parameters={
+                "type": "object",
+                "properties": {
+                    "audio_url": {"type": "string"},
+                    "language": {"type": "string", "default": "hi"},
+                },
+                "required": ["audio_url"],
+            },
+            supported_agent_types=["officer_assistance_agent", "crop_advisory_agent"],
+        )
+        super().__init__(metadata)
+
+    async def execute(self, parameters: dict[str, Any]) -> ToolResult:
+        t0 = perf_counter()
+        return ToolResult(
+            tool_name=self.metadata.name,
+            success=True,
+            data={
+                "audio_url": parameters.get("audio_url"),
+                "transcript": "Speech model interface ready for future integration.",
+                "language": parameters.get("language", "hi"),
+            },
+            duration_ms=(perf_counter() - t0) * 1000,
+        )
+
+
+class NotificationServiceTool(BaseTool):
+    """Interface tool for SMS, push, and IVR notifications to farmers."""
+
+    def __init__(self) -> None:
+        metadata = ToolMetadata(
+            name="notification_service",
+            description="Send agricultural advisories via SMS, push notification, or IVR to farmers.",
+            parameters={
+                "type": "object",
+                "properties": {
+                    "recipient_id": {"type": "string"},
+                    "message": {"type": "string"},
+                    "channel": {"type": "string", "enum": ["sms", "push", "ivr"]},
+                },
+                "required": ["recipient_id", "message"],
+            },
+            supported_agent_types=["officer_assistance_agent"],
+        )
+        super().__init__(metadata)
+
+    async def execute(self, parameters: dict[str, Any]) -> ToolResult:
+        t0 = perf_counter()
+        return ToolResult(
+            tool_name=self.metadata.name,
+            success=True,
+            data={
+                "recipient_id": parameters.get("recipient_id"),
+                "channel": parameters.get("channel", "sms"),
+                "status": "queued",
+                "message_preview": str(parameters.get("message", ""))[:100],
+            },
+            duration_ms=(perf_counter() - t0) * 1000,
+        )
