@@ -64,6 +64,10 @@ class Settings(BaseSettings):
     DOCUMENT_STORAGE_PATH: str = "/data/documents"
     MAX_UPLOAD_SIZE_MB: int = 50
 
+    # ── Authentication ────────────────────────────────────────────────────────
+    JWT_SECRET_KEY: str = "insecure-local-dev-key-do-not-use-in-production"
+    JWT_ALGORITHM: str = "HS256"
+
     # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     LOG_JSON: bool = False

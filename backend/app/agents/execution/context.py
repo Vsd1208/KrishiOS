@@ -33,13 +33,15 @@ class AgentStepTrace:
     error: str | None = None
 
 
+from app.api.dependencies.auth import AuthContext
+
 @dataclass(slots=True)
 class ExecutionContext:
     """Shared request context propagated across runtime, agents, and tools."""
 
     execution_id: UUID = field(default_factory=uuid4)
     session_id: str = "default_session"
-    user_id: str | None = None
+    auth: AuthContext | None = None
     language: str = "en"
     state: str | None = None
     district: str | None = None

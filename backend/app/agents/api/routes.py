@@ -6,6 +6,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from app.api.dependencies.auth import AuthContext, RequirePermission
+from app.auth.permissions import Permission
 from app.agents.api.schemas import (
     AgentExecutionRequest,
     AgentExecutionResponse,
@@ -31,10 +33,12 @@ def _get_runtime() -> AgentRuntimeEngine:
 async def execute_agent(
     request: AgentExecutionRequest,
     runtime: Annotated[AgentRuntimeEngine, Depends(_get_runtime)],
+    auth: Annotated[AuthContext, Depends(RequirePermission(Permission.AGENT_EXECUTE))],
 ) -> AgentExecutionResponse:
     """Execute the agent runtime for a user goal."""
     context = ExecutionContext(
         session_id=request.session_id or "default",
+        auth=auth,
         state=request.state,
         district=request.district,
         crop=request.crop,

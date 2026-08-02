@@ -27,6 +27,9 @@ dependencies = [
     "pytesseract>=0.3.13,<1.0.0",
     "qdrant-client>=1.12.0,<2.0.0",
     "sentence-transformers>=3.0.0,<4.0.0",
+    # ── Sprint 5 — Identity and Authentication ──────────────────────────────
+    "argon2-cffi>=23.1.0,<24.0.0",
+    "PyJWT>=2.8.0,<3.0.0",
 ]
 
 [dependency-groups]

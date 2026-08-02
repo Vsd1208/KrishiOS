@@ -3,6 +3,7 @@
 from fastapi import APIRouter
 
 from app.api.routes import (
+    auth,
     crops,
     districts,
     documents,
@@ -17,6 +18,8 @@ from app.retrieval.api.routes import router as retrieval_router
 from app.agents.api.routes import router as agents_router
 
 api_router = APIRouter()
+# Sprint 5 — Identity
+api_router.include_router(auth.router)
 # Sprint 0/1 — domain routes
 api_router.include_router(health.router)
 api_router.include_router(districts.router)

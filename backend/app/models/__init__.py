@@ -20,6 +20,7 @@ from app.models.retrieval_index import (
     RetrievalIndexVersion,
 )
 from app.models.soil_sample import SoilSample, SoilSampleStatus
+from app.models.user import RefreshToken, User
 
 __all__ = [
     # Sprint 0/1 — domain
@@ -41,4 +42,7 @@ __all__ = [
     "RetrievalIndexKind",
     "RetrievalIndexStatus",
     "RetrievalIndexVersion",
+    # Sprint 5 — Identity
+    "RefreshToken",
+    "User",
 ]
