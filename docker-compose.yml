@@ -10,6 +10,7 @@ services:
       POSTGRES_HOST: postgres
       REDIS_HOST: redis
       QDRANT_HOST: qdrant
+      NEO4J_HOST: neo4j
     ports:
       - "8000:8000"
     volumes:
@@ -74,9 +75,28 @@ services:
       retries: 5
     restart: unless-stopped
 
+  neo4j:
+    image: neo4j:5-community
+    container_name: krishios-neo4j
+    ports:
+      - "7474:7474"   # HTTP Browser
+      - "7687:7687"   # Bolt
+    environment:
+      NEO4J_AUTH: ${NEO4J_AUTH:-neo4j/krishios-neo4j-secret}
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:
   qdrant_data:
+  neo4j_data:
   documents_data:
 

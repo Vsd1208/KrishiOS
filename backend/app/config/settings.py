@@ -68,6 +68,21 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = "insecure-local-dev-key-do-not-use-in-production"
     JWT_ALGORITHM: str = "HS256"
 
+    # ── Neo4j & GraphRAG (Sprint 6) ───────────────────────────────────────────
+    NEO4J_HOST: str = "localhost"
+    NEO4J_PORT: int = 7687
+    NEO4J_USER: str = "neo4j"
+    NEO4J_PASSWORD: str = "krishios-neo4j-secret"
+    NEO4J_DATABASE: str = "neo4j"
+    
+    # Graph extraction confidence thresholds
+    GRAPH_AUTO_ACCEPT_THRESHOLD: float = 0.80
+    GRAPH_REVIEW_REQUIRED_THRESHOLD: float = 0.50
+
+    # GraphRAG fusion weights
+    GRAPHRAG_WEIGHT_VECTOR: float = 0.50
+    GRAPHRAG_WEIGHT_GRAPH: float = 0.50
+
     # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     LOG_JSON: bool = False

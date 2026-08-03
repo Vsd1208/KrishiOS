@@ -30,6 +30,8 @@ dependencies = [
     # ── Sprint 5 — Identity and Authentication ──────────────────────────────
     "argon2-cffi>=23.1.0,<24.0.0",
     "PyJWT>=2.8.0,<3.0.0",
+    # ── Sprint 6 — Knowledge Graph & GraphRAG ────────────────────────────────
+    "neo4j>=5.18.0,<6.0.0",
 ]
 
 [dependency-groups]
