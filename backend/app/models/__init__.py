@@ -21,6 +21,7 @@ from app.models.retrieval_index import (
 )
 from app.models.soil_sample import SoilSample, SoilSampleStatus
 from app.models.user import RefreshToken, User
+from app.models.graph_candidate import GraphKnowledgeCandidate
 
 __all__ = [
     # Sprint 0/1 — domain
@@ -42,6 +43,7 @@ __all__ = [
     "RetrievalIndexKind",
     "RetrievalIndexStatus",
     "RetrievalIndexVersion",
+    "GraphKnowledgeCandidate",
     # Sprint 5 — Identity
     "RefreshToken",
     "User",

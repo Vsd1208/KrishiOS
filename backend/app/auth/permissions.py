@@ -62,6 +62,12 @@ class Permission:
     # ── System ────────────────────────────────────────────────────────────────
     SYSTEM_ADMIN = "system:admin"
 
+    # ── Graph / Knowledge Graph ───────────────────────────────────────────────
+    GRAPH_READ = "graph:read"
+    GRAPH_WRITE = "graph:write"
+    GRAPH_REVIEW = "graph:review"
+    GRAPH_ADMIN = "graph:admin"
+
 
 # ---------------------------------------------------------------------------
 # Role → permission mapping
@@ -76,6 +82,7 @@ _FARMER_PERMISSIONS: frozenset[str] = frozenset(
         Permission.KNOWLEDGE_SEARCH,
         Permission.ADVISORY_READ,
         Permission.AGENT_EXECUTE,
+        Permission.GRAPH_READ,
     }
 )
 
@@ -96,6 +103,8 @@ _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
         Permission.ADVISORY_READ,
         Permission.ADVISORY_CREATE,
         Permission.AGENT_EXECUTE,
+        Permission.GRAPH_READ,
+        Permission.GRAPH_REVIEW,
     }
 )
 
@@ -109,6 +118,8 @@ _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
         Permission.ADVISORY_READ,
         Permission.ADVISORY_CREATE,
         Permission.AGENT_EXECUTE,
+        Permission.GRAPH_READ,
+        Permission.GRAPH_WRITE,
     }
 )
 

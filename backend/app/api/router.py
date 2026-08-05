@@ -33,3 +33,6 @@ api_router.include_router(soil_samples.router)
 api_router.include_router(documents.router)
 api_router.include_router(retrieval_router)
 api_router.include_router(agents_router)
+
+from app.graph.api.routes import router as graph_router
+api_router.include_router(graph_router)

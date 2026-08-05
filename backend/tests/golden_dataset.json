@@ -1,0 +1,43 @@
+[
+  {
+    "id": "doc-001",
+    "crop": "Paddy",
+    "text": "Paddy is highly susceptible to Blast disease, which is caused by Magnaporthe oryzae. The disease manifests as spindle-shaped leaf lesions and can lead to deadheart. It is typically controlled by spraying Tricyclazole.",
+    "expected_entities": [
+      {"name": "Paddy", "type": "Crop"},
+      {"name": "Blast", "type": "Disease"},
+      {"name": "Leaf Lesions", "type": "Symptom"},
+      {"name": "Dead Heart", "type": "Symptom"}
+    ],
+    "expected_relationships": [
+      {"subject": "Paddy", "predicate": "HAS_DISEASE", "object": "Blast"},
+      {"subject": "Blast", "predicate": "HAS_SYMPTOM", "object": "Leaf Lesions"}
+    ]
+  },
+  {
+    "id": "doc-002",
+    "crop": "Cotton",
+    "text": "American Bollworm frequently attacks Bt Cotton in the Kharif season. Heavy infestation causes drooping leaves. Management involves spraying Emamectin benzoate.",
+    "expected_entities": [
+      {"name": "Cotton", "type": "Crop"},
+      {"name": "Bollworm", "type": "Pest"},
+      {"name": "Wilting", "type": "Symptom"}
+    ],
+    "expected_relationships": [
+      {"subject": "Bollworm", "predicate": "AFFECTS", "object": "Cotton"}
+    ]
+  },
+  {
+    "id": "doc-003",
+    "crop": "Tomato",
+    "text": "Interveinal chlorosis in Tomato indicates a lack of Iron. It is commonly observed in alkaline soils.",
+    "expected_entities": [
+      {"name": "Tomato", "type": "Crop"},
+      {"name": "Iron Deficiency Chlorosis", "type": "Disease"},
+      {"name": "Iron", "type": "Nutrient"}
+    ],
+    "expected_relationships": [
+      {"subject": "Tomato", "predicate": "REQUIRES_NUTRIENT", "object": "Iron"}
+    ]
+  }
+]
