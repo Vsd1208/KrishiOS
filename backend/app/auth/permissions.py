@@ -68,6 +68,12 @@ class Permission:
     GRAPH_REVIEW = "graph:review"
     GRAPH_ADMIN = "graph:admin"
 
+    # ── Vision / Crop Intelligence (Sprint 7) ─────────────────────────────────
+    VISION_ANALYZE = "vision:analyze"
+    VISION_READ_OWN = "vision:read_own"
+    VISION_READ_FIELD = "vision:read_field"
+    VISION_REVIEW = "vision:review"
+
 
 # ---------------------------------------------------------------------------
 # Role → permission mapping
@@ -83,6 +89,8 @@ _FARMER_PERMISSIONS: frozenset[str] = frozenset(
         Permission.ADVISORY_READ,
         Permission.AGENT_EXECUTE,
         Permission.GRAPH_READ,
+        Permission.VISION_ANALYZE,
+        Permission.VISION_READ_OWN,
     }
 )
 
@@ -105,6 +113,10 @@ _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
         Permission.AGENT_EXECUTE,
         Permission.GRAPH_READ,
         Permission.GRAPH_REVIEW,
+        Permission.VISION_ANALYZE,
+        Permission.VISION_READ_OWN,
+        Permission.VISION_READ_FIELD,
+        Permission.VISION_REVIEW,
     }
 )
 
@@ -120,6 +132,8 @@ _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
         Permission.AGENT_EXECUTE,
         Permission.GRAPH_READ,
         Permission.GRAPH_WRITE,
+        Permission.VISION_ANALYZE,
+        Permission.VISION_READ_OWN,
     }
 )
 

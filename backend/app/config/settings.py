@@ -83,6 +83,26 @@ class Settings(BaseSettings):
     GRAPHRAG_WEIGHT_VECTOR: float = 0.50
     GRAPHRAG_WEIGHT_GRAPH: float = 0.50
 
+    # ── Vision / Crop Intelligence (Sprint 7) ─────────────────────────────────
+    IMAGE_STORAGE_PATH: str = "/data/images"
+    MAX_IMAGE_UPLOAD_SIZE_MB: int = 15
+    IMAGE_MAX_DIMENSION: int = 4096
+    IMAGE_MIN_DIMENSION: int = 224
+    IMAGE_ALLOWED_MIMES: list[str] = Field(
+        default_factory=lambda: ["image/jpeg", "image/png", "image/webp"]
+    )
+
+    # Vision model
+    VISION_MODEL_NAME: str = "mock-v1"
+    VISION_MODEL_VERSION: str = "0.1.0"
+
+    # Quality and confidence thresholds
+    VISION_QUALITY_MIN_SCORE: float = 0.3
+    VISION_CONFIDENCE_THRESHOLD: float = 0.5
+
+    # Analysis caching
+    VISION_CACHE_TTL_SECONDS: int = 3600
+
     # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     LOG_JSON: bool = False

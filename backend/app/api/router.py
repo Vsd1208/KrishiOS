@@ -36,3 +36,7 @@ api_router.include_router(agents_router)
 
 from app.graph.api.routes import router as graph_router
 api_router.include_router(graph_router)
+
+# Sprint 7 — Vision Intelligence
+from app.vision.api.routes import router as vision_router
+api_router.include_router(vision_router)

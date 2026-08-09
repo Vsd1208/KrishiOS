@@ -22,6 +22,8 @@ from app.models.retrieval_index import (
 from app.models.soil_sample import SoilSample, SoilSampleStatus
 from app.models.user import RefreshToken, User
 from app.models.graph_candidate import GraphKnowledgeCandidate
+from app.vision.models.image import CropImage
+from app.vision.models.analysis import ImageAnalysis
 
 __all__ = [
     # Sprint 0/1 — domain
@@ -47,4 +49,7 @@ __all__ = [
     # Sprint 5 — Identity
     "RefreshToken",
     "User",
+    # Sprint 7 — Vision
+    "CropImage",
+    "ImageAnalysis",
 ]

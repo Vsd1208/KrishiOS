@@ -1,0 +1,30 @@
+[
+  {
+    "image_id": "img_001_paddy_brownspot",
+    "crop": "Paddy",
+    "ground_truth_condition": "Brown Spot",
+    "expected_entities": ["Paddy", "brown spot", "yellowing leaves"],
+    "description": "Paddy leaf showing characteristic brown spots with yellow halo."
+  },
+  {
+    "image_id": "img_002_paddy_blb",
+    "crop": "Paddy",
+    "ground_truth_condition": "Bacterial Leaf Blight",
+    "expected_entities": ["Paddy", "Bacterial Leaf Blight", "water soaked lesions"],
+    "description": "Paddy field showing early stages of BLB."
+  },
+  {
+    "image_id": "img_003_cotton_whitefly",
+    "crop": "Cotton",
+    "ground_truth_condition": "Whitefly Infestation",
+    "expected_entities": ["Cotton", "Whitefly", "curled leaves"],
+    "description": "Cotton leaf with curled edges and white insects on underside."
+  },
+  {
+    "image_id": "img_004_tomato_earlyblight",
+    "crop": "Tomato",
+    "ground_truth_condition": "Early Blight",
+    "expected_entities": ["Tomato", "Early Blight", "concentric rings"],
+    "description": "Tomato leaf exhibiting dark concentric rings."
+  }
+]
