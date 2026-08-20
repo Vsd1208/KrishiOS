@@ -24,6 +24,8 @@ from app.models.user import RefreshToken, User
 from app.models.graph_candidate import GraphKnowledgeCandidate
 from app.vision.models.image import CropImage
 from app.vision.models.analysis import ImageAnalysis
+from app.voice.models.audio import AudioRecord
+from app.voice.models.transcript import SpeechTranscript
 
 __all__ = [
     # Sprint 0/1 — domain
@@ -52,4 +54,7 @@ __all__ = [
     # Sprint 7 — Vision
     "CropImage",
     "ImageAnalysis",
+    # Sprint 8 — Voice
+    "AudioRecord",
+    "SpeechTranscript",
 ]

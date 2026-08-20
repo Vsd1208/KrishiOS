@@ -103,6 +103,51 @@ class Settings(BaseSettings):
     # Analysis caching
     VISION_CACHE_TTL_SECONDS: int = 3600
 
+    # ── Voice / Multilingual Intelligence (Sprint 8) ──────────────────────────
+    AUDIO_STORAGE_PATH: str = "/data/audio"
+    MAX_AUDIO_UPLOAD_SIZE_MB: int = 25
+    MAX_AUDIO_DURATION_SECONDS: int = 180
+    AUDIO_ALLOWED_MIMES: list[str] = Field(
+        default_factory=lambda: [
+            "audio/wav",
+            "audio/x-wav",
+            "audio/mpeg",
+            "audio/mp3",
+            "audio/m4a",
+            "audio/mp4",
+            "audio/webm",
+            "audio/ogg",
+        ]
+    )
+
+    STT_PROVIDER_NAME: str = "mock-stt-v1"
+    STT_MODEL_VERSION: str = "0.1.0"
+    TTS_PROVIDER_NAME: str = "mock-tts-v1"
+    TTS_MODEL_VERSION: str = "0.1.0"
+
+    VOICE_CACHE_TTL_SECONDS: int = 3600
+
+    # ── Live Agricultural Intelligence (Sprint 9) ────────────────────────────
+    WEATHER_PROVIDER_NAME: str = "mock-weather-v1"
+    WEATHER_API_BASE_URL: str = "https://api.open-meteo.com/v1"
+    WEATHER_CACHE_TTL_SECONDS: int = 1800  # 30 mins
+    WEATHER_FORECAST_CACHE_TTL_SECONDS: int = 7200  # 2 hours
+
+    MARKET_PROVIDER_NAME: str = "mock-market-v1"
+    MARKET_API_BASE_URL: str = "https://api.data.gov.in/resource"
+    MARKET_CACHE_TTL_SECONDS: int = 21600  # 6 hours
+
+    ADVISORY_PROVIDER_NAME: str = "mock-advisory-v1"
+    ADVISORY_CACHE_TTL_SECONDS: int = 43200  # 12 hours
+
+    SCHEME_PROVIDER_NAME: str = "mock-scheme-v1"
+    SCHEME_CACHE_TTL_SECONDS: int = 86400  # 24 hours
+
+    CIRCUIT_BREAKER_FAILURE_THRESHOLD: int = 5
+    CIRCUIT_BREAKER_RECOVERY_TIME_SECONDS: float = 30.0
+    CIRCUIT_BREAKER_TIMEOUT_SECONDS: float = 5.0
+    LIVE_DATA_RATE_LIMIT_PER_MINUTE: int = 60
+
     # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     LOG_JSON: bool = False

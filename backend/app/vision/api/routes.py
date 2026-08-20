@@ -19,7 +19,7 @@ from loguru import logger
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.dependencies.auth import RequirePermission, get_auth_context, AuthContext
+from app.api.dependencies.auth import RequirePermission, get_current_auth_context, AuthContext
 from app.auth.permissions import Permission
 from app.config.settings import get_settings
 from app.database.session import get_db_session, async_session_factory
@@ -44,7 +44,7 @@ from app.vision.pipeline import VisionAnalysisPipeline
 router = APIRouter(prefix="/vision", tags=["Vision"])
 
 DbSession = Annotated[AsyncSession, Depends(get_db_session)]
-Auth = Annotated[AuthContext, Depends(get_auth_context)]
+Auth = Annotated[AuthContext, Depends(get_current_auth_context)]
 
 
 def get_file_store() -> FileStore:

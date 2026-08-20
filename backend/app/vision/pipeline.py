@@ -93,9 +93,7 @@ class VisionAnalysisPipeline:
                 ext_entity = ExtractedEntity(
                     raw_text=obs.finding, 
                     entity_type="symptom", 
-                    start_char=0, 
-                    end_char=len(obs.finding), 
-                    confidence=obs.confidence
+                    confidence=obs.confidence,
                 )
                 res_entity = self._entity_resolver.resolve(ext_entity)
                 
@@ -114,9 +112,7 @@ class VisionAnalysisPipeline:
                 ext_entity = ExtractedEntity(
                     raw_text=cond.name, 
                     entity_type="disease", # simplistic mapping
-                    start_char=0, 
-                    end_char=len(cond.name), 
-                    confidence=cond.confidence
+                    confidence=cond.confidence,
                 )
                 res_entity = self._entity_resolver.resolve(ext_entity)
                 resolved_candidates.append({

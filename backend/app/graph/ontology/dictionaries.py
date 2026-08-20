@@ -37,30 +37,31 @@ CROP_DICTIONARY: dict[str, list[str]] = {
     "Paddy": [
         "rice", "rice crop", "paddy crop", "oryza sativa", "dhaan", "chawal",
         "dhan", "rice plant", "paddy plant", "wet rice", "upland rice",
+        "వరి", "వరి పైరు", "వరి పంట",
     ],
     "Cotton": [
         "gossypium", "kapas", "kappas", "cotton plant", "bt cotton",
-        "american cotton", "desi cotton", "white gold",
+        "american cotton", "desi cotton", "white gold", "ప్రత్తి", "కపాస్",
     ],
     "Tomato": [
         "lycopersicon esculentum", "solanum lycopersicum", "tamatar",
-        "tomato plant", "tomato crop",
+        "tomato plant", "tomato crop", "టమాట", "టమోటా",
     ],
     "Wheat": [
         "triticum aestivum", "gehun", "gahu", "wheat crop", "wheat plant",
-        "rabi wheat",
+        "rabi wheat", "గోధుమ",
     ],
     "Maize": [
-        "corn", "zea mays", "makka", "maize crop", "sweet corn",
+        "corn", "zea mays", "makka", "maize crop", "sweet corn", "మొక్కజొన్న",
     ],
     "Groundnut": [
-        "peanut", "arachis hypogaea", "moongphali", "groundnut crop",
+        "peanut", "arachis hypogaea", "moongphali", "groundnut crop", "వేరుశనగ",
     ],
     "Soybean": [
         "glycine max", "soya bean", "soya", "soyabean",
     ],
     "Sugarcane": [
-        "saccharum officinarum", "ganna", "ikshu", "sugarcane crop",
+        "saccharum officinarum", "ganna", "ikshu", "sugarcane crop", "చెరకు",
     ],
 }
 
@@ -73,11 +74,11 @@ DISEASE_DICTIONARY: dict[str, list[str]] = {
     "Blast": [
         "rice blast", "paddy blast", "leaf blast", "neck blast",
         "magnaporthe oryzae", "pyricularia oryzae", "pyricularia blast",
-        "collar blast", "panicle blast",
+        "collar blast", "panicle blast", "అగ్గి తెగులు", "ब्लास्ट रोग",
     ],
     "Brown Spot": [
         "paddy brown spot", "rice brown spot", "helminthosporium oryzae",
-        "cochliobolus miyabeanus", "brown leaf spot",
+        "cochliobolus miyabeanus", "brown leaf spot", "భూరా మచ్చ", "भूरा धब्बा",
     ],
     "Sheath Blight": [
         "paddy sheath blight", "rhizoctonia solani", "sheath rot blight",

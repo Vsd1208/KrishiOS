@@ -19,7 +19,8 @@ async def test_farmer_cannot_view_other_farmer_analysis(monkeypatch):
     auth = AuthContext(
         user_uuid=farmer_a,
         role="FARMER",
-        permissions=frozenset([Permission.VISION_READ_OWN])
+        permissions=frozenset([Permission.VISION_READ_OWN]),
+        jti=uuid4(),
     )
     
     # Mock analysis and image belonging to Farmer B
@@ -52,14 +53,27 @@ async def test_officer_can_view_farmer_analysis(monkeypatch):
     auth = AuthContext(
         user_uuid=officer_id,
         role="OFFICER",
-        permissions=frozenset([Permission.VISION_READ_OWN, Permission.VISION_READ_FIELD])
+        permissions=frozenset([Permission.VISION_READ_OWN, Permission.VISION_READ_FIELD]),
+        jti=uuid4(),
     )
     
     class MockAnalysis:
         id = 1
+        uuid = uuid4()
+        image_uuid = uuid4()
         model_name = "mock"
+        model_version = "0.1.0"
         status = "COMPLETED"
-        __dict__ = {"id": 1, "model_name": "mock", "status": "COMPLETED", "review_status": "AI_SUGGESTED"}
+        review_status = "AI_SUGGESTED"
+        quality_score = 0.9
+        quality_issues = []
+        crop_detected = "Paddy"
+        observations = []
+        candidate_conditions = []
+        confidence_score = 0.85
+        error_message = None
+        started_at = None
+        completed_at = None
         
     class MockImage:
         uuid = uuid4()

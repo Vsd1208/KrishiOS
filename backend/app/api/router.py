@@ -40,3 +40,12 @@ api_router.include_router(graph_router)
 # Sprint 7 — Vision Intelligence
 from app.vision.api.routes import router as vision_router
 api_router.include_router(vision_router)
+
+# Sprint 8 — Voice Intelligence
+from app.voice.api.routes import router as voice_router
+api_router.include_router(voice_router)
+
+# Sprint 9 — Live Agricultural Intelligence
+from app.live_data.api.routes import router as live_data_router
+api_router.include_router(live_data_router)
+

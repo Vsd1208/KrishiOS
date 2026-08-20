@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.dependencies.auth import AuthContext, RequirePermission
 from app.auth.permissions import Permission
-from app.database.core import get_session
+from app.database.session import get_db_session
 from app.graph.api.schemas import (
     GraphCandidateResponse,
     GraphNodeSchema,
@@ -29,7 +29,7 @@ router = APIRouter(prefix="/graph", tags=["Knowledge Graph"])
 )
 async def list_candidates(
     status: str = "PENDING",
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db_session),
 ) -> list[GraphKnowledgeCandidate]:
     """List knowledge candidates for officer review."""
     result = await session.execute(
@@ -50,7 +50,7 @@ async def review_candidate(
     candidate_id: int,
     request: ReviewCandidateRequest,
     context: AuthContext = Depends(RequirePermission(Permission.GRAPH_REVIEW)),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db_session),
 ) -> GraphKnowledgeCandidate:
     """Approve or reject a graph knowledge candidate.
     

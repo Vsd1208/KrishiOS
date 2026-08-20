@@ -10,7 +10,7 @@ from sqlalchemy import Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import TimestampMixin
-from app.database.core import Base
+from app.database.base import Base
 
 
 class GraphKnowledgeCandidate(TimestampMixin, Base):

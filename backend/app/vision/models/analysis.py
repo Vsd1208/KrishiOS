@@ -8,7 +8,7 @@ from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSON, UUID as PostgresUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database.core import Base
+from app.database.base import Base
 from app.models.base import TimestampMixin
 
 

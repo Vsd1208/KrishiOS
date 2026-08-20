@@ -22,10 +22,11 @@ async def test_pipeline_failed_quality(monkeypatch):
     # Setup mock query results
     async def mock_execute(stmt):
         mock_result = MagicMock()
-        if "ImageAnalysis" in str(stmt):
-            mock_result.scalar_one_or_none.return_value = analysis
-        elif "CropImage" in str(stmt):
+        stmt_str = str(stmt)
+        if "crop_images" in stmt_str:
             mock_result.scalar_one_or_none.return_value = image
+        else:
+            mock_result.scalar_one_or_none.return_value = analysis
         return mock_result
         
     session.execute = mock_execute

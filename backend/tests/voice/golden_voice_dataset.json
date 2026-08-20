@@ -1,0 +1,52 @@
+[
+  {
+    "audio_id": "aud_001_en_wheat",
+    "language": "en",
+    "expected_transcript": "What is the best fertilizer for wheat in Rabi season?",
+    "is_code_switched": false,
+    "expected_crop": "Wheat",
+    "expected_disease": null,
+    "expected_intent": "FERTILIZER_QUERY",
+    "description": "Simple English fertilizer query for wheat."
+  },
+  {
+    "audio_id": "aud_002_hi_paddy_brownspot",
+    "language": "hi",
+    "expected_transcript": "धान की फसल में भूरा धब्बा रोग का इलाज क्या है?",
+    "is_code_switched": false,
+    "expected_crop": "Paddy",
+    "expected_disease": "Brown Spot",
+    "expected_intent": "DISEASE_ANALYSIS",
+    "description": "Hindi query regarding brown spot disease on paddy."
+  },
+  {
+    "audio_id": "aud_003_te_paddy_blast",
+    "language": "te",
+    "expected_transcript": "నా వరి పైరుకు అగ్గి తెగులు వచ్చింది, ఏమి చేయాలి?",
+    "is_code_switched": false,
+    "expected_crop": "Paddy",
+    "expected_disease": "Blast",
+    "expected_intent": "DISEASE_ANALYSIS",
+    "description": "Telugu query regarding blast disease in paddy crop."
+  },
+  {
+    "audio_id": "aud_004_mixed_te_en_spots",
+    "language": "te",
+    "expected_transcript": "నా వరి crop కి yellow spots వస్తున్నాయి",
+    "is_code_switched": true,
+    "expected_crop": "Paddy",
+    "expected_disease": null,
+    "expected_intent": "CROP_ADVISORY",
+    "description": "Code-switched Telugu + English query with yellow spots symptom."
+  },
+  {
+    "audio_id": "aud_005_multimodal_voice_image",
+    "language": "te",
+    "expected_transcript": "నా వరి ఆకులు ఇలా ఎందుకు ఉన్నాయి?",
+    "is_code_switched": false,
+    "expected_crop": "Paddy",
+    "expected_disease": null,
+    "expected_intent": "IMAGE_ANALYSIS",
+    "description": "Telugu voice query submitted alongside crop leaf image."
+  }
+]

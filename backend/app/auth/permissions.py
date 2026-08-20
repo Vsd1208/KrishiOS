@@ -12,7 +12,7 @@ Design:
 
 from __future__ import annotations
 
-from frozenset import frozenset as _fs  # just an alias for clarity
+_fs = frozenset  # just an alias for clarity
 
 from app.models.user import UserRole
 
@@ -74,6 +74,18 @@ class Permission:
     VISION_READ_FIELD = "vision:read_field"
     VISION_REVIEW = "vision:review"
 
+    # ── Voice / Multilingual Intelligence (Sprint 8) ──────────────────────────
+    VOICE_SUBMIT = "voice:submit"
+    VOICE_READ_OWN = "voice:read_own"
+    VOICE_DELETE = "voice:delete"
+
+    # ── Live Agricultural Intelligence (Sprint 9) ────────────────────────────
+    LIVE_DATA_READ = "live_data:read"
+    LIVE_DATA_SYNC = "live_data:sync"
+    WEATHER_READ = "weather:read"
+    MARKET_READ = "market:read"
+    SCHEME_READ = "scheme:read"
+
 
 # ---------------------------------------------------------------------------
 # Role → permission mapping
@@ -91,6 +103,13 @@ _FARMER_PERMISSIONS: frozenset[str] = frozenset(
         Permission.GRAPH_READ,
         Permission.VISION_ANALYZE,
         Permission.VISION_READ_OWN,
+        Permission.VOICE_SUBMIT,
+        Permission.VOICE_READ_OWN,
+        Permission.VOICE_DELETE,
+        Permission.LIVE_DATA_READ,
+        Permission.WEATHER_READ,
+        Permission.MARKET_READ,
+        Permission.SCHEME_READ,
     }
 )
 
@@ -117,6 +136,14 @@ _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
         Permission.VISION_READ_OWN,
         Permission.VISION_READ_FIELD,
         Permission.VISION_REVIEW,
+        Permission.VOICE_SUBMIT,
+        Permission.VOICE_READ_OWN,
+        Permission.VOICE_DELETE,
+        Permission.LIVE_DATA_READ,
+        Permission.LIVE_DATA_SYNC,
+        Permission.WEATHER_READ,
+        Permission.MARKET_READ,
+        Permission.SCHEME_READ,
     }
 )
 
@@ -134,6 +161,14 @@ _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
         Permission.GRAPH_WRITE,
         Permission.VISION_ANALYZE,
         Permission.VISION_READ_OWN,
+        Permission.VOICE_SUBMIT,
+        Permission.VOICE_READ_OWN,
+        Permission.VOICE_DELETE,
+        Permission.LIVE_DATA_READ,
+        Permission.LIVE_DATA_SYNC,
+        Permission.WEATHER_READ,
+        Permission.MARKET_READ,
+        Permission.SCHEME_READ,
     }
 )
 
