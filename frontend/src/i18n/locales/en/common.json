@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "KrishiOS",
+    "tagline": "AI Decision Intelligence for Indian Agriculture"
+  },
+  "nav": {
+    "home": "Home",
+    "fields": "Fields",
+    "alerts": "Alerts",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "farmers": "Farmers",
+    "reviews": "Reviews",
+    "knowledge": "Knowledge",
+    "analytics": "Analytics"
+  },
+  "auth": {
+    "login": "Log In",
+    "logout": "Log Out",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "password": "Password",
+    "loginTitle": "Welcome to KrishiOS",
+    "loginSubtitle": "Sign in to your account",
+    "loginButton": "Sign In",
+    "loggingIn": "Signing in...",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "invalidCredentials": "Invalid phone/email or password."
+  },
+  "roles": {
+    "farmer": "Farmer",
+    "officer": "Agricultural Officer",
+    "agronomist": "Agronomist",
+    "admin": "Administrator"
+  },
+  "ai": {
+    "confidence": "AI Confidence",
+    "confidenceHigh": "High Confidence",
+    "confidenceMedium": "Medium Confidence",
+    "confidenceLow": "Low Confidence",
+    "aiGenerated": "AI Generated",
+    "thinking": "Analyzing...",
+    "evidence": "Evidence",
+    "citations": "Citations",
+    "graphPaths": "Knowledge Graph Paths",
+    "activeRules": "Active Rules",
+    "telemetry": "Live Telemetry"
+  },
+  "risk": {
+    "low": "Low Risk",
+    "medium": "Medium Risk",
+    "high": "High Risk",
+    "critical": "Critical Risk"
+  },
+  "freshness": {
+    "fresh": "Fresh",
+    "recent": "Recent",
+    "stale": "Stale",
+    "expired": "Expired",
+    "unknown": "Unknown"
+  },
+  "errors": {
+    "networkError": "Unable to reach KrishiOS. Please check your connection.",
+    "serverError": "KrishiOS encountered an error. Please try again later.",
+    "notFound": "The requested resource was not found.",
+    "forbidden": "You do not have permission to access this resource.",
+    "unauthorized": "Please log in to continue.",
+    "timeout": "Request timed out. Please try again.",
+    "validationError": "Please check your input and try again.",
+    "unknownError": "An unexpected error occurred.",
+    "retry": "Try Again"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "search": "Search",
+    "noResults": "No results found",
+    "language": "Language"
+  },
+  "farmer": {
+    "welcome": "Welcome to KrishiOS",
+    "dashboardSubtitle": "Your agricultural intelligence dashboard"
+  },
+  "officer": {
+    "welcome": "Officer Console",
+    "dashboardSubtitle": "Agricultural intelligence & review dashboard",
+    "pendingReviews": "Pending Reviews",
+    "activeAlerts": "Active Alerts",
+    "totalFarmers": "Total Farmers"
+  }
+}

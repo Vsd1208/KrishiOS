@@ -49,3 +49,7 @@ api_router.include_router(voice_router)
 from app.live_data.api.routes import router as live_data_router
 api_router.include_router(live_data_router)
 
+# Sprint 10 — Proactive Decision Intelligence
+from app.proactive.api.routes import router as proactive_router
+api_router.include_router(proactive_router)
+

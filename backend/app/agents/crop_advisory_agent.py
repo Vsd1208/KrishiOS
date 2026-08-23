@@ -67,7 +67,7 @@ class CropAdvisoryAgent(BaseAgent):
         })
 
         hits = search_res.data.get("hits", [])
-        context_str = "\n---\n".join([h.get("chunk_text", "") for h in hits])
+        context_str = search_res.output if search_res.output else "\n---\n".join([h.get("chunk_text", "") for h in hits])
         citations = [h.get("citation") for h in hits if h.get("citation")]
 
         # 2. Check if live weather or advisory tool should be queried (e.g. spray, weather, rain in task)
@@ -105,7 +105,7 @@ class CropAdvisoryAgent(BaseAgent):
             f"User Query: {task}\n"
             f"Crop: {crop}, Region: {district or 'India'}, State: {state or 'India'}, Season: {context.season or 'General'}\n"
             f"{live_telemetry_str}\n"
-            f"Verified ICAR/Dept Knowledge Base:\n{context_str}\n\n"
+            f"Verified ICAR/Dept Knowledge Base & Graph:\n{context_str}\n\n"
             "Generate actionable, grounded agricultural advice. Clearly distinguish live factual weather/market conditions from agronomic recommendations."
         )
 

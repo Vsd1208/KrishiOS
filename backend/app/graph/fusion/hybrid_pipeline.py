@@ -44,7 +44,14 @@ class HybridRAGPipeline:
         self._vector_weight = settings.GRAPHRAG_WEIGHT_VECTOR if hasattr(settings, 'GRAPHRAG_WEIGHT_VECTOR') else 0.6
         self._graph_weight = settings.GRAPHRAG_WEIGHT_GRAPH if hasattr(settings, 'GRAPHRAG_WEIGHT_GRAPH') else 0.4
 
-    async def search(self, query: str, filters: RetrievalFilters) -> HybridContext:
+    async def search(
+        self,
+        query: str,
+        filters: RetrievalFilters,
+        top_k: int = 10,
+        score_threshold: float = 0.3,
+        include_delta: bool = True,
+    ) -> HybridContext:
         """Execute parallel vector and graph search, then fuse."""
         start = time.perf_counter()
         
@@ -52,7 +59,13 @@ class HybridRAGPipeline:
         query_entities = await self._query_extractor.extract(query)
         
         # 2. Run in parallel
-        vector_task = self._vector_pipeline.search(query, filters)
+        vector_task = self._vector_pipeline.search(
+            query=query,
+            filters=filters,
+            top_k=top_k,
+            score_threshold=score_threshold,
+            include_delta=include_delta,
+        )
         graph_task = self._graph_retriever.retrieve_for_entities(query, query_entities)
         
         vector_result, graph_result = await asyncio.gather(vector_task, graph_task)
@@ -64,7 +77,7 @@ class HybridRAGPipeline:
         
         return HybridContext(
             query=query,
-            document_evidence=vector_result.hits, # Assuming vector_result has .hits
+            document_evidence=vector_result.results,
             graph_evidence=graph_result.paths,
             latency_ms=latency_ms,
         )

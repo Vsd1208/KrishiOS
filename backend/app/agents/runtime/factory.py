@@ -58,6 +58,20 @@ def build_runtime_engine(llm_provider: LLMProvider | None = None) -> AgentRuntim
 
     pipeline = _build_retrieval_pipeline()
     knowledge_tool = KnowledgeSearchTool(pipeline)
+    
+    from app.agents.tools.graph_knowledge import GraphKnowledgeTool
+    from app.graph.fusion.hybrid_pipeline import HybridRAGPipeline
+    from app.graph.retrieval.graph_retriever import GraphRetriever
+    from app.graph.api.dependencies import get_graph_store
+    
+    try:
+        graph_store = get_graph_store()
+        graph_retriever = GraphRetriever(graph_store)
+        hybrid_pipeline = HybridRAGPipeline(pipeline, graph_retriever)
+        graph_tool = GraphKnowledgeTool(hybrid_pipeline)
+    except Exception:
+        # Fallback if graph is not configured
+        graph_tool = None
 
     weather_tool = WeatherApiTool()
     stub_tools = [
@@ -70,17 +84,23 @@ def build_runtime_engine(llm_provider: LLMProvider | None = None) -> AgentRuntim
         NotificationServiceTool(),
     ]
     tool_registry.register(knowledge_tool)
+    if graph_tool:
+        tool_registry.register(graph_tool)
+        
     for tool in stub_tools:
         tool_registry.register(tool)
 
+    from app.agents.proactive_agent import ProactiveIntelligenceAgent
+
     guardrails = GuardrailEngine()
     agents = [
-        KnowledgeRetrievalAgent(knowledge_tool),
-        CropAdvisoryAgent(llm, knowledge_tool),
+        KnowledgeRetrievalAgent(graph_tool or knowledge_tool),
+        CropAdvisoryAgent(llm, graph_tool or knowledge_tool),
         WeatherIntelligenceAgent(weather_tool),
-        GovtSchemeAgent(llm, knowledge_tool),
+        GovtSchemeAgent(llm, graph_tool or knowledge_tool),
         OfficerAssistanceAgent(llm),
         ResponseValidationAgent(guardrails),
+        ProactiveIntelligenceAgent(llm),
     ]
     for agent in agents:
         registry.register(agent)

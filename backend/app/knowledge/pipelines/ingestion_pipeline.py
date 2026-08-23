@@ -233,6 +233,21 @@ class IngestionPipeline:
             len(vector_points),
         )
 
+        # ── Stage 6: Graph Extraction ──────────────────────────────────────
+        from app.graph.ingestion.graph_ingestion import GraphIngestionStage
+        t0 = time.perf_counter()
+        
+        graph_stage = GraphIngestionStage(self._session)
+        chunk_uuids = [point.point_id for point in vector_points]
+        await graph_stage.run(doc=doc, chunks=chunks, chunk_uuids=chunk_uuids)
+        
+        graph_duration = time.perf_counter() - t0
+        logger.info(
+            "IngestionPipeline: graph extraction done document_id={} duration={:.3f}s",
+            doc.id,
+            graph_duration,
+        )
+
         # ── Mark complete ──────────────────────────────────────────────────
         await self._set_status(doc, DocumentStatus.COMPLETED)
         await self._session.commit()

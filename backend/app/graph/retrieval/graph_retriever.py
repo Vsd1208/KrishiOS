@@ -10,7 +10,6 @@ import time
 
 from app.graph.interfaces.store import GraphStore
 from app.graph.interfaces.types import (
-    GraphEntity, # type: ignore
     GraphNode,
     GraphPath,
     GraphRetrievalResult,

@@ -86,6 +86,15 @@ class Permission:
     MARKET_READ = "market:read"
     SCHEME_READ = "scheme:read"
 
+    # ── Proactive Intelligence & Notifications (Sprint 10) ───────────────────
+    PROACTIVE_EVENT_EMIT = "proactive:event_emit"
+    PROACTIVE_DECISION_READ = "proactive:decision_read"
+    ALERT_READ = "alert:read"
+    ALERT_ACKNOWLEDGE = "alert:acknowledge"
+    ALERT_REVIEW = "alert:review"
+    PREFERENCE_READ = "preference:read"
+    PREFERENCE_UPDATE = "preference:update"
+
 
 # ---------------------------------------------------------------------------
 # Role → permission mapping
@@ -110,6 +119,10 @@ _FARMER_PERMISSIONS: frozenset[str] = frozenset(
         Permission.WEATHER_READ,
         Permission.MARKET_READ,
         Permission.SCHEME_READ,
+        Permission.ALERT_READ,
+        Permission.ALERT_ACKNOWLEDGE,
+        Permission.PREFERENCE_READ,
+        Permission.PREFERENCE_UPDATE,
     }
 )
 
@@ -144,6 +157,11 @@ _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
         Permission.WEATHER_READ,
         Permission.MARKET_READ,
         Permission.SCHEME_READ,
+        Permission.PROACTIVE_EVENT_EMIT,
+        Permission.PROACTIVE_DECISION_READ,
+        Permission.ALERT_READ,
+        Permission.ALERT_REVIEW,
+        Permission.PREFERENCE_READ,
     }
 )
 
@@ -169,6 +187,11 @@ _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
         Permission.WEATHER_READ,
         Permission.MARKET_READ,
         Permission.SCHEME_READ,
+        Permission.PROACTIVE_EVENT_EMIT,
+        Permission.PROACTIVE_DECISION_READ,
+        Permission.ALERT_READ,
+        Permission.ALERT_REVIEW,
+        Permission.PREFERENCE_READ,
     }
 )
 

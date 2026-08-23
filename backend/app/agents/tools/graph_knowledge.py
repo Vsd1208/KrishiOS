@@ -64,15 +64,14 @@ class GraphKnowledgeTool(BaseTool):
         crop = kwargs.get("crop")
         season = kwargs.get("season")
         
-        filters = RetrievalFilters()
-        if crop:
-            filters.crop = crop
-        if season:
-            filters.season = season
+        filters = RetrievalFilters(
+            crop=crop if isinstance(crop, str) else None,
+            season=season if isinstance(season, str) else None,
+        )
 
         try:
             logger.info("GraphKnowledgeTool executing for query: '{}'", query)
-            context = await self._pipeline.search(query, filters)
+            context = await self._pipeline.search(query=query, filters=filters)
             
             # Format the output for the LLM
             output_parts = [f"Hybrid Search Results for: {query}"]
@@ -91,6 +90,17 @@ class GraphKnowledgeTool(BaseTool):
                 # Ensure hit is RankedRetrievalResult
                 output_parts.append(f"[Source {i+1}] {hit.answer_context}")
 
+            # To maintain compatibility with agents expecting KnowledgeSearchTool behavior:
+            # We convert document_evidence back into the expected dict format.
+            hits = [
+                {
+                    "score": hit.relevance_score,
+                    "chunk_text": hit.answer_context,
+                    "citation": f"{hit.source_document_title} (p. {hit.page_number})",
+                }
+                for hit in context.document_evidence
+            ]
+
             return ToolResult(
                 success=True,
                 output="\n".join(output_parts),
@@ -98,6 +108,8 @@ class GraphKnowledgeTool(BaseTool):
                     "latency_ms": context.latency_ms,
                     "graph_paths_count": len(context.graph_evidence),
                     "vector_hits_count": len(context.document_evidence),
+                    "hits": hits,
+                    "total_hits": len(hits),
                 },
             )
         except Exception as exc:

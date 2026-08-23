@@ -27,6 +27,17 @@ from app.vision.models.analysis import ImageAnalysis
 from app.voice.models.audio import AudioRecord
 from app.voice.models.transcript import SpeechTranscript
 
+from app.models.proactive import (
+    AlertNotificationRecord,
+    AlertPriority,
+    AlertStatus,
+    NotificationChannel,
+    NotificationPreferenceRecord,
+    ProactiveDecisionRecord,
+    ProactiveEventRecord,
+    RiskSeverity,
+)
+
 __all__ = [
     # Sprint 0/1 — domain
     "Crop",
@@ -57,4 +68,13 @@ __all__ = [
     # Sprint 8 — Voice
     "AudioRecord",
     "SpeechTranscript",
+    # Sprint 10 — Proactive Intelligence
+    "AlertNotificationRecord",
+    "AlertPriority",
+    "AlertStatus",
+    "NotificationChannel",
+    "NotificationPreferenceRecord",
+    "ProactiveDecisionRecord",
+    "ProactiveEventRecord",
+    "RiskSeverity",
 ]
