@@ -124,8 +124,10 @@ async function request<T>(
 
   const url = `${config.apiBaseUrl}${path}`;
 
+  const isFormData = typeof FormData !== 'undefined' && body instanceof FormData;
+
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     ...extraHeaders,
   };
 
@@ -141,7 +143,7 @@ async function request<T>(
     response = await fetch(url, {
       method,
       headers,
-      body: body ? JSON.stringify(body) : undefined,
+      body: isFormData ? (body as FormData) : body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
     });
   } catch (error) {
@@ -195,6 +197,10 @@ export const apiClient = {
 
   post<T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> {
     return request<T>('POST', path, body, options);
+  },
+
+  postForm<T>(path: string, formData: FormData, options?: RequestOptions): Promise<T> {
+    return request<T>('POST', path, formData, options);
   },
 
   patch<T>(path: string, body?: unknown, options?: RequestOptions): Promise<T> {

@@ -10,7 +10,7 @@ import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/layout/Header';
-import { Home, MapPin, Bell, User } from 'lucide-react';
+import { Home, Sparkles, MapPin, Bell, User } from 'lucide-react';
 
 interface FarmerNavTab {
   id: string;
@@ -27,6 +27,13 @@ const farmerTabs: FarmerNavTab[] = [
     path: '/farmer',
     icon: Home,
     isActive: (pathname) => pathname === '/farmer' || pathname === '/farmer/',
+  },
+  {
+    id: 'ask',
+    label: 'Ask AI',
+    path: '/farmer/ask',
+    icon: Sparkles,
+    isActive: (pathname) => pathname.startsWith('/farmer/ask'),
   },
   {
     id: 'fields',
@@ -71,7 +78,7 @@ export const FarmerShell: React.FC = () => {
         aria-label="Farmer Navigation"
         className="fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-border shadow-lg"
       >
-        <div className="max-w-md mx-auto flex items-center justify-around h-16 px-2">
+        <div className="max-w-md mx-auto flex items-center justify-around h-16 px-1">
           {farmerTabs.map((tab) => {
             const active = tab.isActive(location.pathname);
             const Icon = tab.icon;
@@ -81,7 +88,7 @@ export const FarmerShell: React.FC = () => {
                 key={tab.id}
                 type="button"
                 onClick={() => navigate(tab.path)}
-                className={`flex-1 flex flex-col items-center justify-center h-full py-1 px-2 rounded-lg transition-colors cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
+                className={`flex-1 flex flex-col items-center justify-center h-full py-1 px-1 rounded-lg transition-colors cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
                   active
                     ? 'text-primary-600 font-semibold'
                     : 'text-text-muted hover:text-text hover:bg-surface-raised active:bg-gray-100 font-normal'

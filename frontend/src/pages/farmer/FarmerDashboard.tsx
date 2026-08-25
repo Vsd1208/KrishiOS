@@ -2,23 +2,51 @@
  * FarmerDashboard Page.
  *
  * Agricultural intelligence overview and primary entry point for farmers.
+ * Combines farm summary, hero multimodal ask launcher, live weather & spray window,
+ * and proactive crop risk alerts.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import {
-  Sun,
-  CloudRain,
-  Sprout,
-  TrendingUp,
-  AlertTriangle,
-  MapPin,
-  Calendar,
-} from 'lucide-react';
+  useFarmerProfile,
+  useFarmerFields,
+  useFarmerCrops,
+  useCurrentWeather,
+  useWeatherForecast,
+  useFarmerAlerts,
+  useMarketPrices,
+} from '@/features/farmer/hooks/useFarmerData';
+import { FarmSummaryCard } from '@/features/farmer/components/FarmSummaryCard';
+import { WeatherWidget } from '@/features/farmer/components/WeatherWidget';
+import { HeroActionGrid } from '@/features/farmer/components/HeroActionGrid';
+import { AlertBanner } from '@/features/farmer/components/AlertBanner';
+import { VoiceRecorderModal } from '@/features/farmer/components/VoiceRecorderModal';
+import { CropVisionModal } from '@/features/farmer/components/CropVisionModal';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { TrendingUp, Sprout, Calendar } from 'lucide-react';
 
 export const FarmerDashboard: React.FC = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // Modals for Hero Launcher
+  const [isVoiceOpen, setIsVoiceOpen] = useState(false);
+  const [isVisionOpen, setIsVisionOpen] = useState(false);
+
+  // Live queries
+  const { data: farmer, isLoading: isFarmerLoading } = useFarmerProfile();
+  const { data: fields = [], isLoading: isFieldsLoading } = useFarmerFields(farmer?.id);
+  const { fieldCrops } = useFarmerCrops();
+  const { data: weather, isLoading: isWeatherLoading } = useCurrentWeather(
+    farmer?.village || 'Khammam',
+  );
+  const { data: forecast, isLoading: isForecastLoading } = useWeatherForecast(
+    farmer?.village || 'Khammam',
+  );
+  const { alerts, acknowledgeAlert, isAcknowledging } = useFarmerAlerts(farmer?.id);
+  const { data: mandiPrices } = useMarketPrices('Paddy', farmer?.village || 'Khammam');
 
   const currentDate = new Date().toLocaleDateString('en-IN', {
     weekday: 'long',
@@ -27,150 +55,139 @@ export const FarmerDashboard: React.FC = () => {
     year: 'numeric',
   });
 
+  const handleHeroAction = (action: 'voice' | 'text' | 'vision') => {
+    if (action === 'voice') {
+      setIsVoiceOpen(true);
+    } else if (action === 'vision') {
+      setIsVisionOpen(true);
+    } else {
+      navigate('/farmer/ask');
+    }
+  };
+
+  const primaryMandiPrice = mandiPrices?.[0];
+
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <section className="bg-gradient-to-r from-primary-700 to-primary-600 rounded-xl p-6 text-white shadow-md">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <section className="bg-gradient-to-r from-primary-700 to-primary-800 rounded-2xl p-5 sm:p-6 text-white shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-primary-100 text-small">
-              <Calendar className="w-4 h-4" aria-hidden="true" />
+            <div className="flex items-center gap-2 text-primary-200 text-caption font-medium">
+              <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{currentDate}</span>
             </div>
-            <h1 className="text-display font-bold tracking-tight">Welcome to KrishiOS</h1>
+            <h1 className="text-display font-extrabold tracking-tight">
+              Namaste, {farmer?.full_name || 'Farmer'}
+            </h1>
             <p className="text-body text-primary-100">
-              Your agricultural intelligence dashboard
+              KrishiOS Agricultural Decision Support • {farmer?.village || 'Telangana'}
             </p>
           </div>
-          <div className="inline-flex items-center gap-2 bg-primary-800/60 backdrop-blur-sm border border-primary-400/30 px-3.5 py-1.5 rounded-lg text-small">
-            <span className="w-2 h-2 rounded-full bg-success-500 animate-pulse" aria-hidden="true" />
-            <span>Role: <strong className="capitalize">{user?.role || 'Farmer'}</strong></span>
+
+          <div className="inline-flex items-center gap-2 bg-primary-900/60 backdrop-blur-sm border border-primary-400/30 px-3 py-1.5 rounded-lg text-caption self-start sm:self-auto">
+            <span className="w-2 h-2 rounded-full bg-success-400 animate-pulse" aria-hidden="true" />
+            <span>Active Kharif Season • {user?.role || 'Farmer'}</span>
           </div>
         </div>
       </section>
 
-      {/* Quick Overview Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Weather Intelligence Card */}
-        <Card variant="raised" padding="md" className="space-y-2">
-          <CardHeader className="mb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-small font-medium text-text-secondary">Weather Advisory</span>
-              <div className="w-8 h-8 rounded-lg bg-warning-50 text-warning-600 flex items-center justify-center">
-                <Sun className="w-5 h-5" aria-hidden="true" />
-              </div>
-            </div>
-            <CardTitle as="h3" className="text-heading font-bold text-text">
-              31°C
-            </CardTitle>
-            <CardDescription>Partly Cloudy • 15% rain chance</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-0 text-caption text-text-secondary pt-2 border-t border-border">
-            <div className="flex items-center gap-1.5 text-text-secondary">
-              <CloudRain className="w-3.5 h-3.5 text-info-600" aria-hidden="true" />
-              <span>Light showers expected in 48 hours</span>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Hero Multimodal Action Launcher */}
+      <HeroActionGrid onSelectAction={handleHeroAction} />
 
-        {/* Crop Health Card */}
-        <Card variant="raised" padding="md" className="space-y-2">
-          <CardHeader className="mb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-small font-medium text-text-secondary">Active Crops</span>
-              <div className="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center">
-                <Sprout className="w-5 h-5" aria-hidden="true" />
-              </div>
-            </div>
-            <CardTitle as="h3" className="text-heading font-bold text-text">
-              2 Fields
-            </CardTitle>
-            <CardDescription>Paddy (Kharif) &amp; Cotton</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-0 text-caption text-text-secondary pt-2 border-t border-border">
-            <div className="flex items-center gap-1.5 text-success-600 font-medium">
-              <span className="w-2 h-2 rounded-full bg-success-500" aria-hidden="true" />
-              <span>Optimal vegetative growth stage</span>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Proactive Risk Alerts Banner (High Priority) */}
+      <AlertBanner
+        alerts={alerts}
+        onAcknowledge={acknowledgeAlert}
+        isAcknowledging={isAcknowledging}
+      />
 
-        {/* Market Intelligence Card */}
+      {/* Farm Snapshot & Live Weather Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Farm Snapshot */}
+        <FarmSummaryCard
+          farmer={farmer}
+          fields={fields}
+          fieldCrops={fieldCrops}
+          isLoading={isFarmerLoading || isFieldsLoading}
+        />
+
+        {/* Live Weather & Spray Advisory */}
+        <WeatherWidget
+          weather={weather}
+          forecast={forecast}
+          isLoading={isWeatherLoading || isForecastLoading}
+        />
+      </div>
+
+      {/* Market & Crop Progression Snapshot */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Mandi Rate Snapshot */}
         <Card variant="raised" padding="md" className="space-y-2">
-          <CardHeader className="mb-2">
+          <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
-              <span className="text-small font-medium text-text-secondary">Mandi Prices</span>
+              <span className="text-caption font-bold text-text-secondary uppercase">
+                Mandi Benchmark Price
+              </span>
               <div className="w-8 h-8 rounded-lg bg-info-50 text-info-600 flex items-center justify-center">
                 <TrendingUp className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
-            <CardTitle as="h3" className="text-heading font-bold text-text">
-              ₹2,320 / qtl
+            <CardTitle as="h3" className="text-heading font-extrabold text-text">
+              {primaryMandiPrice
+                ? `₹${primaryMandiPrice.modal_price_inr_quintal} / qtl`
+                : '₹2,320 / qtl'}
             </CardTitle>
-            <CardDescription>Paddy Grade A • Warangal Mandi</CardDescription>
+            <p className="text-caption text-text-secondary">
+              {primaryMandiPrice
+                ? `${primaryMandiPrice.commodity} (${primaryMandiPrice.variety}) • ${primaryMandiPrice.market}`
+                : 'Paddy Common • Warangal Mandi'}
+            </p>
           </CardHeader>
-          <CardContent className="space-y-0 text-caption text-text-secondary pt-2 border-t border-border">
-            <span className="text-success-600 font-medium">+2.4% vs last week</span>
+          <CardContent className="pt-2 border-t border-border">
+            <div className="flex items-center justify-between text-caption">
+              <span className="text-success-700 font-semibold">+2.4% vs last week</span>
+              <span className="text-text-muted">MSP: ₹2,183 / qtl</span>
+            </div>
           </CardContent>
         </Card>
 
-        {/* Active Alerts Card */}
+        {/* Crop Stage Snapshot */}
         <Card variant="raised" padding="md" className="space-y-2">
-          <CardHeader className="mb-2">
+          <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
-              <span className="text-small font-medium text-text-secondary">Advisory Alerts</span>
-              <div className="w-8 h-8 rounded-lg bg-danger-50 text-danger-600 flex items-center justify-center">
-                <AlertTriangle className="w-5 h-5" aria-hidden="true" />
+              <span className="text-caption font-bold text-text-secondary uppercase">
+                Crop Growth Phase
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-success-50 text-success-600 flex items-center justify-center">
+                <Sprout className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
-            <CardTitle as="h3" className="text-heading font-bold text-text">
-              1 Alert
+            <CardTitle as="h3" className="text-heading font-extrabold text-text">
+              Tillering Stage
             </CardTitle>
-            <CardDescription>Stem Borer risk detected in region</CardDescription>
+            <p className="text-caption text-text-secondary">Paddy • Day 42 of 120 (Optimal Health)</p>
           </CardHeader>
-          <CardContent className="space-y-0 text-caption text-text-secondary pt-2 border-t border-border">
-            <span className="text-danger-600 font-medium">Action recommended by Agronomist</span>
+          <CardContent className="pt-2 border-t border-border">
+            <div className="flex items-center justify-between text-caption">
+              <span className="text-primary-700 font-semibold">Nitrogen top-dressing recommended</span>
+              <span className="text-text-muted">Next: Panicle Initiation</span>
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Field Overview Section */}
-      <section className="space-y-4">
-        <h2 className="text-subheading font-semibold text-text">Registered Plots</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card variant="default" padding="md" className="hover:border-primary-300 transition-colors">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-text-secondary text-small">
-                  <MapPin className="w-4 h-4 text-primary-600" aria-hidden="true" />
-                  <span>North Field — Plot #1</span>
-                </div>
-                <h3 className="text-subheading font-semibold text-text">Paddy (BPT 5204)</h3>
-                <p className="text-small text-text-secondary">3.5 Acres • Sown: 42 days ago</p>
-              </div>
-              <span className="px-2.5 py-0.5 rounded-full text-caption font-semibold bg-success-50 text-success-700 border border-success-200">
-                Healthy
-              </span>
-            </div>
-          </Card>
-
-          <Card variant="default" padding="md" className="hover:border-primary-300 transition-colors">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-text-secondary text-small">
-                  <MapPin className="w-4 h-4 text-primary-600" aria-hidden="true" />
-                  <span>South Field — Plot #2</span>
-                </div>
-                <h3 className="text-subheading font-semibold text-text">Cotton (Bt)</h3>
-                <p className="text-small text-text-secondary">2.0 Acres • Sown: 28 days ago</p>
-              </div>
-              <span className="px-2.5 py-0.5 rounded-full text-caption font-semibold bg-warning-50 text-warning-700 border border-warning-200">
-                Advisory Needed
-              </span>
-            </div>
-          </Card>
-        </div>
-      </section>
+      {/* Modals for Voice and Vision */}
+      <VoiceRecorderModal
+        isOpen={isVoiceOpen}
+        onClose={() => setIsVoiceOpen(false)}
+        defaultLanguage="te"
+      />
+      <CropVisionModal
+        isOpen={isVisionOpen}
+        onClose={() => setIsVisionOpen(false)}
+        defaultCrop="Paddy"
+      />
     </div>
   );
 };
