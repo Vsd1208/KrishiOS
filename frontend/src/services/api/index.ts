@@ -9,3 +9,8 @@ export * from '@/services/api/alerts';
 export * from '@/services/api/agent';
 export * from '@/services/api/voice';
 export * from '@/services/api/vision';
+export * from '@/services/api/officer';
+export * from '@/services/api/reviews';
+export * from '@/services/api/graph';
+export * from '@/services/api/retrieval';
+export * from '@/services/api/events';

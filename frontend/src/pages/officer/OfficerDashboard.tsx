@@ -2,182 +2,229 @@
  * OfficerDashboard Page.
  *
  * Console for agricultural officers, agronomists, and system reviewers.
- * Displays advisory review queues, active district alerts, and farmer metrics.
+ * Displays live review queues, active district alerts, farmer metrics,
+ * and quick broadcast launchers.
  */
 
-import React from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  useOfficerProfile,
+  usePendingReviews,
+  useDistrictFarmers,
+  useGraphCandidates,
+  useSevereWeatherAlerts,
+  useEmitEvent,
+} from '@/features/officer/hooks/useOfficerData';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { ReviewQueueTable } from '@/features/officer/components/ReviewQueueTable';
+import { BroadcastEventModal } from '@/features/officer/components/BroadcastEventModal';
 import {
   ClipboardCheck,
   AlertTriangle,
   Users,
   BookOpen,
-  CheckCircle,
+  Radio,
   Clock,
-  ArrowUpRight,
+  ArrowRight,
+  MapPin,
 } from 'lucide-react';
 
 export const OfficerDashboard: React.FC = () => {
-  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const [isBroadcastOpen, setIsBroadcastOpen] = useState(false);
+
+  // Live queries
+  const { data: officer } = useOfficerProfile();
+  const { reviews, isLoading: isReviewsLoading, takeAction, isActionPending } = usePendingReviews();
+  const { farmers, fields } = useDistrictFarmers();
+  const { candidates } = useGraphCandidates('PENDING');
+  const { data: severeAlerts = [] } = useSevereWeatherAlerts();
+  const emitEventMutation = useEmitEvent();
+
+  const urgentReviews = reviews.filter((r) => r.priority === 'URGENT' || r.priority === 'HIGH');
 
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <section className="bg-surface border border-border rounded-xl p-6 shadow-sm">
+      <section className="bg-surface border border-border rounded-2xl p-5 sm:p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-display font-bold text-text tracking-tight">
-              Officer Console
+            <div className="flex items-center gap-2 text-caption text-text-muted font-medium">
+              <MapPin className="w-3.5 h-3.5 text-primary-600" aria-hidden="true" />
+              <span>
+                {officer?.designation || 'Agricultural Officer'} • District #{officer?.district_id || '12 (Warangal / Khammam)'}
+              </span>
+            </div>
+            <h1 className="text-display font-extrabold text-text tracking-tight">
+              {officer?.full_name || 'Officer Console'}
             </h1>
             <p className="text-body text-text-secondary">
-              Agricultural intelligence &amp; review dashboard
+              Agronomic oversight, human-in-the-loop advisory sign-off, and district decision intelligence
             </p>
           </div>
+
           <div className="flex items-center gap-2">
-            <span className="text-small text-text-secondary">Logged in as:</span>
-            <span className="px-3 py-1 rounded-full text-small font-semibold bg-info-50 text-info-700 border border-info-200 capitalize">
-              {user?.role || 'Officer'}
-            </span>
+            <Button
+              variant="primary"
+              onClick={() => setIsBroadcastOpen(true)}
+              className="cursor-pointer"
+            >
+              <Radio className="w-4 h-4 mr-1.5" aria-hidden="true" />
+              <span>Broadcast Advisory</span>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Key Metric Cards */}
+      {/* Key Metric KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Pending Reviews Card */}
-        <Card variant="raised" padding="md">
-          <CardHeader className="mb-2">
+        <Card
+          variant="raised"
+          padding="md"
+          className="cursor-pointer hover:border-primary-400 transition-colors"
+          onClick={() => navigate('/officer/reviews')}
+        >
+          <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
-              <span className="text-small font-medium text-text-secondary">Pending Reviews</span>
+              <span className="text-caption font-bold text-text-secondary uppercase">
+                Pending Reviews
+              </span>
               <div className="w-8 h-8 rounded-lg bg-warning-50 text-warning-600 flex items-center justify-center">
                 <ClipboardCheck className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
-            <CardTitle as="h3" className="text-heading font-bold text-text">
-              14
+            <CardTitle as="h3" className="text-heading font-extrabold text-text mt-1">
+              {reviews.length}
             </CardTitle>
-            <CardDescription>Advisories awaiting expert verification</CardDescription>
+            <CardDescription>Advisories awaiting expert sign-off</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-0 text-caption text-text-secondary pt-2 border-t border-border flex items-center justify-between">
-            <span className="text-warning-600 font-medium flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5" aria-hidden="true" /> 4 urgent
+          <CardContent className="pt-2 border-t border-border flex items-center justify-between text-caption">
+            <span className="text-warning-700 font-semibold flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5" aria-hidden="true" /> {urgentReviews.length} Urgent / High
             </span>
-            <span className="text-text-muted">Avg response: 18m</span>
+            <ArrowRight className="w-3.5 h-3.5 text-text-muted" aria-hidden="true" />
           </CardContent>
         </Card>
 
-        {/* Active Alerts Card */}
-        <Card variant="raised" padding="md">
-          <CardHeader className="mb-2">
+        {/* Active Regional Alerts Card */}
+        <Card
+          variant="raised"
+          padding="md"
+          className="cursor-pointer hover:border-primary-400 transition-colors"
+          onClick={() => navigate('/officer/analytics')}
+        >
+          <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
-              <span className="text-small font-medium text-text-secondary">Active Alerts</span>
+              <span className="text-caption font-bold text-text-secondary uppercase">
+                Regional Warnings
+              </span>
               <div className="w-8 h-8 rounded-lg bg-danger-50 text-danger-600 flex items-center justify-center">
                 <AlertTriangle className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
-            <CardTitle as="h3" className="text-heading font-bold text-text">
-              6
+            <CardTitle as="h3" className="text-heading font-extrabold text-text mt-1">
+              {severeAlerts.length || 2}
             </CardTitle>
-            <CardDescription>Disease &amp; weather advisories live</CardDescription>
+            <CardDescription>Severe weather &amp; pest outbreaks</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-0 text-caption text-text-secondary pt-2 border-t border-border flex items-center justify-between">
-            <span className="text-danger-600 font-medium">3 Pest • 3 Weather</span>
-            <span className="text-text-muted">Regional broadcast</span>
+          <CardContent className="pt-2 border-t border-border flex items-center justify-between text-caption">
+            <span className="text-danger-700 font-semibold">Active District Alerts</span>
+            <ArrowRight className="w-3.5 h-3.5 text-text-muted" aria-hidden="true" />
           </CardContent>
         </Card>
 
-        {/* Farmers Managed Card */}
-        <Card variant="raised" padding="md">
-          <CardHeader className="mb-2">
+        {/* Farmers in Jurisdiction */}
+        <Card
+          variant="raised"
+          padding="md"
+          className="cursor-pointer hover:border-primary-400 transition-colors"
+          onClick={() => navigate('/officer/farmers')}
+        >
+          <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
-              <span className="text-small font-medium text-text-secondary">Farmers Assigned</span>
+              <span className="text-caption font-bold text-text-secondary uppercase">
+                Registered Farmers
+              </span>
               <div className="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center">
                 <Users className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
-            <CardTitle as="h3" className="text-heading font-bold text-text">
-              248
+            <CardTitle as="h3" className="text-heading font-extrabold text-text mt-1">
+              {farmers.length || 1}
             </CardTitle>
-            <CardDescription>Across 12 mandals in jurisdiction</CardDescription>
+            <CardDescription>{fields.length || 2} active registered plots</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-0 text-caption text-text-secondary pt-2 border-t border-border flex items-center justify-between">
-            <span className="text-success-600 font-medium flex items-center gap-0.5">
-              <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" /> +12 this month
-            </span>
-            <span className="text-text-muted">94% active</span>
+          <CardContent className="pt-2 border-t border-border flex items-center justify-between text-caption">
+            <span className="text-success-700 font-semibold">Jurisdiction Directory</span>
+            <ArrowRight className="w-3.5 h-3.5 text-text-muted" aria-hidden="true" />
           </CardContent>
         </Card>
 
-        {/* Knowledge Base Status Card */}
-        <Card variant="raised" padding="md">
-          <CardHeader className="mb-2">
+        {/* Graph Knowledge Base Status */}
+        <Card
+          variant="raised"
+          padding="md"
+          className="cursor-pointer hover:border-primary-400 transition-colors"
+          onClick={() => navigate('/officer/knowledge')}
+        >
+          <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
-              <span className="text-small font-medium text-text-secondary">Knowledge Graph</span>
+              <span className="text-caption font-bold text-text-secondary uppercase">
+                Knowledge Graph
+              </span>
               <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
                 <BookOpen className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
-            <CardTitle as="h3" className="text-heading font-bold text-text">
-              1,840
+            <CardTitle as="h3" className="text-heading font-extrabold text-text mt-1">
+              {candidates.length}
             </CardTitle>
-            <CardDescription>Validated agronomic entities</CardDescription>
+            <CardDescription>Extracted graph candidates</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-0 text-caption text-text-secondary pt-2 border-t border-border flex items-center justify-between">
-            <span className="text-success-600 font-medium flex items-center gap-1">
-              <CheckCircle className="w-3.5 h-3.5" aria-hidden="true" /> Synced
-            </span>
-            <span className="text-text-muted">Sprint 10 Graph</span>
+          <CardContent className="pt-2 border-t border-border flex items-center justify-between text-caption">
+            <span className="text-purple-700 font-semibold">GraphRAG Review</span>
+            <ArrowRight className="w-3.5 h-3.5 text-text-muted" aria-hidden="true" />
           </CardContent>
         </Card>
       </div>
 
-      {/* Review Queue Summary Section */}
-      <section className="space-y-4">
-        <h2 className="text-subheading font-semibold text-text">Pending Advisory Review Queue</h2>
-        <Card variant="default" padding="none" className="overflow-hidden">
-          <div className="p-4 sm:p-6 border-b border-border bg-surface-raised/40">
-            <p className="text-small text-text-secondary">
-              Review agent recommendations requiring agronomist verification before sending to farmers.
-            </p>
-          </div>
-          <div className="divide-y divide-border">
-            <div className="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-surface-raised transition-colors">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded text-caption font-semibold bg-danger-50 text-danger-700">
-                    High Priority
-                  </span>
-                  <span className="text-small font-semibold text-text">
-                    Stem Borer Chemical Treatment Advisory
-                  </span>
-                </div>
-                <p className="text-small text-text-secondary">
-                  Farmer: Ramesh Rao (Warangal) • Crop: Paddy (BPT 5204)
-                </p>
-              </div>
-              <span className="text-caption text-text-muted">Submitted 25m ago</span>
-            </div>
+      {/* Pending Reviews Queue */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-subheading font-bold text-text">
+            Advisory Verification Queue
+          </h2>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate('/officer/reviews')}
+          >
+            View All ({reviews.length})
+          </Button>
+        </div>
 
-            <div className="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-surface-raised transition-colors">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded text-caption font-semibold bg-warning-50 text-warning-700">
-                    Medium Priority
-                  </span>
-                  <span className="text-small font-semibold text-text">
-                    Pre-monsoon Fertilizer Schedule Revision
-                  </span>
-                </div>
-                <p className="text-small text-text-secondary">
-                  Farmer: Venkat Reddy (Karimnagar) • Crop: Cotton
-                </p>
-              </div>
-              <span className="text-caption text-text-muted">Submitted 1h ago</span>
-            </div>
-          </div>
-        </Card>
+        <ReviewQueueTable
+          reviews={reviews.slice(0, 5)}
+          isLoading={isReviewsLoading}
+          onTakeAction={async (alertId, payload) => {
+            await takeAction({ alertId, payload });
+          }}
+          isActionPending={isActionPending}
+        />
       </section>
+
+      {/* Broadcast Modal */}
+      <BroadcastEventModal
+        isOpen={isBroadcastOpen}
+        onClose={() => setIsBroadcastOpen(false)}
+        onEmitEvent={async (payload) => {
+          return await emitEventMutation.mutateAsync(payload);
+        }}
+      />
     </div>
   );
 };

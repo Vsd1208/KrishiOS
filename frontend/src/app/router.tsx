@@ -15,7 +15,7 @@ import { OfficerShell } from '@/components/layout/OfficerShell';
 import { LoadingState } from '@/components/feedback/LoadingState';
 import { ErrorState } from '@/components/feedback/ErrorState';
 
-// Lazy-loaded farmer views for bundle optimization
+// Lazy-loaded farmer views
 const FarmerDashboard = React.lazy(() => import('@/pages/farmer/FarmerDashboard'));
 const AskPage = React.lazy(() => import('@/pages/farmer/AskPage'));
 const FieldsPage = React.lazy(() => import('@/pages/farmer/FieldsPage'));
@@ -24,6 +24,10 @@ const ProfilePage = React.lazy(() => import('@/pages/farmer/ProfilePage'));
 
 // Lazy-loaded officer views
 const OfficerDashboard = React.lazy(() => import('@/pages/officer/OfficerDashboard'));
+const ReviewQueuePage = React.lazy(() => import('@/pages/officer/ReviewQueuePage'));
+const FarmersDirectoryPage = React.lazy(() => import('@/pages/officer/FarmersDirectoryPage'));
+const KnowledgeGraphPage = React.lazy(() => import('@/pages/officer/KnowledgeGraphPage'));
+const AnalyticsPage = React.lazy(() => import('@/pages/officer/AnalyticsPage'));
 
 export const router = createBrowserRouter([
   {
@@ -117,6 +121,46 @@ export const router = createBrowserRouter([
                     fallback={<LoadingState fullPage message="Loading Officer Dashboard..." />}
                   >
                     <OfficerDashboard />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'reviews',
+                element: (
+                  <Suspense
+                    fallback={<LoadingState fullPage message="Loading Review Queue..." />}
+                  >
+                    <ReviewQueuePage />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'farmers',
+                element: (
+                  <Suspense
+                    fallback={<LoadingState fullPage message="Loading Farmer Directory..." />}
+                  >
+                    <FarmersDirectoryPage />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'knowledge',
+                element: (
+                  <Suspense
+                    fallback={<LoadingState fullPage message="Loading Knowledge Base & Graph..." />}
+                  >
+                    <KnowledgeGraphPage />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'analytics',
+                element: (
+                  <Suspense
+                    fallback={<LoadingState fullPage message="Loading Regional Analytics..." />}
+                  >
+                    <AnalyticsPage />
                   </Suspense>
                 ),
               },
