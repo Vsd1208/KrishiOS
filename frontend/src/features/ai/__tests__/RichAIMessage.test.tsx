@@ -82,7 +82,8 @@ describe('RichAIMessage', () => {
     expect(handleSpeak).toHaveBeenCalledWith(
       mockAIContent.text,
       'te-IN',
-      'ai-1'
+      'ai-1',
+      1
     );
   });
 

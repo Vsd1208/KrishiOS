@@ -52,7 +52,7 @@ export function useAIConversation() {
   }, []);
 
   /** Speak text using browser Web Speech API synthesis. */
-  const speakText = useCallback((text: string, lang: string = 'te-IN', messageId?: string) => {
+  const speakText = useCallback((text: string, lang: string = 'te-IN', messageId?: string, rate: number = 1.0) => {
     if (!('speechSynthesis' in window)) return;
 
     window.speechSynthesis.cancel();
@@ -65,7 +65,7 @@ export function useAIConversation() {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
-    utterance.rate = 0.95;
+    utterance.rate = rate;
 
     utterance.onstart = () => {
       setIsPlayingAudio(true);

@@ -5,7 +5,8 @@
  * - Natural grounded agricultural answer
  * - Confidence metrics (ConfidenceBadge)
  * - Proactive risk communication (RiskBadge)
- * - Audio playback (🔊 Listen / Replay)
+ * - Audio playback (AudioPlayerControls with speed options)
+ * - Advisory action toolbar (Save, Print, Escalate)
  * - Expandable "Why this answer?" Evidence Drawer (ICAR Citations, Weather, Graph, Vision)
  * - Contextual follow-up suggestions
  */
@@ -15,10 +16,10 @@ import { ConfidenceBadge } from '@/components/ai/ConfidenceBadge';
 import { RiskBadge } from '@/components/ai/RiskBadge';
 import { CitationCard } from '@/components/ai/CitationCard';
 import { FreshnessIndicator } from '@/components/ai/FreshnessIndicator';
+import { AudioPlayerControls } from './AudioPlayerControls';
+import { AdvisoryActionToolbar } from './AdvisoryActionToolbar';
 import {
   Sparkles,
-  Volume2,
-  VolumeX,
   ChevronDown,
   ChevronUp,
   BookOpen,
@@ -36,9 +37,11 @@ interface RichAIMessageProps {
   messageId: string;
   timestamp: string;
   isPlayingAudio?: boolean;
-  onSpeak?: (text: string, lang: string, messageId: string) => void;
+  onSpeak?: (text: string, lang: string, messageId: string, rate?: number) => void;
   onStopAudio?: () => void;
   onSelectFollowUp?: (prompt: string) => void;
+  onEscalate?: () => void;
+  crop?: string;
 }
 
 export const RichAIMessage: React.FC<RichAIMessageProps> = ({
@@ -49,6 +52,8 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
   onSpeak,
   onStopAudio,
   onSelectFollowUp,
+  onEscalate,
+  crop = 'Paddy',
 }) => {
   const [evidenceExpanded, setEvidenceExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -69,11 +74,11 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleAudioToggle = () => {
+  const handleAudioToggle = (rate: number = 1.0) => {
     if (isPlayingAudio) {
       onStopAudio?.();
     } else {
-      onSpeak?.(text, 'te-IN', messageId);
+      onSpeak?.(text, 'te-IN', messageId, rate);
     }
   };
 
@@ -140,35 +145,18 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
         {/* Action Controls Toolbar */}
         <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-primary-100/70 text-caption">
           <div className="flex items-center gap-2">
-            {/* Audio Speech Synthesis Button */}
-            <button
-              type="button"
-              onClick={handleAudioToggle}
-              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
-                isPlayingAudio
-                  ? 'bg-primary-600 text-white shadow-sm'
-                  : 'bg-surface hover:bg-primary-100 text-primary-800 border border-primary-200'
-              }`}
-              title="Listen to advisory"
-            >
-              {isPlayingAudio ? (
-                <>
-                  <VolumeX className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Stop</span>
-                </>
-              ) : (
-                <>
-                  <Volume2 className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Listen</span>
-                </>
-              )}
-            </button>
+            {/* Audio Speech Synthesis Button with Rate Switcher */}
+            <AudioPlayerControls
+              text={text}
+              isPlaying={isPlayingAudio}
+              onTogglePlay={handleAudioToggle}
+            />
 
             {/* Copy Button */}
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-surface hover:bg-surface-raised text-text-secondary border border-border cursor-pointer transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface hover:bg-surface-raised text-text-secondary border border-border cursor-pointer transition-colors"
               title="Copy to clipboard"
             >
               {copied ? (
@@ -201,6 +189,13 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
             </button>
           )}
         </div>
+
+        {/* Action Toolbar (Save / Print / Escalate) */}
+        <AdvisoryActionToolbar
+          advisoryText={text}
+          crop={crop}
+          onEscalate={onEscalate}
+        />
 
         {/* "Why this answer?" Evidence Drawer */}
         {evidenceExpanded && hasEvidence && (
