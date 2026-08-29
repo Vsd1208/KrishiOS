@@ -64,6 +64,13 @@ const officerNavItems: OfficerNavItem[] = [
     icon: BarChart3,
     isActive: (pathname) => pathname.startsWith('/officer/analytics'),
   },
+  {
+    id: 'evaluation',
+    label: 'Trust & Evaluation',
+    path: '/officer/evaluation',
+    icon: ShieldCheck,
+    isActive: (pathname) => pathname.startsWith('/officer/evaluation'),
+  },
 ];
 
 export const OfficerShell: React.FC = () => {

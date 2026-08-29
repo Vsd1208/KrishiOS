@@ -28,6 +28,7 @@ const ReviewQueuePage = React.lazy(() => import('@/pages/officer/ReviewQueuePage
 const FarmersDirectoryPage = React.lazy(() => import('@/pages/officer/FarmersDirectoryPage'));
 const KnowledgeGraphPage = React.lazy(() => import('@/pages/officer/KnowledgeGraphPage'));
 const AnalyticsPage = React.lazy(() => import('@/pages/officer/AnalyticsPage'));
+const EvaluationPage = React.lazy(() => import('@/pages/officer/EvaluationPage'));
 
 export const router = createBrowserRouter([
   {
@@ -161,6 +162,16 @@ export const router = createBrowserRouter([
                     fallback={<LoadingState fullPage message="Loading Regional Analytics..." />}
                   >
                     <AnalyticsPage />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'evaluation',
+                element: (
+                  <Suspense
+                    fallback={<LoadingState fullPage message="Loading AI Trust & Evaluation Center..." />}
+                  >
+                    <EvaluationPage />
                   </Suspense>
                 ),
               },
