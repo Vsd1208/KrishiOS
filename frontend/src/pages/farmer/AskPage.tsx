@@ -1,4 +1,4 @@
-/**
+﻿/**
  * AskPage Component (/farmer/ask).
  *
  * Multimodal AI Intelligence Workspace for KrishiOS.
@@ -15,6 +15,7 @@ import React, {
 
 import {
   useFarmerCrops,
+  useFarmerFields,
   useFarmerProfile,
 } from '@/features/farmer/hooks/useFarmerData';
 
@@ -31,23 +32,23 @@ import {
   CheckCircle2,
   Columns,
   Maximize2,
+  MapPin,
   RotateCcw,
   ShieldCheck,
   Sparkles,
+  Sprout,
+  SunMedium,
   Upload,
   XCircle,
   Zap,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
-
 import type { WorkspaceViewMode } from '@/features/ai/types/workspace';
-
 import type {
   ImageAttachment,
   UserMessageContent,
 } from '@/features/ai/types/conversation';
-
 import { documentsApi } from '@/services/api/documents';
 
 /* ============================================================
@@ -59,123 +60,49 @@ export const AskPage: React.FC = () => {
      FARMER DATA
      ========================================================== */
 
-  const { data: farmer } =
-    useFarmerProfile();
-
-  const {
-    crops,
-    fieldCrops,
-  } = useFarmerCrops();
+  const { data: farmer } = useFarmerProfile();
+  const { data: fields = [] } = useFarmerFields(farmer?.id);
+  const { crops, fieldCrops } = useFarmerCrops();
 
   /* ==========================================================
-     ACTIVE CROP
+     ACTIVE CROP & LOCATION
      ========================================================== */
 
-  const activeFieldCrop =
-    [...fieldCrops]
-      .filter((fieldCrop) =>
-        [
-          'Growing',
-          'Sown',
-          'Planned',
-        ].includes(fieldCrop.status),
-      )
-      .sort((a, b) => {
-        const statusRank: Record<
-          string,
-          number
-        > = {
-          Growing: 0,
-          Sown: 1,
-          Planned: 2,
-        };
+  const activeFieldCrop = [...fieldCrops]
+    .filter((fieldCrop) => ['Growing', 'Sown', 'Planned'].includes(fieldCrop.status))
+    .sort((a, b) => {
+      const statusRank: Record<string, number> = { Growing: 0, Sown: 1, Planned: 2 };
+      return (statusRank[a.status] ?? 99) - (statusRank[b.status] ?? 99);
+    })[0];
 
-        return (
-          (statusRank[a.status] ?? 99) -
-          (statusRank[b.status] ?? 99)
-        );
-      })[0];
+  const activeCropRecord = crops.find((c) => c.id === activeFieldCrop?.crop_id);
 
-  const activeCropRecord =
-    crops.find(
-      (cropRecord) =>
-        cropRecord.id ===
-        activeFieldCrop?.crop_id,
-    );
-
-  /*
-   * Current Crop type uses crop_type.
-   *
-   * crop_name is retained as a compatibility fallback
-   * for an API response that may expose that field.
-   */
-  const cropRecordWithOptionalName =
-    activeCropRecord as
-      | (
-          typeof activeCropRecord & {
-            crop_name?: string;
-          }
-        )
-      | undefined;
+  const cropRecordWithOptionalName = activeCropRecord as
+    | (typeof activeCropRecord & { crop_name?: string })
+    | undefined;
 
   const activeCropName =
     cropRecordWithOptionalName?.crop_type?.trim() ||
     cropRecordWithOptionalName?.crop_name?.trim() ||
     undefined;
 
+  const districtName = farmer?.village || 'Khammam';
+  const totalAcres = farmer?.landholding_acres || fields.reduce((acc, f) => acc + (f.area_acres || 0), 0) || 4.5;
+  const farmContext = `${farmer?.full_name || 'Farmer'} • ${Number(totalAcres).toFixed(1)} Ac ${activeCropName || 'Crop'} (${districtName})`;
+
   /* ==========================================================
      UI STATE
      ========================================================== */
 
-  const [
-    viewMode,
-    setViewMode,
-  ] = useState<WorkspaceViewMode>(
-    'split',
-  );
+  const [viewMode, setViewMode] = useState<WorkspaceViewMode>('split');
+  const [latestImage, setLatestImage] = useState<ImageAttachment | undefined>(undefined);
+  const [escalationNotice, setEscalationNotice] = useState<string | null>(null);
+  const [uploadingDocument, setUploadingDocument] = useState(false);
+  const [documentUploadStatus, setDocumentUploadStatus] = useState<string | null>(null);
+  const [showUploadPanel, setShowUploadPanel] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<File | null>(null);
 
-  const [
-    latestImage,
-    setLatestImage,
-  ] = useState<
-    ImageAttachment | undefined
-  >(undefined);
-
-  const [
-    escalationNotice,
-    setEscalationNotice,
-  ] = useState<string | null>(
-    null,
-  );
-
-  const [
-    uploadingDocument,
-    setUploadingDocument,
-  ] = useState(false);
-
-  const [
-    documentUploadStatus,
-    setDocumentUploadStatus,
-  ] = useState<string | null>(
-    null,
-  );
-
-  const [
-    showUploadPanel,
-    setShowUploadPanel,
-  ] = useState(false);
-
-  const [
-    selectedDocument,
-    setSelectedDocument,
-  ] = useState<File | null>(
-    null,
-  );
-
-  const messagesEndRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   /* ==========================================================
      AI CONVERSATION
@@ -195,487 +122,271 @@ export const AskPage: React.FC = () => {
   } = useAIConversation({
     crop: activeCropName,
     state: 'Telangana',
-    district:
-      farmer?.village ||
-      'Khammam',
+    district: districtName,
     season: 'Kharif',
   });
 
-  /* ==========================================================
-     AUTO SCROLL
-     ========================================================== */
-
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
-    });
-  }, [
-    messages,
-    activeStage,
-  ]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, activeStage]);
 
-  /* ==========================================================
-     SEND WRAPPER
-     ========================================================== */
-
-  const handleSendWrapper = (
-    content: UserMessageContent,
-  ): void => {
+  const handleSendWrapper = (content: UserMessageContent): void => {
     if (content.image) {
-      setLatestImage(
-        content.image,
-      );
+      setLatestImage(content.image);
     }
-
     void sendMessage(content);
   };
-
-  /* ==========================================================
-     ESCALATION
-     ========================================================== */
 
   const handleEscalate = (): void => {
     setEscalationNotice(
       'Your inquiry has been submitted to the Mandal Agricultural Officer review queue.',
     );
-
     window.setTimeout(() => {
       setEscalationNotice(null);
     }, 5000);
   };
 
-  /* ==========================================================
-     DOCUMENT UPLOAD
-     ========================================================== */
+  const handleDocumentUpload = async (): Promise<void> => {
+    if (!selectedDocument) {
+      setDocumentUploadStatus('Please select a document first.');
+      return;
+    }
 
-  const handleDocumentUpload =
-    async (): Promise<void> => {
-      if (!selectedDocument) {
-        setDocumentUploadStatus(
-          'Please select a document first.',
-        );
-        return;
-      }
+    setUploadingDocument(true);
+    setDocumentUploadStatus(null);
 
-      setUploadingDocument(true);
-      setDocumentUploadStatus(null);
+    try {
+      await documentsApi.upload(selectedDocument, {
+        crop: activeCropName?.toLowerCase(),
+        state: 'Telangana',
+        district: farmer?.village || undefined,
+        season: 'Kharif',
+      });
 
-      try {
-        await documentsApi.upload(
-          selectedDocument,
-          {
-            crop:
-              activeCropName?.toLowerCase(),
+      setDocumentUploadStatus('Document uploaded successfully.');
+      setSelectedDocument(null);
+      setShowUploadPanel(false);
+    } catch (error) {
+      console.error('Document upload failed:', error);
+      setDocumentUploadStatus(
+        error instanceof Error ? error.message : 'Document upload failed. Please try again.',
+      );
+    } finally {
+      setUploadingDocument(false);
+    }
+  };
 
-            state:
-              'Telangana',
-
-            district:
-              farmer?.village ||
-              undefined,
-
-            season:
-              'Kharif',
-          },
-        );
-
-        setDocumentUploadStatus(
-          'Document uploaded successfully.',
-        );
-
-        setSelectedDocument(null);
-        setShowUploadPanel(false);
-      } catch (error) {
-        console.error(
-          'Document upload failed:',
-          error,
-        );
-
-        setDocumentUploadStatus(
-          error instanceof Error
-            ? error.message
-            : 'Document upload failed. Please try again.',
-        );
-      } finally {
-        setUploadingDocument(false);
-      }
-    };
-
-  /* ==========================================================
-     FARM CONTEXT
-     ========================================================== */
-
-  const farmContext =
-    `${farmer?.full_name || 'Farmer'} • ${
-      farmer?.landholding_acres || '4.5'
-    } Ac ${
-      activeCropName ||
-      'Crop not selected'
-    } (${
-      farmer?.village ||
-      'Unknown'
-    })`;
-
-  /* ==========================================================
-     LATEST AI MESSAGE
-     ========================================================== */
-
-  const latestAIMessage =
-    [...messages]
-      .reverse()
-      .find(
-        (message) =>
-          message.role ===
-          'assistant',
-      )
-      ?.aiContent;
-
-  /* ==========================================================
-     RENDER
-     ========================================================== */
+  const latestAIMessage = [...messages].reverse().find((m) => m.role === 'assistant')?.aiContent;
 
   return (
-    <div className="flex flex-col h-full min-h-0 max-w-7xl mx-auto bg-surface">
-
-      {/* ======================================================
-          HEADER
-          ====================================================== */}
-
-      <header className="px-4 py-2.5 border-b border-border bg-surface flex items-center justify-between shrink-0 shadow-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary-50 text-primary-700">
-            <Sparkles
-              className="w-4 h-4"
-              aria-hidden="true"
-            />
+    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-7xl mx-auto -my-4 sm:-my-6 bg-surface rounded-2xl overflow-hidden border border-border/80 shadow-card">
+      {/* Top Header */}
+      <header className="px-4 py-3 border-b border-border/80 bg-surface flex items-center justify-between shrink-0 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-600 to-primary-700 text-white flex items-center justify-center shadow-sm shadow-primary-600/20">
+            <Sparkles className="w-5 h-5" aria-hidden="true" />
           </div>
-
           <div>
-            <h1 className="text-sm font-semibold text-text">
-              Ask KrishiOS
+            <h1 className="text-body font-bold text-text flex items-center gap-2">
+              <span>Multimodal AI Intelligence Workspace</span>
+              <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-success-50 text-success-700 border border-success-200">
+                Agent Runtime v10
+              </span>
             </h1>
-
-            <p className="text-caption text-text-muted">
-              Grounded agricultural intelligence
-            </p>
+            <div className="flex items-center gap-2 text-caption text-text-muted mt-0.5">
+              <span>GraphRAG • CropNet Vision • ICAR Provenance</span>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-surface-raised border border-border">
-            <Bot
-              className="w-3.5 h-3.5 text-primary-600"
-              aria-hidden="true"
-            />
-
-            <span className="text-caption text-text-secondary">
-              {activeCropName ||
-                'Crop not selected'}
-            </span>
+        <div className="flex items-center gap-2.5">
+          {/* Floating Live Context Pill */}
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-raised border border-border text-caption">
+            <div className="flex items-center gap-1 text-primary-700 font-semibold">
+              <Sprout className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>{activeCropName || 'Crop'}</span>
+            </div>
+            <span className="text-border-strong">•</span>
+            <div className="flex items-center gap-1 text-text-secondary">
+              <MapPin className="w-3.5 h-3.5 text-text-muted" aria-hidden="true" />
+              <span>{districtName}</span>
+            </div>
+            <span className="text-border-strong">•</span>
+            <div className="flex items-center gap-1 text-amber-700 font-medium">
+              <SunMedium className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Kharif</span>
+            </div>
           </div>
 
-          {/* ==================================================
-              VIEW MODE
-              ================================================== */}
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() =>
-              setViewMode(
+          {/* Workspace Layout Switcher (Desktop) */}
+          <div className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-surface-raised border border-border">
+            <button
+              type="button"
+              onClick={() => setViewMode('stream')}
+              className={`px-2.5 py-1 rounded-lg text-caption font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                viewMode === 'stream'
+                  ? 'bg-surface text-text shadow-xs border border-border'
+                  : 'text-text-muted hover:text-text'
+              }`}
+              title="Stream view"
+            >
+              <Maximize2 className="w-3.5 h-3.5" />
+              <span>Stream</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('split')}
+              className={`px-2.5 py-1 rounded-lg text-caption font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 viewMode === 'split'
-                  ? 'stream'
-                  : 'split',
-              )
-            }
-            title={
-              viewMode === 'split'
-                ? 'Focus chat'
-                : 'Show intelligence canvas'
-            }
-            aria-label={
-              viewMode === 'split'
-                ? 'Focus chat'
-                : 'Show intelligence canvas'
-            }
-          >
-            {viewMode === 'split' ? (
-              <Maximize2
-                className="w-4 h-4"
-                aria-hidden="true"
-              />
-            ) : (
-              <Columns
-                className="w-4 h-4"
-                aria-hidden="true"
-              />
-            )}
-          </Button>
+                  ? 'bg-surface text-text shadow-xs border border-border'
+                  : 'text-text-muted hover:text-text'
+              }`}
+              title="Split dual-pane canvas"
+            >
+              <Columns className="w-3.5 h-3.5" />
+              <span>Split Canvas</span>
+            </button>
+          </div>
 
-          {/* ==================================================
-              RESET
-              ================================================== */}
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={
-              resetConversation
-            }
-            title="Reset conversation"
-            aria-label="Reset conversation"
-          >
-            <RotateCcw
-              className="w-4 h-4"
-              aria-hidden="true"
-            />
-          </Button>
+          {messages.length > 0 && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={resetConversation}
+              className="cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
+              <span>New Chat</span>
+            </Button>
+          )}
         </div>
       </header>
 
-      {/* ======================================================
-          ESCALATION NOTICE
-          ====================================================== */}
-
+      {/* Escalation Notice */}
       {escalationNotice && (
-        <div className="mx-3 mt-3 p-3 rounded-xl bg-success-50 border border-success-200 text-success-800 text-sm">
-          {escalationNotice}
+        <div className="bg-primary-50 border-b border-primary-200 px-4 py-2.5 text-caption text-primary-900 flex items-center justify-between animate-fadeIn">
+          <div className="flex items-center gap-2 font-medium">
+            <ShieldCheck className="w-4 h-4 text-primary-700 shrink-0" />
+            <span>{escalationNotice}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setEscalationNotice(null)}
+            className="text-primary-700 font-bold hover:underline cursor-pointer ml-2"
+          >
+            Dismiss
+          </button>
         </div>
       )}
 
-      {/* ======================================================
-          MAIN WORKSPACE
-          ====================================================== */}
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 flex-1 min-h-0 overflow-hidden">
-
-        {/* ====================================================
-            LEFT / CHAT
-            ==================================================== */}
-
+      {/* Main Dual-Pane Workspace Container */}
+      <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-12 bg-surface">
+        {/* Left Pane: Conversation Stream */}
         <div
           className={
             viewMode === 'split'
-              ? 'lg:col-span-7 flex flex-col min-h-0 overflow-hidden'
+              ? 'lg:col-span-7 flex flex-col min-h-0 overflow-hidden border-r border-border'
               : 'lg:col-span-12 flex flex-col min-h-0 overflow-hidden'
           }
         >
-
-          {/* ==================================================
-              CHAT STREAM
-              ================================================== */}
-
-          <main className="flex-1 min-h-0 overflow-y-auto px-3 py-4 sm:px-5">
-
+          {/* Messages Stream */}
+          <main className="flex-1 min-h-0 overflow-y-auto px-4 py-5 sm:px-6 space-y-6">
             {messages.length === 0 ? (
-              <div className="max-w-3xl mx-auto">
+              /* Empty / Welcome Hero State */
+              <div className="max-w-2xl mx-auto py-6 sm:py-8 text-center space-y-6 animate-fadeIn">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100/80 border border-primary-200 text-primary-600 flex items-center justify-center mx-auto shadow-sm">
+                  <Bot className="w-9 h-9" aria-hidden="true" />
+                </div>
 
-                <div className="flex flex-col items-center text-center py-8 sm:py-12">
-                  <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 text-primary-700 mb-4">
-                    <Sparkles
-                      className="w-7 h-7"
-                      aria-hidden="true"
-                    />
-                  </div>
-
-                  <h2 className="text-xl sm:text-2xl font-semibold text-text">
-                    How can I help with your farm?
+                <div className="space-y-2">
+                  <h2 className="text-heading font-extrabold text-text tracking-tight">
+                    Namaste! How can KrishiOS assist your farm today?
                   </h2>
-
-                  <p className="mt-2 max-w-xl text-sm text-text-secondary">
-                    Ask about pests, diseases,
-                    nutrients, irrigation,
-                    weather, crop management,
-                    or field observations.
+                  <p className="text-small text-text-secondary max-w-lg mx-auto leading-relaxed">
+                    Ask in Telugu, Hindi, or English using voice or text. You can also attach photos of affected crop leaves for instant diagnostic analysis.
                   </p>
-
-                  <div className="mt-5 flex flex-wrap justify-center gap-2">
-                    <div className="px-3 py-2 rounded-xl bg-surface-raised border border-border text-caption text-text-secondary">
-                      <span className="font-medium text-text">
-                        Farm:
-                      </span>{' '}
-                      {farmContext}
-                    </div>
-                  </div>
                 </div>
 
-                {/* =================================================
-                    SUGGESTIONS
-                    ================================================= */}
-
-                <div className="mt-4">
-                  <p className="text-caption font-medium text-text-muted mb-2">
-                    Suggested questions
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {initialSuggestions.map(
-                      (suggestion) => (
-                        <button
-                          key={suggestion}
-                          type="button"
-                          onClick={() =>
-                            handleSendWrapper({
-                              text: suggestion,
-                            })
-                          }
-                          disabled={
-                            isProcessing
-                          }
-                          className="p-3 rounded-xl bg-surface border border-border hover:border-primary-400 hover:bg-primary-50/40 text-small text-text font-medium text-left transition-all cursor-pointer shadow-xs flex items-start justify-between gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <span>
-                            {suggestion}
-                          </span>
-
-                          <Zap
-                            className="w-3.5 h-3.5 text-primary-600 shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          />
-                        </button>
-                      ),
-                    )}
-                  </div>
-                </div>
-
-                {/* =================================================
-                    TRUST
-                    ================================================= */}
-
-                <div className="mt-5 p-3 rounded-xl bg-surface-raised border border-border text-caption text-text-secondary flex items-center justify-center gap-2">
-                  <ShieldCheck
-                    className="w-4 h-4 text-primary-600 shrink-0"
-                    aria-hidden="true"
-                  />
-
-                  <span>
-                    Grounded in agricultural knowledge
-                    sources, retrieval evidence &
-                    live weather telemetry
+                {/* Quick Starter Suggestions */}
+                <div className="space-y-2 text-left pt-2">
+                  <span className="text-caption font-bold text-text-muted uppercase tracking-wider block px-1">
+                    Suggested Questions {activeCropName ? `for ${activeCropName}` : ''}:
                   </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {initialSuggestions.map((suggestion, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleSendWrapper({ text: suggestion, language: 'te' })}
+                        disabled={isProcessing}
+                        className="p-3 rounded-xl bg-surface border border-border hover:border-primary-400 hover:bg-primary-50/40 text-small text-text font-medium text-left transition-all cursor-pointer shadow-xs flex items-start justify-between gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <span className="group-hover:text-primary-900">{suggestion}</span>
+                        <Zap className="w-4 h-4 text-primary-600 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" aria-hidden="true" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Trust and Safety Banner */}
+                <div className="p-3.5 rounded-xl bg-surface-raised border border-border text-caption text-text-secondary flex items-center justify-center gap-2 shadow-xs">
+                  <ShieldCheck className="w-4 h-4 text-primary-600 shrink-0" aria-hidden="true" />
+                  <span>Grounded in ICAR standard packages of practice &amp; live agromet telemetry</span>
                 </div>
               </div>
             ) : (
-              <div className="max-w-3xl mx-auto space-y-4">
-
-                {messages.map(
-                  (message) => {
-                    if (
-                      message.role ===
-                        'user' &&
-                      message.userContent
-                    ) {
-                      return (
-                        <UserMessageBubble
-                          key={
-                            message.id
-                          }
-                          content={
-                            message.userContent
-                          }
-                          timestamp={
-                            message.timestamp
-                          }
-                        />
-                      );
-                    }
-
-                    if (
-                      message.role ===
-                        'assistant' &&
-                      message.aiContent
-                    ) {
-                      return (
-                        <RichAIMessage
-                          key={
-                            message.id
-                          }
-                          messageId={
-                            message.id
-                          }
-                          content={
-                            message.aiContent
-                          }
-                          timestamp={
-                            message.timestamp
-                          }
-                          isPlayingAudio={
-                            isPlayingAudio &&
-                            currentPlayingMessageId ===
-                              message.id
-                          }
-                          onSpeak={
-                            speakText
-                          }
-                          onStopAudio={
-                            stopAudio
-                          }
-                          onSelectFollowUp={(
-                            prompt,
-                          ) =>
-                            handleSendWrapper({
-                              text: prompt,
-                            })
-                          }
-                          onEscalate={
-                            handleEscalate
-                          }
-                          crop={
-                            activeCropName
-                          }
-                        />
-                      );
-                    }
-
-                    return null;
-                  },
-                )}
-
-                {activeStage && (
-                  <StageThinkingIndicator
-                    stageInfo={
-                      activeStage
-                    }
-                  />
-                )}
-
-                <div
-                  ref={
-                    messagesEndRef
+              <div className="space-y-4">
+                {messages.map((message) => {
+                  if (message.role === 'user' && message.userContent) {
+                    return (
+                      <UserMessageBubble
+                        key={message.id}
+                        content={message.userContent}
+                        timestamp={message.timestamp}
+                      />
+                    );
                   }
-                />
+
+                  if (message.role === 'assistant' && message.aiContent) {
+                    return (
+                      <RichAIMessage
+                        key={message.id}
+                        messageId={message.id}
+                        content={message.aiContent}
+                        timestamp={message.timestamp}
+                        isPlayingAudio={isPlayingAudio && currentPlayingMessageId === message.id}
+                        onSpeak={speakText}
+                        onStopAudio={stopAudio}
+                        onSelectFollowUp={(prompt) => handleSendWrapper({ text: prompt })}
+                        onEscalate={handleEscalate}
+                        crop={activeCropName}
+                      />
+                    );
+                  }
+
+                  return null;
+                })}
+
+                {activeStage && <StageThinkingIndicator stageInfo={activeStage} />}
+
+                <div ref={messagesEndRef} />
               </div>
             )}
           </main>
 
-          {/* ====================================================
-              DOCUMENT UPLOAD
-              ==================================================== */}
-
+          {/* Document Upload Panel */}
           {showUploadPanel && (
-            <div className="shrink-0 border-t border-border bg-surface-raised px-3 py-3">
-              <div className="max-w-3xl mx-auto flex flex-col gap-3">
-
+            <div className="shrink-0 border-t border-border bg-surface-raised px-4 py-3">
+              <div className="flex flex-col gap-3">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <input
                     type="file"
                     accept=".pdf,.doc,.docx,.txt"
-                    onChange={(
-                      event,
-                    ) => {
-                      const file =
-                        event.target.files?.[0];
-
-                      setSelectedDocument(
-                        file ||
-                          null,
-                      );
-
-                      setDocumentUploadStatus(
-                        null,
-                      );
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      setSelectedDocument(file || null);
+                      setDocumentUploadStatus(null);
                     }}
                     className="block w-full text-sm text-text-secondary file:mr-3 file:rounded-lg file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-primary-700 hover:file:bg-primary-100"
                   />
@@ -684,22 +395,11 @@ export const AskPage: React.FC = () => {
                     <Button
                       type="button"
                       size="sm"
-                      onClick={
-                        handleDocumentUpload
-                      }
-                      disabled={
-                        uploadingDocument ||
-                        !selectedDocument
-                      }
+                      onClick={handleDocumentUpload}
+                      disabled={uploadingDocument || !selectedDocument}
                     >
-                      <Upload
-                        className="w-3.5 h-3.5 mr-1.5"
-                        aria-hidden="true"
-                      />
-
-                      {uploadingDocument
-                        ? 'Uploading...'
-                        : 'Upload'}
+                      <Upload className="w-3.5 h-3.5 mr-1.5" aria-hidden="true" />
+                      {uploadingDocument ? 'Uploading...' : 'Upload'}
                     </Button>
 
                     <Button
@@ -707,17 +407,9 @@ export const AskPage: React.FC = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        setShowUploadPanel(
-                          false,
-                        );
-
-                        setSelectedDocument(
-                          null,
-                        );
-
-                        setDocumentUploadStatus(
-                          null,
-                        );
+                        setShowUploadPanel(false);
+                        setSelectedDocument(null);
+                        setDocumentUploadStatus(null);
                       }}
                     >
                       Cancel
@@ -730,106 +422,54 @@ export const AskPage: React.FC = () => {
                     className={`flex items-center gap-1.5 text-caption ${
                       uploadingDocument
                         ? 'text-text-muted'
-                        : documentUploadStatus.includes(
-                              'successfully',
-                            )
-                          ? 'text-success-700'
-                          : 'text-danger-700'
+                        : documentUploadStatus.includes('successfully')
+                          ? 'text-success-700 font-medium'
+                          : 'text-danger-700 font-medium'
                     }`}
                   >
                     {uploadingDocument ? (
-                      <Upload
-                        className="w-3.5 h-3.5"
-                        aria-hidden="true"
-                      />
-                    ) : documentUploadStatus.includes(
-                        'successfully',
-                      ) ? (
-                      <CheckCircle2
-                        className="w-3.5 h-3.5"
-                        aria-hidden="true"
-                      />
+                      <Upload className="w-3.5 h-3.5" aria-hidden="true" />
+                    ) : documentUploadStatus.includes('successfully') ? (
+                      <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
                     ) : (
-                      <XCircle
-                        className="w-3.5 h-3.5"
-                        aria-hidden="true"
-                      />
+                      <XCircle className="w-3.5 h-3.5" aria-hidden="true" />
                     )}
-
-                    <span>
-                      {
-                        documentUploadStatus
-                      }
-                    </span>
+                    <span>{documentUploadStatus}</span>
                   </div>
                 )}
               </div>
             </div>
           )}
 
-          {/* ====================================================
-              COMPOSER
-              ==================================================== */}
-
-          <div className="shrink-0 border-t border-border bg-surface p-2 sm:p-3">
-            <div className="max-w-3xl mx-auto">
-
-              <div className="flex items-center justify-end mb-1.5">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setShowUploadPanel(
-                      (value) =>
-                        !value,
-                    )
-                  }
-                  className="text-caption text-text-muted hover:text-primary-700 transition-colors"
-                >
-                  {showUploadPanel
-                    ? 'Close document upload'
-                    : 'Add knowledge document'}
-                </button>
-              </div>
-
-              <MultimodalComposer
-                onSend={
-                  handleSendWrapper
-                }
-                disabled={
-                  isProcessing ||
-                  uploadingDocument
-                }
-                farmContextLabel={
-                  farmContext
-                }
-                crop={
-                  activeCropName
-                }
-              />
+          {/* Composer Footer */}
+          <div className="shrink-0 border-t border-border bg-surface">
+            <div className="flex items-center justify-end px-4 pt-1.5">
+              <button
+                type="button"
+                onClick={() => setShowUploadPanel((value) => !value)}
+                className="text-caption text-text-muted hover:text-primary-700 transition-colors cursor-pointer"
+              >
+                {showUploadPanel ? 'Close document upload' : '+ Add knowledge document'}
+              </button>
             </div>
+
+            <MultimodalComposer
+              onSend={handleSendWrapper}
+              disabled={isProcessing || uploadingDocument}
+              farmContextLabel={farmContext}
+              crop={activeCropName}
+            />
           </div>
         </div>
 
-        {/* ======================================================
-            RIGHT: INTELLIGENCE CANVAS
-            ====================================================== */}
-
+        {/* Right Pane: Intelligence Canvas */}
         {viewMode === 'split' && (
-          <div className="hidden lg:block lg:col-span-5 h-full min-h-0 overflow-hidden p-2">
+          <div className="hidden lg:block lg:col-span-5 h-full overflow-hidden p-2.5 bg-surface-raised/40">
             <IntelligenceCanvas
-              activeAIContent={
-                latestAIMessage
-              }
-              latestUserImage={
-                latestImage
-              }
-              crop={
-                activeCropName
-              }
-              district={
-                farmer?.village ||
-                'Unknown'
-              }
+              activeAIContent={latestAIMessage}
+              latestUserImage={latestImage}
+              crop={activeCropName}
+              district={districtName}
             />
           </div>
         )}

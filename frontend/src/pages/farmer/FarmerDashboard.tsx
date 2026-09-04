@@ -69,25 +69,31 @@ export const FarmerDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Welcome Banner */}
-      <section className="bg-gradient-to-r from-primary-700 to-primary-800 rounded-2xl p-5 sm:p-6 text-white shadow-md">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1">
+      {/* Welcome Hero Banner with Atmospheric Agricultural Background */}
+      <section className="agri-hero-bg rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-primary-600/40">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div className="space-y-1.5 max-w-xl">
             <div className="flex items-center gap-2 text-primary-200 text-caption font-medium">
-              <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
+              <Calendar className="w-3.5 h-3.5 text-primary-300" aria-hidden="true" />
               <span>{currentDate}</span>
             </div>
-            <h1 className="text-display font-extrabold tracking-tight">
+            <h1 className="text-display font-black tracking-tight text-white drop-shadow-sm">
               Namaste, {farmer?.full_name || 'Farmer'}
             </h1>
-            <p className="text-body text-primary-100">
-              KrishiOS Agricultural Decision Support • {farmer?.village || 'Telangana'}
+            <p className="text-body text-primary-100/90 font-medium">
+              KrishiOS Agricultural Decision Support • {farmer?.village ? `${farmer.village}, Telangana` : 'Telangana Region'}
             </p>
           </div>
 
-          <div className="inline-flex items-center gap-2 bg-primary-900/60 backdrop-blur-sm border border-primary-400/30 px-3 py-1.5 rounded-lg text-caption self-start sm:self-auto">
-            <span className="w-2 h-2 rounded-full bg-success-400 animate-pulse" aria-hidden="true" />
-            <span>Active Kharif Season • {user?.role || 'Farmer'}</span>
+          <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
+            <div className="inline-flex items-center gap-2 bg-primary-950/70 backdrop-blur-md border border-primary-400/40 px-3.5 py-1.5 rounded-full text-caption font-semibold text-primary-100 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-success-400 animate-pulse" aria-hidden="true" />
+              <span>Active Kharif Season • {user?.role || 'Farmer'}</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/25 px-3 py-1.5 rounded-full text-caption font-medium text-white shadow-sm">
+              <Sprout className="w-3.5 h-3.5 text-primary-200" aria-hidden="true" />
+              <span>{fieldCrops?.[0] ? 'Standing Crop' : 'Active Landholding'}</span>
+            </div>
           </div>
         </div>
       </section>

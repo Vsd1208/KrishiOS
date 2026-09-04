@@ -42,7 +42,7 @@
     --color-text-inverse: #ffffff;
 
     /* ── Background ─────────────────────────────────────────────────── */
-    --color-background: #f8faf9;
+    --color-background: #f4f7f4;
   }
 
   /* ── Global resets ─────────────────────────────────────────────────── */
@@ -64,11 +64,65 @@
     outline-offset: 2px;
     border-radius: 2px;
   }
+
+  /* ── Custom Scrollbar for Sleek Desktop Workspace ─────────────────── */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(26, 122, 76, 0.2);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(26, 122, 76, 0.4);
+  }
 }
 
 @layer components {
   /* Reusable text truncation */
   .text-truncate {
     @apply overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  /* Glassmorphic Surfaces for Agricultural Copilot */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(229, 231, 235, 0.85);
+  }
+
+  .glass-header {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-input-bar {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(229, 231, 235, 0.9);
+  }
+
+  /* Atmospheric Hero Background Pattern */
+  .agri-hero-bg {
+    background-image: linear-gradient(135deg, rgba(15, 61, 40, 0.92) 0%, rgba(26, 122, 76, 0.86) 60%, rgba(34, 197, 94, 0.78) 100%),
+      url('/farm-hero-bg.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .agri-subtle-bg {
+    background-image: radial-gradient(circle at 100% 0%, rgba(74, 222, 128, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 0% 100%, rgba(26, 122, 76, 0.06) 0%, transparent 40%);
   }
 }

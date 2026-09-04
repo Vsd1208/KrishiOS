@@ -92,11 +92,11 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
   return (
     <div className="space-y-3 max-w-3xl animate-fadeIn">
       {/* Main Advisory Bubble */}
-      <div className="rounded-2xl border border-primary-200/90 bg-primary-50/30 p-4 sm:p-5 shadow-sm space-y-3.5 border-l-4 border-l-primary-600">
+      <div className="rounded-2xl border border-primary-200/90 bg-gradient-to-br from-white via-primary-50/20 to-primary-50/40 p-4 sm:p-5 shadow-card space-y-4 border-l-4 border-l-primary-600">
         {/* Header Metadata */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-primary-100/80 pb-2.5">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-primary-100 pb-3">
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-md bg-primary-100 px-2 py-0.5 text-caption font-bold text-primary-800">
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-primary-100/90 px-2.5 py-1 text-caption font-bold text-primary-800 shadow-xs">
               <Sparkles className="w-3.5 h-3.5 text-primary-700 shrink-0" aria-hidden="true" />
               KrishiOS Advisory
             </span>
@@ -105,27 +105,27 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             {confidence !== undefined && (
               <ConfidenceBadge confidence={confidence} size="sm" showLabel />
             )}
-            <span className="text-caption text-text-muted">{timestamp}</span>
+            <span className="text-[11px] text-text-muted font-medium">{timestamp}</span>
           </div>
         </div>
 
         {/* Advisory Body Text */}
-        <div className="text-body leading-relaxed text-text font-normal whitespace-pre-line">
+        <div className="text-body leading-relaxed text-text font-normal whitespace-pre-line tracking-normal">
           {text}
         </div>
 
         {/* Live Weather / Spray Window Pill */}
         {liveContext && (
-          <div className="flex items-center gap-2 p-2 rounded-lg bg-surface border border-border text-caption text-text-secondary flex-wrap">
+          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-surface border border-border text-caption text-text-secondary flex-wrap shadow-xs">
             <CloudRain className="w-4 h-4 text-info-600 shrink-0" aria-hidden="true" />
             <span>
-              Weather: <strong>{liveContext.temperatureCelsius}°C</strong> ({liveContext.weatherCondition})
+              Weather: <strong className="text-text">{liveContext.temperatureCelsius}°C</strong> ({liveContext.weatherCondition})
             </span>
-            <span>•</span>
+            <span className="text-border-strong">•</span>
             <span className={liveContext.sprayWindowFavorable ? 'text-success-700 font-bold' : 'text-danger-700 font-bold'}>
               Spray Window: {liveContext.sprayWindowFavorable ? 'Favorable' : 'Unfavorable'}
             </span>
@@ -134,9 +134,9 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
 
         {/* Uncertainty / Safety Notice for Moderate/Low Confidence */}
         {confidence !== undefined && confidence < 0.75 && (
-          <div className="flex items-start gap-2 p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-caption text-amber-900">
+          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50/80 border border-amber-200 text-caption text-amber-900 shadow-xs">
             <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" aria-hidden="true" />
-            <p>
+            <p className="leading-relaxed">
               <strong>Field Verification Notice:</strong> This recommendation represents a possible risk identification based on available data, not a confirmed field diagnosis. Consult your local agricultural extension officer before heavy chemical application.
             </p>
           </div>

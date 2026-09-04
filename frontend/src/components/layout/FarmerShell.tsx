@@ -64,12 +64,12 @@ export const FarmerShell: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-surface-raised flex flex-col">
+    <div className="min-h-screen bg-surface-raised agri-subtle-bg flex flex-col transition-colors">
       {/* Top Header */}
       <Header user={user} onLogout={logout} />
 
       {/* Main Content Area — bottom padded to prevent bottom nav overlay */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 pb-24 md:pb-8">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 pb-24 md:pb-8 animate-fadeIn">
         <Outlet />
       </main>
 
