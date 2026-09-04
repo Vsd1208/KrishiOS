@@ -77,13 +77,9 @@ export const AskPage: React.FC = () => {
 
   const activeCropRecord = crops.find((c) => c.id === activeFieldCrop?.crop_id);
 
-  const cropRecordWithOptionalName = activeCropRecord as
-    | (typeof activeCropRecord & { crop_name?: string })
-    | undefined;
-
   const activeCropName =
-    cropRecordWithOptionalName?.crop_type?.trim() ||
-    cropRecordWithOptionalName?.crop_name?.trim() ||
+    activeCropRecord?.crop_name?.trim() ||
+    activeCropRecord?.name?.trim() ||
     undefined;
 
   const districtName = farmer?.village || 'Khammam';

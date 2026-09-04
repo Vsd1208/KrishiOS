@@ -84,10 +84,11 @@ export interface Field {
 
 export interface Crop {
   id: number;
-  name: string;
+  name?: string;
+  crop_name: string;
   scientific_name: string | null;
-  crop_type: string;
   season: string;
+  duration_days?: number;
   created_at: string;
   updated_at: string;
 }
