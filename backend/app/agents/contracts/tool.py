@@ -52,6 +52,23 @@ class BaseTool(ABC):
         """Return tool metadata."""
         return self._metadata
 
+    async def run(
+        self,
+        parameters: dict[str, Any] | str,
+    ) -> dict[str, Any]:
+        """Execute the tool through the agent-facing interface."""
+        if isinstance(parameters, str):
+            parameters = {"query": parameters}
+
+        result = await self.execute(parameters)
+
+        if not result.success:
+            raise RuntimeError(
+                result.error_message or f"Tool '{self.metadata.name}' failed."
+            )
+
+        return result.data
+
     @abstractmethod
     async def execute(self, parameters: dict[str, Any]) -> ToolResult:
         """Execute the tool with given arguments."""
