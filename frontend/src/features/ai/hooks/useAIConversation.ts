@@ -122,24 +122,16 @@ function resolveCropForQuery(
   query: string,
   defaultCrop?: string,
 ): string | undefined {
+  const normalizedDefault = defaultCrop?.trim();
+  if (normalizedDefault) {
+    return normalizedDefault;
+  }
+
   const normalizedQuery = query
     .toLowerCase()
     .replace(/[?!.,;:()[\]{}]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-
-  const normalizedDefault = defaultCrop?.trim();
-
-  /*
-   * Preserve the canonical active crop when it is explicitly
-   * mentioned in the current question.
-   */
-  if (
-    normalizedDefault &&
-    normalizedQuery.includes(normalizedDefault.toLowerCase())
-  ) {
-    return normalizedDefault;
-  }
 
   /*
    * "What pests affect chilli?"
@@ -160,12 +152,13 @@ function resolveCropForQuery(
   }
 
   /*
+   * "fertilizer schedule for paddy"
    * "pests of chilli"
    * "diseases of maize"
    * "management for cotton"
    */
   const relationPattern =
-    /\b(?:pests?|diseases?|problems?|management|cultivation|farming|yield|production)\s+(?:of|for|in|on)\s+(?:my\s+)?([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,3})\b/i;
+    /\b(?:pests?|diseases?|problems?|management|cultivation|farming|yield|production|fertilizer|schedule|dosage|irrigation|spray|treatment)\s+(?:of|for|in|on)\s+(?:my\s+)?([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,3})\b/i;
 
   const relationMatch = normalizedQuery.match(relationPattern);
 
@@ -213,28 +206,52 @@ function resolveCropForQuery(
   }
 
   /*
-   * "maize pests"
-   * "cotton diseases"
+   * "for paddy" at the end of inquiry
    */
-  const subjectPattern =
-    /\b([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,2})\s+(?:pests?|diseases?|fertilizer|irrigation|cultivation|harvesting|yield)\b/i;
+  const tailPattern =
+    /\b(?:for|in|on|of)\s+(?:my\s+)?([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,2})$/i;
 
-  const subjectMatch = normalizedQuery.match(subjectPattern);
+  const tailMatch = normalizedQuery.match(tailPattern);
 
-  if (subjectMatch?.[1]) {
-    const candidate = cleanCropCandidate(subjectMatch[1]);
+  if (tailMatch?.[1]) {
+    const candidate = cleanCropCandidate(tailMatch[1]);
 
     if (candidate) {
       return candidate;
     }
   }
 
-  return normalizedDefault || undefined;
+  return undefined;
 }
 
 function cleanCropCandidate(candidate: string): string | undefined {
   const ignoredWords = new Set([
+    'a',
+    'an',
     'the',
+    'is',
+    'are',
+    'was',
+    'were',
+    'am',
+    'be',
+    'been',
+    'being',
+    'do',
+    'does',
+    'did',
+    'have',
+    'has',
+    'had',
+    'can',
+    'could',
+    'shall',
+    'should',
+    'will',
+    'would',
+    'may',
+    'might',
+    'must',
     'my',
     'your',
     'our',
@@ -242,6 +259,15 @@ function cleanCropCandidate(candidate: string): string | undefined {
     'that',
     'these',
     'those',
+    'for',
+    'in',
+    'on',
+    'at',
+    'to',
+    'from',
+    'by',
+    'with',
+    'about',
     'crop',
     'crops',
     'field',
@@ -262,8 +288,12 @@ function cleanCropCandidate(candidate: string): string | undefined {
     'production',
     'yield',
     'fertilizer',
+    'schedule',
+    'dosage',
     'irrigation',
     'harvesting',
+    'spray',
+    'treatment',
     'today',
     'current',
     'best',

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AskPage Component (/farmer/ask).
  *
  * Multimodal AI Intelligence Workspace for KrishiOS.
@@ -179,7 +179,7 @@ export const AskPage: React.FC = () => {
   const latestAIMessage = [...messages].reverse().find((m) => m.role === 'assistant')?.aiContent;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-7xl mx-auto -my-4 sm:-my-6 bg-surface rounded-2xl overflow-hidden border border-border/80 shadow-card">
+    <div className="flex flex-col flex-1 h-full min-h-0 w-full bg-surface rounded-2xl overflow-hidden border border-border/80 shadow-card">
       {/* Top Header */}
       <header className="px-4 py-3 border-b border-border/80 bg-surface flex items-center justify-between shrink-0 shadow-xs">
         <div className="flex items-center gap-3">

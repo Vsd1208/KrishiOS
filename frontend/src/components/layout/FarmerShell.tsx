@@ -63,13 +63,21 @@ export const FarmerShell: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const isAsk = location.pathname.startsWith('/farmer/ask');
+
   return (
-    <div className="min-h-screen bg-surface-raised agri-subtle-bg flex flex-col transition-colors">
+    <div className="h-screen bg-surface-raised agri-subtle-bg flex flex-col overflow-hidden transition-colors">
       {/* Top Header */}
       <Header user={user} onLogout={logout} />
 
-      {/* Main Content Area — bottom padded to prevent bottom nav overlay */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 pb-24 md:pb-8 animate-fadeIn">
+      {/* Main Content Area */}
+      <main
+        className={
+          isAsk
+            ? 'flex-1 min-h-0 flex flex-col w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-2 pb-20 md:pb-3 overflow-hidden animate-fadeIn'
+            : 'flex-1 min-h-0 overflow-y-auto w-full max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 pb-24 md:pb-8 animate-fadeIn'
+        }
+      >
         <Outlet />
       </main>
 
