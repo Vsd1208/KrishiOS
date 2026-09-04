@@ -3,14 +3,23 @@
  *
  * Full-featured input composer supporting:
  * - Multi-line auto-sizing text queries
- * - Voice audio capture with language hint selector ('te', 'hi', 'en')
+ * - Voice audio capture with language hint selector
  * - Image attachment with instant preview thumbnail
  * - Mobile-first ergonomic touch layout
+ *
+ * Crop context is supplied by the parent page.
+ * No crop is hardcoded here.
  */
 
-import React, { useState, useRef } from 'react';
+import React, {
+  useState,
+  useRef,
+} from 'react';
+
 import { Button } from '@/components/ui/Button';
+
 import { useMultimodalVoice } from '@/features/ai/hooks/useMultimodalVoice';
+
 import {
   Mic,
   MicOff,
@@ -21,28 +30,78 @@ import {
   AlertCircle,
   FileImage,
 } from 'lucide-react';
+
 import type {
   UserMessageContent,
   ImageAttachment,
   VoiceAttachment,
 } from '@/features/ai/types/conversation';
 
+/* ============================================================
+   PROPS
+   ============================================================ */
+
 interface MultimodalComposerProps {
-  onSend: (content: UserMessageContent) => void;
+  onSend: (
+    content: UserMessageContent,
+  ) => void;
+
   disabled?: boolean;
+
   farmContextLabel?: string;
+
+  /**
+   * Active crop supplied by the farmer workspace.
+   *
+   * This can be any crop; there is intentionally no
+   * hardcoded Paddy/Cotton/Chilli list here.
+   */
+  crop?: string;
 }
 
-export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
+/* ============================================================
+   COMPONENT
+   ============================================================ */
+
+export const MultimodalComposer: React.FC<
+  MultimodalComposerProps
+> = ({
   onSend,
   disabled = false,
-  farmContextLabel = 'Paddy • 4.5 Ac (Khammam)',
+  farmContextLabel =
+    'Farm context unavailable',
+  crop,
 }) => {
-  const [text, setText] = useState('');
-  const [attachedImage, setAttachedImage] = useState<ImageAttachment | null>(null);
-  const [recordedVoice, setRecordedVoice] = useState<VoiceAttachment | null>(null);
+  const [text, setText] =
+    useState('');
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [
+    attachedImage,
+    setAttachedImage,
+  ] = useState<ImageAttachment | null>(
+    null,
+  );
+
+  const [
+    recordedVoice,
+    setRecordedVoice,
+  ] = useState<VoiceAttachment | null>(
+    null,
+  );
+
+  const fileInputRef =
+    useRef<HTMLInputElement | null>(
+      null,
+    );
+
+  const textareaRef =
+    useRef<HTMLTextAreaElement | null>(
+      null,
+    );
+
+  /* ==========================================================
+     VOICE
+     ========================================================== */
 
   const {
     isRecording,
@@ -55,238 +114,631 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
     error: voiceError,
   } = useMultimodalVoice('te');
 
-  // Handle Image Selection
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  /* ==========================================================
+     TEXT AUTO RESIZE
+     ========================================================== */
 
-    // Validate image format
-    if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file (JPG, PNG, WEBP).');
+  const resizeTextarea = () => {
+    const textarea =
+      textareaRef.current;
+
+    if (!textarea) {
       return;
     }
 
-    const previewUrl = URL.createObjectURL(file);
+    textarea.style.height =
+      'auto';
+
+    textarea.style.height = `${Math.min(
+      textarea.scrollHeight,
+      160,
+    )}px`;
+  };
+
+  /* ==========================================================
+     IMAGE SELECTION
+     ========================================================== */
+
+  const handleImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file =
+      event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    /* --------------------------------------------------------
+       Validate image format
+       -------------------------------------------------------- */
+
+    if (
+      !file.type.startsWith(
+        'image/',
+      )
+    ) {
+      alert(
+        'Please select a valid image file (JPG, PNG, WEBP).',
+      );
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value =
+          '';
+      }
+
+      return;
+    }
+
+    /* --------------------------------------------------------
+       Validate file size
+       -------------------------------------------------------- */
+
+    const maxSizeBytes =
+      10 * 1024 * 1024;
+
+    if (
+      file.size >
+      maxSizeBytes
+    ) {
+      alert(
+        'Please select an image smaller than 10 MB.',
+      );
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value =
+          '';
+      }
+
+      return;
+    }
+
+    /* --------------------------------------------------------
+       Revoke previous preview
+       -------------------------------------------------------- */
+
+    if (
+      attachedImage?.previewUrl
+    ) {
+      URL.revokeObjectURL(
+        attachedImage.previewUrl,
+      );
+    }
+
+    const previewUrl =
+      URL.createObjectURL(file);
+
     setAttachedImage({
       file,
       previewUrl,
-      cropHint: 'Paddy',
+
+      /*
+       * This is the important change:
+       *
+       * The image crop hint comes from the current farmer
+       * crop context instead of being hardcoded to Paddy.
+       */
+      cropHint: crop,
     });
 
-    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (fileInputRef.current) {
+      fileInputRef.current.value =
+        '';
+    }
   };
 
+  /* ==========================================================
+     REMOVE IMAGE
+     ========================================================== */
+
   const handleRemoveImage = () => {
-    if (attachedImage?.previewUrl) {
-      URL.revokeObjectURL(attachedImage.previewUrl);
+    if (
+      attachedImage?.previewUrl
+    ) {
+      URL.revokeObjectURL(
+        attachedImage.previewUrl,
+      );
     }
+
     setAttachedImage(null);
   };
 
-  // Handle Voice Stop & Store
-  const handleToggleRecord = async () => {
-    if (isRecording) {
-      const voice = await stopRecording();
-      if (voice) {
-        setRecordedVoice(voice);
+  /* ==========================================================
+     VOICE TOGGLE
+     ========================================================== */
+
+  const handleToggleRecord =
+    async () => {
+      if (isRecording) {
+        const voice =
+          await stopRecording();
+
+        if (voice) {
+          setRecordedVoice(
+            voice,
+          );
+        }
+
+        return;
       }
-    } else {
+
       setRecordedVoice(null);
+
       await startRecording();
-    }
-  };
+    };
+
+  /* ==========================================================
+     REMOVE VOICE
+     ========================================================== */
 
   const handleRemoveVoice = () => {
     setRecordedVoice(null);
   };
 
-  // Submit Content
+  /* ==========================================================
+     SEND
+     ========================================================== */
+
   const handleSend = () => {
-    if ((!text.trim() && !attachedImage && !recordedVoice) || disabled) return;
+    if (disabled) {
+      return;
+    }
+
+    if (
+      !text.trim() &&
+      !attachedImage &&
+      !recordedVoice
+    ) {
+      return;
+    }
 
     onSend({
       text: text.trim(),
-      image: attachedImage || undefined,
-      voice: recordedVoice || undefined,
-      language: selectedLanguage,
+
+      image:
+        attachedImage ||
+        undefined,
+
+      voice:
+        recordedVoice ||
+        undefined,
+
+      language:
+        selectedLanguage,
     });
 
-    // Reset composer state
+    /* --------------------------------------------------------
+       Reset composer state
+       -------------------------------------------------------- */
+
     setText('');
+
     handleRemoveImage();
+
     setRecordedVoice(null);
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height =
+        'auto';
+    }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
+  /* ==========================================================
+     KEYBOARD
+     ========================================================== */
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    if (
+      event.key === 'Enter' &&
+      !event.shiftKey
+    ) {
+      event.preventDefault();
+
       handleSend();
     }
   };
 
-  const canSend = Boolean(text.trim() || attachedImage || recordedVoice) && !disabled && !isRecording;
+  /* ==========================================================
+     FORMAT RECORDING TIME
+     ========================================================== */
+
+  const formatRecordingTime =
+    (seconds: number) => {
+      const minutes =
+        Math.floor(
+          seconds / 60,
+        );
+
+      const remainingSeconds =
+        seconds % 60;
+
+      return `${String(
+        minutes,
+      ).padStart(
+        2,
+        '0',
+      )}:${String(
+        remainingSeconds,
+      ).padStart(
+        2,
+        '0',
+      )}`;
+    };
+
+  /* ==========================================================
+     RENDER
+     ========================================================== */
 
   return (
-    <div className="border-t border-border bg-surface p-3 sm:p-4 space-y-2 shadow-lg">
-      {/* Context Badge */}
-      <div className="flex items-center justify-between text-caption text-text-muted px-1">
-        <div className="flex items-center gap-1.5 truncate">
-          <Sparkles className="w-3.5 h-3.5 text-primary-600 shrink-0" aria-hidden="true" />
-          <span className="truncate">
-            Farm Context: <strong className="text-text">{farmContextLabel}</strong>
+    <div className="w-full">
+      {/* ======================================================
+          CONTEXT
+      ====================================================== */}
+
+      <div className="mb-2 px-1 flex items-center justify-between gap-2">
+        <div className="min-w-0">
+          <span className="text-caption text-text-muted">
+            Farm Context:{' '}
           </span>
+
+          <strong className="text-caption text-text">
+            {farmContextLabel}
+          </strong>
         </div>
 
-        {/* Language Switcher */}
-        <div className="flex items-center gap-1 shrink-0">
-          <span className="text-[11px] font-semibold text-text-muted">Lang:</span>
-          {(['te', 'hi', 'en'] as const).map((lang) => (
-            <button
-              key={lang}
-              type="button"
-              onClick={() => setSelectedLanguage(lang)}
-              className={`px-1.5 py-0.5 rounded text-[11px] font-bold uppercase transition-colors cursor-pointer ${
-                selectedLanguage === lang
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-surface-raised text-text-secondary hover:text-text'
-              }`}
-            >
-              {lang}
-            </button>
-          ))}
-        </div>
+        {crop && (
+          <span className="shrink-0 px-2 py-1 rounded-md bg-primary-50 text-primary-700 text-caption font-medium">
+            {crop}
+          </span>
+        )}
       </div>
 
-      {/* Attachments Tray (Image preview or Voice recording badge) */}
-      {(attachedImage || recordedVoice || isRecording || voiceError) && (
-        <div className="flex flex-wrap items-center gap-2 p-2 rounded-xl bg-surface-raised border border-border animate-fadeIn">
-          {/* Image Thumbnail */}
+      {/* ======================================================
+          VOICE ERROR
+      ====================================================== */}
+
+      {voiceError && (
+        <div className="mb-2 flex items-start gap-2 rounded-lg border border-danger-200 bg-danger-50 px-3 py-2 text-caption text-danger-700">
+          <AlertCircle
+            className="w-3.5 h-3.5 shrink-0 mt-0.5"
+            aria-hidden="true"
+          />
+
+          <span>
+            {voiceError}
+          </span>
+        </div>
+      )}
+
+      {/* ======================================================
+          ATTACHMENTS
+      ====================================================== */}
+
+      {(attachedImage ||
+        recordedVoice) && (
+        <div className="mb-2 flex flex-wrap gap-2">
+          {/* ==================================================
+              IMAGE PREVIEW
+          ================================================== */}
+
           {attachedImage && (
-            <div className="relative flex items-center gap-2 p-1.5 rounded-lg bg-surface border border-primary-300">
+            <div className="relative flex items-center gap-2 rounded-xl border border-border bg-surface-raised p-2">
               <img
-                src={attachedImage.previewUrl}
-                alt="Attached crop"
-                className="w-12 h-12 object-cover rounded-md"
+                src={
+                  attachedImage.previewUrl
+                }
+                alt="Selected crop"
+                className="h-14 w-14 rounded-lg object-cover"
               />
-              <div className="text-caption pr-4">
-                <span className="font-bold text-text block truncate max-w-[120px]">
-                  {attachedImage.file.name}
-                </span>
-                <span className="text-text-muted text-[11px]">Crop Image Attached</span>
+
+              <div className="pr-5">
+                <div className="flex items-center gap-1.5">
+                  <FileImage
+                    className="w-3.5 h-3.5 text-primary-600"
+                    aria-hidden="true"
+                  />
+
+                  <span className="text-caption font-medium text-text">
+                    Crop image
+                  </span>
+                </div>
+
+                {crop && (
+                  <span className="text-caption text-text-muted">
+                    Context: {crop}
+                  </span>
+                )}
               </div>
+
               <button
                 type="button"
-                onClick={handleRemoveImage}
-                className="absolute top-1 right-1 p-0.5 rounded-full bg-danger-100 text-danger-700 hover:bg-danger-200 cursor-pointer"
+                onClick={
+                  handleRemoveImage
+                }
+                className="absolute right-1.5 top-1.5 rounded-md p-1 text-text-muted hover:bg-surface hover:text-danger-600"
                 aria-label="Remove image"
               >
-                <X className="w-3 h-3" />
+                <X
+                  className="w-3.5 h-3.5"
+                  aria-hidden="true"
+                />
               </button>
             </div>
           )}
 
-          {/* Recorded Audio Blob Chip */}
-          {recordedVoice && !isRecording && (
-            <div className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary-50 border border-primary-300 text-caption text-primary-900">
-              <Volume2 className="w-4 h-4 text-primary-600" aria-hidden="true" />
-              <span>Voice Note ({recordedVoice.durationSeconds}s)</span>
+          {/* ==================================================
+              VOICE PREVIEW
+          ================================================== */}
+
+          {recordedVoice && (
+            <div className="relative flex items-center gap-2 rounded-xl border border-border bg-surface-raised px-3 py-2 pr-8">
+              <Volume2
+                className="w-4 h-4 text-primary-600"
+                aria-hidden="true"
+              />
+
+              <div>
+                <div className="text-caption font-medium text-text">
+                  Voice query
+                </div>
+
+                <div className="text-caption text-text-muted">
+                  Ready to send
+                </div>
+              </div>
+
               <button
                 type="button"
-                onClick={handleRemoveVoice}
-                className="p-0.5 rounded-full hover:bg-primary-200 cursor-pointer ml-1"
-                aria-label="Remove audio"
+                onClick={
+                  handleRemoveVoice
+                }
+                className="absolute right-1.5 top-1.5 rounded-md p-1 text-text-muted hover:bg-surface hover:text-danger-600"
+                aria-label="Remove voice recording"
               >
-                <X className="w-3 h-3" />
+                <X
+                  className="w-3.5 h-3.5"
+                  aria-hidden="true"
+                />
               </button>
-            </div>
-          )}
-
-          {/* Live Recording Overlay */}
-          {isRecording && (
-            <div className="flex items-center gap-3 flex-1 px-3 py-2 rounded-lg bg-danger-50 border border-danger-200 text-danger-900 animate-pulse">
-              <span className="w-3 h-3 rounded-full bg-danger-600 animate-ping" />
-              <span className="text-small font-bold">
-                Listening ({selectedLanguage.toUpperCase()})... {recordingSeconds}s
-              </span>
-              <div className="ml-auto flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={cancelRecording}>
-                  Cancel
-                </Button>
-                <Button variant="danger" size="sm" onClick={handleToggleRecord}>
-                  Done
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Voice Error Banner */}
-          {voiceError && (
-            <div className="flex items-center gap-1.5 text-caption text-danger-700">
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-              <span>{voiceError}</span>
             </div>
           )}
         </div>
       )}
 
-      {/* Main Input Row */}
-      <div className="flex items-end gap-2">
-        {/* Hidden File Input */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleImageChange}
-          className="hidden"
-          id="crop-image-upload"
-        />
+      {/* ======================================================
+          MAIN COMPOSER
+      ====================================================== */}
 
-        {/* Action Button: Attach Image */}
-        <label
-          htmlFor="crop-image-upload"
-          className="p-2.5 rounded-xl border border-border bg-surface-raised text-text-secondary hover:text-text hover:bg-surface cursor-pointer transition-colors shrink-0 flex items-center justify-center"
-          title="Attach Crop Image"
-        >
-          <FileImage className="w-5 h-5 text-primary-600" aria-hidden="true" />
-        </label>
+      <div className="rounded-2xl border border-border bg-surface shadow-xs focus-within:border-primary-400 focus-within:ring-2 focus-within:ring-primary-100 transition-all">
+        {/* ====================================================
+            TEXTAREA
+        ==================================================== */}
 
-        {/* Action Button: Toggle Microphone */}
-        <button
-          type="button"
-          onClick={handleToggleRecord}
-          className={`p-2.5 rounded-xl border transition-all shrink-0 flex items-center justify-center cursor-pointer ${
-            isRecording
-              ? 'bg-danger-600 text-white border-danger-700 animate-bounce'
-              : 'border-border bg-surface-raised text-text-secondary hover:text-text hover:bg-surface'
-          }`}
-          title={isRecording ? 'Stop Recording' : 'Speak Question'}
-          aria-label={isRecording ? 'Stop recording voice' : 'Record voice question'}
-        >
-          {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5 text-primary-600" />}
-        </button>
-
-        {/* Textarea Input */}
         <textarea
+          ref={textareaRef}
           value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Ask in Telugu, Hindi, or English (e.g. నా వరి ఆకులు పసుపుగా మారుతున్నాయి)..."
+          onChange={(event) => {
+            setText(
+              event.target.value,
+            );
+
+            resizeTextarea();
+          }}
+          onKeyDown={
+            handleKeyDown
+          }
+          disabled={disabled}
           rows={1}
-          disabled={disabled || isRecording}
-          className="flex-1 p-2.5 max-h-32 min-h-[44px] rounded-xl bg-surface-raised border border-border text-small text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 font-sans resize-none"
+          placeholder={
+            crop
+              ? `Ask anything about ${crop}...`
+              : 'Ask anything about your farm...'
+          }
+          className="w-full resize-none border-0 bg-transparent px-4 pt-3.5 pb-2 text-sm text-text placeholder:text-text-muted focus:outline-none focus:ring-0 disabled:opacity-50"
+          style={{
+            maxHeight: '160px',
+          }}
         />
 
-        {/* Send Action */}
-        <Button
-          variant="primary"
-          onClick={handleSend}
-          disabled={!canSend}
-          className="h-[44px] px-4 rounded-xl shrink-0 cursor-pointer shadow-sm"
-          aria-label="Send question"
-        >
-          <Send className="w-4 h-4" aria-hidden="true" />
-        </Button>
+        {/* ====================================================
+            ACTION BAR
+        ==================================================== */}
+
+        <div className="flex items-center justify-between gap-2 px-2.5 pb-2.5">
+          <div className="flex items-center gap-1">
+            {/* ==================================================
+                IMAGE INPUT
+            ================================================== */}
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={
+                handleImageChange
+              }
+              className="hidden"
+              disabled={
+                disabled
+              }
+            />
+
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                fileInputRef.current?.click()
+              }
+              disabled={
+                disabled ||
+                isRecording
+              }
+              title="Attach crop image"
+              aria-label="Attach crop image"
+            >
+              <FileImage
+                className="w-4 h-4"
+                aria-hidden="true"
+              />
+            </Button>
+
+            {/* ==================================================
+                VOICE
+            ================================================== */}
+
+            <Button
+              type="button"
+              variant={
+                isRecording
+                  ? 'secondary'
+                  : 'ghost'
+              }
+              size="sm"
+              onClick={
+                handleToggleRecord
+              }
+              disabled={
+                disabled
+              }
+              title={
+                isRecording
+                  ? 'Stop recording'
+                  : 'Record voice query'
+              }
+              aria-label={
+                isRecording
+                  ? 'Stop recording'
+                  : 'Record voice query'
+              }
+            >
+              {isRecording ? (
+                <MicOff
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                />
+              ) : (
+                <Mic
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                />
+              )}
+            </Button>
+
+            {/* ==================================================
+                LANGUAGE
+            ================================================== */}
+
+            <select
+              value={
+                selectedLanguage
+              }
+              onChange={(event) =>
+                setSelectedLanguage(
+                  event.target.value as
+                    | 'te'
+                    | 'hi'
+                    | 'en',
+                )
+              }
+              disabled={
+                disabled ||
+                isRecording
+              }
+              className="h-8 rounded-lg border border-border bg-surface px-2 text-caption text-text focus:outline-none focus:ring-2 focus:ring-primary-100"
+              aria-label="Voice language"
+            >
+              <option value="te">
+                తెలుగు
+              </option>
+
+              <option value="hi">
+                हिन्दी
+              </option>
+
+              <option value="en">
+                English
+              </option>
+            </select>
+
+            {/* ==================================================
+                RECORDING TIMER
+            ================================================== */}
+
+            {isRecording && (
+              <div className="flex items-center gap-1.5 px-2 text-caption text-danger-600">
+                <span className="h-2 w-2 rounded-full bg-danger-500 animate-pulse" />
+
+                <span>
+                  {formatRecordingTime(
+                    recordingSeconds,
+                  )}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={
+                    () => {
+                      cancelRecording();
+                    }
+                  }
+                  className="ml-1 text-text-muted hover:text-danger-600"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* ====================================================
+              SEND
+          ==================================================== */}
+
+          <Button
+            type="button"
+            size="sm"
+            onClick={
+              handleSend
+            }
+            disabled={
+              disabled ||
+              (
+                !text.trim() &&
+                !attachedImage &&
+                !recordedVoice
+              )
+            }
+            title="Send"
+            aria-label="Send"
+          >
+            <Send
+              className="w-4 h-4"
+              aria-hidden="true"
+            />
+
+            <span className="hidden sm:inline ml-1.5">
+              Send
+            </span>
+          </Button>
+        </div>
+      </div>
+
+      {/* ======================================================
+          HELP TEXT
+      ====================================================== */}
+
+      <div className="mt-1.5 px-1 flex items-center gap-1.5 text-caption text-text-muted">
+        <Sparkles
+          className="w-3 h-3 text-primary-500"
+          aria-hidden="true"
+        />
+
+        <span>
+          Press Enter to send · Shift+Enter
+          for a new line
+        </span>
       </div>
     </div>
   );

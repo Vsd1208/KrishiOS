@@ -19,7 +19,7 @@ from app.graph.extraction.entity_extractor import DictionaryEntityExtractor
 from app.graph.extraction.entity_resolver import EntityResolver
 from app.graph.extraction.relationship_extractor import PatternRelationshipExtractor
 from app.graph.validation.relationship_validator import RelationshipValidator
-from app.knowledge.chunking.pipeline import Chunk
+from app.knowledge.interfaces.chunker import TextChunk
 from app.models.knowledge_document import KnowledgeDocument
 
 
@@ -41,7 +41,7 @@ class GraphIngestionStage:
     async def run(
         self,
         doc: KnowledgeDocument,
-        chunks: list[Chunk],
+        chunks: list[TextChunk],
         chunk_uuids: list[UUID],
     ) -> None:
         """Run graph extraction over all chunks and save candidates.

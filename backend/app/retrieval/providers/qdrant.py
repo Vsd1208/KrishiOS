@@ -113,14 +113,15 @@ class QdrantRetrievalVectorStore(VectorStoreProvider):
         score_threshold: float,
     ) -> list[RetrievalHit]:
         qdrant_filter = self._build_filter(filters)
-        hits = await self._client.search(
+        result = await self._client.query_points(
             collection_name=target,
-            query_vector=query_vector,
+            query=query_vector,
             query_filter=qdrant_filter,
             limit=top_k,
             score_threshold=score_threshold,
             with_payload=True,
         )
+        hits = result.points
         return [
             RetrievalHit(
                 chunk_id=str((hit.payload or {}).get("chunk_id", hit.id)),

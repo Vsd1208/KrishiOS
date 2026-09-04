@@ -1,0 +1,6 @@
+﻿{
+    "query":  "How can I improve cotton crop health?",
+    "score_threshold":  0.25,
+    "top_k":  5,
+    "include_delta":  true
+}

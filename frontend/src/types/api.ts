@@ -72,3 +72,14 @@ export interface PaginationParams {
   offset?: number;
   limit?: number;
 }
+/**
+ * Response returned by the document upload endpoint.
+ *
+ * POST /api/v1/documents/upload
+ */
+export interface DocumentUploadResponse {
+  document_id?: number;
+  status?: string;
+  message?: string;
+  [key: string]: unknown;
+}

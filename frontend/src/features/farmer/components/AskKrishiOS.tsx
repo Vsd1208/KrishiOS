@@ -1,365 +1,658 @@
 /**
- * AskKrishiOS Component.
+ * AskKrishiOS
  *
- * Multimodal AI Assistant Hub for Farmers.
- * Integrates text queries with the Agent Runtime (POST /api/v1/agents/execute),
- * voice modal, and vision crop diagnosis modal.
- * Displays confidence, plain-language evidence, and source citations.
+ * Compact AI assistant used in the farmer dashboard.
+ *
+ * Integrates:
+ * - Text queries
+ * - Voice modal
+ * - Vision crop diagnosis modal
+ * - Agent Runtime
+ *
+ * Crop context is supplied by the parent dashboard.
+ * No crop is hardcoded here.
  */
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/Button';
-import { ConfidenceBadge } from '@/components/ai/ConfidenceBadge';
-import { CitationCard } from '@/components/ai/CitationCard';
-import { ThinkingIndicator } from '@/components/ai/ThinkingIndicator';
-import { VoiceRecorderModal } from '@/features/farmer/components/VoiceRecorderModal';
-import { CropVisionModal } from '@/features/farmer/components/CropVisionModal';
-import { agentApi } from '@/services/api/agent';
-import {
-  Send,
-  Mic,
-  Camera,
-  Sparkles,
-  ChevronDown,
-  ChevronUp,
-  BookOpen,
-} from 'lucide-react';
-import type { AgentExecutionResponse } from '@/types/agent';
-import type { Farmer, FieldCrop } from '@/types/domain';
+import React, {
+  useState,
+} from 'react';
 
-interface Message {
-  id: string;
-  sender: 'farmer' | 'ai';
-  text: string;
-  timestamp: string;
-  responsePayload?: AgentExecutionResponse;
-  confidence?: number;
-}
+import {
+  Image as ImageIcon,
+  Loader2,
+  Mic,
+  Send,
+  Sparkles,
+  X,
+} from 'lucide-react';
+
+import { Button } from '@/components/ui/Button';
+
+import { agentApi } from '@/services/api/agent';
+
+import { VoiceRecorderModal } from '@/features/farmer/components/VoiceRecorderModal';
+
+import { CropVisionModal } from '@/features/farmer/components/CropVisionModal';
+
+import type {
+  Farmer,
+  FieldCrop,
+} from '@/types/domain';
+
+/* ============================================================
+   QUICK QUESTIONS
+   ============================================================ */
 
 const SAMPLE_QUICK_QUESTIONS = [
-  'వరిలో కాండం తొలుచు పురుగు నివారణ ఏమిటి?',
-  'What is the recommended fertilizer dosage for Paddy at tillering stage?',
+  'What pests affect my crop?',
+  'What is the recommended fertilizer dosage for my crop at the current stage?',
   'Is today favorable for spraying pesticide in my field?',
-  'What are the current market rates for Cotton in Warangal Mandi?',
+  'What are the current market rates for my crop?',
 ];
+
+/* ============================================================
+   TYPES
+   ============================================================ */
 
 interface AskKrishiOSProps {
   farmer?: Farmer | null;
   fieldCrops?: FieldCrop[];
+  crop?: string;
 }
 
-export const AskKrishiOS: React.FC<AskKrishiOSProps> = ({ farmer, fieldCrops }) => {
-  const [inputQuery, setInputQuery] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [expandedEvidence, setExpandedEvidence] = useState<Record<string, boolean>>({});
+/* ============================================================
+   BACKEND HELPERS
+   ============================================================ */
 
-  // Modals
-  const [isVoiceOpen, setIsVoiceOpen] = useState(false);
-  const [isVisionOpen, setIsVisionOpen] = useState(false);
+type CompactBackendResult = {
+  agent?: string;
+  output?: unknown;
+};
 
-  const activeCropName = fieldCrops?.[0] ? 'Paddy' : 'Paddy';
-  const districtName = farmer?.village || 'Khammam';
+type CompactBackendOutput = {
+  recommendation?: string;
+  answer?: string;
+  hits?: Array<{
+    chunk_text?: string;
+    answer_context?: string;
+  }>;
+};
 
-  const handleSendQuery = async (queryText?: string) => {
-    const textToSend = (queryText || inputQuery).trim();
-    if (!textToSend || isLoading) return;
+function isRecord(
+  value: unknown,
+): value is Record<string, unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null
+  );
+}
 
-    const userMsgId = `user-${Date.now()}`;
-    const newMessages: Message[] = [
-      ...messages,
-      {
-        id: userMsgId,
-        sender: 'farmer',
-        text: textToSend,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      },
-    ];
+function extractResultText(
+  result: CompactBackendResult,
+): string {
+  const output =
+    result.output;
 
-    setMessages(newMessages);
-    setInputQuery('');
+  if (
+    typeof output ===
+    'string'
+  ) {
+    return output.trim();
+  }
+
+  if (
+    !isRecord(output)
+  ) {
+    return '';
+  }
+
+  const typedOutput =
+    output as CompactBackendOutput;
+
+  if (
+    typeof typedOutput.recommendation ===
+      'string' &&
+    typedOutput.recommendation.trim()
+  ) {
+    return typedOutput.recommendation.trim();
+  }
+
+  if (
+    typeof typedOutput.answer ===
+      'string' &&
+    typedOutput.answer.trim()
+  ) {
+    return typedOutput.answer.trim();
+  }
+
+  if (
+    Array.isArray(
+      typedOutput.hits,
+    )
+  ) {
+    return typedOutput.hits
+      .map(
+        (hit) =>
+          hit.chunk_text ||
+          hit.answer_context ||
+          '',
+      )
+      .filter(Boolean)
+      .join('\n\n');
+  }
+
+  return '';
+}
+
+/* ============================================================
+   COMPONENT
+   ============================================================ */
+
+export const AskKrishiOS: React.FC<
+  AskKrishiOSProps
+> = ({
+  farmer,
+  fieldCrops: _fieldCrops,
+  crop,
+}) => {
+  const [
+    text,
+    setText,
+  ] = useState('');
+
+  const [
+    response,
+    setResponse,
+  ] = useState<string | null>(
+    null,
+  );
+
+  const [
+    isLoading,
+    setIsLoading,
+  ] = useState(false);
+
+  const [
+    showVoiceModal,
+    setShowVoiceModal,
+  ] = useState(false);
+
+  const [
+    showVisionModal,
+    setShowVisionModal,
+  ] = useState(false);
+
+  /*
+   * The parent supplies the active crop.
+   *
+   * No Paddy fallback is used.
+   */
+  const activeCropName =
+    crop?.trim();
+
+  const districtName =
+    farmer?.village ||
+    'Khammam';
+
+  /* ==========================================================
+     SEND QUERY
+     ========================================================== */
+
+  const sendQuery = async (
+    query: string,
+  ): Promise<void> => {
+    const textToSend =
+      query.trim();
+
+    if (
+      !textToSend ||
+      isLoading
+    ) {
+      return;
+    }
+
     setIsLoading(true);
+    setResponse(null);
 
     try {
-      const response = await agentApi.execute({
+      const agentRequest = {
         goal: textToSend,
-        state: 'Telangana',
-        district: districtName,
-        crop: activeCropName,
-        season: 'Kharif',
-      });
 
-      const primaryResult = response.results[0];
-      const outputText =
-        primaryResult?.output ||
-        'I have analyzed your farm context and ICAR advisories. Please verify with your extension officer.';
-      const confidence = primaryResult?.confidence ?? 0.88;
+        state:
+          'Telangana',
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `ai-${Date.now()}`,
-          sender: 'ai',
-          text: outputText,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          responsePayload: response,
-          confidence,
-        },
-      ]);
-    } catch (err) {
-      console.error('Agent query error:', err);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `ai-err-${Date.now()}`,
-          sender: 'ai',
-          text: 'Unable to complete analysis right now. Please check your network connection or try again.',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        },
-      ]);
+        district:
+          districtName,
+
+        season:
+          'Kharif',
+
+        ...(activeCropName
+          ? {
+              crop:
+                activeCropName,
+            }
+          : {}),
+      };
+
+      console.info(
+        '[KrishiOS] Compact assistant request:',
+        agentRequest,
+      );
+
+      const result =
+        await agentApi.execute(
+          agentRequest,
+        );
+
+      const rawResults =
+        isRecord(result) &&
+        Array.isArray(
+          result.results,
+        )
+          ? result.results
+          : [];
+
+      const typedResults = rawResults.filter((item) =>
+  isRecord(item),
+);
+
+      /*
+       * Prefer the crop advisory agent.
+       */
+      const advisoryResult =
+        typedResults.find(
+          (item) =>
+            item.agent ===
+            'crop_advisory_agent',
+        );
+
+      let finalText =
+        advisoryResult
+          ? extractResultText(
+              advisoryResult,
+            )
+          : '';
+
+      /*
+       * If advisory output isn't available,
+       * use verified retrieval output.
+       */
+      if (!finalText) {
+        const retrievalResult =
+          typedResults.find(
+            (item) =>
+              item.agent ===
+              'knowledge_retrieval_agent',
+          );
+
+        if (retrievalResult) {
+          finalText =
+            extractResultText(
+              retrievalResult,
+            );
+        }
+      }
+
+      /*
+       * Safe direct-response fallback for compatible
+       * API wrappers.
+       */
+      if (!finalText) {
+        const directResult =
+          result as unknown as {
+            response?: unknown;
+            answer?: unknown;
+            recommendation?: unknown;
+          };
+
+        if (
+          typeof directResult.response ===
+          'string'
+        ) {
+          finalText =
+            directResult.response;
+        } else if (
+          typeof directResult.answer ===
+          'string'
+        ) {
+          finalText =
+            directResult.answer;
+        } else if (
+          typeof directResult.recommendation ===
+          'string'
+        ) {
+          finalText =
+            directResult.recommendation;
+        }
+      }
+
+      if (!finalText) {
+        finalText =
+          'I do not have enough verified information to answer that question right now.';
+      }
+
+      setResponse(
+        finalText,
+      );
+
+      setText('');
+    } catch (error) {
+      console.error(
+        'AskKrishiOS request failed:',
+        error,
+      );
+
+      setResponse(
+        'Unable to complete the agricultural analysis right now. Please try again.',
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const toggleEvidence = (msgId: string) => {
-    setExpandedEvidence((prev) => ({
-      ...prev,
-      [msgId]: !prev[msgId],
-    }));
+  /* ==========================================================
+     FORM
+     ========================================================== */
+
+  const handleSubmit = (
+    event: React.FormEvent,
+  ): void => {
+    event.preventDefault();
+
+    void sendQuery(text);
   };
 
+  /* ==========================================================
+     QUICK QUESTION
+     ========================================================== */
+
+  const handleQuickQuestion = (
+    question: string,
+  ): void => {
+    void sendQuery(
+      question,
+    );
+  };
+
+  /* ==========================================================
+     RENDER
+     ========================================================== */
+
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto space-y-4">
-      {/* Header Banner */}
-      <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-primary-700 to-primary-800 text-white shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
-            <Sparkles className="w-6 h-6 text-primary-200" aria-hidden="true" />
+    <section className="rounded-2xl border border-border bg-surface shadow-xs overflow-hidden">
+
+      {/* ======================================================
+          HEADER
+          ====================================================== */}
+
+      <div className="px-4 py-3 border-b border-border flex items-center justify-between gap-3">
+
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-primary-50 text-primary-700 flex items-center justify-center">
+            <Sparkles
+              className="w-4 h-4"
+              aria-hidden="true"
+            />
           </div>
+
           <div>
-            <h1 className="text-body font-bold">Ask KrishiOS Intelligence</h1>
-            <p className="text-caption text-primary-100">
-              Multilingual agricultural decision support • Text, Voice, or Photo
+            <h2 className="text-sm font-semibold text-text">
+              Ask KrishiOS
+            </h2>
+
+            <p className="text-caption text-text-muted">
+              {activeCropName
+                ? `AI guidance for ${activeCropName}`
+                : 'AI agricultural guidance'}
             </p>
           </div>
         </div>
 
-        <div className="flex gap-1.5">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsVoiceOpen(true)}
-            className="bg-white/10 hover:bg-white/20 border-white/30 text-white cursor-pointer"
-          >
-            <Mic className="w-4 h-4 mr-1 sm:mr-1.5" aria-hidden="true" />
-            <span className="hidden sm:inline">Voice</span>
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsVisionOpen(true)}
-            className="bg-white/10 hover:bg-white/20 border-white/30 text-white cursor-pointer"
-          >
-            <Camera className="w-4 h-4 mr-1 sm:mr-1.5" aria-hidden="true" />
-            <span className="hidden sm:inline">Crop Photo</span>
-          </Button>
-        </div>
-      </div>
-
-      {/* Messages Thread Container */}
-      <div className="flex-1 min-h-[380px] p-4 rounded-xl bg-surface border border-border overflow-y-auto space-y-4 shadow-inner">
-        {messages.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4 my-auto">
-            <div className="w-14 h-14 rounded-2xl bg-primary-50 text-primary-600 flex items-center justify-center">
-              <Sparkles className="w-8 h-8" aria-hidden="true" />
-            </div>
-            <div className="max-w-md space-y-1">
-              <h3 className="text-subheading font-bold text-text">How can KrishiOS assist you today?</h3>
-              <p className="text-small text-text-secondary">
-                Ask any question regarding crop pests, disease management, spray weather, or mandi prices.
-              </p>
-            </div>
-
-            {/* Quick Prompt Suggestions */}
-            <div className="w-full max-w-lg pt-4 space-y-2">
-              <span className="text-caption font-bold text-text-muted uppercase tracking-wider block text-left">
-                Suggested Questions:
-              </span>
-              <div className="grid grid-cols-1 gap-2 text-left">
-                {SAMPLE_QUICK_QUESTIONS.map((prompt, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => handleSendQuery(prompt)}
-                    className="p-2.5 rounded-lg bg-surface-raised hover:bg-primary-50/60 border border-border hover:border-primary-300 text-small text-text transition-all text-left cursor-pointer flex items-center justify-between group"
-                  >
-                    <span>{prompt}</span>
-                    <Send className="w-3.5 h-3.5 text-text-muted group-hover:text-primary-600 flex-shrink-0 ml-2" aria-hidden="true" />
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            {messages.map((msg) => {
-              const isAi = msg.sender === 'ai';
-              const citations = msg.responsePayload?.results?.[0]?.citations ?? [];
-              const isEvExpanded = expandedEvidence[msg.id] ?? false;
-
-              return (
-                <div
-                  key={msg.id}
-                  className={`flex flex-col ${isAi ? 'items-start' : 'items-end'} space-y-1`}
-                >
-                  <div
-                    className={`max-w-[88%] sm:max-w-[80%] rounded-2xl p-4 shadow-sm ${
-                      isAi
-                        ? 'bg-surface-raised border border-border text-text rounded-tl-sm'
-                        : 'bg-primary-600 text-white rounded-tr-sm'
-                    }`}
-                  >
-                    {/* Header for AI */}
-                    {isAi && (
-                      <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-border/60">
-                        <div className="flex items-center gap-1.5">
-                          <Sparkles className="w-4 h-4 text-primary-600" aria-hidden="true" />
-                          <span className="text-caption font-bold text-primary-900">
-                            KrishiOS Advisory
-                          </span>
-                        </div>
-                        {msg.confidence !== undefined && (
-                          <ConfidenceBadge confidence={msg.confidence} size="sm" showLabel />
-                        )}
-                      </div>
-                    )}
-
-                    {/* Content */}
-                    <p className="text-body whitespace-pre-line leading-relaxed">{msg.text}</p>
-
-                    {/* Citations & Evidence Drawer for AI Messages */}
-                    {isAi && citations.length > 0 && (
-                      <div className="mt-3 pt-2 border-t border-border/80 space-y-2">
-                        <button
-                          type="button"
-                          onClick={() => toggleEvidence(msg.id)}
-                          className="flex items-center justify-between w-full text-caption font-semibold text-primary-700 hover:text-primary-800 cursor-pointer pt-1"
-                        >
-                          <span className="flex items-center gap-1">
-                            <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
-                            Why this answer? ({citations.length} agricultural sources)
-                          </span>
-                          {isEvExpanded ? (
-                            <ChevronUp className="w-4 h-4" aria-hidden="true" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4" aria-hidden="true" />
-                          )}
-                        </button>
-
-                        {isEvExpanded && (
-                          <div className="space-y-2 pt-1 animate-fadeIn">
-                            {citations.map((cit, cIdx) => (
-                              <CitationCard
-                                key={cIdx}
-                                citation={{
-                                  source_title: cit.title || cit.source || 'ICAR Agricultural Advisory',
-                                  authority: cit.authority || 'State Agricultural University',
-                                  document_type: cit.document_type || 'Package of Practices',
-                                  snippet: cit.snippet,
-                                  page: cit.page,
-                                }}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Message Timestamp */}
-                    <div
-                      className={`text-[10px] mt-1 text-right ${
-                        isAi ? 'text-text-muted' : 'text-primary-200'
-                      }`}
-                    >
-                      {msg.timestamp}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-surface-raised border border-border rounded-2xl p-4 shadow-sm">
-                  <ThinkingIndicator message="Synthesizing ICAR advisories & farm weather context..." />
-                </div>
-              </div>
-            )}
-          </>
+        {activeCropName && (
+          <span className="px-2.5 py-1 rounded-lg bg-primary-50 text-primary-700 text-caption font-medium">
+            {activeCropName}
+          </span>
         )}
       </div>
 
-      {/* Input Composer Bar */}
+      {/* ======================================================
+          RESPONSE
+          ====================================================== */}
+
+      {response && (
+        <div className="px-4 py-3 border-b border-border bg-surface-raised">
+          <div className="flex items-start justify-between gap-3">
+
+            <div className="flex items-start gap-2 min-w-0">
+              <Sparkles
+                className="w-4 h-4 text-primary-600 shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
+
+              <p className="text-sm leading-6 text-text whitespace-pre-wrap">
+                {response}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                setResponse(null)
+              }
+              className="shrink-0 p-1 rounded-md text-text-muted hover:bg-surface hover:text-text"
+              aria-label="Close response"
+            >
+              <X
+                className="w-4 h-4"
+                aria-hidden="true"
+              />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================
+          COMPOSER
+          ====================================================== */}
+
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSendQuery();
-        }}
-        className="p-2 rounded-xl bg-surface border border-border shadow-sm flex items-center gap-2"
+        onSubmit={
+          handleSubmit
+        }
+        className="p-3"
       >
-        <button
-          type="button"
-          onClick={() => setIsVoiceOpen(true)}
-          className="p-2.5 rounded-lg text-text-secondary hover:text-primary-600 hover:bg-surface-raised transition-colors cursor-pointer"
-          title="Voice Query"
-          aria-label="Voice Query"
-        >
-          <Mic className="w-5 h-5" aria-hidden="true" />
-        </button>
+        <div className="rounded-xl border border-border bg-surface focus-within:border-primary-400 focus-within:ring-2 focus-within:ring-primary-100 transition-all">
 
-        <button
-          type="button"
-          onClick={() => setIsVisionOpen(true)}
-          className="p-2.5 rounded-lg text-text-secondary hover:text-accent-600 hover:bg-surface-raised transition-colors cursor-pointer"
-          title="Crop Photo Diagnostic"
-          aria-label="Crop Photo Diagnostic"
-        >
-          <Camera className="w-5 h-5" aria-hidden="true" />
-        </button>
+          <textarea
+            value={text}
+            onChange={(event) =>
+              setText(
+                event.target.value,
+              )
+            }
+            onKeyDown={(event) => {
+              if (
+                event.key ===
+                  'Enter' &&
+                !event.shiftKey
+              ) {
+                event.preventDefault();
 
-        <input
-          type="text"
-          value={inputQuery}
-          onChange={(e) => setInputQuery(e.target.value)}
-          placeholder="Ask in Telugu, Hindi, or English..."
-          disabled={isLoading}
-          className="flex-1 bg-transparent px-2 py-1.5 text-body text-text placeholder:text-text-muted focus:outline-none"
-        />
+                void sendQuery(
+                  text,
+                );
+              }
+            }}
+            rows={3}
+            disabled={
+              isLoading
+            }
+            placeholder={
+              activeCropName
+                ? `Ask about ${activeCropName}...`
+                : 'Ask about your crop...'
+            }
+            className="w-full resize-none border-0 bg-transparent px-3 py-3 text-sm text-text placeholder:text-text-muted focus:outline-none focus:ring-0"
+          />
 
-        <Button
-          type="submit"
-          variant="primary"
-          disabled={!inputQuery.trim() || isLoading}
-          className="rounded-lg px-4"
-        >
-          <Send className="w-4 h-4 mr-1 sm:mr-1.5" aria-hidden="true" />
-          <span className="hidden sm:inline">Ask</span>
-        </Button>
+          <div className="px-2 pb-2 flex items-center justify-between gap-2">
+
+            <div className="flex items-center gap-1">
+
+              {/* VOICE */}
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  setShowVoiceModal(
+                    true,
+                  )
+                }
+                disabled={
+                  isLoading
+                }
+                title="Ask using voice"
+                aria-label="Ask using voice"
+              >
+                <Mic
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                />
+              </Button>
+
+              {/* VISION */}
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  setShowVisionModal(
+                    true,
+                  )
+                }
+                disabled={
+                  isLoading
+                }
+                title="Diagnose crop image"
+                aria-label="Diagnose crop image"
+              >
+                <ImageIcon
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                />
+              </Button>
+            </div>
+
+            {/* SEND */}
+
+            <Button
+              type="submit"
+              size="sm"
+              disabled={
+                isLoading ||
+                !text.trim()
+              }
+            >
+              {isLoading ? (
+                <Loader2
+                  className="w-4 h-4 animate-spin"
+                  aria-hidden="true"
+                />
+              ) : (
+                <Send
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                />
+              )}
+
+              <span className="ml-1.5">
+                {isLoading
+                  ? 'Thinking...'
+                  : 'Ask'}
+              </span>
+            </Button>
+          </div>
+        </div>
+
+        {/* ====================================================
+            QUICK QUESTIONS
+            ==================================================== */}
+
+        <div className="mt-3">
+
+          <div className="flex items-center gap-1.5 mb-2">
+            <Sparkles
+              className="w-3.5 h-3.5 text-primary-600"
+              aria-hidden="true"
+            />
+
+            <span className="text-caption font-medium text-text-muted">
+              Quick questions
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {SAMPLE_QUICK_QUESTIONS.map(
+              (question) => (
+                <button
+                  key={question}
+                  type="button"
+                  onClick={() =>
+                    handleQuickQuestion(
+                      question,
+                    )
+                  }
+                  disabled={
+                    isLoading
+                  }
+                  className="px-2.5 py-1.5 rounded-lg border border-border bg-surface-raised text-caption text-text-secondary hover:border-primary-300 hover:bg-primary-50/40 hover:text-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {question}
+                </button>
+              ),
+            )}
+          </div>
+        </div>
       </form>
 
-      {/* Modals */}
+      {/* ======================================================
+          VOICE MODAL
+          ====================================================== */}
+
       <VoiceRecorderModal
-        isOpen={isVoiceOpen}
-        onClose={() => setIsVoiceOpen(false)}
+        isOpen={
+          showVoiceModal
+        }
+        onClose={() =>
+          setShowVoiceModal(
+            false,
+          )
+        }
         defaultLanguage="te"
       />
+
+      {/* ======================================================
+          VISION MODAL
+          ====================================================== */}
+
       <CropVisionModal
-        isOpen={isVisionOpen}
-        onClose={() => setIsVisionOpen(false)}
-        defaultCrop={activeCropName}
+        isOpen={
+          showVisionModal
+        }
+        onClose={() =>
+          setShowVisionModal(
+            false,
+          )
+        }
+        defaultCrop={
+          activeCropName
+        }
       />
-    </div>
+    </section>
   );
 };
 

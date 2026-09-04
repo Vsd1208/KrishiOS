@@ -17,7 +17,7 @@ from app.auth.security import (
     verify_password,
     needs_rehash,
 )
-from app.models.user import RefreshToken, User
+from app.models.user import RefreshToken, User, UserRole
 from app.repositories.refresh_token import RefreshTokenRepository
 from app.repositories.user import UserRepository
 from app.schemas.auth import LoginRequest, TokenResponse
@@ -150,7 +150,7 @@ class AuthService(BaseService):
         permissions = get_permissions_for_role(user.role)
         access_token = create_access_token(
             user_uuid=user.uuid,
-            role=user.role,
+            role=UserRole(user.role),
             permissions=permissions,
             jti=jti,
         )

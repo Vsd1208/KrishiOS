@@ -64,6 +64,15 @@ class Settings(BaseSettings):
     DOCUMENT_STORAGE_PATH: str = "/data/documents"
     MAX_UPLOAD_SIZE_MB: int = 50
 
+    # ── LLM / Generative AI ─────────────────────────────────────────────────
+    LLM_PROVIDER: Literal["gemini", "local"] = "local"
+    LLM_MODEL: str = "gemini-3.6-flash"
+    GEMINI_API_KEY: str | None = None
+    LLM_TEMPERATURE: float = 0.2
+    LLM_MAX_TOKENS: int = 1200
+    LLM_TIMEOUT_SECONDS: float = 30.0
+
+
     # ── Authentication ────────────────────────────────────────────────────────
     JWT_SECRET_KEY: str = "insecure-local-dev-key-do-not-use-in-production"
     JWT_ALGORITHM: str = "HS256"

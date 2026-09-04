@@ -42,6 +42,7 @@ class KnowledgeDocument(TimestampMixin, Base):
 
     # ── Identity ────────────────────────────────────────────────────────────
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
     uuid: Mapped[UUID] = mapped_column(
         PostgresUUID(as_uuid=True),
         default=uuid4,
@@ -51,13 +52,33 @@ class KnowledgeDocument(TimestampMixin, Base):
     )
 
     # ── Content identity ────────────────────────────────────────────────────
-    title: Mapped[str] = mapped_column(String(500), nullable=False)
-    document_type: Mapped[str] = mapped_column(String(100), nullable=False)
-    language: Mapped[str] = mapped_column(String(50), nullable=False, default="en")
+    title: Mapped[str] = mapped_column(
+        String(500),
+        nullable=False,
+    )
+
+    document_type: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False,
+    )
+
+    language: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="en",
+    )
 
     # ── Provenance ──────────────────────────────────────────────────────────
-    source: Mapped[str | None] = mapped_column(String(300), nullable=True)
-    source_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    source: Mapped[str | None] = mapped_column(
+        String(300),
+        nullable=True,
+    )
+
+    source_url: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
     authority: Mapped[str | None] = mapped_column(
         String(300),
         nullable=True,
@@ -65,9 +86,21 @@ class KnowledgeDocument(TimestampMixin, Base):
     )
 
     # ── Agricultural context ─────────────────────────────────────────────────
-    state: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    district: Mapped[str | None] = mapped_column(String(150), nullable=True)
-    crop: Mapped[str | None] = mapped_column(String(150), nullable=True)
+    state: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    district: Mapped[str | None] = mapped_column(
+        String(150),
+        nullable=True,
+    )
+
+    crop: Mapped[str | None] = mapped_column(
+        String(150),
+        nullable=True,
+    )
+
     season: Mapped[str | None] = mapped_column(
         String(50),
         nullable=True,
@@ -89,12 +122,18 @@ class KnowledgeDocument(TimestampMixin, Base):
         index=True,
         comment="SHA-256 hex digest used for deduplication",
     )
+
     file_size: Mapped[int] = mapped_column(
         BigInteger,
         nullable=False,
         comment="File size in bytes",
     )
-    mime_type: Mapped[str] = mapped_column(String(100), nullable=False)
+
+    mime_type: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False,
+    )
+
     storage_path: Mapped[str] = mapped_column(
         Text,
         nullable=False,
@@ -102,12 +141,32 @@ class KnowledgeDocument(TimestampMixin, Base):
     )
 
     # ── Processing status ────────────────────────────────────────────────────
+    #
+    # IMPORTANT:
+    # PostgreSQL already contains the enum values:
+    #   pending, parsing, chunking, embedding, completed, failed
+    #
+    # SQLAlchemy's default Enum(DocumentStatus) would persist the Python
+    # member names (PENDING, PARSING, ...) instead of their .value strings.
+    #
+    # values_callable explicitly tells SQLAlchemy to persist:
+    #   DocumentStatus.PENDING -> "pending"
+    #   DocumentStatus.PARSING -> "parsing"
+    #   etc.
+    #
     status: Mapped[DocumentStatus] = mapped_column(
-        Enum(DocumentStatus, name="document_status_enum"),
+        Enum(
+            DocumentStatus,
+            name="document_status_enum",
+            values_callable=lambda enum_class: [
+                member.value for member in enum_class
+            ],
+        ),
         nullable=False,
         default=DocumentStatus.PENDING,
         index=True,
     )
+
     error_message: Mapped[str | None] = mapped_column(
         Text,
         nullable=True,
@@ -129,7 +188,12 @@ class KnowledgeDocument(TimestampMixin, Base):
     )
 
     def __repr__(self) -> str:
-        return f"<KnowledgeDocument id={self.id} title={self.title!r} status={self.status}>"
+        return (
+            f"<KnowledgeDocument "
+            f"id={self.id} "
+            f"title={self.title!r} "
+            f"status={self.status}>"
+        )
 
 
 # Re-import guard — resolve the forward reference used above.

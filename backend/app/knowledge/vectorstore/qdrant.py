@@ -156,22 +156,23 @@ class QdrantVectorStore:
         """
         qdrant_filter = self._build_filter(filters) if filters else None
 
-        results = await self._client.search(
+        response = await self._client.query_points(
             collection_name=self._collection,
-            query_vector=query_vector,
+            query=query_vector,
             limit=top_k,
             score_threshold=score_threshold,
             query_filter=qdrant_filter,
             with_payload=True,
         )
 
-        search_results = []
-        for hit in results:
+        search_results: list[SearchResult] = []
+        
+        for hit in response.points:
             payload = hit.payload or {}
             search_results.append(
                 SearchResult(
                     point_id=UUID(str(hit.id)),
-                    score=hit.score,
+                    score=float(hit.score),
                     payload=payload,
                     chunk_text=str(payload.get("chunk_text", "")),
                 )

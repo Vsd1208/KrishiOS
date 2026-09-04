@@ -1,6 +1,7 @@
 """Agricultural language normalizer mapping regional and code-switched terms to canonical entities."""
 
 from dataclasses import dataclass, field
+from typing import Any
 import re
 from loguru import logger
 

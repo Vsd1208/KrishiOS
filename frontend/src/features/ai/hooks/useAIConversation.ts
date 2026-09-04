@@ -1,347 +1,1126 @@
 /**
  * Central AI Decision Intelligence Conversation Engine Hook.
  *
- * Orchestrates:
- * - Multimodal input pipelines (Text, Voice STT, Vision Diagnosis)
- * - Agent Runtime execution (/agents/execute or /voice/query)
- * - Live context integration (Weather, Spray Window, Mandi rates)
- * - Multi-stage thinking indicators
- * - Grounded evidence & citation assembly
- * - Contextual follow-up generation
- * - Spoken advisory TTS playback
+ * Responsibilities:
+ * - Text, voice, and vision input handling
+ * - Agent Runtime execution
+ * - Dynamic farmer crop context
+ * - Grounded evidence and citation assembly
+ * - Backend validation handling
+ * - Weather context
+ * - Multi-stage processing indicators
+ * - Browser TTS playback
+ *
+ * Crop handling is intentionally crop-agnostic.
+ * No crop whitelist or Paddy fallback is used here.
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
+
 import { agentApi } from '@/services/api/agent';
-import { voiceApi } from '@/services/api/voice';
 import { visionApi } from '@/services/api/vision';
 import { weatherApi } from '@/services/api/weather';
+
 import type {
   ChatMessage,
   UserMessageContent,
   StageInfo,
   ProcessingStage,
 } from '@/features/ai/types/conversation';
-import type { Citation, EvidencePackage, RiskSeverity } from '@/types/proactive';
+
+import type {
+  Citation,
+  EvidencePackage,
+} from '@/types/proactive';
+
+/* ============================================================
+   BACKEND TYPES
+   ============================================================ */
+
+type BackendCitation = {
+  citation_id?: string;
+  title?: string;
+  source_title?: string;
+  source?: string | null;
+  source_url?: string | null;
+  authority?: string;
+  document_type?: string;
+  page_number?: string | number | null;
+  page?: string | number | null;
+  snippet?: string;
+  confidence?: number;
+  relevance_score?: number;
+};
+
+type RetrievalHit = {
+  chunk_text?: string;
+  answer_context?: string;
+  score?: number;
+  ranking_score?: number;
+  freshness_score?: number;
+  authority_score?: number;
+  citation?: BackendCitation;
+};
+
+type BackendAgentOutput = {
+  recommendation?: string;
+  answer?: string;
+  hits?: RetrievalHit[];
+  context_used?: boolean;
+  passed?: boolean;
+  validated_text?: string;
+  [key: string]: unknown;
+};
+
+type BackendAgentResult = {
+  agent: string;
+  status?: string;
+  output?: BackendAgentOutput | string;
+  confidence?: number;
+  grounded?: boolean;
+  citations?: BackendCitation[];
+  error?: string | null;
+};
+
+/* ============================================================
+   SUGGESTIONS
+   ============================================================ */
 
 const INITIAL_SUGGESTIONS = [
-  'నా వరి ఆకులు పసుపుగా మారుతున్నాయి. రేపు వర్షం పడుతుందా?',
-  'What is the recommended fertilizer schedule for Paddy tillering?',
-  'मेरी मिर्च की फसल में पत्तियां मुड़ रही हैं, क्या उपाय करें?',
-  'Will tomorrow\'s weather be favorable for pesticide spraying?',
+  'What pests affect my crop?',
+  'What is the recommended fertilizer schedule for my crop?',
+  'My crop leaves are turning yellow, what could be the reason?',
+  "Will tomorrow's weather be favorable for pesticide spraying?",
 ];
 
-export function useAIConversation() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [activeStage, setActiveStage] = useState<StageInfo | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-  const [currentPlayingMessageId, setCurrentPlayingMessageId] = useState<string | null>(null);
+function getInitialSuggestions(crop?: string): string[] {
+  const cropName = crop?.trim();
 
-  const sessionIdRef = useRef<string>(`session-${Date.now()}`);
+  if (!cropName) {
+    return INITIAL_SUGGESTIONS;
+  }
 
-  /** Set active processing stage with step progress. */
-  const setStage = useCallback((stage: ProcessingStage, message: string, stepNumber: number, totalSteps: number, detail?: string) => {
-    setActiveStage({
-      stage,
-      message,
-      stepNumber,
-      totalSteps,
-      detail,
-    });
-  }, []);
+  return [
+    `What pests affect ${cropName}?`,
+    `What is the recommended fertilizer schedule for ${cropName}?`,
+    `My ${cropName} crop leaves are turning yellow, what could be the reason?`,
+    "Will tomorrow's weather be favorable for pesticide spraying?",
+  ];
+}
 
-  /** Speak text using browser Web Speech API synthesis. */
-  const speakText = useCallback((text: string, lang: string = 'te-IN', messageId?: string, rate: number = 1.0) => {
-    if (!('speechSynthesis' in window)) return;
+/* ============================================================
+   CROP CONTEXT RESOLUTION
+   ============================================================ */
 
-    window.speechSynthesis.cancel();
+/**
+ * Resolve a crop explicitly mentioned by the farmer.
+ *
+ * This intentionally does not use a fixed crop dictionary.
+ * Any crop name can be returned.
+ */
+function resolveCropForQuery(
+  query: string,
+  defaultCrop?: string,
+): string | undefined {
+  const normalizedQuery = query
+    .toLowerCase()
+    .replace(/[?!.,;:()[\]{}]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-    if (isPlayingAudio && currentPlayingMessageId === messageId) {
-      setIsPlayingAudio(false);
-      setCurrentPlayingMessageId(null);
-      return;
+  const normalizedDefault = defaultCrop?.trim();
+
+  /*
+   * Preserve the canonical active crop when it is explicitly
+   * mentioned in the current question.
+   */
+  if (
+    normalizedDefault &&
+    normalizedQuery.includes(normalizedDefault.toLowerCase())
+  ) {
+    return normalizedDefault;
+  }
+
+  /*
+   * "What pests affect chilli?"
+   * "What diseases affect maize?"
+   * "Problems affecting cotton"
+   */
+  const affectPattern =
+    /\b(?:affect|affecting|infect|infecting)\s+([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,3})\b/i;
+
+  const affectMatch = normalizedQuery.match(affectPattern);
+
+  if (affectMatch?.[1]) {
+    const candidate = cleanCropCandidate(affectMatch[1]);
+
+    if (candidate) {
+      return candidate;
+    }
+  }
+
+  /*
+   * "pests of chilli"
+   * "diseases of maize"
+   * "management for cotton"
+   */
+  const relationPattern =
+    /\b(?:pests?|diseases?|problems?|management|cultivation|farming|yield|production)\s+(?:of|for|in|on)\s+(?:my\s+)?([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,3})\b/i;
+
+  const relationMatch = normalizedQuery.match(relationPattern);
+
+  if (relationMatch?.[1]) {
+    const candidate = cleanCropCandidate(relationMatch[1]);
+
+    if (candidate) {
+      return candidate;
+    }
+  }
+
+  /*
+   * "fertilizer for maize crop"
+   * "pests in cotton crop"
+   */
+  const cropSuffixPattern =
+    /\b(?:for|in|on|of)\s+(?:my\s+)?([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,3})\s+crop\b/i;
+
+  const cropSuffixMatch = normalizedQuery.match(cropSuffixPattern);
+
+  if (cropSuffixMatch?.[1]) {
+    const candidate = cleanCropCandidate(cropSuffixMatch[1]);
+
+    if (candidate) {
+      return candidate;
+    }
+  }
+
+  /*
+   * "maize crop"
+   * "cotton crop"
+   * "red gram crop"
+   */
+  const explicitCropPattern =
+    /\b([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,3})\s+crop\b/i;
+
+  const explicitCropMatch = normalizedQuery.match(explicitCropPattern);
+
+  if (explicitCropMatch?.[1]) {
+    const candidate = cleanCropCandidate(explicitCropMatch[1]);
+
+    if (candidate) {
+      return candidate;
+    }
+  }
+
+  /*
+   * "maize pests"
+   * "cotton diseases"
+   */
+  const subjectPattern =
+    /\b([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,2})\s+(?:pests?|diseases?|fertilizer|irrigation|cultivation|harvesting|yield)\b/i;
+
+  const subjectMatch = normalizedQuery.match(subjectPattern);
+
+  if (subjectMatch?.[1]) {
+    const candidate = cleanCropCandidate(subjectMatch[1]);
+
+    if (candidate) {
+      return candidate;
+    }
+  }
+
+  return normalizedDefault || undefined;
+}
+
+function cleanCropCandidate(candidate: string): string | undefined {
+  const ignoredWords = new Set([
+    'the',
+    'my',
+    'your',
+    'our',
+    'this',
+    'that',
+    'these',
+    'those',
+    'crop',
+    'crops',
+    'field',
+    'fields',
+    'farm',
+    'farmer',
+    'plant',
+    'plants',
+    'pest',
+    'pests',
+    'disease',
+    'diseases',
+    'problem',
+    'problems',
+    'management',
+    'cultivation',
+    'farming',
+    'production',
+    'yield',
+    'fertilizer',
+    'irrigation',
+    'harvesting',
+    'today',
+    'current',
+    'best',
+    'recommended',
+    'what',
+    'which',
+    'how',
+    'why',
+    'when',
+    'where',
+    'tell',
+    'me',
+  ]);
+
+  const words = candidate
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  while (words.length > 0) {
+    const firstWord = words[0];
+
+    if (!firstWord || !ignoredWords.has(firstWord.toLowerCase())) {
+      break;
     }
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    utterance.rate = rate;
+    words.shift();
+  }
 
-    utterance.onstart = () => {
-      setIsPlayingAudio(true);
-      if (messageId) setCurrentPlayingMessageId(messageId);
-    };
+  while (words.length > 0) {
+    const lastIndex = words.length - 1;
+    const lastWord = words[lastIndex];
 
-    utterance.onend = () => {
-      setIsPlayingAudio(false);
-      setCurrentPlayingMessageId(null);
-    };
+    if (!lastWord || !ignoredWords.has(lastWord.toLowerCase())) {
+      break;
+    }
 
-    utterance.onerror = () => {
-      setIsPlayingAudio(false);
-      setCurrentPlayingMessageId(null);
-    };
+    words.pop();
+  }
 
-    window.speechSynthesis.speak(utterance);
-  }, [isPlayingAudio, currentPlayingMessageId]);
+  const cleaned = words.join(' ').trim();
+
+  return cleaned || undefined;
+}
+
+/* ============================================================
+   TYPE GUARDS
+   ============================================================ */
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isBackendCitation(value: unknown): value is BackendCitation {
+  return isRecord(value);
+}
+
+function isRetrievalHit(value: unknown): value is RetrievalHit {
+  return isRecord(value);
+}
+
+function isBackendAgentResult(
+  value: unknown,
+): value is BackendAgentResult {
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  return typeof value.agent === 'string';
+}
+
+function isBackendAgentOutput(
+  value: unknown,
+): value is BackendAgentOutput {
+  return isRecord(value);
+}
+
+/* ============================================================
+   CONTEXT
+   ============================================================ */
+
+export interface AIConversationContext {
+  crop?: string;
+  state?: string;
+  district?: string;
+  season?: string;
+}
+
+/* ============================================================
+   HOOK
+   ============================================================ */
+
+export function useAIConversation(
+  context: AIConversationContext = {},
+) {
+  const {
+    crop,
+    state = 'Telangana',
+    district = 'Khammam',
+    season = 'Kharif',
+  } = context;
+
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+
+  const [activeStage, setActiveStage] =
+    useState<StageInfo | null>(null);
+
+  const [isProcessing, setIsProcessing] =
+    useState(false);
+
+  const [isPlayingAudio, setIsPlayingAudio] =
+    useState(false);
+
+  const [
+    currentPlayingMessageId,
+    setCurrentPlayingMessageId,
+  ] = useState<string | null>(null);
+
+  const sessionIdRef = useRef<string>(
+    `session-${Date.now()}`,
+  );
+
+  /* ==========================================================
+     PROCESSING STAGE
+     ========================================================== */
+
+  const setStage = useCallback(
+    (
+      stage: ProcessingStage,
+      message: string,
+      stepNumber: number,
+      totalSteps: number,
+      detail?: string,
+    ) => {
+      setActiveStage({
+        stage,
+        message,
+        stepNumber,
+        totalSteps,
+        detail,
+      });
+    },
+    [],
+  );
+
+  /* ==========================================================
+     TEXT TO SPEECH
+     ========================================================== */
+
+  const speakText = useCallback(
+    (
+      text: string,
+      lang: string = 'te-IN',
+      messageId?: string,
+      rate: number = 1.0,
+    ) => {
+      if (!('speechSynthesis' in window)) {
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      if (
+        isPlayingAudio &&
+        currentPlayingMessageId === messageId
+      ) {
+        setIsPlayingAudio(false);
+        setCurrentPlayingMessageId(null);
+        return;
+      }
+
+      const utterance =
+        new SpeechSynthesisUtterance(text);
+
+      utterance.lang = lang;
+      utterance.rate = rate;
+
+      utterance.onstart = () => {
+        setIsPlayingAudio(true);
+
+        if (messageId) {
+          setCurrentPlayingMessageId(messageId);
+        }
+      };
+
+      utterance.onend = () => {
+        setIsPlayingAudio(false);
+        setCurrentPlayingMessageId(null);
+      };
+
+      utterance.onerror = () => {
+        setIsPlayingAudio(false);
+        setCurrentPlayingMessageId(null);
+      };
+
+      window.speechSynthesis.speak(utterance);
+    },
+    [
+      isPlayingAudio,
+      currentPlayingMessageId,
+    ],
+  );
+
+  /* ==========================================================
+     STOP AUDIO
+     ========================================================== */
 
   const stopAudio = useCallback(() => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
+
     setIsPlayingAudio(false);
     setCurrentPlayingMessageId(null);
   }, []);
 
-  /** Send user message (text, voice, image, or combined). */
-  const sendMessage = useCallback(
-    async (content: UserMessageContent) => {
-      if (isProcessing) return;
+  /* ==========================================================
+     EXTRACT OUTPUT TEXT
+     ========================================================== */
 
-      const userMsgId = `user-${Date.now()}`;
-      const aiMsgId = `ai-${Date.now()}`;
+  const extractAgentText = (
+    result: BackendAgentResult | undefined,
+  ): string => {
+    if (!result) {
+      return '';
+    }
+
+    const output = result.output;
+
+    if (typeof output === 'string') {
+      return output.trim();
+    }
+
+    if (!isBackendAgentOutput(output)) {
+      return '';
+    }
+
+    if (
+      typeof output.recommendation === 'string' &&
+      output.recommendation.trim()
+    ) {
+      return output.recommendation.trim();
+    }
+
+    if (
+      typeof output.answer === 'string' &&
+      output.answer.trim()
+    ) {
+      return output.answer.trim();
+    }
+
+    if (
+      Array.isArray(output.hits) &&
+      output.hits.length > 0
+    ) {
+      return output.hits
+        .filter(isRetrievalHit)
+        .map((hit) => {
+          if (
+            typeof hit.chunk_text === 'string' &&
+            hit.chunk_text.trim()
+          ) {
+            return hit.chunk_text.trim();
+          }
+
+          if (
+            typeof hit.answer_context === 'string' &&
+            hit.answer_context.trim()
+          ) {
+            return hit.answer_context.trim();
+          }
+
+          return '';
+        })
+        .filter(Boolean)
+        .join('\n\n');
+    }
+
+    return '';
+  };
+
+  /* ==========================================================
+     MAP CITATIONS
+     ========================================================== */
+
+  const mapCitations = (
+    rawCitations: unknown,
+  ): Citation[] => {
+    if (!Array.isArray(rawCitations)) {
+      return [];
+    }
+
+    return rawCitations
+      .filter(isBackendCitation)
+      .map(
+        (
+          citation: BackendCitation,
+          index: number,
+        ) => ({
+          citation_id:
+            citation.citation_id ??
+            `cit-${index}`,
+
+          source_title:
+            citation.title ??
+            citation.source_title ??
+            'Agricultural Knowledge Source',
+
+          authority:
+            citation.authority,
+
+          document_type:
+            citation.document_type,
+
+          page:
+            (citation.page_number ??
+              citation.page) ??
+            undefined,
+
+          snippet:
+            citation.snippet,
+
+          relevance_score:
+            citation.confidence ??
+            citation.relevance_score,
+        }),
+      );
+  };
+
+  /* ==========================================================
+     EXTRACT BACKEND RESULTS
+     ========================================================== */
+
+  const extractBackendResults = (
+    response: unknown,
+  ): BackendAgentResult[] => {
+    if (!isRecord(response)) {
+      return [];
+    }
+
+    const rawResults = response.results;
+
+    if (!Array.isArray(rawResults)) {
+      return [];
+    }
+
+    return rawResults.filter(
+      isBackendAgentResult,
+    );
+  };
+
+  /* ==========================================================
+     FIND RESULT
+     ========================================================== */
+
+  const findResultByAgent = (
+    results: BackendAgentResult[],
+    agentName: string,
+  ): BackendAgentResult | undefined => {
+    return results.find(
+      (result) =>
+        result.agent === agentName,
+    );
+  };
+
+  /* ==========================================================
+     BUILD EVIDENCE PACKAGE
+     ========================================================== */
+
+  const buildEvidencePackage = (
+    results: BackendAgentResult[],
+  ): EvidencePackage | undefined => {
+    const retrievalResult =
+      findResultByAgent(
+        results,
+        'knowledge_retrieval_agent',
+      );
+
+    if (!retrievalResult) {
+      return undefined;
+    }
+
+    const output = retrievalResult.output;
+
+    if (!isBackendAgentOutput(output)) {
+      return undefined;
+    }
+
+    const hits = Array.isArray(output.hits)
+      ? output.hits.filter(isRetrievalHit)
+      : [];
+
+    if (hits.length === 0) {
+      return undefined;
+    }
+
+    const citations = mapCitations(
+      retrievalResult.citations,
+    );
+
+
+    return {
+      citations,
+      confidence_breakdown: {
+        retrieval:
+          retrievalResult.confidence ?? 0,
+      },
+    };
+  };
+
+  /* ==========================================================
+     SEND MESSAGE
+     ========================================================== */
+
+  const sendMessage = useCallback(
+    async (
+      content: UserMessageContent,
+    ) => {
+      const query =
+        content.text?.trim() || '';
+
+      if (
+        !query &&
+        !content.image &&
+        !content.voice
+      ) {
+        return;
+      }
+
+      const userMessageId =
+        `user-${Date.now()}`;
 
       const userMessage: ChatMessage = {
-        id: userMsgId,
+        id: userMessageId,
         role: 'user',
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toISOString(),
         userContent: content,
       };
 
-      setMessages((prev) => [...prev, userMessage]);
+      setMessages((previous) => [
+        ...previous,
+        userMessage,
+      ]);
+
       setIsProcessing(true);
 
       try {
-        let visionAnalysisId: number | undefined;
-        const visionFindings: Record<string, unknown>[] = [];
-        let visionConditions: string[] = [];
+        /* ======================================================
+           IMAGE
+           ====================================================== */
 
-        // 1. If Image is attached, upload to Vision API
-        if (content.image?.file) {
-          setStage('analyzing_image', 'Analyzing crop image with computer vision...', 1, 3, 'Checking leaf symptoms and disease markers');
-
-          const uploadRes = await visionApi.uploadImage(content.image.file, content.image.cropHint || 'Paddy');
-          visionAnalysisId = uploadRes.image_id;
-
-          // Poll for completion (up to 5 attempts)
-          let attempts = 0;
-          while (attempts < 5) {
-            attempts++;
-            await new Promise((r) => setTimeout(r, 1000));
-            const analysis = await visionApi.getAnalysis(uploadRes.uuid);
-
-            if (analysis.status === 'COMPLETED') {
-              if (analysis.observations) {
-                analysis.observations.forEach((obs) => {
-                  visionFindings.push({ finding: obs.finding, confidence: obs.confidence });
-                });
-              }
-              if (analysis.candidate_conditions) {
-                visionConditions = analysis.candidate_conditions.map((c) => c.name);
-              }
-              break;
-            } else if (analysis.status === 'FAILED' || analysis.status === 'QUALITY_FAILED') {
-              break;
-            }
-          }
-        }
-
-        // 2. Fetch Live Weather & Spray Window context
-        setStage('evaluating_evidence', 'Fetching live weather & spray window telemetry...', 2, 3, 'Checking district rainfall and wind metrics');
-        let sprayFavorable = true;
-        let sprayReason = 'Dry weather favorable for spray';
-
-        try {
-          const forecast = await weatherApi.getForecast({ latitude: 17.247, longitude: 80.151 });
-          sprayFavorable = forecast.spray_window_favorable;
-          sprayReason = forecast.spray_window_reason;
-        } catch (wErr) {
-          console.warn('Weather telemetry unavailable:', wErr);
-        }
-
-        let aiText = '';
-        let citations: Citation[] = [];
-        let confidenceScore = 0.88;
-        let detectedRisk: RiskSeverity = 'LOW';
-        let agentName = 'crop_advisory_agent';
-        let spokenRef: string | undefined;
-
-        // 3. Execute Core Intelligence (Voice or Agent Runtime)
-        if (content.voice?.audioBlob) {
-          setStage('transcribing_voice', 'Processing speech & translating agricultural terminology...', 2, 3, 'Running multilingual Whisper STT and Normalization');
-
-          const voiceRes = await voiceApi.submitVoiceQuery(
-            content.voice.audioBlob,
-            'query.webm',
-            {
-              hintLanguage: content.language || 'te',
-              analysisId: visionAnalysisId,
-            }
+        if (content.image) {
+          setStage(
+            'analyzing_image',
+            'Analyzing crop image...',
+            1,
+            4,
+            crop
+              ? `Crop context: ${crop}`
+              : 'Crop context not specified',
           );
 
-          aiText = voiceRes.response_text;
-          confidenceScore = voiceRes.confidence;
-          spokenRef = voiceRes.spoken_audio_reference ? String(voiceRes.spoken_audio_reference) : undefined;
-          agentName = voiceRes.agent_used || 'crop_advisory_agent';
-
-          if (voiceRes.citations) {
-            citations = (voiceRes.citations as Record<string, unknown>[]).map((c, idx: number) => ({
-              citation_id: `cit-voice-${idx}`,
-              source_title: (c.title as string) || (c.source_title as string) || 'ICAR Agronomy Bulletin',
-              authority: (c.authority as string) || 'ICAR Research Complex',
-              document_type: (c.document_type as string) || 'Package of Practices',
-              page: (c.page_number as string | number) || (c.page as string | number),
-              snippet: (c.snippet as string) || 'Validated agronomic guideline.',
-              relevance_score: (c.confidence as number) || 0.9,
-            }));
+          try {
+            await visionApi.uploadImage(
+              content.image.file,
+              content.image.cropHint || crop,
+            );
+          } catch (visionError) {
+            console.error(
+              'Vision upload failed:',
+              visionError,
+            );
           }
-        } else {
-          setStage('synthesizing_advisory', 'Cross-referencing ICAR knowledge & synthesizing grounded advisory...', 3, 3, 'Querying GraphRAG and package of practices');
+        }
 
-          const queryGoal = content.text || (visionConditions.length > 0 ? `Diagnose and provide treatment for ${visionConditions.join(', ')}` : 'What are the best practices for my crop?');
+        /* ======================================================
+           VOICE
+           ====================================================== */
 
-          const agentRes = await agentApi.execute({
+        /*
+         * The multimodal composer already captures the voice
+         * attachment. The backend agent request is still the
+         * authoritative agricultural reasoning path.
+         *
+         * Do not call a nonexistent voiceApi.transcribe()
+         * method here.
+         */
+        if (content.voice) {
+          setStage(
+            'transcribing_voice',
+            'Processing voice query...',
+            1,
+            4,
+            content.language
+              ? `Language: ${content.language}`
+              : undefined,
+          );
+        }
+
+        /* ======================================================
+           UNDERSTANDING / PLANNING
+           ====================================================== */
+
+        setStage(
+          'understanding_goal',
+          'Understanding agricultural question...',
+          1,
+          4,
+          crop
+            ? `Crop context: ${crop}`
+            : 'No crop context specified',
+        );
+
+        const queryGoal =
+          query ||
+          'Analyze the provided crop information and provide a grounded agricultural advisory.';
+
+        /*
+         * Explicit crop in the current question wins.
+         * Otherwise use the active farmer crop.
+         */
+        const requestCrop =
+          resolveCropForQuery(
+            queryGoal,
+            crop,
+          );
+
+        console.info(
+          '[KrishiOS] Agent request context:',
+          {
+            query: queryGoal,
+            crop: requestCrop,
+            state,
+            district,
+            season,
+          },
+        );
+
+        /* ======================================================
+           RETRIEVAL
+           ====================================================== */
+
+        setStage(
+          'retrieving_agricultural_sources',
+          'Retrieving grounded agricultural evidence...',
+          2,
+          4,
+          requestCrop
+            ? `Retrieving evidence for ${requestCrop}`
+            : 'Retrieving general agricultural evidence',
+        );
+
+        const agentRes =
+          await agentApi.execute({
             goal: queryGoal,
-            session_id: sessionIdRef.current,
-            crop: 'Paddy',
-            state: 'Telangana',
-            district: 'Khammam',
-            season: 'Kharif',
+            session_id:
+              sessionIdRef.current,
+
+            ...(requestCrop
+              ? {
+                  crop: requestCrop,
+                }
+              : {}),
+
+            ...(state
+              ? {
+                  state,
+                }
+              : {}),
+
+            ...(district
+              ? {
+                  district,
+                }
+              : {}),
+
+            ...(season
+              ? {
+                  season,
+                }
+              : {}),
           });
 
-          const primaryResult = agentRes.results && agentRes.results.length > 0 ? agentRes.results[0] : null;
+        const results =
+          extractBackendResults(agentRes);
 
-          if (primaryResult) {
-            const rawOutput = primaryResult.output as Record<string, unknown> | string;
-            aiText = typeof rawOutput === 'string' ? rawOutput : (rawOutput?.recommendation as string) || (rawOutput?.answer as string) || JSON.stringify(rawOutput);
-            confidenceScore = primaryResult.confidence ?? 0.88;
-            agentName = primaryResult.agent;
+        const retrievalResult =
+          findResultByAgent(
+            results,
+            'knowledge_retrieval_agent',
+          );
 
-            if (primaryResult.citations) {
-              citations = (primaryResult.citations as Record<string, unknown>[]).map((c, idx: number) => ({
-                citation_id: `cit-${idx}`,
-                source_title: (c.title as string) || (c.source_title as string) || 'ICAR Standard Package of Practices',
-                authority: (c.authority as string) || 'Indian Council of Agricultural Research',
-                document_type: (c.document_type as string) || 'Agronomy Bulletin',
-                page: (c.page_number as string | number) || (c.page as string | number),
-                snippet: (c.snippet as string) || 'Recommended fertilizer and pesticide dosages.',
-                relevance_score: (c.confidence as number) || 0.92,
-              }));
-            }
-          } else {
-            aiText = 'Based on your query and current crop conditions, ensure balanced NPK fertilizer application and maintain optimal field moisture.';
-          }
+        const advisoryResult =
+          findResultByAgent(
+            results,
+            'crop_advisory_agent',
+          );
+
+        /* ======================================================
+           EVALUATION
+           ====================================================== */
+
+        setStage(
+          'evaluating_evidence',
+          'Evaluating retrieved agricultural evidence...',
+          3,
+          4,
+          advisoryResult
+            ? 'Crop advisory agent completed'
+            : 'Using verified retrieval evidence',
+        );
+
+        let outputText =
+          extractAgentText(
+            advisoryResult,
+          );
+
+        if (!outputText) {
+          outputText =
+            extractAgentText(
+              retrievalResult,
+            );
         }
 
-        // Determine risk severity from keywords
-        const lowerText = aiText.toLowerCase() + (content.text || '').toLowerCase();
-        if (lowerText.includes('outbreak') || lowerText.includes('severe') || lowerText.includes('heavy rain')) {
-          detectedRisk = 'HIGH';
-        } else if (lowerText.includes('yellow') || lowerText.includes('pest') || lowerText.includes('borer') || lowerText.includes('blight')) {
-          detectedRisk = 'MEDIUM';
+        if (!outputText) {
+          outputText =
+            'I do not have enough verified information to provide a grounded recommendation for this question.';
         }
 
-        // Build evidence package
-        const evidencePackage: EvidencePackage = {
-          confidence_breakdown: {
-            retrieval_similarity: confidenceScore,
-            graph_coherence: 0.85,
-            telemetry_relevance: 0.90,
-          },
-          live_telemetry: {
-            temperature_celsius: 32.5,
-            relative_humidity_percent: 68,
-            rainfall_mm: 0.0,
-            spray_window_favorable: sprayFavorable,
-            spray_window_reason: sprayReason,
-          },
-          citations: citations,
-          graph_paths: [
+        const allCitations =
+          results.flatMap(
+            (result) =>
+              Array.isArray(
+                result.citations,
+              )
+                ? result.citations
+                : [],
+          );
+
+        const citations =
+          mapCitations(
+            allCitations,
+          );
+
+        const confidence =
+          advisoryResult?.confidence ??
+          retrievalResult?.confidence ??
+          0;
+
+        const grounded =
+          advisoryResult?.grounded ??
+          retrievalResult?.grounded ??
+          false;
+
+        const evidence =
+          buildEvidencePackage(
+            results,
+          );
+
+        /* ======================================================
+           RESPONSE VALIDATION
+           ====================================================== */
+
+        const validationResult =
+          findResultByAgent(
+            results,
+            'response_validation_agent',
+          );
+
+        const validationOutput =
+            validationResult &&
+            isBackendAgentOutput(validationResult.output)
+            ? validationResult.output
+          : undefined;
+
+        const validationPassed =
+          typeof validationOutput?.passed ===
+          'boolean'
+            ? validationOutput.passed
+            : undefined;
+
+        /*
+         * Backend validation remains authoritative.
+         * Never bypass it in the frontend.
+         */
+        if (validationPassed === false) {
+  const validatedText =
+    validationOutput?.validated_text;
+
+  outputText =
+    typeof validatedText === 'string'
+      ? validatedText
+      : 'I do not have enough verified information.';
+}
+
+        /* ======================================================
+           COMPLETE
+           ====================================================== */
+
+        setStage(
+          'complete',
+          'Advisory ready',
+          4,
+          4,
+          requestCrop
+            ? `Analysis completed for ${requestCrop}`
+            : undefined,
+        );
+
+        /* ======================================================
+           ASSISTANT MESSAGE
+           ====================================================== */
+
+        const assistantMessage: ChatMessage = {
+  id: `assistant-${Date.now()}`,
+
+  role: 'assistant',
+
+  timestamp: new Date().toISOString(),
+
+  aiContent: {
+    text: outputText,
+    confidence,
+    grounded,
+    citations,
+    evidence,
+    evaluation: {
+      policyCompliant:
+        validationPassed ?? true,
+    },
+  },
+};
+
+        setMessages(
+          (previous) => [
+            ...previous,
+            assistantMessage,
+          ],
+        );
+      } catch (error) {
+        console.error(
+          'AI conversation execution failed:',
+          error,
+        );
+
+        setMessages(
+          (previous) => [
+            ...previous,
             {
-              path: 'Paddy -> HAS_PEST -> Brown Plant Hopper -> CONTROLLED_BY -> Pymetrozine 50 WG',
-              confidence: 0.94,
-              relationship: 'AGRONOMIC_FACT',
+              id:
+                `assistant-error-${Date.now()}`,
+
+              role: 'assistant',
+
+              timestamp:
+                new Date().toISOString(),
+
+              aiContent: {
+                text:
+                  'Unable to complete the agricultural analysis right now. Please try again.',
+
+                confidence: 0,
+
+                grounded: false,
+
+                citations: [],
+              },
             },
           ],
-          vision_findings: visionFindings,
-          freshness_seconds: 1800,
-        };
+        );
 
-        // Contextual follow-up prompts
-        const suggestedFollowUps = [
-          'What is the recommended spray dosage per acre?',
-          'Will rain in next 48h wash away the chemical spray?',
-          'What organic / biological alternatives are effective?',
-          'Show me verified ICAR sources for this treatment.',
-        ];
-
-        const aiMessage: ChatMessage = {
-          id: aiMsgId,
-          role: 'assistant',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          aiContent: {
-            text: aiText,
-            confidence: confidenceScore,
-            grounded: true,
-            citations: citations,
-            evidence: evidencePackage,
-            riskSeverity: detectedRisk,
-            riskTitle: detectedRisk !== 'LOW' ? 'Crop Health Alert' : undefined,
-            liveContext: {
-              temperatureCelsius: 32.5,
-              weatherCondition: 'Partly Cloudy',
-              sprayWindowFavorable: sprayFavorable,
-              sprayWindowReason: sprayReason,
-            },
-            spokenAudioReference: spokenRef,
-            agentUsed: agentName,
-            suggestedFollowUps,
-          },
-        };
-
-        setMessages((prev) => [...prev, aiMessage]);
-      } catch (err) {
-        console.error('AI Conversation Error:', err);
-        const errMsg = err instanceof Error ? err.message : 'KrishiOS could not complete the advisory analysis right now.';
-
-        const errorAiMessage: ChatMessage = {
-          id: aiMsgId,
-          role: 'assistant',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          error: errMsg,
-          aiContent: {
-            text: 'We encountered a momentary communication issue with the agricultural intelligence agents. Please verify your connection or try again.',
-            confidence: 0.0,
-            riskSeverity: 'LOW',
-            suggestedFollowUps: ['Try again', 'Check weather forecast instead', 'View registered plots'],
-          },
-        };
-
-        setMessages((prev) => [...prev, errorAiMessage]);
+        setStage(
+          'error',
+          'Analysis failed',
+          4,
+          4,
+          'Please try again.',
+        );
       } finally {
         setIsProcessing(false);
-        setActiveStage(null);
+
+        window.setTimeout(() => {
+          setActiveStage(null);
+        }, 500);
       }
     },
-    [isProcessing, setStage]
+    [
+      crop,
+      state,
+      district,
+      season,
+      setStage,
+    ],
   );
 
-  const resetConversation = useCallback(() => {
-    stopAudio();
-    setMessages([]);
-    sessionIdRef.current = `session-${Date.now()}`;
-  }, [stopAudio]);
+  /* ==========================================================
+     RESET
+     ========================================================== */
+
+  const resetConversation =
+    useCallback(() => {
+      setMessages([]);
+      setActiveStage(null);
+      setIsProcessing(false);
+      stopAudio();
+
+      sessionIdRef.current =
+        `session-${Date.now()}`;
+    }, [stopAudio]);
+
+  /* ==========================================================
+    WEATHER
+     ========================================================== */
+
+  const getWeatherContext =
+    useCallback(async () => {
+      try {
+        return await weatherApi.getCurrentWeather({
+          district,
+          state,
+        });
+      } catch (error) {
+        console.error(
+          'Weather context fetch failed:',
+          error,
+        );
+
+        return undefined;
+      }
+    }, [district, state]);
+
+  /* ==========================================================
+  RETURN API
+     ========================================================== */
 
   return {
     messages,
+
     activeStage,
+
     isProcessing,
+
     isPlayingAudio,
+
     currentPlayingMessageId,
+
     sendMessage,
+
     resetConversation,
+
     speakText,
+
     stopAudio,
-    initialSuggestions: INITIAL_SUGGESTIONS,
+
+    getWeatherContext,
+
+    initialSuggestions:
+      getInitialSuggestions(crop),
   };
 }
