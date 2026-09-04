@@ -36,11 +36,12 @@ Most agricultural digital solutions solve only one part of this problem. **Krish
 KrishiOS is a unified agricultural intelligence platform designed around an **AI Operating System architecture**.
 
 Instead of building independent weather apps, pest chatbots, market dashboards, scheme assistants, and soil systems as disconnected tools, KrishiOS provides a shared intelligence layer that all of these capabilities can run on top of.
-
-![KrishiOS Architecture Diagram](./docs/architecture-diagram.svg)
-
 The architecture deliberately separates the orchestration runtime, specialist agents, AI services, data layer, and integration layer so individual components can evolve independently.
 
+
+<p align="center">
+<img width="777" height="1224" alt="architecture-diagram-cropped" src="https://github.com/user-attachments/assets/0f47a099-9ce3-410f-a4f0-11e4744a6c9c" />
+</p>
 ---
 
 ## ✨ Implemented Capabilities
@@ -216,155 +217,6 @@ backend/
 This keeps clear platform boundaries so the agricultural intelligence layer can evolve without turning the backend into a monolithic chatbot implementation.
 
 ---
-## Architecture Diagram
-<svg viewBox="0 0 900 1500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo3YmM2NGY4MC04NjljLTQ4ZTktODUxZi00OTkzM2EzNTkzYjUAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaGnebqHJNy3uu3Hzwsy5Fk0AAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDowZDAyZDk5MS0yOWRlLTQ5MzItOTFiMC0yMjBkMDZhODE1YmFscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoYWZuXcr7S5/+Sksd2izJwwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggiObRcOr6R4kJDl/gqgNINqD5KY6HgnJC/LRDHdIS7GqkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaNIeAxsTRGMp83hUOSGiGbcAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCB9KK3Xvj8NOkDQiU5RQD51k2sU/IFLm+aHkfA7ZiurAWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBipZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjdiYzY0ZjgwLTg2OWMtNDhlOS04NTFmLTQ5OTMzYTM1OTNiNS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjQ2NDhlZDhhLTJiMjctNDA0ZS04ZTY4LTAxNWJhYjI4YzNjNHJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCCI5tFw6vpHiQkOX+CqA0g2oPkpjoeCckL8tEMd0hLsaqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFgg1l9XV2ENa0SXJcLVoMOtbnO3VJ+d6FANFXZv8Wi+vCqiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFgg+LOnQPCgQTI2hiWgSUdy0dnB1Ox8qDkxxqvrlZjkwpB0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQO/2tr/QnPoBm310Bfct1GbDwoyJPOQxcSFccTNlenL4Cg3sjZI+Y7OtMzbJGDQFU3JpcFdCXEKfUB+NWWXMCtw=</c2pa:manifest></metadata>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
-    </marker>
-    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
-    </marker>
-  </defs>
-
-  <rect width="900" height="1500" fill="#fafaf9"/>
-
-  <!-- Title -->
-  <text x="450" y="42" text-anchor="middle" font-size="24" font-weight="700" fill="#1c1917">KrishiOS — System Architecture</text>
-  <text x="450" y="66" text-anchor="middle" font-size="13" fill="#78716c">Farmer question → grounded, evidence-backed agricultural decision</text>
-
-  <!-- Farmer / Officer -->
-  <rect x="300" y="95" width="300" height="60" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
-  <text x="450" y="120" text-anchor="middle" font-size="14" font-weight="600" fill="#3730a3">Farmer / Officer</text>
-  <text x="450" y="140" text-anchor="middle" font-size="12" fill="#4338ca">Text · Voice · Image</text>
-  <line x1="450" y1="155" x2="450" y2="185" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- API / Auth -->
-  <rect x="330" y="188" width="240" height="52" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
-  <text x="450" y="219" text-anchor="middle" font-size="14" font-weight="600" fill="#065f46">API / Auth  (FastAPI)</text>
-  <line x1="450" y1="240" x2="450" y2="270" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- Agent Orchestrator -->
-  <rect x="260" y="273" width="380" height="72" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
-  <text x="450" y="300" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">Agent Orchestrator</text>
-  <text x="450" y="320" text-anchor="middle" font-size="12" fill="#6d28d9">Plan → Act → Observe → Respond</text>
-  <text x="450" y="336" text-anchor="middle" font-size="10.5" fill="#7c3aed">bounded execution · contracts · timeouts · escalation</text>
-
-  <!-- fan out lines -->
-  <line x1="450" y1="345" x2="450" y2="365" stroke="#4b5563" stroke-width="1.5"/>
-  <line x1="200" y1="365" x2="700" y2="365" stroke="#4b5563" stroke-width="1.5"/>
-  <line x1="200" y1="365" x2="200" y2="390" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <line x1="450" y1="365" x2="450" y2="390" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <line x1="700" y1="365" x2="700" y2="390" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- Three agents -->
-  <rect x="110" y="393" width="180" height="58" rx="9" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
-  <text x="200" y="427" text-anchor="middle" font-size="13" font-weight="600" fill="#9a3412">Advisory Agent</text>
-
-  <rect x="360" y="393" width="180" height="58" rx="9" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
-  <text x="450" y="427" text-anchor="middle" font-size="13" font-weight="600" fill="#9a3412">Vision Agent</text>
-
-  <rect x="610" y="393" width="180" height="58" rx="9" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
-  <text x="700" y="427" text-anchor="middle" font-size="13" font-weight="600" fill="#9a3412">Weather Agent</text>
-
-  <!-- Advisory agent goes down to Intelligence layer -->
-  <line x1="200" y1="451" x2="200" y2="480" stroke="#4b5563" stroke-width="1.5"/>
-  <line x1="200" y1="480" x2="450" y2="480" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- Agricultural Intelligence layer -->
-  <rect x="150" y="483" width="600" height="120" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="450" y="508" text-anchor="middle" font-size="15" font-weight="700" fill="#1e3a8a">Agricultural Intelligence Layer</text>
-
-  <rect x="175" y="522" width="165" height="62" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="1.2"/>
-  <text x="257" y="546" text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">RAG</text>
-  <text x="257" y="562" text-anchor="middle" font-size="10" fill="#1e40af">Qdrant vector search</text>
-  <text x="257" y="576" text-anchor="middle" font-size="10" fill="#1e40af">blue-green indexing</text>
-
-  <rect x="368" y="522" width="165" height="62" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="1.2"/>
-  <text x="450" y="546" text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">GraphRAG</text>
-  <text x="450" y="562" text-anchor="middle" font-size="10" fill="#1e40af">Neo4j knowledge graph</text>
-  <text x="450" y="576" text-anchor="middle" font-size="10" fill="#1e40af">crop / pest / treatment</text>
-
-  <rect x="561" y="522" width="165" height="62" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="1.2"/>
-  <text x="643" y="546" text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">Verified Context</text>
-  <text x="643" y="562" text-anchor="middle" font-size="10" fill="#1e40af">ICAR · TNAU · IIRR</text>
-  <text x="643" y="576" text-anchor="middle" font-size="10" fill="#1e40af">retrieval evaluation</text>
-
-  <line x1="450" y1="603" x2="450" y2="628" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- LLM Reasoning -->
-  <rect x="330" y="631" width="240" height="55" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
-  <text x="450" y="655" text-anchor="middle" font-size="14" font-weight="600" fill="#5b21b6">LLM Reasoning</text>
-  <text x="450" y="674" text-anchor="middle" font-size="11" fill="#6d28d9">Gemini</text>
-  <line x1="450" y1="686" x2="450" y2="712" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- Validated Farmer Advisory -->
-  <rect x="200" y="715" width="500" height="90" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
-  <text x="450" y="742" text-anchor="middle" font-size="15" font-weight="700" fill="#065f46">Validated Farmer Advisory</text>
-  <text x="450" y="763" text-anchor="middle" font-size="11.5" fill="#047857">Evidence · Confidence · Provenance</text>
-  <text x="450" y="781" text-anchor="middle" font-size="11.5" fill="#047857">Actions · Safety · Escalation</text>
-
-  <line x1="450" y1="805" x2="450" y2="830" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- Human Expert Loop -->
-  <rect x="300" y="833" width="300" height="62" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="450" y="860" text-anchor="middle" font-size="14" font-weight="700" fill="#991b1b">Human Expert Loop</text>
-  <text x="450" y="879" text-anchor="middle" font-size="11.5" fill="#b91c1c">Officer review · approve / modify</text>
-
-  <!-- Divider -->
-  <line x1="60" y1="930" x2="840" y2="930" stroke="#e7e5e4" stroke-width="1"/>
-
-  <!-- Data layer section -->
-  <text x="450" y="965" text-anchor="middle" font-size="15" font-weight="700" fill="#1c1917">Data &amp; Storage Layer</text>
-
-  <rect x="70" y="985" width="150" height="70" rx="9" fill="#ffffff" stroke="#a8a29e" stroke-width="1.3"/>
-  <text x="145" y="1013" text-anchor="middle" font-size="12" font-weight="600" fill="#292524">PostgreSQL</text>
-  <text x="145" y="1032" text-anchor="middle" font-size="10" fill="#57534e">Relational data</text>
-
-  <rect x="240" y="985" width="150" height="70" rx="9" fill="#ffffff" stroke="#a8a29e" stroke-width="1.3"/>
-  <text x="315" y="1013" text-anchor="middle" font-size="12" font-weight="600" fill="#292524">Qdrant</text>
-  <text x="315" y="1032" text-anchor="middle" font-size="10" fill="#57534e">Vector search</text>
-
-  <rect x="410" y="985" width="150" height="70" rx="9" fill="#ffffff" stroke="#a8a29e" stroke-width="1.3"/>
-  <text x="485" y="1013" text-anchor="middle" font-size="12" font-weight="600" fill="#292524">Neo4j</text>
-  <text x="485" y="1032" text-anchor="middle" font-size="10" fill="#57534e">Knowledge graph</text>
-
-  <rect x="580" y="985" width="150" height="70" rx="9" fill="#ffffff" stroke="#a8a29e" stroke-width="1.3"/>
-  <text x="655" y="1013" text-anchor="middle" font-size="12" font-weight="600" fill="#292524">Redis</text>
-  <text x="655" y="1032" text-anchor="middle" font-size="10" fill="#57534e">Cache / state</text>
-
-  <!-- connecting the intelligence layer conceptually to data layer -->
-  <line x1="145" y1="985" x2="145" y2="960" stroke="#d6d3d1" stroke-width="1" stroke-dasharray="4 3"/>
-  <line x1="315" y1="985" x2="315" y2="960" stroke="#d6d3d1" stroke-width="1" stroke-dasharray="4 3"/>
-  <line x1="485" y1="985" x2="485" y2="960" stroke="#d6d3d1" stroke-width="1" stroke-dasharray="4 3"/>
-  <line x1="655" y1="985" x2="655" y2="960" stroke="#d6d3d1" stroke-width="1" stroke-dasharray="4 3"/>
-  <line x1="145" y1="960" x2="655" y2="960" stroke="#d6d3d1" stroke-width="1" stroke-dasharray="4 3"/>
-
-  <!-- Legend -->
-  <text x="450" y="1100" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1917">Legend</text>
-
-  <rect x="90" y="1125" width="18" height="18" rx="4" fill="#eef2ff" stroke="#6366f1"/>
-  <text x="115" y="1139" font-size="11.5" fill="#292524">User-facing entry</text>
-
-  <rect x="280" y="1125" width="18" height="18" rx="4" fill="#ecfdf5" stroke="#10b981"/>
-  <text x="305" y="1139" font-size="11.5" fill="#292524">API / validated output</text>
-
-  <rect x="470" y="1125" width="18" height="18" rx="4" fill="#f5f3ff" stroke="#8b5cf6"/>
-  <text x="495" y="1139" font-size="11.5" fill="#292524">Orchestration / LLM</text>
-
-  <rect x="90" y="1155" width="18" height="18" rx="4" fill="#fff7ed" stroke="#f97316"/>
-  <text x="115" y="1169" font-size="11.5" fill="#292524">Specialist agents</text>
-
-  <rect x="280" y="1155" width="18" height="18" rx="4" fill="#eff6ff" stroke="#3b82f6"/>
-  <text x="305" y="1169" font-size="11.5" fill="#292524">Knowledge / retrieval</text>
-
-  <rect x="470" y="1155" width="18" height="18" rx="4" fill="#fef2f2" stroke="#ef4444"/>
-  <text x="495" y="1169" font-size="11.5" fill="#292524">Human oversight</text>
-
-  <text x="450" y="1220" text-anchor="middle" font-size="10.5" fill="#a8a29e">KrishiOS — AI Operating System for Indian Agriculture</text>
-</svg>
-
-
 ## ⚙️ Technology Stack
 
 **Frontend:** React 19 · TypeScript · Vite · React Router · TanStack Query · Tailwind CSS · i18next · lucide-react · Vitest
