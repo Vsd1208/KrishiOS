@@ -58,7 +58,7 @@ class GeminiLLMProvider:
         self,
         api_key: str,
         model_name: str = "gemini-3.6-flash",
-        timeout_seconds: float = 30.0,
+        timeout_seconds: float = 60.0,
     ) -> None:
         if not api_key or not api_key.strip():
             raise ValueError("GEMINI_API_KEY is required when LLM_PROVIDER=gemini")
@@ -150,13 +150,23 @@ class GeminiLLMProvider:
                 "finish_reason": self._extract_finish_reason(response),
             }
 
+            finish_reason = self._extract_finish_reason(response)
+
+            metadata: dict[str, Any] = {
+                "provider": self.provider_name,
+                "model": self.model_name,
+                "finish_reason": finish_reason,
+            }
+
             logger.info(
                 "GeminiLLMProvider: response generated | model={} | "
-                "prompt_tokens={} | completion_tokens={} | total_tokens={}",
+                "prompt_tokens={} | completion_tokens={} | total_tokens={} |"
+                "finish_reason={}",
                 self._model_name,
                 prompt_tokens,
                 completion_tokens,
                 total_tokens,
+                finish_reason,
             )
 
             return LLMResponse(

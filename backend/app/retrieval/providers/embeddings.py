@@ -19,7 +19,15 @@ class SentenceTransformerEmbeddingProvider(EmbeddingProvider):
     def __init__(self, model_name: str, model_version: str) -> None:
         self._model_name = model_name
         self._model_version = model_version
-        self._model: Any | None = SentenceTransformer(model_name) if SentenceTransformer is not None else None
+        self._model: Any | None = (
+            SentenceTransformer(
+                model_name,
+                device="cpu",
+                model_kwargs={"low_cpu_mem_usage": False},
+            )
+            if SentenceTransformer is not None
+            else None
+        )
 
     @property
     def model_name(self) -> str:
@@ -52,6 +60,7 @@ class SentenceTransformerEmbeddingProvider(EmbeddingProvider):
     def _encode(self, texts: list[str]) -> list[list[float]]:
         if self._model is None:
             return [self._fallback_encode(text) for text in texts]
+
         vectors = self._model.encode(
             texts,
             batch_size=64,
@@ -62,11 +71,17 @@ class SentenceTransformerEmbeddingProvider(EmbeddingProvider):
 
     @staticmethod
     def _fallback_encode(text: str) -> list[float]:
-        tokens = [token.casefold() for token in text.replace("\n", " ").split() if token]
+        tokens = [
+            token.casefold()
+            for token in text.replace("\n", " ").split()
+            if token
+        ]
+
         if not tokens:
             return [0.0] * 32
 
         vector = [0.0] * 32
+
         for index, token in enumerate(tokens):
             digest = hashlib.sha256(token.encode("utf-8")).digest()
             bucket = int.from_bytes(digest[:2], "big") % 32
@@ -75,4 +90,3 @@ class SentenceTransformerEmbeddingProvider(EmbeddingProvider):
 
         norm = math.sqrt(sum(value * value for value in vector)) or 1.0
         return [value / norm for value in vector]
-

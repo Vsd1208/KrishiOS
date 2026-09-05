@@ -70,7 +70,7 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str | None = None
     LLM_TEMPERATURE: float = 0.2
     LLM_MAX_TOKENS: int = 1200
-    LLM_TIMEOUT_SECONDS: float = 30.0
+    LLM_TIMEOUT_SECONDS: float = 60.0
 
 
     # ── Authentication ────────────────────────────────────────────────────────

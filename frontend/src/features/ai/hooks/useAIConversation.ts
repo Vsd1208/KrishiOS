@@ -122,11 +122,6 @@ function resolveCropForQuery(
   query: string,
   defaultCrop?: string,
 ): string | undefined {
-  const normalizedDefault = defaultCrop?.trim();
-  if (normalizedDefault) {
-    return normalizedDefault;
-  }
-
   const normalizedQuery = query
     .toLowerCase()
     .replace(/[?!.,;:()[\]{}]/g, ' ')
@@ -134,9 +129,12 @@ function resolveCropForQuery(
     .trim();
 
   /*
-   * "What pests affect chilli?"
-   * "What diseases affect maize?"
-   * "Problems affecting cotton"
+   * Explicit crop mentioned in the current question wins.
+   *
+   * Examples:
+   * "What pests affect paddy?" -> "paddy"
+   * "What diseases affect chilli?" -> "chilli"
+   * "Problems affecting cotton" -> "cotton"
    */
   const affectPattern =
     /\b(?:affect|affecting|infect|infecting)\s+([a-z][a-z0-9]*(?:\s+[a-z][a-z0-9]*){0,3})\b/i;
@@ -221,9 +219,18 @@ function resolveCropForQuery(
     }
   }
 
+  /*
+   * If no crop is explicitly mentioned in the question,
+   * use the farmer's active/default crop.
+   */
+  const normalizedDefault = defaultCrop?.trim();
+
+  if (normalizedDefault) {
+    return normalizedDefault;
+  }
+
   return undefined;
 }
-
 function cleanCropCandidate(candidate: string): string | undefined {
   const ignoredWords = new Set([
     'a',
@@ -979,14 +986,9 @@ export function useAIConversation(
          * Backend validation remains authoritative.
          * Never bypass it in the frontend.
          */
-        if (validationPassed === false) {
-  const validatedText =
-    validationOutput?.validated_text;
-
+        if (!outputText) {
   outputText =
-    typeof validatedText === 'string'
-      ? validatedText
-      : 'I do not have enough verified information.';
+    'I do not have enough verified information to provide a grounded recommendation for this question.';
 }
 
         /* ======================================================
