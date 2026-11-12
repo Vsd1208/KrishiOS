@@ -44,6 +44,11 @@ class PatternRelationshipExtractor:
 
     EXTRACTION_MODEL = "pattern_extractor_v1"
 
+    _ANAPHORA_PATTERNS: dict[str, re.Pattern[str]] = {
+        "Disease": re.compile(r"\b(?:the|this) (?:disease|infection)\b"),
+        "Pest": re.compile(r"\b(?:the|this) (?:pest|insect)\b"),
+    }
+
     def __init__(self) -> None:
         # Define basic keyword triggers for relationship types
         self._triggers = {
@@ -71,16 +76,28 @@ class PatternRelationshipExtractor:
 
         # 2. Text co-occurrence (sentences)
         sentences = re.split(r'(?<=[.!?])\s+', text)
+        last_seen_by_type: dict[str, ResolvedEntity] = {}
         for sentence in sentences:
             sentence_lower = sentence.lower()
-            
+
             # Find entities in this sentence
             sentence_entities = [
-                e for e in entities 
+                e for e in entities
                 if e.input_string.lower() in sentence_lower
                 and e.matched_via != "metadata"
             ]
-            
+
+            # Shallow anaphora: "The disease manifests as ..." refers to the most
+            # recent Disease/Pest named in an earlier sentence.
+            for entity_type, pattern in self._ANAPHORA_PATTERNS.items():
+                has_type = any(e.entity_type == entity_type for e in sentence_entities)
+                antecedent = last_seen_by_type.get(entity_type)
+                if not has_type and antecedent is not None and pattern.search(sentence_lower):
+                    sentence_entities.append(antecedent)
+
+            for e in sentence_entities:
+                last_seen_by_type[e.entity_type] = e
+
             # Check all pairs in the sentence
             for i, subj in enumerate(sentence_entities):
                 for obj in sentence_entities[i+1:]:

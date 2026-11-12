@@ -33,6 +33,7 @@ dependencies = [
     "PyJWT>=2.8.0,<3.0.0",
     # ── Sprint 6 — Knowledge Graph & GraphRAG ────────────────────────────────
     "neo4j>=5.18.0,<6.0.0",
+    "psutil>=6.0.0,<8.0.0",
 ]
 
 [dependency-groups]

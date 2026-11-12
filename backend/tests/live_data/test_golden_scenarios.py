@@ -40,6 +40,8 @@ async def test_scenario_2_agricultural_spray_decision():
     class MockItem:
         class Hit:
             chunk_text = "Spray tricyclazole 75% WP @ 0.6g/L for blast. Do not spray if rain is expected within 24 hours."
+            similarity = 0.88
+            metadata = {"crop": "Paddy", "source": "ICAR"}
         class Citation:
             title = "ICAR Guidelines (2026)"
             source = "ICAR"
