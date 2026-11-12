@@ -178,9 +178,15 @@ class Settings(BaseSettings):
     ALLOW_OFF_DEVICE_PROVIDERS: bool = False
 
     # Local speech models (local-ml extra). Whisper sizes: tiny|base|small|medium|large-v3.
+    # Hugging Face read token for gated AI4Bharat checkpoints (never logged or committed).
+    HF_TOKEN: str | None = None
+    STT_INDICCONFORMER_DECODING: str = "rnnt"  # rnnt | ctc
     STT_WHISPER_MODEL: str = "small"
     STT_WHISPER_COMPUTE_TYPE: str = "int8"
     STT_WHISPER_BEAM_SIZE: int = 5
+    # Whisper's temperature fallback re-decodes an utterance up to 6 times when output looks
+    # repetitive (common for Telugu); off by default to bound CPU latency.
+    STT_WHISPER_TEMPERATURE_FALLBACK: bool = False
     TTS_MMS_MODEL_PREFIX: str = "facebook/mms-tts-"
 
     # Worker / scheduler (arq on Redis)

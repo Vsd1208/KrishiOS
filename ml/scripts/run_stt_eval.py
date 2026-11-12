@@ -63,8 +63,10 @@ async def evaluate(provider_name: str, lang: str, sample: list[dict]) -> dict:
     t_load = time.perf_counter()
     await provider.transcribe(sample[0]["path"])  # warm-up (model load); not timed below
     load_s = time.perf_counter() - t_load
-    for r in sample:
+    for k, r in enumerate(sample, start=1):
         res = await provider.transcribe(r["path"])
+        secs = res.inference_ms / 1000
+        print(f"[{lang} {k}/{len(sample)}] {secs:.1f}s lid={res.detected_language}", flush=True)
         hyps.append(res.raw_transcript)
         latencies.append(res.inference_ms)
         if "real_time_factor" in res.metadata:

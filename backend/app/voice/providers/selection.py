@@ -49,6 +49,26 @@ def _gemini_stt() -> SpeechToTextProvider:
     return GeminiSTTProvider(s.GEMINI_API_KEY, s.LLM_MODEL, s.LLM_TIMEOUT_SECONDS)
 
 
+def _indicconformer(decoding: str):
+    def build() -> SpeechToTextProvider:
+        from app.voice.providers.indicconformer_stt import (  # noqa: PLC0415
+            IndicConformerSTTProvider,
+        )
+
+        return IndicConformerSTTProvider(decoding=decoding)
+    return build
+
+
+for _dec in ("rnnt", "ctc"):
+    stt_selector.register(
+        ProviderInfo("stt", f"indicconformer-600m-{_dec}", f"600m-multilingual-{_dec}",
+                     ProviderKind.LIVE,
+                     description="Local AI4Bharat IndicConformer (MIT, ONNX on CPU; gated "
+                                 "on Hugging Face). Whisper LID; English routed to Whisper."),
+        _indicconformer(_dec),
+    )
+
+
 def _mms_tts() -> TextToSpeechProvider:
     from app.voice.providers.mms_tts import MMSTTSProvider  # noqa: PLC0415
 

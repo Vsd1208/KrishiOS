@@ -31,6 +31,9 @@ class FasterWhisperSTTProvider:
         self._size = model_size or s.STT_WHISPER_MODEL
         self._compute = compute_type or s.STT_WHISPER_COMPUTE_TYPE
         self._beam = s.STT_WHISPER_BEAM_SIZE
+        self._temperature = (
+            [0.0, 0.2, 0.4, 0.6, 0.8, 1.0] if s.STT_WHISPER_TEMPERATURE_FALLBACK else 0.0
+        )
         self._languages = [lang for lang in s.SUPPORTED_LANGUAGES if lang in _SCRIPT]
         self._model: Any = None
 
@@ -73,6 +76,7 @@ class FasterWhisperSTTProvider:
         lid_ms = (perf_counter() - lid_t0) * 1000
         segments, info = self._load().transcribe(
             str(audio_path), language=lang, beam_size=self._beam, vad_filter=True,
+            temperature=self._temperature, condition_on_previous_text=False,
         )
         segs = list(segments)
         text = " ".join(seg.text.strip() for seg in segs).strip()

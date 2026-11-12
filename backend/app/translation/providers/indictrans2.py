@@ -15,6 +15,7 @@ from typing import Any
 
 from loguru import logger
 
+from app.providers.hf import ensure_hf_token
 from app.translation.providers.base import TranslationError
 
 _TAGS = {"en": "eng_Latn", "hi": "hin_Deva", "te": "tel_Telu"}
@@ -40,6 +41,7 @@ class IndicTrans2Provider:
     def _load(self, direction: str) -> tuple[Any, Any]:
         if direction not in self._loaded:
             model_id = _MODELS[direction]
+            ensure_hf_token()
             try:
                 from transformers import (  # noqa: PLC0415
                     AutoModelForSeq2SeqLM,
