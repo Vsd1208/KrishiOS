@@ -1,0 +1,300 @@
+{
+ "run_id": "b74f7a0eb8c7",
+ "config": {
+  "providers": [
+   "rule-based-nlu"
+  ],
+  "dataset": "evaluation_sets\\nlu\\utterances_v1.jsonl",
+  "n": 152,
+  "label_status": "draft-unreviewed"
+ },
+ "results": {
+  "rule-based-nlu": {
+   "n": 152,
+   "errors": 0,
+   "intent_accuracy": 0.7961,
+   "intent_macro_f1": 0.8261,
+   "intent_accuracy_by_segment": {
+    "en": {
+     "acc": 0.7021,
+     "n": 47
+    },
+    "hi": {
+     "acc": 0.8529,
+     "n": 34
+    },
+    "hi-cs": {
+     "acc": 0.7368,
+     "n": 19
+    },
+    "te": {
+     "acc": 0.8529,
+     "n": 34
+    },
+    "te-cs": {
+     "acc": 0.8889,
+     "n": 18
+    }
+   },
+   "language_accuracy": 0.9342,
+   "code_switch_accuracy": 0.9342,
+   "slot_crop": {
+    "precision": 1.0,
+    "recall": 0.9383,
+    "f1": 0.9682,
+    "tp": 76,
+    "fp": 0,
+    "fn": 5
+   },
+   "slot_district": {
+    "precision": 1.0,
+    "recall": 0.8571,
+    "f1": 0.9231,
+    "tp": 6,
+    "fp": 0,
+    "fn": 1
+   },
+   "latency_ms_median": 0.29,
+   "top_confusions": [
+    {
+     "gold": "disease",
+     "pred": "advisory",
+     "count": 11
+    },
+    {
+     "gold": "market",
+     "pred": "advisory",
+     "count": 4
+    },
+    {
+     "gold": "govt_bulletin",
+     "pred": "out_of_scope",
+     "count": 3
+    },
+    {
+     "gold": "yield",
+     "pred": "advisory",
+     "count": 3
+    },
+    {
+     "gold": "weather",
+     "pred": "out_of_scope",
+     "count": 2
+    },
+    {
+     "gold": "scheme",
+     "pred": "out_of_scope",
+     "count": 2
+    },
+    {
+     "gold": "officer",
+     "pred": "disease",
+     "count": 2
+    },
+    {
+     "gold": "govt_bulletin",
+     "pred": "weather",
+     "count": 1
+    },
+    {
+     "gold": "govt_bulletin",
+     "pred": "advisory",
+     "count": 1
+    },
+    {
+     "gold": "yield",
+     "pred": "weather",
+     "count": 1
+    }
+   ],
+   "errors_detail": [
+    {
+     "id": "n003",
+     "text": "Tomato leaves have dark rings on the lower side, what is this",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n004",
+     "text": "White flies are sitting under the chilli leaves",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n007",
+     "text": "మిరప ఆకులు ముడుచుకుపోతున్నాయి, ఏం మందు కొట్టాలి?",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n009",
+     "text": "गेहूं की पत्तियों पर पीले रंग की धारियां हैं",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n012",
+     "text": "टमाटर के पौधे मुरझा रहे हैं",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n018",
+     "text": "pathi lo tella doma ekkuva undi",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n019",
+     "text": "gehun ki patti peeli ho rahi hai",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n020",
+     "text": "tamatar ke paudhe sukh rahe hain",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n021",
+     "text": "Maize stems have holes and sawdust like material",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n023",
+     "text": "मक्का में फॉल आर्मीवर्म दिख रहा है",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n024",
+     "text": "groundnut leaves showing tikka leaf spot",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n028",
+     "text": "How hot will it be this week?",
+     "gold": "weather",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n041",
+     "text": "Should I expect frost tonight?",
+     "gold": "weather",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n046",
+     "text": "Where can I get the best rate for my chillies?",
+     "gold": "market",
+     "pred": "advisory"
+    },
+    {
+     "id": "n047",
+     "text": "Should I sell my paddy now or wait?",
+     "gold": "market",
+     "pred": "advisory"
+    },
+    {
+     "id": "n054",
+     "text": "మిర్చి rate ఈరోజు ఎంత ఉంది?",
+     "gold": "market",
+     "pred": "advisory"
+    },
+    {
+     "id": "n055",
+     "text": "आज tomato का rate क्या है?",
+     "gold": "market",
+     "pred": "advisory"
+    },
+    {
+     "id": "n064",
+     "text": "పీఎం కిసాన్ డబ్బులు ఎప్పుడు పడతాయి?",
+     "gold": "scheme",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n076",
+     "text": "मृदा स्वास्थ्य कार्ड कैसे बनवाएं?",
+     "gold": "scheme",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n077",
+     "text": "What did the agriculture department say about this week's rains?",
+     "gold": "govt_bulletin",
+     "pred": "weather"
+    },
+    {
+     "id": "n078",
+     "text": "Is there any new advisory from KVK for paddy?",
+     "gold": "govt_bulletin",
+     "pred": "advisory"
+    },
+    {
+     "id": "n081",
+     "text": "కేవీకే నుంచి కొత్త సలహా ఏమైనా వచ్చిందా?",
+     "gold": "govt_bulletin",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n085",
+     "text": "KVK की नई advisory क्या है?",
+     "gold": "govt_bulletin",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n089",
+     "text": "ప్రభుత్వం నుంచి వచ్చిన హెచ్చరిక ఏంటి?",
+     "gold": "govt_bulletin",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n092",
+     "text": "What is the expected cotton production in my district this year?",
+     "gold": "yield",
+     "pred": "advisory"
+    },
+    {
+     "id": "n095",
+     "text": "ఎకరానికి పత్తి ఎన్ని క్వింటాళ్లు వస్తుంది?",
+     "gold": "yield",
+     "pred": "advisory"
+    },
+    {
+     "id": "n097",
+     "text": "एक एकड़ में कितना धान निकलेगा?",
+     "gold": "yield",
+     "pred": "advisory"
+    },
+    {
+     "id": "n102",
+     "text": "Will this drought reduce my groundnut output?",
+     "gold": "yield",
+     "pred": "weather"
+    },
+    {
+     "id": "n126",
+     "text": "mirch ki kheti kaise karein",
+     "gold": "advisory",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n145",
+     "text": "Give me the district summary of pest reports for this week",
+     "gold": "officer",
+     "pred": "disease"
+    },
+    {
+     "id": "n151",
+     "text": "How many farmers reported whitefly this week?",
+     "gold": "officer",
+     "pred": "disease"
+    }
+   ]
+  }
+ }
+}

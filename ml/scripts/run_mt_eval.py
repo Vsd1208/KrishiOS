@@ -80,10 +80,14 @@ async def eval_provider(name: str, tgt: str, rows: list[dict]) -> dict:
         return not c.missing_numbers and not c.extra_numbers
 
     passed_idx = [i for i, c in enumerate(checks) if c.passed]
-    back, _ = await _batched(provider, [restored[i] for i in passed_idx], tgt, "en") \
-        if passed_idx else ([], 0.0)
-    chrf = sacrebleu.corpus_chrf(back, [[sources[i] for i in passed_idx]], word_order=2).score \
-        if passed_idx else None
+    chrf, roundtrip_error = None, None
+    if passed_idx and provider.supports(tgt, "en"):
+        try:  # the reverse model may be unavailable (gated / not yet downloaded)
+            back, _ = await _batched(provider, [restored[i] for i in passed_idx], tgt, "en")
+            chrf = sacrebleu.corpus_chrf(
+                back, [[sources[i] for i in passed_idx]], word_order=2).score
+        except Exception as exc:
+            roundtrip_error = type(exc).__name__
 
     from app.translation.checks import extract_units
 
@@ -104,7 +108,8 @@ async def eval_provider(name: str, tgt: str, rows: list[dict]) -> dict:
         "placeholder_survival": round(survived / max(emitted, 1), 4),
         "placeholders_emitted": emitted,
         "roundtrip_chrfpp_proxy": round(chrf, 2) if chrf is not None else None,
-        "roundtrip_n": len(passed_idx),
+        "roundtrip_n": len(passed_idx) if chrf is not None else 0,
+        "roundtrip_error": roundtrip_error,
         "ms_per_sentence": round(ms_per, 1),
         "failure_reasons_top": _top_reasons(checks),
         "examples": [{"src": sources[i], "out": restored[i], "passed": checks[i].passed}
