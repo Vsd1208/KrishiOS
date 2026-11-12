@@ -53,3 +53,11 @@ api_router.include_router(live_data_router)
 from app.proactive.api.routes import router as proactive_router
 api_router.include_router(proactive_router)
 
+
+# Sprint 11 — Platform foundations: crop catalog, provider transparency, job health
+from app.catalog.api.routes import router as catalog_router
+from app.providers.api.routes import router as providers_router
+from app.worker.api import router as worker_health_router
+api_router.include_router(catalog_router)
+api_router.include_router(providers_router)
+api_router.include_router(worker_health_router)

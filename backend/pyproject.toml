@@ -34,6 +34,7 @@ dependencies = [
     # ── Sprint 6 — Knowledge Graph & GraphRAG ────────────────────────────────
     "neo4j>=5.18.0,<6.0.0",
     "psutil>=6.0.0,<8.0.0",
+    "arq>=0.26.0,<1.0.0",
 ]
 
 [dependency-groups]
@@ -86,7 +87,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101"]
+"tests/**/*.py" = ["S101", "PLR2004"]
 
 [tool.ruff.format]
 quote-style = "double"
