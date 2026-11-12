@@ -5,6 +5,7 @@ Sprint 2            — Knowledge infrastructure models
 """
 
 from app.models.crop_catalog import CropCatalogEntry
+from app.models.translation import TranslationRecord
 from app.models.crop import Crop
 from app.models.district import District
 from app.models.document_chunk import DocumentChunk

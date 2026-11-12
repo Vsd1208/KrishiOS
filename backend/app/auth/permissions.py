@@ -94,6 +94,10 @@ class Permission:
     ALERT_REVIEW = "alert:review"
     PREFERENCE_READ = "preference:read"
     PREFERENCE_UPDATE = "preference:update"
+    # Sprint 11: multilingual core
+    TRANSLATION_USE = "translation:use"
+    TRANSLATION_APPROVE = "translation:approve"
+    NLU_USE = "nlu:use"
 
 
 # ---------------------------------------------------------------------------
@@ -102,6 +106,8 @@ class Permission:
 
 _FARMER_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.TRANSLATION_USE,
+        Permission.NLU_USE,
         Permission.FARMER_READ_SELF,
         Permission.FARMER_UPDATE_SELF,
         Permission.FIELD_READ,
@@ -128,6 +134,9 @@ _FARMER_PERMISSIONS: frozenset[str] = frozenset(
 
 _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.TRANSLATION_USE,
+        Permission.TRANSLATION_APPROVE,
+        Permission.NLU_USE,
         Permission.FARMER_READ,
         Permission.FARMER_CREATE,
         Permission.FARMER_UPDATE,
@@ -167,6 +176,8 @@ _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
 
 _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.TRANSLATION_USE,
+        Permission.NLU_USE,
         Permission.FARMER_READ,
         Permission.FIELD_READ,
         Permission.SOIL_SAMPLE_READ,

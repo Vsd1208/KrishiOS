@@ -96,8 +96,18 @@ def _register_builtin() -> None:
 _register_builtin()
 
 
+def _ensure_optional_capabilities() -> None:
+    """Import modules that register capabilities on import (translation, NLU)."""
+    for module in ("app.translation.selection", "app.nlu.selection"):
+        try:
+            __import__(module)
+        except ImportError:  # module not built yet
+            continue
+
+
 def active_providers(settings: Settings | None = None) -> list[ActiveProvider]:
     """Resolve the configured provider for every registered capability."""
+    _ensure_optional_capabilities()
     settings = settings or get_settings()
     result = [_llm_info(settings)]
     for capability, (setting, loader) in sorted(_CAPABILITIES.items()):

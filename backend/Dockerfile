@@ -10,8 +10,11 @@ WORKDIR /app
 
 COPY --from=ghcr.io/astral-sh/uv:0.5.14 /uv /usr/local/bin/uv
 
+# Sprint 11: local speech/translation models are opt-in (heavy): --build-arg INSTALL_LOCAL_ML=true
+ARG INSTALL_LOCAL_ML=false
+
 COPY pyproject.toml uv.lock ./
-RUN uv sync --locked --no-dev
+RUN if [ "$INSTALL_LOCAL_ML" = "true" ]; then       uv sync --locked --no-dev --extra local-ml;     else       uv sync --locked --no-dev;     fi
 
 COPY . .
 
