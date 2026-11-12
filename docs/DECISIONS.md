@@ -53,3 +53,20 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
   - third-party providers built but disabled by default (`ALLOW_OFF_DEVICE_PROVIDERS=false`);
   - no paid services;
   - no gated downloads on the user's behalf.
+
+## ADR-011: Translation safety by span protection plus independent checks
+- **Status:** accepted (Phase 2)
+- **Decision:** Quantities, glossary-protected terms and catalog crop names are masked as `<i>` placeholders before MT and restored afterwards. The `<i>` format was chosen by measured survival through opus-mt: hi 11/11, te 10/11, versus 5/11 for `[i]`. An independent checker (numbers in three digit systems, units in en/hi/te, protected terms, leftover placeholders) gates delivery. Failing output is `blocked`, and HIGH/CRITICAL content needs officer approval.
+- **Consequences:** Doses and units are always shown in Latin digits and units in te/hi text. A native-review item is open on whether that is acceptable to farmers.
+
+## ADR-012: Interim providers while gated models await access
+- **Status:** accepted (Phase 2), **revisit when Hugging Face access is granted**
+- **Context:** AI4Bharat IndicTrans2, IndicConformer, IndicF5 and Indic Parler-TTS are gated on Hugging Face, and no token exists on this machine. The Gemini key is **free tier** and its quota is exhausted, and free-tier prompts may be used by Google.
+- **Decision:** Defaults stay mock or rule-based; nothing becomes the default silently.
+  - **Interim options, selectable by config:** opus-mt (MT, Apache-2.0), faster-whisper (STT, MIT), MMS-TTS (TTS, CC BY-NC: demo only).
+  - **Off-device providers:** stay disabled (`ALLOW_OFF_DEVICE_PROVIDERS=false`).
+  - **Recommended primaries once access exists:** IndicTrans2 (MT), IndicConformer (STT), IndicF5 or Indic Parler-TTS (TTS), each pending measured comparison.
+
+## ADR-013: Evaluation sets are test-only; no tuning against them
+- **Status:** accepted (Phase 2)
+- **Decision:** `ml/evaluation_sets/nlu/utterances_v1.jsonl` and `mt/source_en.tsv` are test sets, scored once per configuration. Lexicon or glossary improvements require a separate dev set. Errors seen on the test set are reported, not patched.
