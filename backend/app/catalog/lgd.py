@@ -63,6 +63,9 @@ class LGDDirectory:
     def __len__(self) -> int:
         return len(self._by_code)
 
+    def districts(self) -> list[LGDDistrict]:
+        return list(self._by_code.values())
+
     def district(self, lgd_code: int) -> LGDDistrict | None:
         return self._by_code.get(lgd_code)
 

@@ -65,3 +65,5 @@ api_router.include_router(worker_health_router)
 # Sprint 11 — Multilingual core: translation, NLU
 from app.translation.api.routes import router as translation_router
 api_router.include_router(translation_router)
+from app.nlu.api.routes import router as nlu_router
+api_router.include_router(nlu_router)

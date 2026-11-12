@@ -1,0 +1,105 @@
+# KrishiOS NLU lexicon (Sprint 11). Status: DRAFT, pending native-speaker review (te, hi).
+# Phrases are matched on normalised tokens: whole tokens for Latin script; Telugu and
+# Devanagari phrases may carry short inflectional suffixes on their last token.
+# Priority resolves ties (higher wins). "yield" outranks "weather" so that
+# "yield forecast" is never routed to the weather agent.
+version: "2026.11.0-draft"
+
+intents:
+  yield:
+    priority: 90
+    phrases:
+      en: [yield, yields, harvest estimate, production estimate, expected harvest, how much harvest, quintals per acre, output per acre, yield forecast, yield outlook]
+      hi: [उपज, पैदावार, उत्पादन अनुमान, कितनी पैदावार]
+      te: [దిగుబడి, దిగుబడులు, పంట దిగుబడి, ఉత్పత్తి అంచనా]
+      roman: [upaj, paidavar, paidawar, digubadi, digubadulu]
+  govt_bulletin:
+    priority: 80
+    phrases:
+      en: [department said, department advisory, government advisory, official advisory, bulletin, notice, circular, instruction from department, what did the department, agromet advisory, kvk advisory, imd warning, officer message]
+      hi: [विभाग, सरकारी सलाह, सूचना, परिपत्र, एडवाइजरी, बुलेटिन, विभाग ने]
+      te: [శాఖ, ప్రభుత్వ సూచన, ప్రకటన, సర్క్యులర్, బులెటిన్, అధికారిక సలహా, శాఖ చెప్పింది]
+      roman: [vibhag, soochna, suchna, sakha, prakatana, bulletin]
+  scheme:
+    priority: 70
+    phrases:
+      en: [scheme, schemes, subsidy, subsidies, pm-kisan, pm kisan, pmfby, crop insurance, insurance claim, kcc, kisan credit card, loan waiver, eligibility, eligible, installment, instalment, rythu bharosa, rythu bandhu]
+      hi: [योजना, योजनाएं, सब्सिडी, अनुदान, बीमा, फसल बीमा, किस्त, पात्रता, किसान सम्मान निधि]
+      te: [పథకం, పథకాలు, సబ్సిడీ, రాయితీ, బీమా, పంట బీమా, వాయిదా, అర్హత, రైతు భరోసా, రైతు బంధు]
+      roman: [yojana, pathakam, beema, bima, subsidy, kist, arhata]
+  market:
+    priority: 60
+    phrases:
+      en: [price, prices, mandi, market rate, market price, selling price, msp, rate today, where to sell, when to sell]
+      hi: [भाव, दाम, कीमत, मंडी, बाजार, समर्थन मूल्य, बेचें]
+      te: [ధర, ధరలు, మార్కెట్, మండీ, అమ్మకం, మద్దతు ధర, అమ్మాలి]
+      roman: [bhav, bhaav, daam, keemat, kimat, mandi, dhara, dharalu, ammali]
+  disease:
+    priority: 55
+    phrases:
+      en: [disease, diseases, pest, pests, insect, insects, infestation, spots, lesions, blight, blast, rust, wilt, wilting, rot, yellowing, yellow leaves, curling, leaf curl, holes in leaves, worm, worms, caterpillar, fungus, virus, mites, aphids, whitefly, thrips, bollworm, stem borer]
+      hi: [रोग, बीमारी, कीट, कीड़े, कीड़ा, धब्बे, पीली पत्तियां, पत्ते पीले, मुरझाना, सड़न, इल्ली, सुंडी, फफूंद, माहू, सफेद मक्खी]
+      te: [తెగులు, తెగుళ్లు, పురుగు, పురుగులు, మచ్చలు, ఆకు ముడత, ఎండు తెగులు, అగ్గి తెగులు, కుళ్ళు, పసుపు ఆకులు, తెల్ల దోమ, పచ్చ దోమ, గులాబీ రంగు పురుగు]
+      roman: [rog, bimari, keeda, keede, kida, tegulu, purugu, purugulu, machalu, dhabbe]
+  weather:
+    priority: 50
+    phrases:
+      en: [weather, rain, rains, rainfall, forecast, monsoon, temperature, heatwave, heat wave, cold wave, humidity, wind, storm, cyclone, thunderstorm, hailstorm, drought, will it rain]
+      hi: [मौसम, बारिश, वर्षा, बरसात, तापमान, लू, आंधी, तूफान, ओलावृष्टि, सूखा]
+      te: [వాతావరణం, వర్షం, వర్షాలు, వాన, ఉష్ణోగ్రత, వడగాలులు, గాలివాన, తుఫాను, వడగండ్లు, కరువు]
+      roman: [mausam, barish, baarish, varsha, varsham, vana, vaana, toofan, tufan]
+  advisory:
+    priority: 40
+    phrases:
+      en: [fertilizer, fertiliser, manure, sowing, sow, seed, seeds, variety, varieties, spacing, irrigation, irrigate, weeding, weed, weeds, spray, spraying, dose, dosage, nursery, transplanting, harvesting, how to grow, cultivation, soil test, pruning]
+      hi: [खाद, उर्वरक, बुवाई, बोवाई, बीज, किस्म, सिंचाई, पानी देना, निराई, खरपतवार, छिड़काव, दवा, खेती, कटाई]
+      te: [ఎరువు, ఎరువులు, విత్తనం, విత్తనాలు, విత్తడం, రకం, నీటి తడి, సాగు, కలుపు, పిచికారీ, మందు, మందులు, నారుమడి, నాట్లు, కోత]
+      roman: [khad, khaad, beej, buvai, sinchai, eruvu, eruvulu, vittanam, vittanalu, mandu, sagu, kalupu, pichikari]
+  officer:
+    priority: 30
+    phrases:
+      en: [district summary, district report, field inspection report, escalate, review queue, officer summary, outbreak report]
+      hi: [जिला रिपोर्ट, निरीक्षण रिपोर्ट]
+      te: [జిల్లా నివేదిక, తనిఖీ నివేదిక]
+      roman: []
+  smalltalk:
+    priority: 10
+    phrases:
+      en: [hello, hi, thanks, thank you, good morning, namaste, bye]
+      hi: [नमस्ते, धन्यवाद, शुक्रिया]
+      te: [నమస్కారం, నమస్తే, ధన్యవాదాలు, థాంక్స్]
+      roman: [namaskaram, dhanyavad, dhanyavadalu, shukriya]
+
+# Function words that reveal romanised Hindi or Telugu in Latin-script text.
+romanized_markers:
+  hi: [mera, meri, mere, kya, hai, hain, mein, karein, karna, kaise, kab, kitna, kitni, nahi, nahin, fasal, aur, ko, se, raha, rahi, hoga, hogi, chahiye, kyun, batao, bataiye, lagta, lag, gaye, gayi]
+  te: [naa, naaku, lo, emi, em, emiti, enti, entha, ela, enduku, cheyali, cheyyali, undi, unnadi, unnayi, vastunnayi, vastundi, vachindi, ayindi, ledu, leda, pantaki, panta, kosam, chala, ekkuva, takkuva, cheppandi, ekkada, ippudu, repu]
+
+seasons:
+  kharif: [kharif, ఖరీఫ్, खरीफ, vanakalam, వానాకాలం]
+  rabi: [rabi, రబీ, रबी, yasangi, యాసంగి]
+  zaid: [zaid, summer crop, జైద్, जायद]
+
+symptoms:
+  yellowing: [yellowing, yellow leaves, पीली पत्तियां, पत्ते पीले, పసుపు ఆకులు, పసుపు రంగు]
+  spots: [spots, lesions, धब्बे, మచ్చలు]
+  wilting: [wilting, wilt, मुरझाना, వడలిపోవడం, ఎండిపోతున్నాయి]
+  leaf_curl: [curling, leaf curl, पत्ती मुड़ना, ఆకు ముడత]
+  holes: [holes in leaves, छेद, రంధ్రాలు]
+  insects_visible: [white insects, whitefly, aphids, thrips, सफेद मक्खी, తెల్ల దోమ, పచ్చ దోమ]
+  rot: [rot, rotting, सड़न, కుళ్ళు]
+
+schemes:
+  pm_kisan: [pm-kisan, pm kisan, kisan samman, किसान सम्मान निधि, పీఎం కిసాన్]
+  pmfby: [pmfby, crop insurance, fasal bima, फसल बीमा, పంట బీమా]
+  kcc: [kcc, kisan credit card, किसान क्रेडिट कार्ड, కిసాన్ క్రెడిట్ కార్డు]
+  rythu_bharosa: [rythu bharosa, రైతు భరోసా]
+  rythu_bandhu: [rythu bandhu, రైతు బంధు]
+  pm_kusum: [pm-kusum, pm kusum, kusum]
+  soil_health_card: [soil health card, मृदा स्वास्थ्य कार्ड, భూసార కార్డు]
+
+time_expressions:
+  today: [today, aaj, आज, ఈరోజు, ఈ రోజు, eroju]
+  tomorrow: [tomorrow, kal, कल, రేపు, repu]
+  this_week: [this week, इस हफ्ते, ఈ వారం]
+  next_days: [next 3 days, next few days, अगले तीन दिन, రాబోయే మూడు రోజులు]

@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from app.agents.contracts.workflow import WorkflowStepType
+from app.nlu.types import Intent, NLUResult
 
 
 @dataclass(slots=True)
@@ -31,17 +32,40 @@ class ExecutionPlan:
     strategy: str = "sequential"
 
 
+# Intents answered from the knowledge base (RAG/GraphRAG) plus the advisory agent.
+_KNOWLEDGE_INTENTS = {
+    Intent.ADVISORY, Intent.DISEASE, Intent.GOVT_BULLETIN, Intent.YIELD, Intent.MARKET,
+}
+
+
 class PlanningEngine:
-    """Generate structured execution plans for agricultural reasoning tasks."""
+    """Generate structured execution plans for agricultural reasoning tasks.
 
-    _CROP_KEYWORDS = ("yellow", "disease", "paddy", "wheat", "crop", "pest", "blight", "rust", "leaf")
-    _WEATHER_KEYWORDS = ("weather", "rain", "rainfall", "monsoon", "irrigation", "drought", "forecast")
-    _SCHEME_KEYWORDS = ("scheme", "subsid", "government", "pm-kisan", "pm kisan", "insurance", "pmfby")
-    _OFFICER_KEYWORDS = ("officer", "district", "report", "administrative", "field inspection")
+    Sprint 11: routing uses multilingual NLU output (intent + secondary intents) instead of
+    English keyword tuples, so Telugu/Hindi/code-switched goals route correctly, "yield
+    forecast" is never sent to the weather agent, and naming a district no longer triggers
+    the officer agent.
+    """
 
-    def build_plan(self, user_goal: str) -> ExecutionPlan:
-        """Create a structured plan based on the user goal."""
-        goal_lower = user_goal.casefold()
+    def build_plan(self, user_goal: str, nlu: NLUResult | None = None) -> ExecutionPlan:
+        """Create a structured plan from the goal and its NLU parse (parsed here if absent)."""
+        if nlu is None:
+            from app.nlu.service import parse_sync  # noqa: PLC0415 - avoid import cycle
+
+            nlu = parse_sync(user_goal)
+        intents = {nlu.intent, *nlu.secondary_intents}
+        nlu_params: dict[str, Any] = {
+            "intent": nlu.intent.value,
+            "language": nlu.language,
+            "crop_canonical": nlu.entities.crop,
+            "district_lgd_code": nlu.entities.district_lgd_code,
+        }
+        if nlu.entities.crop:
+            from app.catalog import get_crop_catalog  # noqa: PLC0415
+
+            entry = get_crop_catalog().get(nlu.entities.crop)
+            # Knowledge-base metadata uses English crop names ("Paddy", "Cotton").
+            nlu_params["crop"] = entry.name_en.split("(")[0].strip() if entry else None
         steps: list[PlanStep] = []
         step_counter = 0
 
@@ -50,10 +74,10 @@ class PlanningEngine:
             step_counter += 1
             return f"{prefix}_{step_counter}"
 
-        needs_knowledge = any(kw in goal_lower for kw in self._CROP_KEYWORDS)
-        needs_weather = any(kw in goal_lower for kw in self._WEATHER_KEYWORDS)
-        needs_scheme = any(kw in goal_lower for kw in self._SCHEME_KEYWORDS)
-        needs_officer = any(kw in goal_lower for kw in self._OFFICER_KEYWORDS)
+        needs_knowledge = bool(intents & _KNOWLEDGE_INTENTS)
+        needs_weather = Intent.WEATHER in intents
+        needs_scheme = Intent.SCHEME in intents
+        needs_officer = Intent.OFFICER in intents
 
         parallel_steps: list[PlanStep] = []
 
@@ -64,7 +88,7 @@ class PlanningEngine:
                     agent="weather_intelligence_agent",
                     action="inspect_weather",
                     step_type=WorkflowStepType.PARALLEL,
-                    parameters={"goal": user_goal},
+                    parameters={"goal": user_goal, **nlu_params},
                 )
             )
 
@@ -75,7 +99,7 @@ class PlanningEngine:
                     agent="govt_scheme_agent",
                     action="search_scheme_documents",
                     step_type=WorkflowStepType.PARALLEL,
-                    parameters={"goal": user_goal},
+                    parameters={"goal": user_goal, **nlu_params},
                 )
             )
 
@@ -87,7 +111,7 @@ class PlanningEngine:
                     agent="knowledge_retrieval_agent",
                     action="search_knowledge",
                     step_type=WorkflowStepType.PARALLEL,
-                    parameters={"goal": user_goal, "query": user_goal},
+                    parameters={"goal": user_goal, "query": user_goal, **nlu_params},
                 )
             )
             steps.extend(parallel_steps)
@@ -98,7 +122,7 @@ class PlanningEngine:
                     action="generate_advice",
                     step_type=WorkflowStepType.SEQUENTIAL,
                     depends_on=[retrieval_id],
-                    parameters={"goal": user_goal, "query": user_goal},
+                    parameters={"goal": user_goal, "query": user_goal, **nlu_params},
                 )
             )
         else:
@@ -111,7 +135,7 @@ class PlanningEngine:
                     agent="officer_assistance_agent",
                     action="generate_summary",
                     step_type=WorkflowStepType.SEQUENTIAL,
-                    parameters={"goal": user_goal, "task": user_goal},
+                    parameters={"goal": user_goal, "task": user_goal, **nlu_params},
                 )
             )
 
