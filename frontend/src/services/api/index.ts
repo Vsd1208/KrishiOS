@@ -15,3 +15,4 @@ export * from '@/services/api/graph';
 export * from '@/services/api/retrieval';
 export * from '@/services/api/events';
 export * from '@/services/api/providers';
+export * from '@/services/api/translation';
