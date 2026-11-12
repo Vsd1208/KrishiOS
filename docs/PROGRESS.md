@@ -4,7 +4,7 @@ Read this file at the start of every session, and update it at the end of every 
 
 **Status values:** `todo` · `in-progress` · `done` · `blocked-on-approval` · `blocked`
 
-**Last updated:** 2026-11-12. Phases 1 and 2 run back to back on the user's instruction.
+**Last updated:** 2026-11-12 (end of Phase 2). Next session: run the pending AI4Bharat benchmarks (02 report §3.5), then Phase 3.
 
 ## Phases
 
@@ -12,7 +12,7 @@ Read this file at the start of every session, and update it at the end of every 
 |---|---|---|---|
 | 0 Orientation & sourcing | done | `feat/sprint-11-phase0-orientation` | [00_orientation.md](../ml/reports/00_orientation.md) |
 | 1 Foundations | done | `feat/sprint-11-phase1-foundations` | [01_foundations.md](../ml/reports/01_foundations.md) |
-| 2 Multilingual core | in-progress | `feat/sprint-11-phase2-multilingual` | — |
+| 2 Multilingual core | done (AI4Bharat benchmarks pending download) | `feat/sprint-11-phase2-multilingual` | [02_multilingual_core.md](../ml/reports/02_multilingual_core.md) |
 | 3 Multilingual bot (+F6, F7, F13) | todo | — | — |
 | 4 Govt Connect: publishing (+F2, F4) | todo | — | — |
 | 5 Govt Connect: automated (+F1, F3, F5) | todo | — | — |
@@ -52,9 +52,9 @@ Read this file at the start of every session, and update it at the end of every 
 | LGD crosswalk | in-progress | LGD districts and blocks done; APY/ICRISAT name crosswalk is Phase 6 |
 | Provider selection + visible provider/version | done | `/api/v1/providers`, canvas Providers tab |
 | Worker service + job health | done | arq; `/api/v1/health/jobs`; verified on real Redis |
-| Translation service | in-progress | Phase 2 |
-| NLU | in-progress | Phase 2 |
-| Real STT / TTS | in-progress | Phase 2. AI4Bharat models are **blocked-on-approval** (gated HF; no token on this machine) |
+| Translation service | done | Protection + checks + approval; opus-mt measured (fails checks on ~2/3 of sentences); IndicTrans2 built, measurement pending download |
+| NLU | done | Rule-based: intent acc 0.796, crop F1 0.968 (run b74f7a0eb8c7; draft labels); planner routes on NLU |
+| Real STT / TTS | in-progress | Whisper-small measured (te CER 0.987: unusable); IndicConformer built, pending 2.56 GB download; MMS-TTS demo-only (CC BY-NC) |
 | Conversation / dialogue state | todo | Phase 3 |
 | Govt Connect | todo | SACHET CAP preferred feed (ADR-004) |
 | Yield Intelligence | todo | |
@@ -67,11 +67,13 @@ Read this file at the start of every session, and update it at the end of every 
 
 ## Test status (latest)
 
-- **Backend:** 168 passed, 0 failed (Phase 1 end).
-- **ml:** 9 passed.
+- **Backend:** 219 passed, 0 failed (Phase 2 end).
+- **ml:** 13 passed.
 - **Frontend:** 27 files / 53 tests passed; build OK.
 
 ## Pending approvals and actions
 
-Orientation report §12. New since Phase 0:
-- **Hugging Face access** for AI4Bharat gated models (IndicTrans2, IndicConformer, IndicF5, Indic Parler-TTS). There is no token on this machine.
+Orientation report §12 and Phase 2 report §7. Status:
+- Hugging Face access: **granted** 2026-11-12. Downloads (about 4.9 GB) are in progress at about 0.2 MB/s.
+- Gemini key is free tier and quota-exhausted: billed key decision pending.
+- Native reviewers (NLU labels, MT references, TTS ratings): pending.
