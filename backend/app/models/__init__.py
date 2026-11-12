@@ -4,6 +4,7 @@ Sprint 0 / Sprint 1 — Domain models
 Sprint 2            — Knowledge infrastructure models
 """
 
+from app.catalog.models import CropCatalogEntry
 from app.models.crop import Crop
 from app.models.district import District
 from app.models.document_chunk import DocumentChunk

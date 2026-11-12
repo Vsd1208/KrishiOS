@@ -3,7 +3,7 @@
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import CheckConstraint, Index, Numeric, String, UniqueConstraint
+from sqlalchemy import CheckConstraint, Index, Integer, Numeric, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
@@ -22,6 +22,10 @@ class District(TimestampMixin, SoftDeleteMixin, Base):
     district_name: Mapped[str] = mapped_column(String(150), nullable=False)
     latitude: Mapped[Decimal] = mapped_column(Numeric(9, 6), nullable=False)
     longitude: Mapped[Decimal] = mapped_column(Numeric(9, 6), nullable=False)
+    # Sprint 11: Local Government Directory codes (nullable until backfilled).
+    lgd_district_code: Mapped[int | None] = mapped_column(Integer, nullable=True, unique=True)
+    lgd_state_code: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    census_2011_code: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     farmers: Mapped[list["Farmer"]] = relationship(back_populates="district")
     officers: Mapped[list["Officer"]] = relationship(back_populates="district")

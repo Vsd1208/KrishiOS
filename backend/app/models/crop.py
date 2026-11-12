@@ -20,6 +20,8 @@ class Crop(TimestampMixin, SoftDeleteMixin, Base):
     scientific_name: Mapped[str | None] = mapped_column(String(150), nullable=True)
     season: Mapped[str] = mapped_column(String(50), nullable=False)
     duration_days: Mapped[int] = mapped_column(nullable=False)
+    # Sprint 11: link to the shared crop catalog (nullable until backfilled).
+    catalog_canonical: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
 
     field_history: Mapped[list["FieldCrop"]] = relationship(back_populates="crop")
 
