@@ -22,10 +22,34 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
 - **Decision:** Build the SACHET adapter first in Phase 5, and add the IMD API adapter once a key is granted.
 
 ## ADR-005: No silent fallback to mock providers
-- **Status:** proposed (Phase 1)
+- **Status:** accepted and implemented (Phase 1, `app/providers/`, `GET /api/v1/providers`)
 - **Context:** `LiveDataProviderRegistry` falls back to mocks with only a log warning.
 - **Decision:** Resolve providers from config. An unknown name is a startup error. Every response carries the active provider name and version.
 
 ## ADR-006: Separate inference container for heavy speech and translation models
 - **Status:** proposed (decide in Phase 2 with measurements; heavyweight dependency, needs approval)
 - **Context:** IndicConformer needs a NeMo fork. Keeping it out of the backend image protects build time and image size.
+
+## ADR-007: arq on Redis for the worker
+- **Status:** accepted (Phase 1)
+- **Context:** No scheduler existed. Redis is already in the stack. Celery would be heavier than needed.
+- **Decision:** Use arq cron jobs. Each `JobSpec` sets its interval, timeout and retries. Idempotency is a per-slot Redis `SET NX` key; health is stored in Redis and exposed at `/api/v1/health/jobs`.
+- **Consequences:** One extra container (`worker`). Jobs must be async and idempotent.
+
+## ADR-008: `ml/reference/*.csv` is the single source of truth for crops and LGD
+- **Status:** accepted (Phase 1)
+- **Decision:** The hand-reviewable CSV is canonical. The backend loads it into memory, so resolution never needs the database. Postgres `crop_catalog` is a seeded mirror used for foreign keys. Docker mounts `ml/reference` read-only.
+- **Consequences:** Editing a crop is a reviewed CSV change followed by re-running the seed script. There are no hard-coded crop strings in modules.
+
+## ADR-009: Ambiguity is surfaced, never resolved by guessing
+- **Status:** accepted (Phase 1)
+- **Decision:** Shared aliases (e.g. *gobhi*), duplicate district names (e.g. Bilaspur in HP and CG) and unmatched rows return `ambiguous` or `not_found`. The UI shows a picker, and the seed script leaves the row unlinked and logs it.
+
+## ADR-010: Reversible defaults when running phases "unasked"
+- **Status:** accepted (user instruction, 2026-11-12, Phases 1–2)
+- **Decision:** Where the brief says "ask first", take the reversible option and record it in the phase report:
+  - git-tracked deletions only;
+  - additive, nullable schema changes;
+  - third-party providers built but disabled by default (`ALLOW_OFF_DEVICE_PROVIDERS=false`);
+  - no paid services;
+  - no gated downloads on the user's behalf.
