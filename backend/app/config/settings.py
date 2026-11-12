@@ -177,6 +177,12 @@ class Settings(BaseSettings):
     # Third-party processing of farmer data is opt-in per provider (DPDP).
     ALLOW_OFF_DEVICE_PROVIDERS: bool = False
 
+    # Local speech models (local-ml extra). Whisper sizes: tiny|base|small|medium|large-v3.
+    STT_WHISPER_MODEL: str = "small"
+    STT_WHISPER_COMPUTE_TYPE: str = "int8"
+    STT_WHISPER_BEAM_SIZE: int = 5
+    TTS_MMS_MODEL_PREFIX: str = "facebook/mms-tts-"
+
     # Worker / scheduler (arq on Redis)
     WORKER_QUEUE_NAME: str = "krishios:jobs"
     WORKER_JOB_TIMEOUT_SECONDS: int = 300

@@ -1,6 +1,7 @@
 """Central registry managing STT and TTS provider instances."""
 
 from loguru import logger
+
 from app.voice.providers.stt_base import SpeechToTextProvider
 from app.voice.providers.tts_base import TextToSpeechProvider
 

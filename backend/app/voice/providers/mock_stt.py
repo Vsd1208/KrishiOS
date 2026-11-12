@@ -52,7 +52,7 @@ class MockSTTProvider:
         fname = audio_path.stem.lower()
         tokens = _filename_tokens(audio_path)
         lang = hint_language or "en"
-        
+
         if tokens & {"te", "telugu"} or lang == "te":
             transcript = "నా వరి పైరుకు అగ్గి తెగులు వచ్చింది, ఏమి చేయాలి?"
             det_lang = "te"

@@ -1,0 +1,152 @@
+{"id": "n001", "text": "There are brown spots with a yellow ring on my paddy leaves", "language": "en", "code_switched": false, "intent": "disease", "crop": "paddy", "district": null}
+{"id": "n002", "text": "My cotton bolls are getting damaged by pink worms inside", "language": "en", "code_switched": false, "intent": "disease", "crop": "cotton", "district": null}
+{"id": "n003", "text": "Tomato leaves have dark rings on the lower side, what is this", "language": "en", "code_switched": false, "intent": "disease", "crop": "tomato", "district": null}
+{"id": "n004", "text": "White flies are sitting under the chilli leaves", "language": "en", "code_switched": false, "intent": "disease", "crop": "chilli", "district": null}
+{"id": "n005", "text": "వరి ఆకుల మీద గోధుమ రంగు మచ్చలు వచ్చాయి", "language": "te", "code_switched": false, "intent": "disease", "crop": "paddy", "district": null}
+{"id": "n006", "text": "పత్తి కాయలలో గులాబీ రంగు పురుగు కనిపిస్తోంది", "language": "te", "code_switched": false, "intent": "disease", "crop": "cotton", "district": null}
+{"id": "n007", "text": "మిరప ఆకులు ముడుచుకుపోతున్నాయి, ఏం మందు కొట్టాలి?", "language": "te", "code_switched": false, "intent": "disease", "crop": "chilli", "district": null}
+{"id": "n008", "text": "కంది పంట ఎండిపోతోంది, వేరు కుళ్ళు ఏమైనా ఉందా?", "language": "te", "code_switched": false, "intent": "disease", "crop": "pigeonpea", "district": null}
+{"id": "n009", "text": "गेहूं की पत्तियों पर पीले रंग की धारियां हैं", "language": "hi", "code_switched": false, "intent": "disease", "crop": "wheat", "district": null}
+{"id": "n010", "text": "धान में तना छेदक कीट का प्रकोप है", "language": "hi", "code_switched": false, "intent": "disease", "crop": "paddy", "district": null}
+{"id": "n011", "text": "कपास की फसल में गुलाबी सुंडी लग गई है", "language": "hi", "code_switched": false, "intent": "disease", "crop": "cotton", "district": null}
+{"id": "n012", "text": "टमाटर के पौधे मुरझा रहे हैं", "language": "hi", "code_switched": false, "intent": "disease", "crop": "tomato", "district": null}
+{"id": "n013", "text": "నా పత్తి crop లో whitefly ఎక్కువగా ఉంది", "language": "te", "code_switched": true, "intent": "disease", "crop": "cotton", "district": null}
+{"id": "n014", "text": "వరి లో blast disease వచ్చింది ఏం చేయాలి", "language": "te", "code_switched": true, "intent": "disease", "crop": "paddy", "district": null}
+{"id": "n015", "text": "मेरे cotton में pink bollworm आ गया है", "language": "hi", "code_switched": true, "intent": "disease", "crop": "cotton", "district": null}
+{"id": "n016", "text": "धान की leaves पर brown spots हैं", "language": "hi", "code_switched": true, "intent": "disease", "crop": "paddy", "district": null}
+{"id": "n017", "text": "vari aakulu meeda machalu vachayi", "language": "te", "code_switched": true, "intent": "disease", "crop": "paddy", "district": null}
+{"id": "n018", "text": "pathi lo tella doma ekkuva undi", "language": "te", "code_switched": true, "intent": "disease", "crop": "cotton", "district": null}
+{"id": "n019", "text": "gehun ki patti peeli ho rahi hai", "language": "hi", "code_switched": true, "intent": "disease", "crop": "wheat", "district": null}
+{"id": "n020", "text": "tamatar ke paudhe sukh rahe hain", "language": "hi", "code_switched": true, "intent": "disease", "crop": "tomato", "district": null}
+{"id": "n021", "text": "Maize stems have holes and sawdust like material", "language": "en", "code_switched": false, "intent": "disease", "crop": "maize", "district": null}
+{"id": "n022", "text": "మొక్కజొన్నలో కత్తెర పురుగు వచ్చింది", "language": "te", "code_switched": false, "intent": "disease", "crop": "maize", "district": null}
+{"id": "n023", "text": "मक्का में फॉल आर्मीवर्म दिख रहा है", "language": "hi", "code_switched": false, "intent": "disease", "crop": "maize", "district": null}
+{"id": "n024", "text": "groundnut leaves showing tikka leaf spot", "language": "en", "code_switched": false, "intent": "disease", "crop": "groundnut", "district": null}
+{"id": "n025", "text": "వేరుశనగ ఆకుల మీద నల్ల మచ్చలు", "language": "te", "code_switched": false, "intent": "disease", "crop": "groundnut", "district": null}
+{"id": "n026", "text": "सरसों में माहू लगा है", "language": "hi", "code_switched": false, "intent": "disease", "crop": "rapeseed_mustard", "district": null}
+{"id": "n027", "text": "Will it rain in Nalgonda in the next two days?", "language": "en", "code_switched": false, "intent": "weather", "crop": null, "district": "Nalgonda"}
+{"id": "n028", "text": "How hot will it be this week?", "language": "en", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n029", "text": "Is there a cyclone warning for the coast?", "language": "en", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n030", "text": "రేపు వర్షం పడే అవకాశం ఉందా?", "language": "te", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n031", "text": "ఈ వారం ఉష్ణోగ్రత ఎంత ఉంటుంది?", "language": "te", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n032", "text": "గుంటూరులో వాన ఎప్పుడు పడుతుంది?", "language": "te", "code_switched": false, "intent": "weather", "crop": null, "district": "Guntur"}
+{"id": "n033", "text": "कल बारिश होगी क्या?", "language": "hi", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n034", "text": "इस हफ्ते मौसम कैसा रहेगा?", "language": "hi", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n035", "text": "क्या आंधी आने वाली है?", "language": "hi", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n036", "text": "రేపు rain chance ఎంత?", "language": "te", "code_switched": true, "intent": "weather", "crop": null, "district": null}
+{"id": "n037", "text": "कल rain होगी क्या मेरे गांव में?", "language": "hi", "code_switched": true, "intent": "weather", "crop": null, "district": null}
+{"id": "n038", "text": "repu vaana padutunda?", "language": "te", "code_switched": true, "intent": "weather", "crop": null, "district": null}
+{"id": "n039", "text": "kal barish hogi kya?", "language": "hi", "code_switched": true, "intent": "weather", "crop": null, "district": null}
+{"id": "n040", "text": "is hafte mausam kaisa rahega", "language": "hi", "code_switched": true, "intent": "weather", "crop": null, "district": null}
+{"id": "n041", "text": "Should I expect frost tonight?", "language": "en", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n042", "text": "వడగండ్ల వాన వస్తుందా?", "language": "te", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n043", "text": "लू कब तक चलेगी?", "language": "hi", "code_switched": false, "intent": "weather", "crop": null, "district": null}
+{"id": "n044", "text": "What's the weather forecast for Warangal tomorrow?", "language": "en", "code_switched": false, "intent": "weather", "crop": null, "district": "Warangal"}
+{"id": "n045", "text": "What is today's cotton price in Warangal market?", "language": "en", "code_switched": false, "intent": "market", "crop": "cotton", "district": "Warangal"}
+{"id": "n046", "text": "Where can I get the best rate for my chillies?", "language": "en", "code_switched": false, "intent": "market", "crop": "chilli", "district": null}
+{"id": "n047", "text": "Should I sell my paddy now or wait?", "language": "en", "code_switched": false, "intent": "market", "crop": "paddy", "district": null}
+{"id": "n048", "text": "ఈరోజు మిర్చి ధర ఎంత?", "language": "te", "code_switched": false, "intent": "market", "crop": "chilli", "district": null}
+{"id": "n049", "text": "పత్తి క్వింటాల్ ధర ఎంత ఉంది?", "language": "te", "code_switched": false, "intent": "market", "crop": "cotton", "district": null}
+{"id": "n050", "text": "వరి ధాన్యం ఎక్కడ అమ్మితే మంచి ధర వస్తుంది?", "language": "te", "code_switched": false, "intent": "market", "crop": "paddy", "district": null}
+{"id": "n051", "text": "आज प्याज का भाव क्या है?", "language": "hi", "code_switched": false, "intent": "market", "crop": "onion", "district": null}
+{"id": "n052", "text": "गेहूं का समर्थन मूल्य कितना है?", "language": "hi", "code_switched": false, "intent": "market", "crop": "wheat", "district": null}
+{"id": "n053", "text": "सोयाबीन मंडी में कितने में बिक रहा है?", "language": "hi", "code_switched": false, "intent": "market", "crop": "soybean", "district": null}
+{"id": "n054", "text": "మిర్చి rate ఈరోజు ఎంత ఉంది?", "language": "te", "code_switched": true, "intent": "market", "crop": "chilli", "district": null}
+{"id": "n055", "text": "आज tomato का rate क्या है?", "language": "hi", "code_switched": true, "intent": "market", "crop": "tomato", "district": null}
+{"id": "n056", "text": "mirchi dhara entha undi", "language": "te", "code_switched": true, "intent": "market", "crop": "chilli", "district": null}
+{"id": "n057", "text": "aaj pyaz ka bhav kya hai", "language": "hi", "code_switched": true, "intent": "market", "crop": "onion", "district": null}
+{"id": "n058", "text": "MSP for chickpea this year?", "language": "en", "code_switched": false, "intent": "market", "crop": "chickpea", "district": null}
+{"id": "n059", "text": "కందుల ధర పెరుగుతుందా?", "language": "te", "code_switched": false, "intent": "market", "crop": "pigeonpea", "district": null}
+{"id": "n060", "text": "मूंगफली का दाम गिर गया क्या?", "language": "hi", "code_switched": false, "intent": "market", "crop": "groundnut", "district": null}
+{"id": "n061", "text": "When will the next PM-KISAN installment come?", "language": "en", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n062", "text": "How do I apply for crop insurance for my cotton?", "language": "en", "code_switched": false, "intent": "scheme", "crop": "cotton", "district": null}
+{"id": "n063", "text": "Is there any subsidy for drip irrigation?", "language": "en", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n064", "text": "పీఎం కిసాన్ డబ్బులు ఎప్పుడు పడతాయి?", "language": "te", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n065", "text": "పంట బీమా కి ఎలా దరఖాస్తు చేయాలి?", "language": "te", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n066", "text": "రైతు భరోసా డబ్బులు వచ్చాయా?", "language": "te", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n067", "text": "किसान सम्मान निधि की अगली किस्त कब आएगी?", "language": "hi", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n068", "text": "फसल बीमा का क्लेम कैसे करें?", "language": "hi", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n069", "text": "ड्रिप सिंचाई पर सब्सिडी मिलती है क्या?", "language": "hi", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n070", "text": "PMFBY లో register ఎలా చేయాలి?", "language": "te", "code_switched": true, "intent": "scheme", "crop": null, "district": null}
+{"id": "n071", "text": "PM Kisan का paisa कब आएगा?", "language": "hi", "code_switched": true, "intent": "scheme", "crop": null, "district": null}
+{"id": "n072", "text": "fasal bima ka claim kaise milega", "language": "hi", "code_switched": true, "intent": "scheme", "crop": null, "district": null}
+{"id": "n073", "text": "rythu bharosa dabbulu eppudu vastayi", "language": "te", "code_switched": true, "intent": "scheme", "crop": null, "district": null}
+{"id": "n074", "text": "Am I eligible for a Kisan Credit Card?", "language": "en", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n075", "text": "సోలార్ పంపు కి సబ్సిడీ ఉందా?", "language": "te", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n076", "text": "मृदा स्वास्थ्य कार्ड कैसे बनवाएं?", "language": "hi", "code_switched": false, "intent": "scheme", "crop": null, "district": null}
+{"id": "n077", "text": "What did the agriculture department say about this week's rains?", "language": "en", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n078", "text": "Is there any new advisory from KVK for paddy?", "language": "en", "code_switched": false, "intent": "govt_bulletin", "crop": "paddy", "district": null}
+{"id": "n079", "text": "Show me the latest IMD warning for my district", "language": "en", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n080", "text": "వ్యవసాయ శాఖ ఈ వారం ఏం సూచనలు ఇచ్చింది?", "language": "te", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n081", "text": "కేవీకే నుంచి కొత్త సలహా ఏమైనా వచ్చిందా?", "language": "te", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n082", "text": "कृषि विभाग ने इस हफ्ते क्या सलाह दी है?", "language": "hi", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n083", "text": "मौसम विभाग की नई चेतावनी क्या है?", "language": "hi", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n084", "text": "department advisory లో ఏం చెప్పారు?", "language": "te", "code_switched": true, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n085", "text": "KVK की नई advisory क्या है?", "language": "hi", "code_switched": true, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n086", "text": "krishi vibhag ne kya kaha", "language": "hi", "code_switched": true, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n087", "text": "vyavasaya sakha emi cheppindi", "language": "te", "code_switched": true, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n088", "text": "Did the officer send any notice about spraying?", "language": "en", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n089", "text": "ప్రభుత్వం నుంచి వచ్చిన హెచ్చరిక ఏంటి?", "language": "te", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n090", "text": "सरकार की तरफ से कोई सूचना आई है क्या?", "language": "hi", "code_switched": false, "intent": "govt_bulletin", "crop": null, "district": null}
+{"id": "n091", "text": "How much paddy yield can I expect this season?", "language": "en", "code_switched": false, "intent": "yield", "crop": "paddy", "district": null}
+{"id": "n092", "text": "What is the expected cotton production in my district this year?", "language": "en", "code_switched": false, "intent": "yield", "crop": "cotton", "district": null}
+{"id": "n093", "text": "Yield forecast for maize in Karimnagar", "language": "en", "code_switched": false, "intent": "yield", "crop": "maize", "district": "Karimnagar"}
+{"id": "n094", "text": "ఈ సీజన్ లో వరి దిగుబడి ఎంత వస్తుంది?", "language": "te", "code_switched": false, "intent": "yield", "crop": "paddy", "district": null}
+{"id": "n095", "text": "ఎకరానికి పత్తి ఎన్ని క్వింటాళ్లు వస్తుంది?", "language": "te", "code_switched": false, "intent": "yield", "crop": "cotton", "district": null}
+{"id": "n096", "text": "इस साल गेहूं की पैदावार कितनी होगी?", "language": "hi", "code_switched": false, "intent": "yield", "crop": "wheat", "district": null}
+{"id": "n097", "text": "एक एकड़ में कितना धान निकलेगा?", "language": "hi", "code_switched": false, "intent": "yield", "crop": "paddy", "district": null}
+{"id": "n098", "text": "నా maize yield ఎంత వస్తుంది?", "language": "te", "code_switched": true, "intent": "yield", "crop": "maize", "district": null}
+{"id": "n099", "text": "इस बार soybean की yield कैसी रहेगी?", "language": "hi", "code_switched": true, "intent": "yield", "crop": "soybean", "district": null}
+{"id": "n100", "text": "vari digubadi entha vastundi", "language": "te", "code_switched": true, "intent": "yield", "crop": "paddy", "district": null}
+{"id": "n101", "text": "is baar gehun ki paidavar kitni hogi", "language": "hi", "code_switched": true, "intent": "yield", "crop": "wheat", "district": null}
+{"id": "n102", "text": "Will this drought reduce my groundnut output?", "language": "en", "code_switched": false, "intent": "yield", "crop": "groundnut", "district": null}
+{"id": "n103", "text": "మిర్చి దిగుబడి తగ్గుతుందా?", "language": "te", "code_switched": false, "intent": "yield", "crop": "chilli", "district": null}
+{"id": "n104", "text": "कपास का उत्पादन अनुमान क्या है?", "language": "hi", "code_switched": false, "intent": "yield", "crop": "cotton", "district": null}
+{"id": "n105", "text": "When should I sow groundnut this kharif?", "language": "en", "code_switched": false, "intent": "advisory", "crop": "groundnut", "district": null}
+{"id": "n106", "text": "How much urea should I apply to maize?", "language": "en", "code_switched": false, "intent": "advisory", "crop": "maize", "district": null}
+{"id": "n107", "text": "Which paddy variety is good for low water?", "language": "en", "code_switched": false, "intent": "advisory", "crop": "paddy", "district": null}
+{"id": "n108", "text": "How often should I irrigate wheat?", "language": "en", "code_switched": false, "intent": "advisory", "crop": "wheat", "district": null}
+{"id": "n109", "text": "వరి నాట్లు ఎప్పుడు వేయాలి?", "language": "te", "code_switched": false, "intent": "advisory", "crop": "paddy", "district": null}
+{"id": "n110", "text": "పత్తికి ఎన్ని సార్లు ఎరువు వేయాలి?", "language": "te", "code_switched": false, "intent": "advisory", "crop": "cotton", "district": null}
+{"id": "n111", "text": "కందిలో కలుపు ఎలా తీయాలి?", "language": "te", "code_switched": false, "intent": "advisory", "crop": "pigeonpea", "district": null}
+{"id": "n112", "text": "మిర్చి నారు ఎలా పెంచాలి?", "language": "te", "code_switched": false, "intent": "advisory", "crop": "chilli", "district": null}
+{"id": "n113", "text": "गेहूं की बुवाई कब करनी चाहिए?", "language": "hi", "code_switched": false, "intent": "advisory", "crop": "wheat", "district": null}
+{"id": "n114", "text": "धान में कितना यूरिया डालें?", "language": "hi", "code_switched": false, "intent": "advisory", "crop": "paddy", "district": null}
+{"id": "n115", "text": "चने में सिंचाई कब करें?", "language": "hi", "code_switched": false, "intent": "advisory", "crop": "chickpea", "district": null}
+{"id": "n116", "text": "मक्का की अच्छी किस्म कौन सी है?", "language": "hi", "code_switched": false, "intent": "advisory", "crop": "maize", "district": null}
+{"id": "n117", "text": "పత్తి కి fertilizer ఎంత వేయాలి?", "language": "te", "code_switched": true, "intent": "advisory", "crop": "cotton", "district": null}
+{"id": "n118", "text": "मेरे गेहूं में fertilizer कितना डालूं?", "language": "hi", "code_switched": true, "intent": "advisory", "crop": "wheat", "district": null}
+{"id": "n119", "text": "vari ki eruvu entha veyali", "language": "te", "code_switched": true, "intent": "advisory", "crop": "paddy", "district": null}
+{"id": "n120", "text": "dhan ki buvai kab kare", "language": "hi", "code_switched": true, "intent": "advisory", "crop": "paddy", "district": null}
+{"id": "n121", "text": "Can I grow sunflower in rabi on black soil?", "language": "en", "code_switched": false, "intent": "advisory", "crop": "sunflower", "district": null}
+{"id": "n122", "text": "Spacing for tomato transplanting?", "language": "en", "code_switched": false, "intent": "advisory", "crop": "tomato", "district": null}
+{"id": "n123", "text": "టమాటా మొక్కల మధ్య దూరం ఎంత ఉండాలి?", "language": "te", "code_switched": false, "intent": "advisory", "crop": "tomato", "district": null}
+{"id": "n124", "text": "प्याज की नर्सरी कैसे तैयार करें?", "language": "hi", "code_switched": false, "intent": "advisory", "crop": "onion", "district": null}
+{"id": "n125", "text": "chilli కి spray ఏం చేయాలి", "language": "te", "code_switched": true, "intent": "advisory", "crop": "chilli", "district": null}
+{"id": "n126", "text": "mirch ki kheti kaise karein", "language": "hi", "code_switched": true, "intent": "advisory", "crop": "chilli", "district": null}
+{"id": "n127", "text": "Hello", "language": "en", "code_switched": false, "intent": "smalltalk", "crop": null, "district": null}
+{"id": "n128", "text": "Thank you very much", "language": "en", "code_switched": false, "intent": "smalltalk", "crop": null, "district": null}
+{"id": "n129", "text": "నమస్కారం", "language": "te", "code_switched": false, "intent": "smalltalk", "crop": null, "district": null}
+{"id": "n130", "text": "ధన్యవాదాలు అండి", "language": "te", "code_switched": false, "intent": "smalltalk", "crop": null, "district": null}
+{"id": "n131", "text": "नमस्ते जी", "language": "hi", "code_switched": false, "intent": "smalltalk", "crop": null, "district": null}
+{"id": "n132", "text": "बहुत धन्यवाद", "language": "hi", "code_switched": false, "intent": "smalltalk", "crop": null, "district": null}
+{"id": "n133", "text": "Good morning", "language": "en", "code_switched": false, "intent": "smalltalk", "crop": null, "district": null}
+{"id": "n134", "text": "Who won the cricket match yesterday?", "language": "en", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n135", "text": "Tell me a movie name", "language": "en", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n136", "text": "What is the capital of France?", "language": "en", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n137", "text": "ఈరోజు సినిమా ఏంటి?", "language": "te", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n138", "text": "బస్సు ఎన్ని గంటలకు వస్తుంది?", "language": "te", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n139", "text": "मेरा फोन रिचार्ज कैसे करूं?", "language": "hi", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n140", "text": "आज कौन सी फिल्म लगी है?", "language": "hi", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n141", "text": "train kab aayegi", "language": "hi", "code_switched": true, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n142", "text": "cinema ticket ela book cheyali", "language": "te", "code_switched": true, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n143", "text": "Can you book a taxi for me?", "language": "en", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n144", "text": "My buffalo is not eating properly", "language": "en", "code_switched": false, "intent": "out_of_scope", "crop": null, "district": null}
+{"id": "n145", "text": "Give me the district summary of pest reports for this week", "language": "en", "code_switched": false, "intent": "officer", "crop": null, "district": null}
+{"id": "n146", "text": "Prepare a field inspection report for Khammam", "language": "en", "code_switched": false, "intent": "officer", "crop": null, "district": "Khammam"}
+{"id": "n147", "text": "Escalate this case to the district officer", "language": "en", "code_switched": false, "intent": "officer", "crop": null, "district": null}
+{"id": "n148", "text": "జిల్లా నివేదిక తయారు చేయండి", "language": "te", "code_switched": false, "intent": "officer", "crop": null, "district": null}
+{"id": "n149", "text": "जिला रिपोर्ट तैयार करो", "language": "hi", "code_switched": false, "intent": "officer", "crop": null, "district": null}
+{"id": "n150", "text": "Show the outbreak report for cotton in Warangal", "language": "en", "code_switched": false, "intent": "officer", "crop": "cotton", "district": "Warangal"}
+{"id": "n151", "text": "How many farmers reported whitefly this week?", "language": "en", "code_switched": false, "intent": "officer", "crop": null, "district": null}
+{"id": "n152", "text": "Summarize the review queue items", "language": "en", "code_switched": false, "intent": "officer", "crop": null, "district": null}
