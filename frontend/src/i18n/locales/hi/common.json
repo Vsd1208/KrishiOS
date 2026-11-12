@@ -92,5 +92,20 @@
     "pendingReviews": "लंबित समीक्षाएं",
     "activeAlerts": "सक्रिय अलर्ट",
     "totalFarmers": "कुल किसान"
+  },
+  "providers": {
+    "tab": "प्रदाता",
+    "title": "सक्रिय AI प्रदाता",
+    "subtitle": "दिखाता है कि हर उत्तर किस मॉडल या डेटा स्रोत से आया।",
+    "live": "लाइव",
+    "sandbox": "सैंडबॉक्स",
+    "mock": "मॉक (असली नहीं)",
+    "offDevice": "डेटा डिवाइस से बाहर भेजता है",
+    "notConfigured": "कॉन्फ़िगर नहीं",
+    "loadError": "प्रदाता की स्थिति लोड नहीं हो सकी।",
+    "policyViolations": "नीति चेतावनियाँ"
+  },
+  "canvas": {
+    "contextNotSet": "सेट नहीं"
   }
 }

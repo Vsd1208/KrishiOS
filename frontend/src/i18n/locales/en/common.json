@@ -92,5 +92,20 @@
     "pendingReviews": "Pending Reviews",
     "activeAlerts": "Active Alerts",
     "totalFarmers": "Total Farmers"
+  },
+  "providers": {
+    "tab": "Providers",
+    "title": "Active AI Providers",
+    "subtitle": "Shows which model or data source produced each answer.",
+    "live": "Live",
+    "sandbox": "Sandbox",
+    "mock": "Mock (not real)",
+    "offDevice": "Sends data off device",
+    "notConfigured": "Not configured",
+    "loadError": "Could not load provider status.",
+    "policyViolations": "Policy warnings"
+  },
+  "canvas": {
+    "contextNotSet": "Not set"
   }
 }

@@ -9,11 +9,13 @@
  */
 
 import React, { useState } from 'react';
-import { GitFork, Activity, Eye, BookOpen, Layers } from 'lucide-react';
+import { GitFork, Activity, Eye, BookOpen, Layers, Cpu } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { GraphChainVisualizer } from './canvas/GraphChainVisualizer';
 import { TelemetryMatrix } from './canvas/TelemetryMatrix';
 import { VisionDiagnosticLab } from './canvas/VisionDiagnosticLab';
 import { ProvenanceExplorer } from './canvas/ProvenanceExplorer';
+import { ProviderTransparencyPanel } from './canvas/ProviderTransparencyPanel';
 import type { CanvasTab } from '@/features/ai/types/workspace';
 import type { AIMessageContent, ImageAttachment } from '@/features/ai/types/conversation';
 
@@ -28,17 +30,20 @@ interface IntelligenceCanvasProps {
 export const IntelligenceCanvas: React.FC<IntelligenceCanvasProps> = ({
   activeAIContent,
   latestUserImage,
-  crop = 'Paddy',
-  district = 'Khammam',
+  crop,
+  district,
   className = '',
 }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<CanvasTab>('graph');
+  const notSet = t('canvas.contextNotSet');
 
   const tabs: { id: CanvasTab; label: string; icon: React.ReactNode }[] = [
     { id: 'graph', label: 'GraphRAG Chain', icon: <GitFork className="w-3.5 h-3.5" /> },
     { id: 'telemetry', label: 'Telemetry & Weather', icon: <Activity className="w-3.5 h-3.5" /> },
     { id: 'vision', label: 'Vision Lab', icon: <Eye className="w-3.5 h-3.5" /> },
     { id: 'provenance', label: 'Scientific Sources', icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: 'providers', label: t('providers.tab'), icon: <Cpu className="w-3.5 h-3.5" /> },
   ];
 
   return (
@@ -55,7 +60,7 @@ export const IntelligenceCanvas: React.FC<IntelligenceCanvasProps> = ({
           <span className="text-small font-bold text-text">Decision Intelligence Canvas</span>
         </div>
         <span className="text-caption text-text-muted">
-          Context: <strong>{crop}</strong> ({district})
+          Context: <strong>{crop ?? notSet}</strong> ({district ?? notSet})
         </span>
       </div>
 
@@ -101,6 +106,8 @@ export const IntelligenceCanvas: React.FC<IntelligenceCanvasProps> = ({
             crop={crop}
           />
         )}
+
+        {activeTab === 'providers' && <ProviderTransparencyPanel />}
 
         {activeTab === 'provenance' && (
           <ProvenanceExplorer

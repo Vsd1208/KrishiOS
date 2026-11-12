@@ -6,7 +6,7 @@ import type { ChatMessage } from '@/features/ai/types/conversation';
 
 export type WorkspaceViewMode = 'stream' | 'split' | 'canvas';
 
-export type CanvasTab = 'graph' | 'telemetry' | 'vision' | 'provenance' | 'evaluation';
+export type CanvasTab = 'graph' | 'telemetry' | 'vision' | 'provenance' | 'evaluation' | 'providers';
 
 export interface ConsultationSession {
   id: string;

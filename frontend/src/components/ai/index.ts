@@ -6,3 +6,4 @@ export * from './EvidenceCard';
 export * from './AIMessage';
 export * from './ThinkingIndicator';
 export * from './SourceReference';
+export * from './ProviderBadge';
