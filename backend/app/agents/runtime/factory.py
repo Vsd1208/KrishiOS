@@ -130,6 +130,11 @@ def _build_llm_provider(
     )
 
 
+def build_llm_provider() -> LLMProvider:
+    """Public accessor: the LLM provider selected by ``LLM_PROVIDER``."""
+    return _build_llm_provider()
+
+
 def build_runtime_engine(
     llm_provider: LLMProvider | None = None,
 ) -> AgentRuntimeEngine:

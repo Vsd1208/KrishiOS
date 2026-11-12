@@ -37,7 +37,7 @@ from app.vision.schemas.vision import (
 from app.vision.services.validator import ImageValidator
 from app.vision.services.quality import QualityAssessor
 from app.vision.services.preprocessor import ImagePreprocessor
-from app.vision.providers.mock_provider import MockVisionProvider
+from app.vision.providers.selection import get_vision_provider, get_vision_provider_info
 from app.vision.pipeline import VisionAnalysisPipeline
 
 
@@ -135,11 +135,11 @@ async def upload_image(
     await session.commit()
     await session.refresh(crop_image)
     
-    settings = get_settings()
+    provider_info = get_vision_provider_info()
     analysis = ImageAnalysis(
         image_id=crop_image.id,
-        model_name=settings.VISION_MODEL_NAME,
-        model_version=settings.VISION_MODEL_VERSION,
+        model_name=provider_info.name,
+        model_version=provider_info.version,
         status=ImageAnalysisStatus.UPLOADED
     )
     session.add(analysis)
@@ -157,8 +157,7 @@ async def upload_image(
 
 
 async def _run_vision_analysis_background(analysis_id: int) -> None:
-    settings = get_settings()
-    provider = MockVisionProvider(model_name=settings.VISION_MODEL_NAME, model_version=settings.VISION_MODEL_VERSION)
+    provider = get_vision_provider()
     quality_assessor = QualityAssessor()
     preprocessor = ImagePreprocessor()
     entity_resolver = EntityResolver()

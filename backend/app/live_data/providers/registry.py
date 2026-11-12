@@ -1,6 +1,9 @@
-"""Registry for pluggable live data providers."""
+"""Registry for pluggable live data providers.
 
-from loguru import logger
+Sprint 11 (ADR-005): unknown provider names raise ``ProviderConfigurationError`` instead
+of silently falling back to a mock, and every provider carries a ``ProviderInfo`` whose
+``kind`` (live / sandbox / mock) is reported by ``GET /api/v1/providers``.
+"""
 
 from app.config.settings import get_settings
 from app.live_data.providers.advisory_provider import (
@@ -24,64 +27,71 @@ from app.live_data.providers.weather_provider import (
     MockWeatherProvider,
     OpenMeteoWeatherProvider,
 )
+from app.providers import ProviderInfo, ProviderKind, ProviderSelector
+
+weather_selector: ProviderSelector[WeatherProvider] = ProviderSelector("weather")
+market_selector: ProviderSelector[MarketDataProvider] = ProviderSelector("market")
+advisory_selector: ProviderSelector[AdvisoryProvider] = ProviderSelector("advisory")
+scheme_selector: ProviderSelector[GovernmentSchemeProvider] = ProviderSelector("scheme")
+
+
+def _register_defaults() -> None:
+    weather_selector.register(
+        ProviderInfo("weather", "mock-weather-v1", "1.0.0", ProviderKind.MOCK,
+                     description="Synthetic weather for tests and offline demos."),
+        MockWeatherProvider,
+    )
+    weather_selector.register(
+        ProviderInfo("weather", "open-meteo-v1", "1.0.0", ProviderKind.LIVE,
+                     sends_data_off_device=False,
+                     description="Open-Meteo forecast API (sends district coordinates only)."),
+        lambda: OpenMeteoWeatherProvider(base_url=get_settings().WEATHER_API_BASE_URL),
+    )
+    market_selector.register(
+        ProviderInfo("market", "mock-market-v1", "1.0.0", ProviderKind.MOCK,
+                     description="Synthetic mandi prices."),
+        MockMarketDataProvider,
+    )
+    # Honest labelling: this class does not call data.gov.in yet (real adapter: Phase 5).
+    market_selector.register(
+        ProviderInfo("market", "agmarknet-v1", "1.0.0", ProviderKind.MOCK,
+                     description="Placeholder: returns mock prices; data.gov.in adapter pending."),
+        lambda: AgmarknetMarketProvider(api_base_url=get_settings().MARKET_API_BASE_URL),
+    )
+    advisory_selector.register(
+        ProviderInfo("advisory", "mock-advisory-v1", "1.0.0", ProviderKind.MOCK,
+                     description="Synthetic advisories."),
+        MockAdvisoryProvider,
+    )
+    advisory_selector.register(
+        ProviderInfo("advisory", "agromet-v1", "1.0.0", ProviderKind.MOCK,
+                     description="Placeholder: mock subclass; officer upload / AAS pending."),
+        AgrometAdvisoryProvider,
+    )
+    scheme_selector.register(
+        ProviderInfo("scheme", "mock-scheme-v1", "1.0.0", ProviderKind.MOCK,
+                     description="Synthetic scheme catalogue."),
+        MockGovernmentSchemeProvider,
+    )
+
+
+_register_defaults()
 
 
 class LiveDataProviderRegistry:
-    """Central registry resolving and caching active live data providers."""
+    """Resolves the configured live data providers (fail-loud on unknown names)."""
 
     def __init__(self) -> None:
         self._settings = get_settings()
-        self._weather_providers: dict[str, WeatherProvider] = {}
-        self._market_providers: dict[str, MarketDataProvider] = {}
-        self._advisory_providers: dict[str, AdvisoryProvider] = {}
-        self._scheme_providers: dict[str, GovernmentSchemeProvider] = {}
-
-        self._register_defaults()
-
-    def _register_defaults(self) -> None:
-        # Weather
-        self._weather_providers["mock-weather-v1"] = MockWeatherProvider()
-        self._weather_providers["open-meteo-v1"] = OpenMeteoWeatherProvider(
-            base_url=self._settings.WEATHER_API_BASE_URL
-        )
-
-        # Market
-        self._market_providers["mock-market-v1"] = MockMarketDataProvider()
-        self._market_providers["agmarknet-v1"] = AgmarknetMarketProvider(
-            api_base_url=self._settings.MARKET_API_BASE_URL
-        )
-
-        # Advisory
-        self._advisory_providers["mock-advisory-v1"] = MockAdvisoryProvider()
-        self._advisory_providers["agromet-v1"] = AgrometAdvisoryProvider()
-
-        # Schemes
-        self._scheme_providers["mock-scheme-v1"] = MockGovernmentSchemeProvider()
 
     def get_weather_provider(self, name: str | None = None) -> WeatherProvider:
-        prov_name = name or self._settings.WEATHER_PROVIDER_NAME
-        if prov_name not in self._weather_providers:
-            logger.warning("Weather provider '{}' not found, falling back to mock", prov_name)
-            prov_name = "mock-weather-v1"
-        return self._weather_providers[prov_name]
+        return weather_selector.get(name or self._settings.WEATHER_PROVIDER_NAME)
 
     def get_market_provider(self, name: str | None = None) -> MarketDataProvider:
-        prov_name = name or self._settings.MARKET_PROVIDER_NAME
-        if prov_name not in self._market_providers:
-            logger.warning("Market provider '{}' not found, falling back to mock", prov_name)
-            prov_name = "mock-market-v1"
-        return self._market_providers[prov_name]
+        return market_selector.get(name or self._settings.MARKET_PROVIDER_NAME)
 
     def get_advisory_provider(self, name: str | None = None) -> AdvisoryProvider:
-        prov_name = name or self._settings.ADVISORY_PROVIDER_NAME
-        if prov_name not in self._advisory_providers:
-            logger.warning("Advisory provider '{}' not found, falling back to mock", prov_name)
-            prov_name = "mock-advisory-v1"
-        return self._advisory_providers[prov_name]
+        return advisory_selector.get(name or self._settings.ADVISORY_PROVIDER_NAME)
 
     def get_scheme_provider(self, name: str | None = None) -> GovernmentSchemeProvider:
-        prov_name = name or self._settings.SCHEME_PROVIDER_NAME
-        if prov_name not in self._scheme_providers:
-            logger.warning("Scheme provider '{}' not found, falling back to mock", prov_name)
-            prov_name = "mock-scheme-v1"
-        return self._scheme_providers[prov_name]
+        return scheme_selector.get(name or self._settings.SCHEME_PROVIDER_NAME)

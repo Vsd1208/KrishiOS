@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, PostgresDsn, RedisDsn, computed_field
+from pydantic import AliasChoices, Field, PostgresDsn, RedisDsn, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -101,9 +101,10 @@ class Settings(BaseSettings):
         default_factory=lambda: ["image/jpeg", "image/png", "image/webp"]
     )
 
-    # Vision model
-    VISION_MODEL_NAME: str = "mock-v1"
-    VISION_MODEL_VERSION: str = "0.1.0"
+    # Vision model (Sprint 11: selected by VISION_PROVIDER; VISION_MODEL_NAME still accepted)
+    VISION_PROVIDER: str = Field(
+        default="mock-v1", validation_alias=AliasChoices("VISION_PROVIDER", "VISION_MODEL_NAME")
+    )
 
     # Quality and confidence thresholds
     VISION_QUALITY_MIN_SCORE: float = 0.3
@@ -129,10 +130,13 @@ class Settings(BaseSettings):
         ]
     )
 
-    STT_PROVIDER_NAME: str = "mock-stt-v1"
-    STT_MODEL_VERSION: str = "0.1.0"
-    TTS_PROVIDER_NAME: str = "mock-tts-v1"
-    TTS_MODEL_VERSION: str = "0.1.0"
+    # Sprint 11: STT_PROVIDER / TTS_PROVIDER (the *_PROVIDER_NAME forms are still accepted)
+    STT_PROVIDER: str = Field(
+        default="mock-stt-v1", validation_alias=AliasChoices("STT_PROVIDER", "STT_PROVIDER_NAME")
+    )
+    TTS_PROVIDER: str = Field(
+        default="mock-tts-v1", validation_alias=AliasChoices("TTS_PROVIDER", "TTS_PROVIDER_NAME")
+    )
 
     VOICE_CACHE_TTL_SECONDS: int = 3600
 
@@ -156,6 +160,29 @@ class Settings(BaseSettings):
     CIRCUIT_BREAKER_RECOVERY_TIME_SECONDS: float = 30.0
     CIRCUIT_BREAKER_TIMEOUT_SECONDS: float = 5.0
     LIVE_DATA_RATE_LIMIT_PER_MINUTE: int = 60
+
+    # ── Sprint 11: platform foundations ───────────────────────────────────────
+    # Reference tables (crop catalog, LGD) live in ml/reference; mounted read-only in Docker.
+    REFERENCE_DATA_DIR: str | None = None
+    ML_ARTIFACTS_DIR: str | None = None
+    # Mocks are allowed outside production. In production a mock provider is a startup error.
+    ALLOW_MOCK_PROVIDERS: bool = True
+    TRANSLATION_PROVIDER: str = "mock-translation"
+    TRANSLATION_FALLBACK_PROVIDER: str | None = None
+    NLU_PROVIDER: str = "rule-based-nlu"
+    NLU_FALLBACK_PROVIDER: str | None = "rule-based-nlu"
+    YIELD_PROVIDER: str | None = None
+    NOTIFICATION_CHANNELS: list[str] = Field(default_factory=lambda: ["in_app"])
+    SUPPORTED_LANGUAGES: list[str] = Field(default_factory=lambda: ["en", "hi", "te"])
+    # Third-party processing of farmer data is opt-in per provider (DPDP).
+    ALLOW_OFF_DEVICE_PROVIDERS: bool = False
+
+    # Worker / scheduler (arq on Redis)
+    WORKER_QUEUE_NAME: str = "krishios:jobs"
+    WORKER_JOB_TIMEOUT_SECONDS: int = 300
+    WORKER_MAX_TRIES: int = 3
+    WORKER_HEARTBEAT_INTERVAL_SECONDS: int = 60
+    WORKER_JOB_STALE_FACTOR: float = 3.0
 
     # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"] = "INFO"
