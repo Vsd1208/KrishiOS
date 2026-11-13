@@ -26,7 +26,7 @@
 
 1. **AI4Bharat models are gated.** The user granted Hugging Face access on 2026-11-12, and all 7 repos returned HTTP 200.
    - **Downloads:** the local connection was about 0.2 MB/s on 2026-11-12, and Hugging Face "Xet" transfers stalled at 0 bytes. With Xet disabled (`ml/scripts/download_models.sh`), 2026-11-13 ran at about 3.7 MB/s and all models downloaded.
-   - **Compute:** CPU-only benchmarks were too slow, so accuracy benchmarks were run on a **Colab Tesla T4** with the same code. The bundle came from repo commits `d4801c4` and `dc92ce1`; the notebooks are in `ml/notebooks/`. Accuracy does not depend on the device. CPU latency was measured locally (§3.4).
+   - **Compute:** CPU-only benchmarks were too slow, so accuracy benchmarks were run on a **Colab Tesla T4** with the same code. The bundle came from repo commits `ff05166` and `b99924e`; the notebooks are in `ml/notebooks/`. Accuracy does not depend on the device. CPU latency was measured locally (§3.4).
 2. **IndicTrans2 on transformers 4.57 without `IndicTransToolkit`** (the toolkit needs a native build on Windows). Fixed in code, see ADR-014 and `providers/indictrans2.py`:
    - script-unified output: Devanagari↔Telugu transliteration;
    - KV-cache incompatibility: a legacy-cache adapter, verified to give **identical** outputs to `use_cache=False` and to be 4.7–7.8× faster;
@@ -80,7 +80,7 @@ An earlier attempt (no run_id) was aborted after 40 min. With Whisper's default 
 
 ### 3.3 STT: AI4Bharat IndicConformer vs Whisper (FLEURS test, the same 30 utterances per language, seed 13)
 
-Colab Tesla T4, bundle `dc92ce1`. Each configuration was run **twice**, and the two runs gave identical WER/CER.
+Colab Tesla T4, bundle `b99924e`. Each configuration was run **twice**, and the two runs gave identical WER/CER.
 
 | Model (run ids) | Language given? | te WER | te CER | hi WER | hi CER | LID |
 |---|---|---|---|---|---|---|
@@ -118,7 +118,7 @@ Run `3d65e68d0266`: laptop CPU (`ML_DEVICE=cpu`), 10 utterances per language (a 
 
 ### 3.5 MT: test split (160 real advisory sentences; scored once per configuration; checker v2)
 
-Colab T4, bundle `d4801c4`. IndicTrans2 run `2c5c6baf993a`; opus-mt run `a839daa3ac6c` (**supersedes** `955550580258`, which used checker v1 with the `rs.` boundary bug).
+Colab T4, bundle `ff05166`. IndicTrans2 run `2c5c6baf993a`; opus-mt run `a839daa3ac6c` (**supersedes** `955550580258`, which used checker v1 with the `rs.` boundary bug).
 
 | Metric | IndicTrans2 en→te | IndicTrans2 en→hi | opus-mt en→te | opus-mt en→hi |
 |---|---|---|---|---|
