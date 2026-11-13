@@ -70,3 +70,17 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
 ## ADR-013: Evaluation sets are test-only; no tuning against them
 - **Status:** accepted (Phase 2)
 - **Decision:** `ml/evaluation_sets/nlu/utterances_v1.jsonl` and `mt/source_en.tsv` are test sets, scored once per configuration. Lexicon or glossary improvements require a separate dev set. Errors seen on the test set are reported, not patched.
+
+## ADR-014: IndicTrans2 protects terms and crop names, not quantities
+- **Status:** accepted (Phase 2, decided on the dev split only)
+- **Context:** IndicTrans2 has no `>` in its vocabulary and drops about half of all placeholders. Masking numbers also makes it substitute vague words ("next <n> hours" became "next few hours").
+- **Evidence (dev split, 41 sentences, check pass rate te/hi):**
+
+  | Strategy | te | hi | Run |
+  |---|---|---|---|
+  | All kinds masked | 0.171 | 0.146 | `b5ac92146c7c` |
+  | Terms and crops only | **0.317** | **0.488** | `8b5381fbede6` |
+  | No masking | 0.341 | 0.415 | `61627640c410` |
+
+- **Decision:** `IndicTrans2Provider.protect_kinds = {protected, crop}`, with placeholder format `<ID{i}>`.
+- **Consequence:** fewer than half of the dev outputs pass the checks. Most IndicTrans2 translations of advisories will therefore go to officer review (`blocked` or `pending_review`), which is the intended safety behaviour.

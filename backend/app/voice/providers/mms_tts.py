@@ -17,6 +17,7 @@ from uuid import uuid4
 from loguru import logger
 
 from app.config.settings import get_settings
+from app.providers.device import resolve_device
 from app.voice.providers.tts_base import TTSResult
 
 _ISO3 = {"te": "tel", "hi": "hin", "en": "eng"}
@@ -37,7 +38,7 @@ class MMSTTSProvider:
             model_id = f"{self._settings.TTS_MMS_MODEL_PREFIX}{_ISO3[language]}"
             tok = AutoTokenizer.from_pretrained(model_id)
             model = VitsModel.from_pretrained(model_id)
-            model.eval()
+            model.eval().to(resolve_device())
             self._models[language] = (tok, model)
             logger.info("MMS-TTS loaded | {}", model_id)
         return self._models[language]
@@ -51,7 +52,7 @@ class MMSTTSProvider:
             raise ValueError(f"MMS-TTS: unsupported language {language!r}")
         t0 = perf_counter()
         tok, model = self._load(language)
-        inputs = tok(text, return_tensors="pt")
+        inputs = tok(text, return_tensors="pt").to(resolve_device())
         with torch.inference_mode():
             wave = model(**inputs).waveform[0].cpu().numpy()
         rate = int(model.config.sampling_rate)

@@ -18,6 +18,7 @@ from loguru import logger
 
 from app.catalog.text import script_of, tokenize
 from app.config.settings import get_settings
+from app.providers.device import resolve_device
 from app.voice.providers.stt_base import LanguageDetectionResult, STTResult
 
 _SCRIPT = {"te": "Telugu", "hi": "Devanagari", "en": "Latin"}
@@ -50,7 +51,9 @@ class FasterWhisperSTTProvider:
             from faster_whisper import WhisperModel  # noqa: PLC0415 - optional extra
 
             t0 = perf_counter()
-            self._model = WhisperModel(self._size, device="cpu", compute_type=self._compute)
+            device = resolve_device()
+            compute = "float16" if device == "cuda" and self._compute == "int8" else self._compute
+            self._model = WhisperModel(self._size, device=device, compute_type=compute)
             logger.info("faster-whisper loaded | size={} | {:.1f}s", self._size,
                         perf_counter() - t0)
         return self._model

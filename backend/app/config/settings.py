@@ -182,6 +182,7 @@ class Settings(BaseSettings):
     HF_TOKEN: str | None = None
     STT_INDICCONFORMER_DECODING: str = "rnnt"  # rnnt | ctc
     INDICTRANS2_NUM_BEAMS: int = 4
+    ML_DEVICE: str = "auto"  # auto | cpu | cuda (local models)
     STT_WHISPER_MODEL: str = "small"
     STT_WHISPER_COMPUTE_TYPE: str = "int8"
     STT_WHISPER_BEAM_SIZE: int = 5

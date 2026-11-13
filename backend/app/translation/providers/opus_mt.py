@@ -12,6 +12,7 @@ from typing import Any
 
 from loguru import logger
 
+from app.providers.device import resolve_device
 from app.translation.providers.base import TranslationError
 
 _MODELS: dict[tuple[str, str], tuple[str, str | None]] = {
@@ -43,7 +44,7 @@ class OpusMTProvider:
                 model = MarianMTModel.from_pretrained(model_id)
             except Exception as exc:
                 raise TranslationError(f"cannot load {model_id}: {type(exc).__name__}") from exc
-            model.eval()
+            model.eval().to(resolve_device())
             self._loaded[model_id] = (tok, model)
             logger.info("opus-mt model loaded | {}", model_id)
         return self._loaded[model_id]
@@ -54,7 +55,8 @@ class OpusMTProvider:
         model_id, prefix = _MODELS[(src, tgt)]
         tok, model = self._load(model_id)
         inputs = [f"{prefix} {t}" if prefix else t for t in texts]
-        batch = tok(inputs, return_tensors="pt", padding=True, truncation=True, max_length=512)
+        batch = tok(inputs, return_tensors="pt", padding=True, truncation=True,
+                    max_length=512).to(resolve_device())
         with torch.inference_mode():
             out = model.generate(
                 **batch, max_new_tokens=self._max_new_tokens, num_beams=self._num_beams

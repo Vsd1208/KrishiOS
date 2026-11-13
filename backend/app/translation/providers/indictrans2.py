@@ -23,6 +23,7 @@ from typing import Any
 from loguru import logger
 
 from app.config.settings import get_settings
+from app.providers.device import resolve_device
 from app.providers.hf import ensure_hf_token
 from app.translation.providers.base import TranslationError
 from app.translation.script import devanagari_to_telugu, telugu_to_devanagari
@@ -56,6 +57,10 @@ class IndicTrans2Provider:
     model_version = "dist-200M"
     # ">" is not in the source vocabulary; "<ID{i}>" returns as "<ID{i}", which restore accepts.
     placeholder_format = "<ID{i}>"
+    # Chosen on the dev split (ADR-014): protect terms and crop names, leave numbers raw.
+    # Dev pass rate te/hi: terms-only 0.317/0.488 (run 8b5381fbede6) vs all-kinds
+    # 0.171/0.146 (b5ac92146c7c) vs none 0.341/0.415 (61627640c410).
+    protect_kinds = frozenset({"protected", "crop"})
 
     def __init__(self, max_new_tokens: int = 256, num_beams: int | None = None) -> None:
         self._max_new_tokens = max_new_tokens
@@ -83,7 +88,7 @@ class IndicTrans2Provider:
                     f"IndicTrans2 unavailable ({type(exc).__name__}); the checkpoints are gated "
                     "on Hugging Face: accept the terms and set HF_TOKEN"
                 ) from exc
-            model.eval()
+            model.eval().to(resolve_device())
             _legacy_cache_adapter(model)
             self._loaded[direction] = (tok, model)
             logger.info("IndicTrans2 loaded | {}", model_id)
@@ -103,7 +108,8 @@ class IndicTrans2Provider:
             ip = None
             unified = [telugu_to_devanagari(t) if src == "te" else t for t in texts]
             batch_in = [f"{_TAGS[src]} {_TAGS[tgt]} {t}" for t in unified]
-        enc = tok(batch_in, truncation=True, padding="longest", return_tensors="pt")
+        enc = tok(batch_in, truncation=True, padding="longest", return_tensors="pt").to(
+            resolve_device())
         with torch.inference_mode():
             out = model.generate(
                 **enc, max_new_tokens=self._max_new_tokens, num_beams=self._num_beams,

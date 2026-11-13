@@ -1,0 +1,101 @@
+{
+ "run_id": "b5ac92146c7c",
+ "config": {
+  "providers": [
+   "indictrans2"
+  ],
+  "targets": [
+   "te",
+   "hi"
+  ],
+  "source_set": "evaluation_sets\\mt\\source_en_dev.tsv",
+  "n": 41,
+  "protect_kinds_override": [
+   "crop",
+   "protected",
+   "quantity"
+  ],
+  "checker": "v2 (rs.-boundary fix, bracketless <ID placeholders)",
+  "reference_chrf": "pending native refs"
+ },
+ "results": {
+  "indictrans2:en-te": {
+   "n_sentences": 41,
+   "check_pass_rate": 0.1707,
+   "number_preservation_protected": 0.1707,
+   "number_preservation_unprotected": 0.8049,
+   "n_with_numbers": 41,
+   "unit_preservation": 0.3478,
+   "n_with_units": 23,
+   "protected_term_preservation": 0.9512,
+   "placeholder_survival": 0.4266,
+   "placeholders_emitted": 218,
+   "roundtrip_chrfpp_proxy": 61.23,
+   "roundtrip_n": 7,
+   "roundtrip_error": null,
+   "ms_per_sentence": 30400.9,
+   "failure_reasons_top": {
+    "missing numbers": 34,
+    "missing units": 15,
+    "unexpected numbers": 13,
+    "missing protected terms": 2
+   },
+   "examples": [
+    {
+     "src": "Uttar Pradesh East Uttar Pradesh received rainfall of 177.5 mm (-37% deficit), and West Uttar Pradesh received rainfall of 200.6 mm (-8% normal) from 01 June to 19 July 2026.",
+     "out": "ఉత్తర ప్రదేశ్ తూర్పు ఉత్తర ప్రదేశ్లో 177.5 mm ( - - ID1 ) లోటు వర్షపాతం నమోదైంది మరియు పశ్చిమ ఉత్తర ప్రదేశ్లో 01 జూన్ నుండి 19 జూలై 2026 వరకు 200.6 mm ( - ID3 ) సాధారణ వర్షపాతం నమోదైంది.",
+     "passed": false
+    },
+    {
+     "src": "Direct sowing may be done with short- duration rice varieties such as Govind, Manhar, Narendra-80, NDR-97, Pant-12, IR-50, Ashwani, Shakat-4, and Baranideep.",
+     "out": "గోవింద్ మన్హార్ నరేంద్ర - ఐ. డి0 ఎన్. డి. ఆర్ - ఐ. ఐ. డి1 పంత్ - ఐ. డి2 ఐ. ఆర్ - ఐ. ఐ. డి3 అశ్వనీ శకత్ - ఐ. డి4 మరియు బరానిదీప్ వంటి స్వల్పకాలిక < ఐ. డి5 రకాలు ప్రత్యక్ష విత్తనాలు వేయవచ్చు.",
+     "passed": false
+    },
+    {
+     "src": "Moderate Thunderstorms accompanied with Light to Moderate rain is very likely to occur at isolated places over East Garo Hills, South Garo Hills, West Garo Hills, West Khasi Hills in next 3 hours.",
+     "out": "వచ్చే గంటలలో తూర్పు గారో హిల్స్, దక్షిణ గారో హిల్స్, పశ్చిమ గారో హిల్స్, పశ్చిమ ఖాసీ హిల్స్ లో తేలికపాటి నుండి మితమైన వర్షంతో పాటు మితమైన ఉరుములతో కూడిన ఉరుములు, మెరుపులు కురిసే అవకాశం ఉంది.",
+     "passed": false
+    }
+   ]
+  },
+  "indictrans2:en-hi": {
+   "n_sentences": 41,
+   "check_pass_rate": 0.1463,
+   "number_preservation_protected": 0.1463,
+   "number_preservation_unprotected": 0.7317,
+   "n_with_numbers": 41,
+   "unit_preservation": 0.3043,
+   "n_with_units": 23,
+   "protected_term_preservation": 0.9512,
+   "placeholder_survival": 0.4587,
+   "placeholders_emitted": 218,
+   "roundtrip_chrfpp_proxy": 64.83,
+   "roundtrip_n": 6,
+   "roundtrip_error": null,
+   "ms_per_sentence": 20415.5,
+   "failure_reasons_top": {
+    "missing numbers": 35,
+    "missing units": 16,
+    "unexpected numbers": 12,
+    "missing protected terms": 2
+   },
+   "examples": [
+    {
+     "src": "Uttar Pradesh East Uttar Pradesh received rainfall of 177.5 mm (-37% deficit), and West Uttar Pradesh received rainfall of 200.6 mm (-8% normal) from 01 June to 19 July 2026.",
+     "out": "उत्तर प्रदेश पूर्वी उत्तर प्रदेश में 177.5 mm की वर्षा हुई और पश्चिम उत्तर प्रदेश में 01 जून से 19 जुलाई 2026 तक 200.6 mm की वर्षा हुई ।",
+     "passed": false
+    },
+    {
+     "src": "Direct sowing may be done with short- duration rice varieties such as Govind, Manhar, Narendra-80, NDR-97, Pant-12, IR-50, Ashwani, Shakat-4, and Baranideep.",
+     "out": "प्रत्यक्ष बुवाई कम अवधि की धान किस्मों जैसे गोविंद मनहर नरेंद्र - ID0 NDR - ID1 पंत - ID2 IR - ID3 अश्वनी शकत - ID4 और बरानीदीप के साथ की जा सकती है ।",
+     "passed": false
+    },
+    {
+     "src": "Moderate Thunderstorms accompanied with Light to Moderate rain is very likely to occur at isolated places over East Garo Hills, South Garo Hills, West Garo Hills, West Khasi Hills in next 3 hours.",
+     "out": "अगले कुछ घंटों में पूर्वी गारो पहाड़ियों - दक्षिण गारो पहाड़ियों - पश्चिम गारो पहाड़ियों - पश्चिम खासी पहाड़ियों पर अलग - अलग स्थानों पर हल्की से मध्यम बारिश के साथ मध्यम गरज के साथ बौछारें पड़ने की संभावना है ।",
+     "passed": false
+    }
+   ]
+  }
+ }
+}

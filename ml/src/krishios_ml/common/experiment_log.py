@@ -21,7 +21,15 @@ from krishios_ml.common.paths import EXPERIMENTS_DIR, REPO_ROOT
 
 
 def current_git_commit(repo_root: Path = REPO_ROOT) -> str:
-    """Return the HEAD commit (with ``-dirty`` suffix if the tree has changes)."""
+    """Return the HEAD commit (with ``-dirty`` suffix if the tree has changes).
+
+    Outside a git checkout (e.g. a Colab bundle) the commit recorded at bundle time is read
+    from ``KRISHIOS_GIT_COMMIT``.
+    """
+    import os  # noqa: PLC0415
+
+    if os.environ.get("KRISHIOS_GIT_COMMIT"):
+        return os.environ["KRISHIOS_GIT_COMMIT"]
     try:
         sha = subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=repo_root, capture_output=True, text=True, check=True
