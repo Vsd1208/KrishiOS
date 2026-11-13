@@ -181,6 +181,7 @@ class Settings(BaseSettings):
     # Hugging Face read token for gated AI4Bharat checkpoints (never logged or committed).
     HF_TOKEN: str | None = None
     STT_INDICCONFORMER_DECODING: str = "rnnt"  # rnnt | ctc
+    INDICTRANS2_NUM_BEAMS: int = 4
     STT_WHISPER_MODEL: str = "small"
     STT_WHISPER_COMPUTE_TYPE: str = "int8"
     STT_WHISPER_BEAM_SIZE: int = 5

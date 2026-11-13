@@ -4,7 +4,14 @@ Read this file at the start of every session, and update it at the end of every 
 
 **Status values:** `todo` · `in-progress` · `done` · `blocked-on-approval` · `blocked`
 
-**Last updated:** 2026-11-12 (end of Phase 2). Next session: run the pending AI4Bharat benchmarks (02 report §3.5), then Phase 3.
+**Last updated:** 2026-11-13. All AI4Bharat models are downloaded (IndicTrans2 x2, IndicConformer-600M, MMS te/hi). Benchmarks were stopped by the user, to be restarted later.
+
+### Resume here (benchmarks, in order; run from `backend/`)
+1. **Fix first:** IndicTrans2 destroys `<i>` placeholders (survival 1/533 in an *unlogged, stopped* run). With protection only 1.3% of te outputs passed checks; without protection 84.2% kept numbers. Make the placeholder format per provider: try IndicTrans2's native `<ID{n}>` on a 6-sentence probe, then re-run.
+2. `HF_HUB_OFFLINE=1 uv run --extra local-ml --with sacrebleu python ../ml/scripts/run_mt_eval.py --providers indictrans2 --targets te hi` (about 45 min)
+3. `HF_HUB_OFFLINE=1 uv run --extra local-ml --with jiwer python ../ml/scripts/run_stt_eval.py --provider indicconformer-600m-rnnt --languages te hi --n 30 --seed 13` (about 20-30 min)
+4. `HF_HUB_OFFLINE=1 uv run --extra local-ml --with jiwer python ../ml/scripts/run_tts_eval.py --tts mms-tts --stt faster-whisper-small --languages te hi --n 20 --seed 13` (about 20-30 min)
+5. Add the results to `ml/reports/02_multilingual_core.md` §3 and choose the default providers from the numbers.
 
 ## Phases
 
