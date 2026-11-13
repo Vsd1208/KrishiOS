@@ -18,12 +18,29 @@ eval = [
     "jiwer>=3.0.0,<5.0.0",
     "pymupdf>=1.24.0,<2.0.0",
 ]
+# CUDA PyTorch for local GPU training/benchmarks (Phases 9-10; laptop RTX 2050, 4 GB).
+# Install: `uv sync --extra gpu` (~3 GB). Verify: `uv run python scripts/check_gpu.py`.
+# Wheels come from PyTorch's CUDA 13.0 index (driver reports CUDA 13.3); see [tool.uv.sources].
+gpu = [
+    "torch>=2.14,<2.15",
+    "torchvision>=0.29",
+    "timm>=1.0",
+]
 
 [dependency-groups]
 dev = [
     "pytest>=8.3.0,<9.0.0",
     "ruff>=0.8.0,<1.0.0",
 ]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu130", extra = "gpu" }]
+torchvision = [{ index = "pytorch-cu130", extra = "gpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true  # only torch/torchvision come from this index
 
 [build-system]
 requires = ["hatchling>=1.25"]

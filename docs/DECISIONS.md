@@ -84,3 +84,11 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
 
 - **Decision:** `IndicTrans2Provider.protect_kinds = {protected, crop}`, with placeholder format `<ID{i}>`.
 - **Consequence:** fewer than half of the dev outputs pass the checks. Most IndicTrans2 translations of advisories will therefore go to officer review (`blocked` or `pending_review`), which is the intended safety behaviour.
+
+## ADR-015: Local CUDA PyTorch only in `ml/` as an opt-in extra
+- **Status:** accepted (2026-11-13, user request)
+- **Context:** The laptop has an RTX 2050 (4 GB, driver CUDA 13.3). Training phases (9, 10) need a GPU. The backend container serves on CPU, and IndicConformer CPU latency was measured as acceptable (RTF 0.25, run `3d65e68d0266`).
+- **Decision:** `ml/` has a `gpu` extra (torch 2.14.x from PyTorch's cu130 index, torchvision, timm), with `scripts/check_gpu.py` to verify it. The backend keeps CPU torch. Providers already honour `ML_DEVICE=auto|cpu|cuda`.
+- **Consequences:**
+  - The 4 GB of VRAM limits training to compact models with AMP.
+  - GPU scripts must use `uv run --extra gpu`.
