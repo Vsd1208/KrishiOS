@@ -1,5 +1,9 @@
 # ruff: noqa: E501 - long lines are notebook cell source (pip and harness commands)
-"""Generate ml/notebooks/phase2_benchmarks_colab.ipynb (run: python build_colab_notebook.py)."""
+"""Generate the Colab benchmark notebooks (run: python build_colab_notebook.py).
+
+* phase2_benchmarks_colab.ipynb: translation, speech-to-text and text-to-speech
+* phase2_stt_colab.ipynb: speech-to-text only
+"""
 
 import json
 from pathlib import Path
@@ -20,8 +24,9 @@ Runs the Phase 2 evaluations with the **same code** as the repo (`backend/app` p
 3. Have `krishios_colab_bundle.zip` ready to upload.
 
 Then **Runtime > Run all**. When cell 2 asks, upload the bundle. At the end
-`krishios_phase2_results.zip` downloads: give that file back to Claude Code.
-Expected time on a T4: about 30-60 minutes, mostly model and FLEURS downloads.
+`RESULTS_NAME.zip` downloads: give that file back to Claude Code.
+The pip cell may print dependency-conflict warnings about gradio/diffusers: they are harmless.
+Expected time on a T4: about MINUTES minutes, mostly model and dataset downloads.
 """
 
 GPU = """# 1. GPU check
@@ -50,6 +55,16 @@ DEPS = """# 3. Dependencies (Colab already ships torch and torchaudio with CUDA)
 !pip -q install "transformers==4.57.6" sentencepiece sacremoses "faster-whisper==1.2.1" "av>=14,<16" jiwer sacrebleu pyyaml loguru pydantic-settings "google-genai>=1.0" onnx onnxruntime-gpu scipy pandas pyarrow
 import transformers
 print("transformers", transformers.__version__)
+"""
+
+CUDA12 = """# 3b. CUDA 12 runtime for faster-whisper: CTranslate2 needs libcublas.so.12, which newer
+#     Colab images no longer ship. Child processes inherit LD_LIBRARY_PATH from os.environ.
+!pip -q install "nvidia-cublas-cu12" "nvidia-cudnn-cu12==9.*"
+import importlib
+libdirs = [list(importlib.import_module(m).__path__)[0]
+           for m in ("nvidia.cublas.lib", "nvidia.cudnn.lib")]
+os.environ["LD_LIBRARY_PATH"] = ":".join(libdirs + [os.environ.get("LD_LIBRARY_PATH", "")])
+print("CUDA 12 libs:", libdirs)
 """
 
 ENV = """# 4. Environment: HF token from Colab secrets (never printed), GPU device
@@ -83,7 +98,7 @@ for lang in ("te_in", "hi_in"):
 HELPER = """# 6. Helper: run a harness from backend/ and show its summary lines
 LOGS = ROOT / "ml/data/interim/colab_logs"
 LOGS.mkdir(parents=True, exist_ok=True)
-KEEP = ("{", "run_id", "indictrans2 ", "opus-mt ", "[te 30", "[hi 30", "Traceback")
+KEEP = ("{", "run_id", "indictrans2 ", "opus-mt ", "[te 30", "[hi 30", "Traceback", "RuntimeError")
 
 def run(script, *args):
     cmd = ["python", f"../ml/scripts/{script}", *args]
@@ -93,7 +108,7 @@ def run(script, *args):
     for line in lines:
         if line.startswith(KEEP) or "Error" in line[:60]:
             print(line[:1500])
-    tag = "_".join(a for a in args if not a.startswith("-"))[:80]
+    tag = "_".join(a.lstrip("-") for a in args)[:90]
     (LOGS / f"{script}_{tag}.log").write_text("\\n".join(lines))
     print("exit code", p.returncode, "\\n")
 """
@@ -107,13 +122,18 @@ run("run_mt_eval.py", "--providers", "opus-mt", "--targets", "te", "hi", "--spli
 """
 
 STT_MD = """## Speech-to-text: FLEURS test, 30 utterances per language, seed 13
-Same sample as the local Whisper-small run. No language hint (language ID as in production).
-IndicConformer RNNT and CTC decoding, plus Whisper large-v3 as the strongest Whisper reference.
+Same sample as the local Whisper-small run (run `5c0b02cf7fef`).
+- IndicConformer RNNT and CTC with the language known (`--hint`, as from the farmer's profile)
+- IndicConformer with Whisper language ID (unknown-speaker case)
+- Whisper large-v3 as the strongest Whisper reference
+
 Latency here is **GPU** latency; CPU latency is measured separately on the target machine.
 """
-STT = """run("run_stt_eval.py", "--provider", "indicconformer-600m-rnnt", "--languages", "te", "hi", "--n", "30", "--seed", "13")
-run("run_stt_eval.py", "--provider", "indicconformer-600m-ctc", "--languages", "te", "hi", "--n", "30", "--seed", "13")
-run("run_stt_eval.py", "--provider", "faster-whisper-large-v3", "--languages", "te", "hi", "--n", "30", "--seed", "13")
+STT = """S = ("--languages", "te", "hi", "--n", "30", "--seed", "13")
+run("run_stt_eval.py", "--provider", "indicconformer-600m-rnnt", *S, "--hint")
+run("run_stt_eval.py", "--provider", "indicconformer-600m-ctc", *S, "--hint")
+run("run_stt_eval.py", "--provider", "indicconformer-600m-rnnt", *S)
+run("run_stt_eval.py", "--provider", "faster-whisper-large-v3", *S)
 """
 
 TTS_MD = """## Text-to-speech: MMS-TTS, 20 sentences per language
@@ -124,7 +144,7 @@ TTS = """run("run_tts_eval.py", "--tts", "mms-tts", "--stt", "indicconformer-600
 
 PACK = """# 7. Package results and download them
 import shutil
-out = pathlib.Path("/content/krishios_phase2_results")
+out = pathlib.Path("/content/RESULTS_NAME")
 if out.exists():
     shutil.rmtree(out)
 for rel in ("ml/experiments", "ml/reports/data", "ml/data/interim/colab_logs"):
@@ -132,29 +152,49 @@ for rel in ("ml/experiments", "ml/reports/data", "ml/data/interim/colab_logs"):
     if src.exists():
         shutil.copytree(src, out / rel)
 (out / "GPU.txt").write_text(torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu")
-shutil.make_archive("/content/krishios_phase2_results", "zip", out)
-files.download("/content/krishios_phase2_results.zip")
+shutil.make_archive("/content/RESULTS_NAME", "zip", out)
+files.download("/content/RESULTS_NAME.zip")
 """
 
-CELLS = [(MD, INTRO), (CODE, GPU), (CODE, UPLOAD), (CODE, DEPS), (CODE, ENV), (CODE, FLEURS),
-         (CODE, HELPER), (MD, MT_MD), (CODE, MT), (MD, STT_MD), (CODE, STT), (MD, TTS_MD),
-         (CODE, TTS), (CODE, PACK)]
+SETUP = [(CODE, GPU), (CODE, UPLOAD), (CODE, DEPS), (CODE, CUDA12), (CODE, ENV), (CODE, FLEURS),
+         (CODE, HELPER)]
+
+
+def _fill(text: str, results: str, minutes: str) -> str:
+    return text.replace("RESULTS_NAME", results).replace("MINUTES", minutes)
+
+
+NOTEBOOKS = {
+    "phase2_benchmarks_colab.ipynb": [
+        (MD, _fill(INTRO, "krishios_phase2_results", "30-60")), *SETUP,
+        (MD, MT_MD), (CODE, MT), (MD, STT_MD), (CODE, STT), (MD, TTS_MD), (CODE, TTS),
+        (CODE, _fill(PACK, "krishios_phase2_results", "")),
+    ],
+    "phase2_stt_colab.ipynb": [
+        (MD, _fill(INTRO, "krishios_phase2_stt_results", "20-40").replace(
+            "Phase 2 benchmarks", "Phase 2 speech-to-text benchmarks")), *SETUP,
+        (MD, STT_MD), (CODE, STT),
+        (CODE, _fill(PACK, "krishios_phase2_stt_results", "")),
+    ],
+}
 
 
 def main() -> None:
-    nb = {"nbformat": 4, "nbformat_minor": 5,
-          "metadata": {"accelerator": "GPU", "colab": {"provenance": [], "gpuType": "T4"},
-                       "kernelspec": {"name": "python3", "display_name": "Python 3"},
-                       "language_info": {"name": "python"}},
-          "cells": []}
-    for kind, src in CELLS:
-        cell = {"cell_type": kind, "metadata": {}, "source": src.strip("\n").splitlines(True)}
-        if kind == CODE:
-            cell.update({"execution_count": None, "outputs": []})
-        nb["cells"].append(cell)
-    out = Path(__file__).with_name("phase2_benchmarks_colab.ipynb")
-    out.write_text(json.dumps(nb, indent=1, ensure_ascii=False), encoding="utf-8")
-    print("wrote", out)
+    for filename, cells in NOTEBOOKS.items():
+        nb = {"nbformat": 4, "nbformat_minor": 5,
+              "metadata": {"accelerator": "GPU", "colab": {"provenance": [], "gpuType": "T4"},
+                           "kernelspec": {"name": "python3", "display_name": "Python 3"},
+                           "language_info": {"name": "python"}},
+              "cells": []}
+        for kind, src in cells:
+            cell = {"cell_type": kind, "metadata": {},
+                    "source": src.strip("\n").splitlines(True)}
+            if kind == CODE:
+                cell.update({"execution_count": None, "outputs": []})
+            nb["cells"].append(cell)
+        out = Path(__file__).with_name(filename)
+        out.write_text(json.dumps(nb, indent=1, ensure_ascii=False), encoding="utf-8")
+        print("wrote", out, len(cells), "cells")
 
 
 if __name__ == "__main__":

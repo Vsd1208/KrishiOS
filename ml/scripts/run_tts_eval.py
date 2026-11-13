@@ -75,8 +75,11 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=20)
     ap.add_argument("--seed", type=int, default=13)
     args = ap.parse_args()
+    from app.providers.device import resolve_device
+
     config = {"tts": args.tts, "stt_for_proxy": args.stt, "n": args.n,
-              "languages": args.languages, "texts": "FLEURS test transcriptions", "device": "cpu"}
+              "languages": args.languages, "texts": "FLEURS test transcriptions",
+              "device": resolve_device()}
     results = {}
     with track_experiment("tts_eval", config, seed=args.seed,
                           split_id=f"fleurs-text-sample{args.n}-seed{args.seed}") as rec:

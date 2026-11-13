@@ -55,16 +55,18 @@ def load_sample(lang: str, n: int, seed: int) -> list[dict]:
     return sample
 
 
-async def evaluate(provider_name: str, lang: str, sample: list[dict]) -> dict:
+async def evaluate(provider_name: str, lang: str, sample: list[dict],
+                   hint: bool = False) -> dict:
     from app.voice.providers.selection import stt_selector
 
     provider = stt_selector.get(provider_name)
     hyps, latencies, rtfs, lid_ok, switched = [], [], [], 0, 0
     t_load = time.perf_counter()
-    await provider.transcribe(sample[0]["path"])  # warm-up (model load); not timed below
+    hint_lang = lang if hint else None
+    await provider.transcribe(sample[0]["path"], hint_lang)  # warm-up (model load); not timed below
     load_s = time.perf_counter() - t_load
     for k, r in enumerate(sample, start=1):
-        res = await provider.transcribe(r["path"])
+        res = await provider.transcribe(r["path"], hint_lang)
         secs = res.inference_ms / 1000
         print(f"[{lang} {k}/{len(sample)}] {secs:.1f}s lid={res.detected_language}", flush=True)
         hyps.append(res.raw_transcript)
@@ -97,20 +99,25 @@ def main() -> None:
     ap.add_argument("--languages", nargs="+", default=["te", "hi"])
     ap.add_argument("--n", type=int, default=50)
     ap.add_argument("--seed", type=int, default=13)
+    ap.add_argument("--hint", action="store_true",
+                    help="pass the true language as a hint (farmer profile language known)")
     args = ap.parse_args()
+    from app.providers.device import resolve_device
 
     config = {"provider": args.provider, "dataset": "google/fleurs test", "n": args.n,
-              "languages": args.languages, "lid_hint": None, "device": "cpu"}
+              "languages": args.languages, "lid_hint": "oracle" if args.hint else None,
+              "device": resolve_device()}
     results = {}
     with track_experiment("stt_eval", config, seed=args.seed,
                           split_id=f"fleurs-test-sample{args.n}-seed{args.seed}") as rec:
         for lang in args.languages:
             sample = load_sample(lang, args.n, args.seed)
-            results[lang] = asyncio.run(evaluate(args.provider, lang, sample))
+            results[lang] = asyncio.run(evaluate(args.provider, lang, sample, args.hint))
             print(json.dumps({k: v for k, v in results[lang].items() if k != "examples"}))
         rec.metrics = {lang: {k: v for k, v in r.items() if k != "examples"}
                        for lang, r in results.items()}
-        out = REPORTS_DIR / "data" / f"stt_{args.provider}_{rec.run_id}.json"
+        tag = f"{args.provider}{'_hint' if args.hint else ''}"
+        out = REPORTS_DIR / "data" / f"stt_{tag}_{rec.run_id}.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps({"run_id": rec.run_id, "config": config, "results": results},
                                   ensure_ascii=False, indent=1), encoding="utf-8")

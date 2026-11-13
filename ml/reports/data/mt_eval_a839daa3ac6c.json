@@ -1,0 +1,99 @@
+{
+ "run_id": "a839daa3ac6c",
+ "config": {
+  "providers": [
+   "opus-mt"
+  ],
+  "targets": [
+   "te",
+   "hi"
+  ],
+  "source_set": "evaluation_sets/mt/source_en.tsv",
+  "n": 160,
+  "protect_kinds_override": null,
+  "checker": "v2 (rs.-boundary fix, bracketless <ID placeholders)",
+  "reference_chrf": "pending native refs"
+ },
+ "results": {
+  "opus-mt:en-te": {
+   "n_sentences": 160,
+   "check_pass_rate": 0.35,
+   "number_preservation_protected": 0.3671,
+   "number_preservation_unprotected": 0.3797,
+   "n_with_numbers": 158,
+   "unit_preservation": 0.557,
+   "n_with_units": 79,
+   "protected_term_preservation": 0.9563,
+   "placeholder_survival": 0.6135,
+   "placeholders_emitted": 533,
+   "roundtrip_chrfpp_proxy": 21.42,
+   "roundtrip_n": 56,
+   "roundtrip_error": null,
+   "ms_per_sentence": 210.1,
+   "failure_reasons_top": {
+    "missing numbers": 100,
+    "unexpected numbers": 48,
+    "missing units": 35,
+    "unrestored placeholders": 9,
+    "missing protected terms": 7
+   },
+   "examples": [
+    {
+     "src": "` Extended Range Forecast System Rainfall forecast maps for the next 2 weeks (IC – 15th July, 2026) (17th to 30th July 2026).",
+     "out": "`కృతీకరించబడిన రేటింగ్ సిస్టమ్ బల్క్ (IC, 2 వారాలకు) డెవలప్ డేటాను గమనికలు (17, 30) 30 కోసం (30).",
+     "passed": false
+    },
+    {
+     "src": "Week 1 (17.07.2026 to 23.07.2026): Rainfall is likely to be above normal over many parts of East India, East Uttar Pradesh and.",
+     "out": "వారానికి 1 (17.07.2026 నుండి <226>): వర్షపు పతనం ఈస్ట్ ఇండియాలోని, ఈస్ట్ Utar Pradeshల లోని అనేక భాగాల కంటే ఎక్కువ మలినమే కావచ్చు.",
+     "passed": false
+    },
+    {
+     "src": "Light to Moderate with Thunderstorm and lightning  Rain is likely to occur at isolated places over Mayiladuthurai, Nagapattinam, Ramanathapuram, Karaikal in next 3 hours.",
+     "out": "మెరుపును, మెరుపును స్వాభావికంగా మిళితం చేయడానికి మెరుగైన స్థలాలు మలగాదు, మేదపాటినమ్‌, రామమ్‌తార్‌, కారామిక్‌, కారారిక్‌.",
+     "passed": false
+    }
+   ]
+  },
+  "opus-mt:en-hi": {
+   "n_sentences": 160,
+   "check_pass_rate": 0.375,
+   "number_preservation_protected": 0.3734,
+   "number_preservation_unprotected": 0.3101,
+   "n_with_numbers": 158,
+   "unit_preservation": 0.6203,
+   "n_with_units": 79,
+   "protected_term_preservation": 0.9938,
+   "placeholder_survival": 0.7467,
+   "placeholders_emitted": 533,
+   "roundtrip_chrfpp_proxy": 32.09,
+   "roundtrip_n": 60,
+   "roundtrip_error": null,
+   "ms_per_sentence": 140.3,
+   "failure_reasons_top": {
+    "missing numbers": 84,
+    "unexpected numbers": 74,
+    "missing units": 30,
+    "unrestored placeholders": 3,
+    "missing protected terms": 1
+   },
+   "examples": [
+    {
+     "src": "` Extended Range Forecast System Rainfall forecast maps for the next 2 weeks (IC – 15th July, 2026) (17th to 30th July 2026).",
+     "out": "` विस्तारित सीमा पूर्वानुमान तंत्र वर्षा चिह्न चिह्न अगले 2 सप्ताह के लिए (<1 जुलाई, 2026 2026 30 <35> 2026 2026 2026.",
+     "passed": false
+    },
+    {
+     "src": "Week 1 (17.07.2026 to 23.07.2026): Rainfall is likely to be above normal over many parts of East India, East Uttar Pradesh and.",
+     "out": "सप्ताह 1 (17.07. 2026 से <226): बारिश, पूर्व भारत के कई भागों पर सामान्य होने की संभावना है.",
+     "passed": false
+    },
+    {
+     "src": "Light to Moderate with Thunderstorm and lightning  Rain is likely to occur at isolated places over Mayiladuthurai, Nagapattinam, Ramanathapuram, Karaikal in next 3 hours.",
+     "out": "अंधड़ और बिजली बरसात के साथ तेजी से प्रारंभ करने के लिए संभावना है कि दूर के स्थानों में समसूरा, नियाराम, रामाधाम, भूतपूर्व घंटे में कर्सिक।",
+     "passed": false
+    }
+   ]
+  }
+ }
+}
