@@ -1,0 +1,203 @@
+{
+ "run_id": "dc23dc9f2bfb",
+ "config": {
+  "dataset": "evaluation_sets/govconnect/sachet_20261113.jsonl",
+  "split": "dev",
+  "extractor": "rules-v1",
+  "input": "headline+description+instruction (no structured CAP fields)",
+  "labels": "CAP structured fields (official)"
+ },
+ "metrics": {
+  "overall": {
+   "n": 27,
+   "district_precision": 0.764,
+   "district_recall": 0.8608,
+   "district_f1": 0.8095,
+   "district_exact_match": 0.6296,
+   "district_precision_headline": 0.9888,
+   "district_recall_headline": 0.8889,
+   "severity_accuracy": 0.7407,
+   "hazard_accuracy": 0.9412,
+   "hazard_n": 17,
+   "valid_to_coverage": 0.2593,
+   "valid_to_within_60min": 0.2222,
+   "error_counts": {
+    "district_extra": 6,
+    "district_miss": 4
+   },
+   "district_error_examples": [
+    {
+     "id": "IN-1794339839475041_41",
+     "text": "Light to Moderate with Thunderstorm and lightning  Rain is likely to occur at isolated places over Mayiladuthurai, Nagapattinam, Ramanathapuram, Karaikal in next 3 hours.\nPlease follow SDMA guidelines",
+     "area": [
+      "Karaikal district of Puducherry"
+     ],
+     "gold": [
+      598
+     ],
+     "pred": [
+      579,
+      583,
+      598,
+      735
+     ]
+    },
+    {
+     "id": "IN-1794361000403007_43",
+     "text": "Light to Moderate Rain with thunderstorm and lightning is likely to occur at most places over Mayiladuthurai, Nagapattinam, Ramanathapuram, Karaikal in next 3 hours.\nPlease follow SDMA guidelines.",
+     "area": [
+      "Mayiladuthurai, Nagapattinam, Ramanathapuram districts of Tamil Nadu"
+     ],
+     "gold": [
+      579,
+      583,
+      735
+     ],
+     "pred": [
+      579,
+      583,
+      598,
+      735
+     ]
+    },
+    {
+     "id": "IN-1794371577009007_43",
+     "text": "Light to Moderate rain with Thunderstorm with Lightning is likely to occur at isolated places over Mayiladuthurai, Nagapattinam, Ramanathapuram, Tenkasi, Karaikal in next 3 hours.\nPlease follow SDMA g",
+     "area": [
+      "Mayiladuthurai, Nagapattinam, Ramanathapuram, Tenkasi districts of Tamil Nadu"
+     ],
+     "gold": [
+      579,
+      583,
+      733,
+      735
+     ],
+     "pred": [
+      579,
+      583,
+      598,
+      733,
+      735
+     ]
+    },
+    {
+     "id": "IN-1794371578665041_41",
+     "text": "Light to Moderate rain with Thunderstorm with Lightning is likely to occur at isolated places over Mayiladuthurai, Nagapattinam, Ramanathapuram, Tenkasi, Karaikal in next 3 hours.\nPlease follow SDMA g",
+     "area": [
+      "Karaikal district of Puducherry"
+     ],
+     "gold": [
+      598
+     ],
+     "pred": [
+      579,
+      583,
+      598,
+      733,
+      735
+     ]
+    },
+    {
+     "id": "IN-1794389306217011_11",
+     "text": "Heavy Rain is Likely to occur over 4 districts of Jammu and Kashmir. Please follow SDMA guidelines.\nPlease follow SDMA guidelines.",
+     "area": [
+      "4 districts of Jammu and Kashmir"
+     ],
+     "gold": [
+      8,
+      10,
+      623,
+      626
+     ],
+     "pred": []
+    },
+    {
+     "id": "IN-1794425982814007_43",
+     "text": "Light to moderate Rain with thunderstorm and lightning is likely to occur at isolated places over Cuddalore, Mayiladuthurai, Nagapattinam, Namakkal, Perambalur, Ramanathapuram, Salem, Thanjavur, Thiru",
+     "area": [
+      "Cuddalore, Mayiladuthurai, Nagapattinam, Namakkal, Perambalur, Ramanathapuram, Salem, Thanjavur, Thiruvarur districts of Tamil Nadu"
+     ],
+     "gold": [
+      570,
+      579,
+      580,
+      581,
+      583,
+      584,
+      586,
+      590,
+      735
+     ],
+     "pred": [
+      570,
+      579,
+      580,
+      581,
+      583,
+      584,
+      586,
+      590,
+      598,
+      735
+     ]
+    },
+    {
+     "id": "IN-1794429981316017_17",
+     "text": "Light Thunderstorm  lightning accompanied with light to moderate rain. very likely to affect over some parts of East Burdwan district during next 2-3 hours from 02:17, 12-11-2026.\nPlease follow SDMA g",
+     "area": [
+      "Purba Bardhaman district of West Bengal"
+     ],
+     "gold": [
+      306
+     ],
+     "pred": [
+      78
+     ]
+    },
+    {
+     "id": "IN-1794437676709041_41",
+     "text": "Light to Moderate Rain with thunderstorm and lightning is likely to occur at isolated places over Coimbatore, Dindigul, Kanniyakumari, Karur, Mayiladuthurai, Nagapattinam, Ramanathapuram, Tenkasi, The",
+     "area": [
+      "Karaikal district of Puducherry"
+     ],
+     "gold": [
+      598
+     ],
+     "pred": [
+      569,
+      572,
+      575,
+      576,
+      579,
+      583,
+      587,
+      596,
+      598,
+      733,
+      735
+     ]
+    }
+   ]
+  },
+  "by_language": {
+   "en-IN": {
+    "n": 27,
+    "district_precision": 0.764,
+    "district_recall": 0.8608,
+    "district_f1": 0.8095,
+    "district_exact_match": 0.6296,
+    "district_precision_headline": 0.9888,
+    "district_recall_headline": 0.8889,
+    "severity_accuracy": 0.7407,
+    "hazard_accuracy": 0.9412,
+    "hazard_n": 17,
+    "valid_to_coverage": 0.2593,
+    "valid_to_within_60min": 0.2222,
+    "error_counts": {
+     "district_extra": 6,
+     "district_miss": 4
+    }
+   }
+  }
+ }
+}

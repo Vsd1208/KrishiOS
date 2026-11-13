@@ -90,6 +90,7 @@ authorities:
   - {phrase: district agromet unit, name: District Agromet Unit, level: district}
   - {phrase: damu, name: District Agromet Unit, level: district}
   - {phrase: agromet field unit, name: Agromet Field Unit, level: state}
+  - {phrase: disaster management department, name: Disaster Management Department, level: state}
   - {phrase: department of agriculture, name: Department of Agriculture, level: state}
   - {phrase: agriculture department, name: Department of Agriculture, level: state}
   - {phrase: imd, name: India Meteorological Department, level: national}

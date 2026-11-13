@@ -9,9 +9,7 @@
   - **F4:** grievance tickets with SLA, and scheme eligibility Q&A.
 
 **Integrity notes.**
-- No extraction-accuracy, delivery or acknowledgement numbers are reported here.
-  - The labelled set of real bulletins is not built yet (see §4).
-  - Delivery and acknowledgement rates must come from real runs; there have been none.
+- Extraction accuracy (§4) comes from logged runs on real SACHET alerts. Delivery and acknowledgement rates must come from real runs; there have been none, so none are reported.
 - Every hi/te string is a **draft** pending native review. So is the PM-KISAN catalog entry, which is hidden from farmers until an officer verifies it.
 
 ## 1. What was built
@@ -51,18 +49,50 @@
   - highlight segmentation, and scheme eligibility.
 - Typecheck clean; lint 0 errors; build OK. Phase 4 Python files are ruff-clean.
 
-## 4. Not done / pending
+## 4. Extraction accuracy on real government alerts
 
-1. **Extraction accuracy benchmark (needs your OK).** The best labelled source is NDMA SACHET CAP alerts: their structured fields (LGD district codes, severity, effective/expires, event) are official labels, and the extractor would see only the free-text headline and description.
-   - Fetching a one-time sample means polling the public RSS feed, which Phase 0 flagged for your confirmation.
-   - State agriculture and KVK PDFs would need manual labelling.
-2. **The LLM extractor** is not implemented (Gemini quota exhausted; ADR-021).
-3. **Automated feeds** (SACHET, IMD, Agmarknet) and **block-level weather**: Phase 5.
-4. **SMS / voice channels:** sandbox adapters in Phase 5; real providers need cost approval.
-5. **te/hi district names** are missing from LGD, so Indic-script district mentions are not extracted.
+**Benchmark** (approved 2026-11-13):
+- **Source:** 98 NDMA SACHET CAP alerts (feed marked public domain), fetched once at 1 request/s. 68 carry LGD district codes; split dev 27 / test 41 (seed 13).
+- **Labels:** the official structured CAP fields (LGD codes, severity, expiry, event).
+- **Input:** the extractor sees only the free text (headline, description, instruction).
+- **Discipline:** tuned on dev only; test scored once (ADR-013).
 
-## 5. Approvals requested
+**Dev-only changes** (dev F1 0.765 → 0.821, runs `7246691b38ff` → `d5e0ce889360`):
+- **Directional names:** pure compass-direction names (Delhi's "East") match only when directly followed by "district".
+- **State names:** district names inside a mentioned state name ("Jammu and Kashmir") are skipped.
+- **Issuer location:** "Disaster Management Department" added as an authority, so the issuing office's place is excluded.
+- **Spellings:** district names also match with spaces removed ("Coochbehar"), plus a 6-row sourced alias file (`reference/district_aliases.csv`: East Midnapore, East Burdwan, ...).
+- **Dates:** time-before-date ("22:45, 10-11-2026") and hour ranges ("next 2-3 hours").
 
-1. **SACHET sample:** may I fetch a one-time sample of the public SACHET CAP RSS feed to build the extraction benchmark?
-2. **Commit:** Phase 4 is committed on `feat/sprint-11-phase4-govconnect`. Nothing is pushed.
-3. **Native review:** of the new hi/te strings and of the PM-KISAN draft (officer verification).
+**Test result of record** (run `bcf032c40563`, n = 41):
+
+| Metric | Value |
+|---|---|
+| District precision / recall / F1 | 0.868 / 0.807 / **0.836** |
+| District exact-set match | 0.659 |
+| District precision / recall vs headline-level gold* | **1.000** / 0.828 |
+| Severity accuracy | 0.659 |
+| Hazard accuracy (alerts with a mappable event, n = 25) | 0.800 |
+| valid_to found and within 60 min of CAP `expires` | 0.244 |
+
+\* IMD issues one multi-state headline as separate per-state alerts (e.g. Karaikal, Puducherry vs Tamil Nadu districts), so the strict score counts correctly named districts of the sibling alert as errors. The headline-level score uses the union of gold districts over alerts with identical text. This was defined on dev before test scoring.
+
+**Remaining errors:**
+- **Bengali alerts:** not supported; the extractor reads en/hi/te only.
+- **Region-level names:** alerts naming "Andaman and Nicobar Islands" or "N districts of Assam" instead of districts.
+- **Severity:** nowcast text rarely states the colour code; the CAP field carries it.
+- **Expiry:** usually "next 3 hours" with no base time in the text.
+
+**Feed adapter:** a SACHET adapter should read severity, LGD codes and expiry from the structured CAP fields and use text extraction only for advice sentences and crops.
+
+## 5. Not done / pending
+
+1. **LLM extractor:** not implemented (Gemini quota exhausted; ADR-021).
+2. **Automated feeds** (SACHET adapter, IMD, Agmarknet) and **block-level weather:** Phase 5.
+3. **SMS / voice channels:** sandbox adapters in Phase 5; real providers need cost approval.
+4. **Indic-script names:** te/hi district names are missing from LGD; Bengali is not supported.
+
+## 6. Approvals requested
+
+1. **Commit:** Phase 4 is committed on `feat/sprint-11-phase4-govconnect`. Nothing is pushed.
+2. **Native review:** of the new hi/te strings, and officer verification of the PM-KISAN draft.

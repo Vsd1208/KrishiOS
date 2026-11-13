@@ -69,3 +69,16 @@ def test_dates_carry_ist_timezone() -> None:
     e = extract("Valid from 2026-11-20 till 2026-11-22.")
     assert e.value("valid_from").tzinfo == IST
     assert e.value("valid_to").isoformat() == "2026-11-22T23:59:00+05:30"
+
+
+def test_imd_nowcast_names_and_time_first_dates() -> None:
+    # Patterns from the SACHET dev split (ADR-021): exonyms, spaceless spellings, directional
+    # district names, district names inside state names, and "next 2-3 hours from <time, date>".
+    e = extract("Light thunderstorm very likely over some parts of East Midnapore, Coochbehar "
+                "and East Burdwan districts during next 2-3 hours from 22:45, 10-11-2026.")
+    assert set(e.value("district_codes")) == {317, 308, 306}  # not Delhi's "East" (78)
+    assert e.value("valid_to").isoformat() == "2026-11-11T01:45:00+05:30"
+    assert extract("Heavy rain over 4 districts of Jammu and Kashmir.").value(
+        "district_codes", []) == []  # "Jammu" here is the state, not the district
+    issuer = extract("Light thunderstorm over Giridih. Disaster Management Department Ranchi.")
+    assert issuer.value("district_codes") == [329]  # Ranchi is the issuing office

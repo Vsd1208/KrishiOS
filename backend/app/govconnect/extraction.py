@@ -43,6 +43,14 @@ _MONTHS = {
 }
 
 _DATE_PATTERNS = [
+    # "22:45, 10-11-2026": time first, as in IMD nowcasts
+    (
+        "hm_dmy",
+        re.compile(
+            r"\b(\d{1,2}):(\d{2})\s*(?:hrs|ist)?,?\s*(\d{1,2})[./-](\d{1,2})[./-](\d{4})\b",
+            re.IGNORECASE,
+        ),
+    ),
     ("ymd", re.compile(r"\b(\d{4})-(\d{1,2})-(\d{1,2})\b")),
     ("dmy", re.compile(r"\b(\d{1,2})[./-](\d{1,2})[./-](\d{4}|\d{2})\b")),
     ("d_mon_y", re.compile(r"\b(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})\.?,?\s+(\d{4})\b")),
@@ -50,7 +58,7 @@ _DATE_PATTERNS = [
 ]
 _TIME_RE = re.compile(r"^\s*(?:at\s*)?(\d{1,2})[:.](\d{2})\s*(hrs|hours|ist|am|pm)?", re.IGNORECASE)
 _DURATION_RE = re.compile(
-    r"\b(?:next|coming|following)\s+(\d{1,3})\s*(hours|hrs|days)\b"
+    r"\b(?:next|coming|following)\s+(?:\d{1,3}\s*(?:-|to)\s*)?(\d{1,3})\s*(hours|hrs|days)\b"
     r"|अगले\s+(\d{1,3})\s*(घंटे|घंटों|दिन|दिनों)"
     r"|రాబోయే\s+(\d{1,3})\s*(గంటల|గంటలు|రోజుల|రోజులు)",
     re.IGNORECASE,
@@ -216,6 +224,9 @@ def _labelled(
 
 def _parse_date(kind: str, groups: tuple[str, ...]) -> datetime | None:
     try:
+        if kind == "hm_dmy":
+            hh, mm, d, m, y = (int(g) for g in groups)
+            return datetime(y, m, d, hh, mm, tzinfo=IST)
         if kind == "ymd":
             y, m, d = (int(g) for g in groups)
         elif kind == "dmy":
@@ -319,21 +330,64 @@ def _validity(text: str) -> dict[str, ExtractedField]:
     return out
 
 
-def _districts(
+_DIRECTIONS = {"east", "west", "north", "south", "central"}
+
+
+@lru_cache(maxsize=1)
+def _district_index() -> tuple[PhraseMatcher, frozenset[str]]:
+    """LGD district names plus spaceless spellings ("coochbehar") and the sourced alias file
+    (``ml/reference/district_aliases.csv``). Labels: ``name:<LGD name>`` or ``code:<LGD code>``.
+    Names that collide with ordinary words, or are pure compass directions (Delhi's "East"),
+    only match next to a word for "district"."""
+    import csv  # noqa: PLC0415
+
+    from app.catalog.paths import reference_dir  # noqa: PLC0415
+    from app.nlu.providers.rule_based import _district_matcher  # noqa: PLC0415
+
+    _, collide = _district_matcher()
+    pairs: list[tuple[str, str]] = []
+    guarded = set(collide)
+    for d in get_lgd_directory().districts():
+        pairs.append((f"name:{d.district_name}", d.district_name))
+        toks = tokenize(d.district_name)
+        if len(toks) > 1:
+            pairs.append((f"name:{d.district_name}", "".join(toks)))
+        if toks and set(toks) <= _DIRECTIONS:
+            guarded.add(" ".join(toks))
+    alias_file = reference_dir() / "district_aliases.csv"
+    if alias_file.exists():
+        with alias_file.open(encoding="utf-8", newline="") as fh:
+            pairs.extend(
+                (f"code:{int(row['lgd_district_code'])}", row["alias"])
+                for row in csv.DictReader(fh)
+            )
+    return PhraseMatcher(pairs), frozenset(guarded)
+
+
+def _state_token_spans(tokens: list[str], states: set[str]) -> list[tuple[int, int]]:
+    spans = []
+    for state in states:
+        st = state.split()
+        for i in range(len(tokens) - len(st) + 1):
+            if tokens[i : i + len(st)] == st:
+                spans.append((i, i + len(st)))
+    return spans
+
+
+def _districts(  # noqa: PLR0912, PLR0915 - one pass over matches with guards
     text: str,
     offs: list[tuple[int, int]],
     issuer_ends: frozenset[int] = frozenset(),
 ) -> tuple[ExtractedField, ExtractedField, list[dict[str, Any]]]:
     """Districts named in the text. A place name right after an issuing office ("Meteorological
     Centre Hyderabad") is the issuer's location, not a target, and is skipped."""
-    from app.nlu.providers.rule_based import _district_matcher  # noqa: PLC0415
-
     lgd = get_lgd_directory()
-    matcher, collide = _district_matcher()
+    matcher, collide = _district_index()
     tokens = tokenize(text)
     states = {" ".join(tokenize(d.state_name)) for d in lgd.districts()}
     norm_text = f" {' '.join(tokens)} "
     mentioned_states = {s for s in states if f" {s} " in norm_text}
+    state_spans = _state_token_spans(tokens, mentioned_states)
 
     codes: list[int] = []
     spans: list[Span] = []
@@ -343,9 +397,20 @@ def _districts(
         near = set(tokens[max(0, hit.token_start - 2) : hit.token_end + 2])
         if hit.phrase in collide and not near & _DISTRICT_WORDS:
             continue
+        if set(hit.phrase.split()) <= _DIRECTIONS and (
+            hit.token_end >= len(tokens) or tokens[hit.token_end] not in _DISTRICT_WORDS
+        ):
+            continue  # "East district" yes; "East Burdwan district" is not Delhi's East
         if hit.token_start in issuer_ends:
             continue
-        candidates = lgd.find_districts(hit.label)
+        if any(s <= hit.token_start and hit.token_end <= e for s, e in state_spans):
+            continue  # "Jammu" inside "Jammu and Kashmir" is the state, not the district
+        kind, _, value = hit.label.partition(":")
+        if kind == "code":
+            alias_target = lgd.district(int(value))
+            candidates = [alias_target] if alias_target else []
+        else:
+            candidates = lgd.find_districts(value)
         if len(candidates) > 1 and mentioned_states:
             narrowed = [
                 d for d in candidates if " ".join(tokenize(d.state_name)) in mentioned_states
