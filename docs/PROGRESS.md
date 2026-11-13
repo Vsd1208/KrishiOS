@@ -4,14 +4,7 @@ Read this file at the start of every session, and update it at the end of every 
 
 **Status values:** `todo` · `in-progress` · `done` · `blocked-on-approval` · `blocked`
 
-**Last updated:** 2026-11-13. All AI4Bharat models are downloaded (IndicTrans2 x2, IndicConformer-600M, MMS te/hi). Benchmarks were stopped by the user, to be restarted later.
-
-### Resume here (benchmarks, in order; run from `backend/`)
-1. **Fix first:** IndicTrans2 destroys `<i>` placeholders (survival 1/533 in an *unlogged, stopped* run). With protection only 1.3% of te outputs passed checks; without protection 84.2% kept numbers. Make the placeholder format per provider: try IndicTrans2's native `<ID{n}>` on a 6-sentence probe, then re-run.
-2. `HF_HUB_OFFLINE=1 uv run --extra local-ml --with sacrebleu python ../ml/scripts/run_mt_eval.py --providers indictrans2 --targets te hi` (about 45 min)
-3. `HF_HUB_OFFLINE=1 uv run --extra local-ml --with jiwer python ../ml/scripts/run_stt_eval.py --provider indicconformer-600m-rnnt --languages te hi --n 30 --seed 13` (about 20-30 min)
-4. `HF_HUB_OFFLINE=1 uv run --extra local-ml --with jiwer python ../ml/scripts/run_tts_eval.py --tts mms-tts --stt faster-whisper-small --languages te hi --n 20 --seed 13` (about 20-30 min)
-5. Add the results to `ml/reports/02_multilingual_core.md` §3 and choose the default providers from the numbers.
+**Last updated:** 2026-11-13. **Phase 2 is complete.** All AI4Bharat benchmarks are measured (Colab T4 for accuracy, laptop CPU for latency). Next: Phase 3 (multilingual bot).
 
 ## Phases
 
@@ -19,7 +12,7 @@ Read this file at the start of every session, and update it at the end of every 
 |---|---|---|---|
 | 0 Orientation & sourcing | done | `feat/sprint-11-phase0-orientation` | [00_orientation.md](../ml/reports/00_orientation.md) |
 | 1 Foundations | done | `feat/sprint-11-phase1-foundations` | [01_foundations.md](../ml/reports/01_foundations.md) |
-| 2 Multilingual core | done (AI4Bharat benchmarks pending download) | `feat/sprint-11-phase2-multilingual` | [02_multilingual_core.md](../ml/reports/02_multilingual_core.md) |
+| 2 Multilingual core | done | `feat/sprint-11-phase2-multilingual` | [02_multilingual_core.md](../ml/reports/02_multilingual_core.md) |
 | 3 Multilingual bot (+F6, F7, F13) | todo | — | — |
 | 4 Govt Connect: publishing (+F2, F4) | todo | — | — |
 | 5 Govt Connect: automated (+F1, F3, F5) | todo | — | — |
@@ -59,9 +52,9 @@ Read this file at the start of every session, and update it at the end of every 
 | LGD crosswalk | in-progress | LGD districts and blocks done; APY/ICRISAT name crosswalk is Phase 6 |
 | Provider selection + visible provider/version | done | `/api/v1/providers`, canvas Providers tab |
 | Worker service + job health | done | arq; `/api/v1/health/jobs`; verified on real Redis |
-| Translation service | done | Protection + checks + approval; opus-mt measured (fails checks on ~2/3 of sentences); IndicTrans2 built, measurement pending download |
+| Translation service | done | IndicTrans2 recommended: test check pass te 0.550 / hi 0.644 (run 2c5c6baf993a), vs opus-mt 0.350 / 0.375 (a839daa3ac6c); failures blocked to officer review |
 | NLU | done | Rule-based: intent acc 0.796, crop F1 0.968 (run b74f7a0eb8c7; draft labels); planner routes on NLU |
-| Real STT / TTS | in-progress | Whisper-small measured (te CER 0.987: unusable); IndicConformer built, pending 2.56 GB download; MMS-TTS demo-only (CC BY-NC) |
+| Real STT / TTS | done | IndicConformer RNNT recommended: FLEURS CER te 0.073 / hi 0.063 (65d3ea90da08); CPU median 2.2 s/utterance, RTF 0.25 (3d65e68d0266). MMS-TTS demo-only (CC BY-NC); deployable voice in Phase 3 |
 | Conversation / dialogue state | todo | Phase 3 |
 | Govt Connect | todo | SACHET CAP preferred feed (ADR-004) |
 | Yield Intelligence | todo | |
@@ -74,13 +67,13 @@ Read this file at the start of every session, and update it at the end of every 
 
 ## Test status (latest)
 
-- **Backend:** 219 passed, 0 failed (Phase 2 end).
+- **Backend:** 227 passed, 0 failed (Phase 2 end).
 - **ml:** 13 passed.
 - **Frontend:** 27 files / 53 tests passed; build OK.
 
 ## Pending approvals and actions
 
 Orientation report §12 and Phase 2 report §7. Status:
-- Hugging Face access: **granted** 2026-11-12. Downloads (about 4.9 GB) are in progress at about 0.2 MB/s.
+- Hugging Face access: **granted**; all models downloaded (2026-11-13).
 - Gemini key is free tier and quota-exhausted: billed key decision pending.
 - Native reviewers (NLU labels, MT references, TTS ratings): pending.
