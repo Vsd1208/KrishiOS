@@ -13,6 +13,7 @@ import {
   useFarmerProfile,
   useFarmerFields,
   useFarmerCrops,
+  usePrimaryCropName,
   useCurrentWeather,
   useWeatherForecast,
   useFarmerAlerts,
@@ -39,14 +40,15 @@ export const FarmerDashboard: React.FC = () => {
   const { data: farmer, isLoading: isFarmerLoading } = useFarmerProfile();
   const { data: fields = [], isLoading: isFieldsLoading } = useFarmerFields(farmer?.id);
   const { fieldCrops } = useFarmerCrops();
+  const primaryCrop = usePrimaryCropName();
   const { data: weather, isLoading: isWeatherLoading } = useCurrentWeather(
-    farmer?.village || 'Khammam',
+    farmer?.village || undefined,
   );
   const { data: forecast, isLoading: isForecastLoading } = useWeatherForecast(
-    farmer?.village || 'Khammam',
+    farmer?.village || undefined,
   );
   const { alerts, acknowledgeAlert, isAcknowledging } = useFarmerAlerts(farmer?.id);
-  const { data: mandiPrices } = useMarketPrices('Paddy', farmer?.village || 'Khammam');
+  const { data: mandiPrices } = useMarketPrices(primaryCrop ?? '', farmer?.village || undefined);
 
   const currentDate = new Date().toLocaleDateString('en-IN', {
     weekday: 'long',
@@ -192,7 +194,7 @@ export const FarmerDashboard: React.FC = () => {
       <CropVisionModal
         isOpen={isVisionOpen}
         onClose={() => setIsVisionOpen(false)}
-        defaultCrop="Paddy"
+        defaultCrop={primaryCrop}
       />
     </div>
   );

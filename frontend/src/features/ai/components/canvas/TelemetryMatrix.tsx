@@ -29,8 +29,8 @@ interface TelemetryMatrixProps {
 
 export const TelemetryMatrix: React.FC<TelemetryMatrixProps> = ({
   telemetry = {},
-  district = 'Khammam',
-  crop = 'Paddy',
+  district,
+  crop,
 }) => {
   const temp = (telemetry.temperature_celsius as number) ?? 32.5;
   const humidity = (telemetry.relative_humidity_percent as number) ?? 68;

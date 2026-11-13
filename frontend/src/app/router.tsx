@@ -29,6 +29,8 @@ const FarmersDirectoryPage = React.lazy(() => import('@/pages/officer/FarmersDir
 const KnowledgeGraphPage = React.lazy(() => import('@/pages/officer/KnowledgeGraphPage'));
 const AnalyticsPage = React.lazy(() => import('@/pages/officer/AnalyticsPage'));
 const EvaluationPage = React.lazy(() => import('@/pages/officer/EvaluationPage'));
+const FeedbackDashboardPage = React.lazy(() => import('@/pages/officer/FeedbackDashboardPage'));
+const ExtensionPage = React.lazy(() => import('@/pages/officer/ExtensionPage'));
 
 export const router = createBrowserRouter([
   {
@@ -110,70 +112,96 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
-        element: <RoleRoute allowedRoles={['officer', 'agronomist', 'admin']} />,
+        element: <RoleRoute allowedRoles={['officer', 'agronomist', 'admin', 'extension_worker']} />,
         children: [
           {
             element: <OfficerShell />,
             children: [
               {
-                index: true,
-                element: (
-                  <Suspense
-                    fallback={<LoadingState fullPage message="Loading Officer Dashboard..." />}
-                  >
-                    <OfficerDashboard />
-                  </Suspense>
-                ),
+                element: <RoleRoute allowedRoles={['officer', 'agronomist', 'admin']} />,
+                children: [
+                  {
+                    index: true,
+                    element: (
+                      <Suspense
+                        fallback={<LoadingState fullPage message="Loading Officer Dashboard..." />}
+                      >
+                        <OfficerDashboard />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'reviews',
+                    element: (
+                      <Suspense
+                        fallback={<LoadingState fullPage message="Loading Review Queue..." />}
+                      >
+                        <ReviewQueuePage />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'farmers',
+                    element: (
+                      <Suspense
+                        fallback={<LoadingState fullPage message="Loading Farmer Directory..." />}
+                      >
+                        <FarmersDirectoryPage />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'knowledge',
+                    element: (
+                      <Suspense
+                        fallback={<LoadingState fullPage message="Loading Knowledge Base & Graph..." />}
+                      >
+                        <KnowledgeGraphPage />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'analytics',
+                    element: (
+                      <Suspense
+                        fallback={<LoadingState fullPage message="Loading Regional Analytics..." />}
+                      >
+                        <AnalyticsPage />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'evaluation',
+                    element: (
+                      <Suspense
+                        fallback={<LoadingState fullPage message="Loading AI Trust & Evaluation Center..." />}
+                      >
+                        <EvaluationPage />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'feedback',
+                    element: (
+                      <Suspense fallback={<LoadingState fullPage message="Loading Farmer Feedback..." />}>
+                        <FeedbackDashboardPage />
+                      </Suspense>
+                    ),
+                  },
+                ],
               },
               {
-                path: 'reviews',
-                element: (
-                  <Suspense
-                    fallback={<LoadingState fullPage message="Loading Review Queue..." />}
-                  >
-                    <ReviewQueuePage />
-                  </Suspense>
-                ),
-              },
-              {
-                path: 'farmers',
-                element: (
-                  <Suspense
-                    fallback={<LoadingState fullPage message="Loading Farmer Directory..." />}
-                  >
-                    <FarmersDirectoryPage />
-                  </Suspense>
-                ),
-              },
-              {
-                path: 'knowledge',
-                element: (
-                  <Suspense
-                    fallback={<LoadingState fullPage message="Loading Knowledge Base & Graph..." />}
-                  >
-                    <KnowledgeGraphPage />
-                  </Suspense>
-                ),
-              },
-              {
-                path: 'analytics',
-                element: (
-                  <Suspense
-                    fallback={<LoadingState fullPage message="Loading Regional Analytics..." />}
-                  >
-                    <AnalyticsPage />
-                  </Suspense>
-                ),
-              },
-              {
-                path: 'evaluation',
-                element: (
-                  <Suspense
-                    fallback={<LoadingState fullPage message="Loading AI Trust & Evaluation Center..." />}
-                  >
-                    <EvaluationPage />
-                  </Suspense>
-                ),
+                element: <RoleRoute allowedRoles={['extension_worker', 'officer', 'admin']} />,
+                children: [
+                  {
+                    path: 'extension',
+                    element: (
+                      <Suspense fallback={<LoadingState fullPage message="Loading Assisted Mode..." />}>
+                        <ExtensionPage />
+                      </Suspense>
+                    ),
+                  },
+                ],
               },
             ],
           },

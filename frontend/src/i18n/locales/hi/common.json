@@ -31,7 +31,8 @@
     "farmer": "किसान",
     "officer": "कृषि अधिकारी",
     "agronomist": "कृषि विज्ञानी",
-    "admin": "प्रशासक"
+    "admin": "प्रशासक",
+    "extension_worker": "विस्तार कार्यकर्ता"
   },
   "ai": {
     "confidence": "AI विश्वास स्तर",
@@ -107,5 +108,95 @@
   },
   "canvas": {
     "contextNotSet": "सेट नहीं"
+  },
+  "chat": {
+    "title": "KrishiOS से पूछें",
+    "language": "भाषा",
+    "speakReplies": "जवाब बोलकर सुनाएँ",
+    "newConversation": "नई बातचीत",
+    "welcome": "अपनी फसल के बारे में पूछें",
+    "welcomeHint": "तेलुगु, हिंदी या अंग्रेज़ी में लिखें या बोलें।",
+    "thinking": "जवाब खोजा जा रहा है…",
+    "error": "कुछ गड़बड़ हुई। कृपया फिर से कोशिश करें।",
+    "placeholder": "अपना सवाल लिखें",
+    "send": "भेजें",
+    "record": "सवाल रिकॉर्ड करें",
+    "stopRecording": "रिकॉर्डिंग रोकें",
+    "listen": "सुनें",
+    "translationNotice": "अनुवाद की जाँच नहीं हो सकी, इसलिए जवाब अंग्रेज़ी में दिखाया गया है। एक अधिकारी इसे जाँचेंगे।",
+    "reviewNotice": "एक कृषि अधिकारी इस जवाब की समीक्षा करेंगे।",
+    "source": "स्रोत",
+    "verifiedVideo": "सत्यापित वीडियो",
+    "thanks": "आपकी राय के लिए धन्यवाद।",
+    "helpful": "उपयोगी",
+    "notHelpful": "उपयोगी नहीं",
+    "reasons": {
+      "wrong": "गलत",
+      "unclear": "स्पष्ट नहीं",
+      "not_applicable": "मेरे खेत के लिए नहीं",
+      "translation": "खराब अनुवाद",
+      "unsafe": "असुरक्षित"
+    },
+    "advancedWorkspace": "उन्नत कार्यक्षेत्र",
+    "simpleChat": "चैट"
+  },
+  "extension": {
+    "title": "सहायता मोड",
+    "loading": "लोड हो रहा है…",
+    "noFarmers": "अभी आपको कोई किसान नहीं सौंपा गया है।",
+    "tabs": {
+      "farmers": "मेरे किसान",
+      "queue": "साझा करने से पहले जाँच",
+      "register": "किसान पंजीकरण"
+    },
+    "consent": {
+      "pending": "सहमति बाकी",
+      "granted": "सहमति दर्ज",
+      "revoked": "सहमति वापस ली गई"
+    },
+    "consentMethod": "सहमति कैसे दी गई",
+    "evidence": "प्रमाण (फ़ॉर्म नं., रिकॉर्डिंग संदर्भ)",
+    "recordConsent": "सहमति दर्ज करें",
+    "methods": {
+      "verbal_recorded": "मौखिक (रिकॉर्ड की गई)",
+      "signed_form": "हस्ताक्षरित फ़ॉर्म",
+      "otp": "OTP",
+      "in_app": "ऐप में"
+    },
+    "askForFarmer": "उनकी ओर से पूछें",
+    "assistingBanner": "{{name}} की ओर से पूछ रहे हैं। जवाब साझा करने से पहले आपकी जाँच के लिए रुके रहेंगे।",
+    "endSession": "सत्र समाप्त करें",
+    "queueEmpty": "जाँच के लिए कोई जवाब नहीं है।",
+    "question": "सवाल",
+    "answer": "जवाब",
+    "englishVersion": "अंग्रेज़ी संस्करण",
+    "share": "किसान के साथ साझा करें",
+    "discard": "हटाएँ",
+    "batchHelp": "हर पंक्ति में एक किसान: नाम, फ़ोन, भाषा (te/hi/en), ज़िला आईडी, गाँव, एकड़। एक बार में 50 तक। नीचे दी गई सहमति इस बैच के हर किसान पर लागू होगी।",
+    "register": "पंजीकरण करें",
+    "badLines": "पंक्ति {{lines}} ठीक करके फिर कोशिश करें।",
+    "rowStatus": {
+      "created": "पंजीकृत",
+      "duplicate_phone": "पहले से पंजीकृत",
+      "error": "पंजीकरण नहीं हो सका"
+    }
+  },
+  "feedbackOps": {
+    "title": "किसानों की राय",
+    "exportRegression": "रिग्रेशन केस निर्यात करें",
+    "total": "रेटिंग",
+    "pendingTriage": "जाँच बाकी",
+    "downRate": "उपयोगी नहीं",
+    "byLanguage": "भाषा के अनुसार",
+    "byIntent": "सवाल के प्रकार के अनुसार",
+    "reasons": "बताए गए कारण",
+    "count": "संख्या",
+    "flagged": "चिह्नित जवाब",
+    "nothingToTriage": "जाँच के लिए कुछ नहीं है।",
+    "actions": {
+      "converted_to_regression": "रिग्रेशन सूट में जोड़ें",
+      "triaged": "जाँचा गया",
+      "dismissed": "खारिज करें"
+    }
   }
 }

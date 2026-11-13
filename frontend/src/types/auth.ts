@@ -8,7 +8,13 @@
 
 // ── User Roles ───────────────────────────────────────────────────────────────
 
-export type UserRole = 'farmer' | 'officer' | 'agronomist' | 'admin' | 'system';
+export type UserRole =
+  | 'farmer'
+  | 'officer'
+  | 'agronomist'
+  | 'admin'
+  | 'system'
+  | 'extension_worker';
 
 // ── Request Payloads ─────────────────────────────────────────────────────────
 

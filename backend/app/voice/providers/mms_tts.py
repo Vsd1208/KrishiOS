@@ -31,6 +31,10 @@ class MMSTTSProvider:
         self._settings = get_settings()
         self._models: dict[str, tuple[Any, Any]] = {}
 
+    def warm_up(self) -> None:
+        for language in ("te", "hi"):
+            self._load(language)
+
     def _load(self, language: str) -> tuple[Any, Any]:
         if language not in self._models:
             from transformers import AutoTokenizer, VitsModel  # noqa: PLC0415

@@ -92,3 +92,34 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
 - **Consequences:**
   - The 4 GB of VRAM limits training to compact models with AMP.
   - GPU scripts must use `uv run --extra gpu`.
+
+## ADR-016: Conversation = deterministic dialogue manager around the agent runtime
+- **Status:** accepted (Phase 3)
+- **Context:** Farmers ask short, partial questions ("leaves have spots") in te/hi/en and answer clarifications with one word, a district name or a tap. LLM-only dialogue state would be unauditable and would need farmer text sent off-device.
+- **Decision:** `app/conversation/` runs the turn loop: NLU, then required slots per intent (`REQUIRED_SLOTS`), then a clarification with catalog/LGD choices, then the original question resumed, then the agent runtime in English, then the answer translated back. State (crop, district, season, pending clarification) lives in Redis (24 h TTL) or memory. A reply that does not fill the pending slot and is not a new farming question (smalltalk / out of scope) re-asks the same slot and keeps the original question. Untranslatable or ungrounded answers are shown in English with a notice and go to officer review. Every turn is persisted (`conversation_turn`) with providers, slots and citations.
+- **Evidence:** dialogue eval `98898e7cfba1` (result of record) task success 0.90; after the re-ask fix, post-hoc run `8db2250e2287` 0.933. The fix came from failures seen on that set, so the second number is not an independent estimate.
+
+## ADR-017: Assisted mode requires an assignment and recorded consent; answers are reviewed before sharing
+- **Status:** accepted (Phase 3, F6)
+- **Decision:** an `extension_worker` may act for a farmer only with an active `extension_assignment` and `consent_status=granted`, recorded with a method (`verbal_recorded | signed_form | otp | in_app`) and evidence (DPDP). Act-as turns are stored with `acting_for_farmer_id` and `shared_with_farmer=false`. The worker shares or discards each answer, and the UI does not allow sharing an answer that still needs officer review.
+
+## ADR-018: How-to media is attached only when verified and licensed
+- **Status:** accepted (Phase 3, F7)
+- **Decision:** `media_asset` rows are created by officers and stay `pending` until verified. Verification requires a licence. Matching needs a crop match (for crop-specific assets) and topic overlap, prefers the farmer's language, and attaches at most 2 assets, only to answered turns. A verified transcript is ingested as a knowledge document so the same content is citable.
+
+## ADR-019: Cross-lingual retrieval with a multilingual embedder (multilingual-e5-small)
+- **Status:** proposed (Phase 3). Adopting it requires re-embedding the knowledge base, which waits for approval.
+- **Context:** the knowledge base is English, but farmers ask in te/hi. The current embedder (all-MiniLM-L6-v2) cannot match Indic queries.
+- **Evidence:** run `bf4365b06b28` on FLEURS test parallel sentences: 350-sentence English corpus, te 302 / hi 265 queries, CPU.
+
+  | Strategy | te R@1 | hi R@1 | te MRR | hi MRR | Translate ms/query |
+  |---|---|---|---|---|---|
+  | A all-MiniLM-L6-v2 (current) | 0.146 | 0.008 | 0.183 | 0.033 | — |
+  | B paraphrase-multilingual-MiniLM-L12-v2 | 0.258 | 0.993 | 0.299 | 0.995 | — |
+  | C multilingual-e5-small | 0.993 | 0.996 | 0.996 | 0.998 | — |
+  | D IndicTrans2, then all-MiniLM | 0.997 | 0.996 | 0.998 | 0.998 | 3413 / 2284 |
+
+- **Decision (proposed):** use C for retrieval. It matches D within noise, with no 2–3 s translation step per query, and it keeps the current 384-dimension vectors, so no schema change. Passages are indexed with the `passage: ` prefix and queries use `query: `. Keep D (translate-first) available as a fallback.
+- **Caveats:**
+  - FLEURS is general-domain and near ceiling, so it does not separate C from D. An agricultural te/hi query set (pending native review) must confirm the choice before it is final.
+  - Embedding times in this run are noisy because other jobs shared the CPU; only the translation cost is a reliable latency difference.

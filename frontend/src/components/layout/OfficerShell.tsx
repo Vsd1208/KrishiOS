@@ -18,7 +18,10 @@ import {
   ChevronLeft,
   ChevronRight,
   ShieldCheck,
+  MessageSquareWarning,
+  HandHelping,
 } from 'lucide-react';
+import type { UserRole } from '@/types/auth';
 
 interface OfficerNavItem {
   id: string;
@@ -26,7 +29,11 @@ interface OfficerNavItem {
   path: string;
   icon: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean | 'true' | 'false' }>;
   isActive: (pathname: string) => boolean;
+  /** Roles that see this item; defaults to officer roles. */
+  roles?: UserRole[];
 }
+
+const OFFICER_ROLES: UserRole[] = ['officer', 'agronomist', 'admin'];
 
 const officerNavItems: OfficerNavItem[] = [
   {
@@ -70,6 +77,21 @@ const officerNavItems: OfficerNavItem[] = [
     path: '/officer/evaluation',
     icon: ShieldCheck,
     isActive: (pathname) => pathname.startsWith('/officer/evaluation'),
+  },
+  {
+    id: 'feedback',
+    label: 'Farmer Feedback',
+    path: '/officer/feedback',
+    icon: MessageSquareWarning,
+    isActive: (pathname) => pathname.startsWith('/officer/feedback'),
+  },
+  {
+    id: 'extension',
+    label: 'Assisted Mode',
+    path: '/officer/extension',
+    icon: HandHelping,
+    isActive: (pathname) => pathname.startsWith('/officer/extension'),
+    roles: ['extension_worker', 'officer', 'admin'],
   },
 ];
 
@@ -121,7 +143,9 @@ export const OfficerShell: React.FC = () => {
 
           {/* Navigation Links */}
           <nav className="flex-1 py-3 px-2 space-y-1">
-            {officerNavItems.map((item) => {
+            {officerNavItems
+              .filter((item) => user?.role && (item.roles ?? OFFICER_ROLES).includes(user.role))
+              .map((item) => {
               const active = item.isActive(location.pathname);
               const Icon = item.icon;
 

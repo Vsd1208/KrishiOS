@@ -73,6 +73,8 @@ export const RoleRoute: React.FC<RoleRouteProps> = ({ allowedRoles }) => {
               onClick={() => {
                 if (user?.role === 'farmer') {
                   navigate('/farmer', { replace: true });
+                } else if (user?.role === 'extension_worker') {
+                  navigate('/officer/extension', { replace: true });
                 } else if (
                   user?.role === 'officer' ||
                   user?.role === 'agronomist' ||

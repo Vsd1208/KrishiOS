@@ -71,6 +71,11 @@ class IndicTrans2Provider:
         pair = {source_language, target_language}
         return "en" in pair and pair <= set(_TAGS) and source_language != target_language
 
+    def warm_up(self) -> None:
+        """Load both directions now (startup preload) instead of on the first request."""
+        for direction in _MODELS:
+            self._load(direction)
+
     def _load(self, direction: str) -> tuple[Any, Any]:
         if direction not in self._loaded:
             model_id = _MODELS[direction]

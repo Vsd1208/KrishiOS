@@ -86,7 +86,7 @@ export const ProfilePage: React.FC = () => {
               <div>
                 <span className="text-[11px] uppercase text-text-muted block">Village &amp; District</span>
                 <span className="font-semibold text-text">
-                  {farmer?.village || 'Khammam'}, Telangana
+                  {farmer?.village || '—'}
                 </span>
               </div>
             </div>

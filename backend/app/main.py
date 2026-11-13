@@ -22,13 +22,18 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     logger.info("{} starting", settings.APP_NAME)
 
     # ── Sprint 11: provider policy (ADR-005) ───────────────────────────────────
-    from app.providers.status import check_provider_policy
+    from app.providers.status import check_provider_policy  # noqa: PLC0415
 
     violations = check_provider_policy(settings)
     for violation in violations:
         logger.warning("Provider policy: {}", violation)
     if violations and settings.APP_ENV == "production":
         raise RuntimeError("Provider policy violations in production: " + "; ".join(violations))
+
+    # ── Sprint 11: optional local-model preload (background, non-fatal) ────────
+    from app.providers.preload import start_preload  # noqa: PLC0415
+
+    app.state.model_preload = start_preload(settings)
 
     # ── Sprint 6: Neo4j graph store ────────────────────────────────────────────
     graph_store = None

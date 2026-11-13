@@ -41,6 +41,8 @@ REQUIRED_SLOTS: dict[Intent, tuple[str, ...]] = {
 }
 DELIVERABLE = {TranslationStatus.PASSTHROUGH, TranslationStatus.AUTO_APPROVED}
 REFUSED = {Intent.OUT_OF_SCOPE, Intent.OFFICER}
+# Replies that cannot be a new farming question (used to re-ask a pending clarification).
+_NOT_A_QUESTION = {Intent.OUT_OF_SCOPE, Intent.SMALLTALK}
 
 
 @dataclass(slots=True)
@@ -120,13 +122,19 @@ class ConversationManager:
     # ── public ──────────────────────────────────────────────────────────────
     async def handle(self, inp: TurnInput) -> TurnResult:
         state = await self._load_state(inp)
+        pending_before = state.pending
         resume = self._resume_pending(state, inp)
         text = resume.text if resume else inp.text.strip()
         nlu = await nlu_service.parse(text, language_hint=state.language)
         q = resume or _Question(text=text, language=nlu.language, intent=nlu.intent)
         state.remember("user", inp.text, nlu.language)
 
-        result = await self._dispatch(state, inp, nlu, q)
+        if resume is None and pending_before is not None and nlu.intent in _NOT_A_QUESTION:
+            # The reply did not fill the slot and is not a new farming question: keep the
+            # original question and ask again (with fresh choices if the reply was ambiguous).
+            result = self._reask(state, pending_before, nlu)
+        else:
+            result = await self._dispatch(state, inp, nlu, q)
         if q.resumed:
             result.resumed_question = q.text
         if inp.speak and self._tts is not None and result.reply_text:
@@ -155,6 +163,23 @@ class ConversationManager:
             return None  # the farmer asked something new instead
         return _Question(text=pending.original_text, language=pending.original_language,
                          intent=Intent(pending.intent), answered_slot=pending.slot, resumed=True)
+
+    def _reask(self, state: DialogueState, pending: Pending, nlu: NLUResult) -> TurnResult:
+        q = _Question(text=pending.original_text, language=pending.original_language,
+                      intent=Intent(pending.intent))
+        e = nlu.entities
+        if pending.slot == "district" and len(e.district_candidates) > 1:
+            choices = [self._district_choice(c) for c in e.district_candidates]
+            key = "pick_district"
+        elif pending.slot == "crop" and e.crop_status == "ambiguous" and e.crop_candidates:
+            choices = [self._crop_choice(c, state.language) for c in e.crop_candidates]
+            key = "pick_crop"
+        else:
+            choices = pending.choices
+            key = f"{'pick' if choices else 'ask'}_{pending.slot}"
+        clarification = self._clarify(state, pending.slot, key, choices, q)
+        return self._result(state, "clarification", clarification["question"], q, nlu,
+                            clarification=clarification)
 
     async def _dispatch(self, state: DialogueState, inp: TurnInput, nlu: NLUResult,
                         q: _Question) -> TurnResult:

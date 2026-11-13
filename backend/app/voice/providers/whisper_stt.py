@@ -46,6 +46,9 @@ class FasterWhisperSTTProvider:
     def model_version(self) -> str:
         return f"{self._size}-{self._compute}"
 
+    def warm_up(self) -> None:
+        self._load()
+
     def _load(self) -> Any:
         if self._model is None:
             from faster_whisper import WhisperModel  # noqa: PLC0415 - optional extra

@@ -13,7 +13,7 @@ Read this file at the start of every session, and update it at the end of every 
 | 0 Orientation & sourcing | done | `feat/sprint-11-phase0-orientation` | [00_orientation.md](../ml/reports/00_orientation.md) |
 | 1 Foundations | done | `feat/sprint-11-phase1-foundations` | [01_foundations.md](../ml/reports/01_foundations.md) |
 | 2 Multilingual core | done | `feat/sprint-11-phase2-multilingual` | [02_multilingual_core.md](../ml/reports/02_multilingual_core.md) |
-| 3 Multilingual bot (+F6, F7, F13) | todo | — | — |
+| 3 Multilingual bot (+F6, F7, F13) | done (awaiting review) | `feat/sprint-11-phase3-bot` | [03_multilingual_bot.md](../ml/reports/03_multilingual_bot.md) |
 | 4 Govt Connect: publishing (+F2, F4) | todo | — | — |
 | 5 Govt Connect: automated (+F1, F3, F5) | todo | — | — |
 | 6 Yield label audit | todo | — | — |
@@ -33,14 +33,14 @@ Read this file at the start of every session, and update it at the end of every 
 | F3 | Offline-first PWA | 5 | todo | |
 | F4 | Scheme assistant + grievance tickets | 4 | todo | No public scheme API; no scraping |
 | F5 | IVR / SMS / WhatsApp channels | 5 | todo | Real providers blocked-on-approval (cost) |
-| F6 | Extension-worker assisted mode | 3 | todo | |
-| F7 | Video / how-to answers + video queries | 3, 10b | todo | |
+| F6 | Extension-worker assisted mode | 3 | done | Assignment + recorded consent, act-as, review-before-share, batch registration (ADR-017) |
+| F7 | Video / how-to answers + video queries | 3, 10b | in-progress | Verified, licensed media matched to answers (ADR-018); no assets loaded yet; video queries in 10b |
 | F8 | Outbreak surveillance heatmaps | 9 | todo | |
 | F9 | SHC reader + fertilizer calculator | 10b | todo | |
 | F10 | Crop calendar + reminders | 10b | todo | Spray-window golden test fixed in Phase 1 |
 | F11 | Mandi price intelligence | 10b | todo | Needs data.gov.in key |
 | F12 | Community Q&A | 10b | todo | |
-| F13 | Answer feedback loop | 3 | todo | |
+| F13 | Answer feedback loop | 3 | done | Thumbs + reasons, down-vote to officer review, dashboard, triage, regression export |
 | F14 | Livestock / fisheries advisories | 10b | todo | Catalog has a `domain` column ready |
 | F15 | Insurance helper | 8 | todo | |
 
@@ -55,21 +55,23 @@ Read this file at the start of every session, and update it at the end of every 
 | Translation service | done | IndicTrans2 recommended: test check pass te 0.550 / hi 0.644 (run 2c5c6baf993a), vs opus-mt 0.350 / 0.375 (a839daa3ac6c); failures blocked to officer review |
 | NLU | done | Rule-based: intent acc 0.796, crop F1 0.968 (run b74f7a0eb8c7; draft labels); planner routes on NLU |
 | Real STT / TTS | done | IndicConformer RNNT recommended: FLEURS CER te 0.073 / hi 0.063 (65d3ea90da08); CPU median 2.2 s/utterance, RTF 0.25 (3d65e68d0266). MMS-TTS demo-only (CC BY-NC); deployable voice in Phase 3 |
-| Conversation / dialogue state | todo | Phase 3 |
+| Conversation / dialogue state | done | Clarify-and-resume, carry-over, re-ask; dialogue task success 0.90 (run 98898e7cfba1, result of record; draft scripts); text + voice turns; optional preload (`PRELOAD_MODELS`) |
 | Govt Connect | todo | SACHET CAP preferred feed (ADR-004) |
 | Yield Intelligence | todo | |
 | Real vision | todo | Field-photo dataset gap |
 
 ## Known debt (tracked)
 
-- About 15 frontend demo defaults (`'Paddy'`, `'Khammam'`) remain. Removed in Phase 3 via conversation state.
+- Frontend demo defaults (`'Paddy'`, `'Khammam'`, `'Kharif'`, `'Telangana'`) removed from farmer-facing code in Phase 3. The officer broadcast form keeps an editable example template.
+- Telugu/Hindi-script district names are not in the LGD reference, so a reply like "ఖమ్మం" is re-asked instead of resolved (dialogue te04). Needs a native-reviewed name list.
+- `govt_bulletin` vs `weather` lexicon gap (dialogue en09, NLU test set). Fix needs a dev set (ADR-013).
 - About 430 pre-existing ruff findings in older backend code (new Sprint 11 code is clean).
 
 ## Test status (latest)
 
-- **Backend:** 227 passed, 0 failed (Phase 2 end).
+- **Backend:** 251 passed, 3 skipped (Phase 3); Postgres integration 3 passed.
 - **ml:** 13 passed.
-- **Frontend:** 27 files / 53 tests passed; build OK.
+- **Frontend:** 29 files / 63 tests passed; typecheck, lint (0 errors) and build OK.
 
 ## Pending approvals and actions
 

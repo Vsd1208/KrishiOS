@@ -182,3 +182,27 @@ def test_assemble_flags_ungrounded() -> None:
                                   output={"recommendation": "Guess."}, citations=[],
                                   confidence_score=0.9, grounded=False)])
     assert a.requires_review and a.review_reason == "not_grounded"
+
+
+async def test_unfilled_reply_re_asks_and_keeps_the_question(bot, runner) -> None:
+    r1 = await turn(bot, "Will it rain tomorrow?")
+    assert r1.clarification["slot"] == "district"
+    r2 = await turn(bot, "the one near my village", cid=r1.conversation_id)
+    assert r2.status == "clarification" and r2.clarification["slot"] == "district"
+    assert runner.calls == []
+    r3 = await turn(bot, "Khammam", cid=r1.conversation_id)
+    assert r3.status == "answered" and r3.intent == "weather"
+    assert r3.slots["district_lgd_code"] == 509
+    assert r3.resumed_question == "Will it rain tomorrow?"
+
+
+async def test_ambiguous_district_reply_offers_choices_then_resumes(bot, runner) -> None:
+    r1 = await turn(bot, "What will be the wheat yield this year?")
+    assert r1.clarification["slot"] == "district"
+    r2 = await turn(bot, "Bilaspur", cid=r1.conversation_id)
+    assert r2.status == "clarification" and r2.clarification["slot"] == "district"
+    values = {c["value"] for c in r2.clarification["choices"]}
+    assert 375 in values and len(values) > 1
+    r3 = await turn(bot, "", cid=r1.conversation_id, choice={"slot": "district", "value": 375})
+    assert r3.status == "answered" and r3.intent == "yield"
+    assert r3.slots["crop"] == "wheat" and r3.slots["district_lgd_code"] == 375

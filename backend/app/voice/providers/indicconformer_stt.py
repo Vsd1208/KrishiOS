@@ -41,6 +41,9 @@ class IndicConformerSTTProvider:
         self._model: Any = None
         self._lid: Any = None
 
+    def warm_up(self) -> None:
+        self._load()
+
     def _load(self) -> Any:
         if self._model is None:
             from transformers import AutoModel  # noqa: PLC0415

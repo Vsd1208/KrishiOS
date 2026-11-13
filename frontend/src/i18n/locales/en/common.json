@@ -31,7 +31,8 @@
     "farmer": "Farmer",
     "officer": "Agricultural Officer",
     "agronomist": "Agronomist",
-    "admin": "Administrator"
+    "admin": "Administrator",
+    "extension_worker": "Extension Worker"
   },
   "ai": {
     "confidence": "AI Confidence",
@@ -107,5 +108,95 @@
   },
   "canvas": {
     "contextNotSet": "Not set"
+  },
+  "chat": {
+    "title": "Ask KrishiOS",
+    "language": "Language",
+    "speakReplies": "Speak replies",
+    "newConversation": "New conversation",
+    "welcome": "Ask about your crop",
+    "welcomeHint": "Type or speak in Telugu, Hindi or English.",
+    "thinking": "Finding an answer…",
+    "error": "Something went wrong. Please try again.",
+    "placeholder": "Type your question",
+    "send": "Send",
+    "record": "Record a question",
+    "stopRecording": "Stop recording",
+    "listen": "Listen",
+    "translationNotice": "We could not verify the translation, so the answer is shown in English. An officer will check it.",
+    "reviewNotice": "An agricultural officer will review this answer.",
+    "source": "Source",
+    "verifiedVideo": "Verified video",
+    "thanks": "Thank you for your feedback.",
+    "helpful": "Helpful",
+    "notHelpful": "Not helpful",
+    "reasons": {
+      "wrong": "Wrong",
+      "unclear": "Unclear",
+      "not_applicable": "Not for my farm",
+      "translation": "Bad translation",
+      "unsafe": "Unsafe"
+    },
+    "advancedWorkspace": "Advanced workspace",
+    "simpleChat": "Chat"
+  },
+  "extension": {
+    "title": "Assisted mode",
+    "loading": "Loading…",
+    "noFarmers": "No farmers are assigned to you yet.",
+    "tabs": {
+      "farmers": "My farmers",
+      "queue": "Review before sharing",
+      "register": "Register farmers"
+    },
+    "consent": {
+      "pending": "Consent pending",
+      "granted": "Consent recorded",
+      "revoked": "Consent revoked"
+    },
+    "consentMethod": "How consent was given",
+    "evidence": "Evidence (form no., recording ref.)",
+    "recordConsent": "Record consent",
+    "methods": {
+      "verbal_recorded": "Verbal (recorded)",
+      "signed_form": "Signed form",
+      "otp": "OTP",
+      "in_app": "In the app"
+    },
+    "askForFarmer": "Ask on their behalf",
+    "assistingBanner": "Asking on behalf of {{name}}. Answers wait for your review before they are shared.",
+    "endSession": "End session",
+    "queueEmpty": "No answers are waiting for review.",
+    "question": "Question",
+    "answer": "Answer",
+    "englishVersion": "English version",
+    "share": "Share with farmer",
+    "discard": "Discard",
+    "batchHelp": "One farmer per line: name, phone, language (te/hi/en), district id, village, acres. Up to 50 per batch. Consent below applies to every farmer in the batch.",
+    "register": "Register",
+    "badLines": "Fix line(s) {{lines}} and try again.",
+    "rowStatus": {
+      "created": "registered",
+      "duplicate_phone": "already registered",
+      "error": "could not register"
+    }
+  },
+  "feedbackOps": {
+    "title": "Farmer feedback",
+    "exportRegression": "Export regression cases",
+    "total": "Ratings",
+    "pendingTriage": "Awaiting triage",
+    "downRate": "Not helpful",
+    "byLanguage": "By language",
+    "byIntent": "By question type",
+    "reasons": "Reasons given",
+    "count": "Count",
+    "flagged": "Flagged answers",
+    "nothingToTriage": "Nothing to triage.",
+    "actions": {
+      "converted_to_regression": "Add to regression suite",
+      "triaged": "Mark triaged",
+      "dismissed": "Dismiss"
+    }
   }
 }

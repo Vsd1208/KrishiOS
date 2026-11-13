@@ -34,7 +34,7 @@ const COMMON_CROPS = ['Paddy', 'Cotton', 'Chilli', 'Tomato', 'Maize', 'Groundnut
 export const CropVisionModal: React.FC<CropVisionModalProps> = ({
   isOpen,
   onClose,
-  defaultCrop = 'Paddy',
+  defaultCrop = '',
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
