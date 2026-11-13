@@ -26,7 +26,7 @@ def current_git_commit(repo_root: Path = REPO_ROOT) -> str:
     Outside a git checkout (e.g. a Colab bundle) the commit recorded at bundle time is read
     from ``KRISHIOS_GIT_COMMIT``.
     """
-    import os  # noqa: PLC0415
+    import os
 
     if os.environ.get("KRISHIOS_GIT_COMMIT"):
         return os.environ["KRISHIOS_GIT_COMMIT"]
