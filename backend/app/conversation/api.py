@@ -37,6 +37,7 @@ class TurnIn(BaseModel):
     speak: bool = False
     profile: ProfileIn | None = None
     act_as_farmer_id: int | None = None
+    bulletin_uuid: str | None = Field(default=None, max_length=36)
 
 
 async def _authorize_act_as(session: AsyncSession, auth: AuthContext,
@@ -57,11 +58,18 @@ async def text_turn(body: TurnIn, session: DbSession, auth: User) -> dict:
     if not body.text.strip() and not body.choice:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "text or choice required")
     await _authorize_act_as(session, auth, body.act_as_farmer_id)
+    context_en, profile = None, _profile(body.profile)
+    if body.bulletin_uuid:
+        from app.govconnect.api import bulletin_context  # noqa: PLC0415
+
+        context_en, bulletin_profile = await bulletin_context(session, auth, body.bulletin_uuid)
+        profile = profile or bulletin_profile
     manager = build_manager(sink=db_sink(session, channel="text"))
     result = await manager.handle(TurnInput(
         user_uuid=str(auth.user_uuid), text=body.text, language=body.language,
         conversation_id=body.conversation_id, choice=body.choice, speak=body.speak,
-        profile=_profile(body.profile), acting_for_farmer_id=body.act_as_farmer_id, auth=auth,
+        profile=profile, acting_for_farmer_id=body.act_as_farmer_id, auth=auth,
+        context_en=context_en, bulletin_uuid=body.bulletin_uuid,
     ))
     await _attach_media(session, result)
     return result.to_dict()

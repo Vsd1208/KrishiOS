@@ -10,6 +10,16 @@ from app.models.conversation import ConversationTurnRecord
 from app.models.extension import ExtensionAssignment
 from app.models.feedback import AnswerFeedback
 from app.models.media import MediaAsset
+from app.models.govconnect import (
+    BulletinDelivery,
+    BulletinTranslation,
+    FarmerLocation,
+    GovConnectAudit,
+    GovtBulletin,
+    GrievanceEvent,
+    GrievanceTicket,
+    SchemeEntry,
+)
 from app.models.crop import Crop
 from app.models.district import District
 from app.models.document_chunk import DocumentChunk
@@ -90,4 +100,13 @@ __all__ = [
     "ExtensionAssignment",
     "MediaAsset",
     "TranslationRecord",
+    # Sprint 11, Phase 4 — Govt Connect, locations (F2), grievances and schemes (F4)
+    "BulletinDelivery",
+    "BulletinTranslation",
+    "FarmerLocation",
+    "GovConnectAudit",
+    "GovtBulletin",
+    "GrievanceEvent",
+    "GrievanceTicket",
+    "SchemeEntry",
 ]

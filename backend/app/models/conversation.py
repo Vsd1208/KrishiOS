@@ -24,6 +24,8 @@ class ConversationTurnRecord(TimestampMixin, Base):
     user_uuid: Mapped[UUID] = mapped_column(nullable=False)
     acting_for_farmer_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
     channel: Mapped[str] = mapped_column(String(16), nullable=False, default="text")
+    # Set when the farmer used "ask about this" on a Govt Connect bulletin (Phase 4).
+    bulletin_uuid: Mapped[str | None] = mapped_column(String(36), nullable=True, index=True)
     language: Mapped[str] = mapped_column(String(8), nullable=False)
     detected_language: Mapped[str | None] = mapped_column(String(8), nullable=True)
     user_text: Mapped[str] = mapped_column(Text, nullable=False)

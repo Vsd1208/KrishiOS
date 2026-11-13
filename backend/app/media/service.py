@@ -37,6 +37,7 @@ async def match_media(session: Any, *, crop: str | None, intent: str | None,
         return []
     assets = (await session.scalars(
         select(MediaAsset).where(MediaAsset.status == "verified"))).all()
+    # Equal scores: the most recently verified asset first (deterministic, freshest content).
     ranked = sorted(((score(a, crop, topics, language), a) for a in assets),
-                    key=lambda p: p[0], reverse=True)
+                    key=lambda p: (p[0], p[1].verified_at or p[1].created_at), reverse=True)
     return [to_card(a) for s, a in ranked if s > 0][:MAX_ATTACHMENTS]

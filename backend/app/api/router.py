@@ -77,3 +77,14 @@ api_router.include_router(conversation_router)
 api_router.include_router(extension_router)
 api_router.include_router(feedback_router)
 api_router.include_router(media_router)
+
+# ── Sprint 11, Phase 4: Govt Connect, locations (F2), grievances and schemes (F4) ──
+from app.govconnect.api import router as govconnect_router  # noqa: E402
+from app.grievance.api import router as grievance_router  # noqa: E402
+from app.locations.api import router as locations_router  # noqa: E402
+from app.schemes.api import router as schemes_router  # noqa: E402
+
+api_router.include_router(govconnect_router)
+api_router.include_router(grievance_router)
+api_router.include_router(locations_router)
+api_router.include_router(schemes_router)

@@ -91,6 +91,22 @@ class QdrantRetrievalVectorStore(VectorStoreProvider):
         await self._client.update_collection_aliases(change_aliases_operations=operations)
         return AliasState(alias_name=alias_name, collection_name=collection_name)
 
+    async def set_document_payload(
+        self, alias_name: str, document_id: int, payload: dict[str, object]
+    ) -> bool:
+        """Overwrite payload keys on every point of one document behind an alias (e.g. set
+        ``effective_until`` when a bulletin is withdrawn). Returns False if the alias is unset."""
+        state = await self.get_alias_state(alias_name)
+        if state.collection_name is None:
+            return False
+        await self._client.set_payload(
+            collection_name=state.collection_name,
+            payload=payload,
+            points=qmodels.Filter(must=[qmodels.FieldCondition(
+                key="document_id", match=qmodels.MatchValue(value=document_id))]),
+        )
+        return True
+
     async def get_alias_state(self, alias_name: str) -> AliasState:
         """Return current alias target, if present."""
         aliases = await self._client.get_aliases()

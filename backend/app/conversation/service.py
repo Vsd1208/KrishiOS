@@ -46,7 +46,7 @@ def db_sink(session: Any, channel: str = "text"):
         session.add(ConversationTurnRecord(
             turn_uuid=result.turn_id, conversation_id=result.conversation_id,
             user_uuid=UUID(str(inp.user_uuid)), acting_for_farmer_id=inp.acting_for_farmer_id,
-            channel=channel, language=result.language,
+            channel=channel, language=result.language, bulletin_uuid=inp.bulletin_uuid,
             detected_language=result.detected_language, user_text=inp.text or "",
             intent=result.intent, status=result.status, reply_text=result.reply_text,
             reply_text_en=result.reply_text_en, slots=result.slots,

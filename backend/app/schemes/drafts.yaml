@@ -1,0 +1,84 @@
+# DRAFT scheme entries. Imported with status "draft": NOT shown to farmers or used by the bot
+# until an officer checks every criterion against source_url and verifies the entry.
+# hi/te text is a draft pending native review.
+- key: pm_kisan
+  scope: central
+  authority: Ministry of Agriculture & Farmers Welfare, Government of India
+  source_url: https://pmkisan.gov.in/
+  status_lookup_url: https://pmkisan.gov.in/
+  names:
+    en: PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)
+    hi: पीएम-किसान (प्रधानमंत्री किसान सम्मान निधि)
+    te: పీఎం-కిసాన్ (ప్రధాన మంత్రి కిసాన్ సమ్మాన్ నిధి)
+  summary:
+    en: Income support to landholding farmer families, paid by direct benefit transfer.
+    hi: भूमिधारक किसान परिवारों को आय सहायता, सीधे बैंक खाते में।
+    te: భూమి ఉన్న రైతు కుటుంబాలకు ఆదాయ సహాయం, నేరుగా బ్యాంకు ఖాతాలో.
+  benefits:
+    en: Rs 6,000 per year in three equal instalments (verify the current amount at the source).
+    hi: प्रति वर्ष 6,000 रुपये, तीन समान किस्तों में (वर्तमान राशि स्रोत पर जांचें)।
+    te: సంవత్సరానికి రూ. 6,000, మూడు సమాన వాయిదాలలో (ప్రస్తుత మొత్తాన్ని మూలంలో తనిఖీ చేయండి).
+  criteria:
+    - id: owns_cultivable_land
+      type: bool
+      kind: require
+      rule: {op: eq, value: true}
+      source: PM-KISAN operational guidelines, eligibility (landholding farmer families)
+      question:
+        en: Does your family own cultivable land recorded in the land records in your name?
+        hi: क्या आपके परिवार के नाम पर भूमि अभिलेख में खेती योग्य जमीन दर्ज है?
+        te: మీ కుటుంబం పేరున భూ రికార్డుల్లో సాగు భూమి నమోదై ఉందా?
+    - id: institutional_landholder
+      type: bool
+      kind: exclude
+      rule: {op: eq, value: true}
+      source: PM-KISAN operational guidelines, exclusion criteria
+      question:
+        en: Is the land held by an institution (not a family)?
+        hi: क्या जमीन किसी संस्था के नाम पर है (परिवार के नाम पर नहीं)?
+        te: భూమి ఏదైనా సంస్థ పేరున ఉందా (కుటుంబం పేరున కాదు)?
+    - id: constitutional_or_elected_office
+      type: bool
+      kind: exclude
+      rule: {op: eq, value: true}
+      source: PM-KISAN operational guidelines, exclusion criteria
+      question:
+        en: Does anyone in your family hold or has held a constitutional post, or is or was a Minister, MP, MLA, MLC, Mayor or District Panchayat chairperson?
+        hi: क्या आपके परिवार में कोई संवैधानिक पद पर है/था, या मंत्री, सांसद, विधायक, एमएलसी, महापौर या जिला पंचायत अध्यक्ष है/था?
+        te: మీ కుటుంబంలో ఎవరైనా రాజ్యాంగ పదవిలో ఉన్నారా/ఉండేవారా, లేదా మంత్రి, ఎంపీ, ఎమ్మెల్యే, ఎమ్మెల్సీ, మేయర్ లేదా జిల్లా పంచాయతీ అధ్యక్షులుగా ఉన్నారా/ఉండేవారా?
+    - id: government_employee
+      type: bool
+      kind: exclude
+      rule: {op: eq, value: true}
+      source: PM-KISAN operational guidelines, exclusion criteria (MTS / Class IV / Group D excepted)
+      question:
+        en: Is anyone in your family a serving or retired government officer or employee (other than Multi Tasking Staff, Class IV or Group D)?
+        hi: क्या आपके परिवार में कोई सेवारत या सेवानिवृत्त सरकारी अधिकारी/कर्मचारी है (मल्टी टास्किंग स्टाफ, चतुर्थ श्रेणी या ग्रुप डी को छोड़कर)?
+        te: మీ కుటుంబంలో ఎవరైనా ప్రస్తుత లేదా రిటైర్డ్ ప్రభుత్వ అధికారి/ఉద్యోగి ఉన్నారా (మల్టీ టాస్కింగ్ స్టాఫ్, క్లాస్ IV లేదా గ్రూప్ డి తప్ప)?
+    - id: pension_10000_or_more
+      type: bool
+      kind: exclude
+      rule: {op: eq, value: true}
+      source: PM-KISAN operational guidelines, exclusion criteria (MTS / Class IV / Group D excepted)
+      question:
+        en: Does anyone in your family receive a monthly pension of Rs 10,000 or more (other than Multi Tasking Staff, Class IV or Group D)?
+        hi: क्या आपके परिवार में किसी को 10,000 रुपये या उससे अधिक मासिक पेंशन मिलती है (मल्टी टास्किंग स्टाफ, चतुर्थ श्रेणी या ग्रुप डी को छोड़कर)?
+        te: మీ కుటుంబంలో ఎవరికైనా నెలకు రూ. 10,000 లేదా అంతకంటే ఎక్కువ పెన్షన్ వస్తుందా (మల్టీ టాస్కింగ్ స్టాఫ్, క్లాస్ IV లేదా గ్రూప్ డి తప్ప)?
+    - id: income_tax_payer
+      type: bool
+      kind: exclude
+      rule: {op: eq, value: true}
+      source: PM-KISAN operational guidelines, exclusion criteria
+      question:
+        en: Did anyone in your family pay income tax in the last assessment year?
+        hi: क्या आपके परिवार में किसी ने पिछले कर निर्धारण वर्ष में आयकर दिया?
+        te: మీ కుటుంబంలో ఎవరైనా గత అసెస్‌మెంట్ సంవత్సరంలో ఆదాయపు పన్ను చెల్లించారా?
+    - id: registered_professional
+      type: bool
+      kind: exclude
+      rule: {op: eq, value: true}
+      source: PM-KISAN operational guidelines, exclusion criteria
+      question:
+        en: Is anyone in your family a practising doctor, engineer, lawyer, chartered accountant or architect registered with a professional body?
+        hi: क्या आपके परिवार में कोई पेशेवर निकाय में पंजीकृत डॉक्टर, इंजीनियर, वकील, चार्टर्ड अकाउंटेंट या आर्किटेक्ट प्रैक्टिस करता है?
+        te: మీ కుటుంబంలో ఎవరైనా వృత్తిపరమైన సంస్థలో నమోదైన డాక్టర్, ఇంజనీర్, న్యాయవాది, చార్టర్డ్ అకౌంటెంట్ లేదా ఆర్కిటెక్ట్‌గా పనిచేస్తున్నారా?

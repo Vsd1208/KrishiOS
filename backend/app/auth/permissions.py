@@ -105,6 +105,12 @@ class Permission:
     FEEDBACK_SUBMIT = "feedback:submit"  # rate answers / bulletins / diagnoses (F13)
     FEEDBACK_REVIEW = "feedback:review"  # feedback dashboard + regression export (F13)
     MEDIA_MANAGE = "media:manage"  # add and verify how-to videos (F7)
+    # Sprint 11, Phase 4
+    GOVCONNECT_PUBLISH = "govconnect:publish"  # ingest, review, translate, approve, publish
+    GOVCONNECT_READ = "govconnect:read"  # farmer Govt Updates inbox
+    GRIEVANCE_SUBMIT = "grievance:submit"
+    GRIEVANCE_MANAGE = "grievance:manage"
+    SCHEME_MANAGE = "scheme:manage"  # maintain and verify the scheme catalog (F4)
 
 
 # ---------------------------------------------------------------------------
@@ -114,6 +120,8 @@ class Permission:
 _FARMER_PERMISSIONS: frozenset[str] = frozenset(
     {
         Permission.CONVERSATION_USE,
+        Permission.GOVCONNECT_READ,
+        Permission.GRIEVANCE_SUBMIT,
         Permission.FEEDBACK_SUBMIT,
         Permission.TRANSLATION_USE,
         Permission.NLU_USE,
@@ -144,6 +152,10 @@ _FARMER_PERMISSIONS: frozenset[str] = frozenset(
 _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
     {
         Permission.CONVERSATION_USE,
+        Permission.GOVCONNECT_PUBLISH,
+        Permission.GOVCONNECT_READ,
+        Permission.GRIEVANCE_MANAGE,
+        Permission.SCHEME_MANAGE,
         Permission.FEEDBACK_SUBMIT,
         Permission.FEEDBACK_REVIEW,
         Permission.EXTENSION_MANAGE,
@@ -227,6 +239,8 @@ _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
 _EXTENSION_WORKER_PERMISSIONS: frozenset[str] = frozenset(
     {
         Permission.CONVERSATION_USE,
+        Permission.GOVCONNECT_READ,
+        Permission.GRIEVANCE_SUBMIT,
         Permission.EXTENSION_ACT_AS,
         Permission.FEEDBACK_SUBMIT,
         Permission.FARMER_CREATE,

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from app.config.settings import get_settings
 from app.worker.jobs.base import JobSkipped, JobSpec, run_job
+from app.worker.jobs.govconnect import govconnect_maintenance
 from app.worker.jobs.heartbeat import heartbeat
 
 
@@ -18,6 +19,14 @@ def build_jobs() -> list[JobSpec]:
             timeout_seconds=30,
             max_tries=1,
             description="Scheduler liveness signal.",
+        ),
+        JobSpec(
+            name="govconnect_maintenance",
+            func=govconnect_maintenance,
+            interval_seconds=settings.GOVCONNECT_MAINTENANCE_INTERVAL_SECONDS,
+            timeout_seconds=600,
+            max_tries=3,
+            description="Publish scheduled bulletins, expire old ones, retry RAG indexing.",
         ),
     ]
 

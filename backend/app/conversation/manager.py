@@ -64,6 +64,10 @@ class TurnInput:
     profile: FarmerProfile | None = None
     acting_for_farmer_id: int | None = None
     auth: Any = None
+    # "Ask about this" on a Govt Connect bulletin: the official text (English) is given to
+    # the agent runtime as context, and the turn is linked to the bulletin for analytics.
+    context_en: str | None = None
+    bulletin_uuid: str | None = None
 
 
 @dataclass(slots=True)
@@ -299,6 +303,9 @@ class ConversationManager:
             providers["translation_in"] = {"provider": tin.provider, "status": tin.status.value}
             if tin.status in DELIVERABLE:
                 goal_en = tin.text
+        if inp.context_en:
+            goal_en = (f"{inp.context_en}\n\nThe farmer asks about this official bulletin: "
+                       f"{goal_en}")
         entry = self._catalog.get(state.crop) if state.crop else None
         answer = await self._runner.run(AnswerContext(
             goal_en=goal_en, session_id=state.conversation_id,

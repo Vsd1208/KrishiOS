@@ -187,6 +187,17 @@ class Settings(BaseSettings):
     CONVERSATION_STATE_BACKEND: str = "memory"
     # Load configured local STT/MT models at startup (cold load measured at 78 s).
     PRELOAD_MODELS: bool = False
+    # ── Sprint 11, Phase 4: Govt Connect, grievances ─────────────────────────
+    GOVCONNECT_STORAGE_PATH: str = "/data/govconnect"
+    # CRITICAL bulletins are sent with URGENT priority (bypassing quiet hours) only when enabled.
+    GOVCONNECT_CRITICAL_BYPASS_QUIET_HOURS: bool = True
+    GOVCONNECT_DEFAULT_LANGUAGES: list[str] = ["te", "hi", "en"]
+    GOVCONNECT_MAINTENANCE_INTERVAL_SECONDS: int = 300
+    # Resolution SLA per grievance category, in hours (configurable defaults, not official SLAs).
+    GRIEVANCE_SLA_HOURS: dict[str, int] = {
+        "payment": 168, "insurance_claim": 168, "scheme_enrollment": 120,
+        "input_quality": 72, "advisory": 48, "infrastructure": 168, "other": 120,
+    }
     STT_WHISPER_MODEL: str = "small"
     STT_WHISPER_COMPUTE_TYPE: str = "int8"
     STT_WHISPER_BEAM_SIZE: int = 5
