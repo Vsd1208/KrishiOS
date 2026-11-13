@@ -29,7 +29,17 @@ _DIGIT_MAP = {**{0x0966 + i: str(i) for i in range(10)}, **{0x0C66 + i: str(i) f
 _NUMBER_RE = re.compile(r"(?<![A-Za-z0-9_.])\d+(?:,\d{2,3})*(?:\.\d+)?(?!\d)")
 # Any placeholder form an MT model may emit: <3>, [3], {3}, ⟦3⟧, [[3]], <ID3>; digits may come
 # back in Devanagari/Telugu numerals (Python's \d matches them).
-PLACEHOLDER_RE = re.compile(r"[\[⟦<{]{1,2}\s*(?:PH|ph|ID)?\s*(\d+)\s*[\]⟧>}]{1,2}")
+# Second alternative: IndicTrans2 has no ">" in its source vocabulary, so "<ID3>" comes back
+# as "<ID3". The bracketless form is accepted only with the "ID" prefix, so real text such as
+# "<5 mm" is never mistaken for a placeholder.
+PLACEHOLDER_RE = re.compile(
+    r"[\[⟦<{]{1,2}\s*(?:PH|ph|ID)?\s*(\d+)\s*[\]⟧>}]{1,2}|<\s*ID\s*(\d+)[′'’`]?"
+)
+
+
+def placeholder_index(match: re.Match[str]) -> int:
+    """Index of a matched placeholder (either alternative of ``PLACEHOLDER_RE``)."""
+    return int(match.group(1) or match.group(2))
 
 
 def normalize_digits(text: str) -> str:
@@ -65,10 +75,12 @@ def _unit_patterns(glossary: Glossary) -> list[tuple[re.Pattern[str], str]]:
     patterns: list[tuple[re.Pattern[str], str]] = []
     for spelling, canonical in pairs:
         escaped = re.escape(spelling)
-        if spelling.isascii() and spelling[-1].isalpha():
-            regex = rf"(?<![A-Za-z]){escaped}(?![A-Za-z])"
-        else:  # symbols, and Indic spellings (which may carry inflectional suffixes)
-            regex = escaped
+        # Latin spellings that start with a letter need a left word boundary even when they
+        # end in punctuation: "rs." must not match the end of "hours." (bug found in the
+        # Phase 2 IndicTrans2 probe). A right boundary applies when they end in a letter.
+        lead = r"(?<![A-Za-z])" if spelling.isascii() and spelling[0].isalpha() else ""
+        trail = r"(?![A-Za-z])" if spelling.isascii() and spelling[-1].isalpha() else ""
+        regex = f"{lead}{escaped}{trail}"  # Indic spellings may carry inflectional suffixes
         patterns.append((re.compile(regex, re.IGNORECASE), canonical))
     _PATTERN_CACHE[glossary.version] = patterns
     return patterns

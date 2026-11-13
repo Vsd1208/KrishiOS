@@ -20,7 +20,7 @@ import re
 from dataclasses import dataclass, field
 
 from app.catalog import get_crop_catalog
-from app.translation.checks import PLACEHOLDER_RE, normalize_digits
+from app.translation.checks import PLACEHOLDER_RE, normalize_digits, placeholder_index
 from app.translation.glossary import Glossary, get_glossary
 
 # "<i>" chosen empirically: copied through opus-mt en->hi 11/11 and en->te 10/11 in the Phase 2
@@ -94,9 +94,15 @@ class Protector:
             for n, t in pairs
         ]
 
-    def mask(self, text: str, source_language: str, target_language: str,
-             map_crops: bool = True) -> Masked:
-        """Replace protected spans with indexed placeholders."""
+    def mask(self, text: str, source_language: str, target_language: str,  # noqa: PLR0913
+             map_crops: bool = True, placeholder: str | None = None,
+             kinds: frozenset[str] | None = None) -> Masked:
+        """Replace protected spans with indexed placeholders.
+
+        ``placeholder`` overrides the format for providers with their own conventions
+        (IndicTrans2 uses ``<ID{i}>``).
+        """
+        fmt = placeholder or self._placeholder
         masked = Masked(text=normalize_digits(text))
         # Quantities first: later passes only see placeholders without letters, and the
         # quantity pass never sees placeholder digits.
@@ -106,6 +112,8 @@ class Protector:
         ]
         if map_crops and source_language == "en" and target_language != "en":
             passes.append(("crop", list(self._crop_patterns(target_language))))
+        if kinds is not None:  # provider-specific: e.g. IndicTrans2 copies raw digits well
+            passes = [p for p in passes if p[0] in kinds]
 
         for kind, patterns in passes:
             for pattern, target_value in patterns:
@@ -114,7 +122,7 @@ class Protector:
                         return m.group(0)
                     idx = len(masked.spans)
                     masked.spans.append(Span(idx, k, m.group(0), tv or m.group(0)))
-                    return self._placeholder.format(i=idx)
+                    return fmt.format(i=idx)
 
                 masked.text = pattern.sub(_sub, masked.text)
         return masked
@@ -126,7 +134,7 @@ class Protector:
         seen: set[int] = set()
 
         def _sub(m: re.Match[str]) -> str:
-            idx = int(m.group(1))
+            idx = placeholder_index(m)
             span = by_index.get(idx)
             if span is None:
                 return m.group(0)  # leave it; the checker reports leftovers

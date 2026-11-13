@@ -31,12 +31,18 @@ import sacrebleu
 from krishios_ml.common.experiment_log import track_experiment
 from krishios_ml.common.paths import ML_ROOT, REPORTS_DIR
 
-SOURCE = ML_ROOT / "evaluation_sets" / "mt" / "source_en.tsv"
+SPLITS = {
+    "test": ML_ROOT / "evaluation_sets" / "mt" / "source_en.tsv",
+    "dev": ML_ROOT / "evaluation_sets" / "mt" / "source_en_dev.tsv",
+}
+SOURCE = SPLITS["test"]
 BATCH = 16
+# None = each provider's own protect_kinds; set via --kinds for dev-set strategy comparisons.
+KINDS_OVERRIDE: frozenset[str] | None = None
 
 
-def load_source() -> list[dict]:
-    with SOURCE.open(encoding="utf-8") as fh:
+def load_source(split: str = "test") -> list[dict]:
+    with SPLITS[split].open(encoding="utf-8") as fh:
         return list(csv.DictReader(fh, delimiter="\t"))
 
 
@@ -59,7 +65,10 @@ async def eval_provider(name: str, tgt: str, rows: list[dict]) -> dict:
             return {"error": "unsupported pair"}
         sources = [r["text"] for r in rows]
         protector = Protector()
-        masked = [protector.mask(s, "en", tgt) for s in sources]
+        fmt = getattr(provider, "placeholder_format", None)
+        kinds = KINDS_OVERRIDE if KINDS_OVERRIDE is not None else getattr(
+            provider, "protect_kinds", None)
+        masked = [protector.mask(s, "en", tgt, placeholder=fmt, kinds=kinds) for s in sources]
         raw_masked, ms_per = await _batched(provider, [m.text for m in masked], "en", tgt)
         raw_plain, _ = await _batched(provider, sources, "en", tgt)
     except Exception as exc:  # provider unavailable (e.g. gated model) -> recorded
@@ -130,12 +139,21 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--providers", nargs="+", default=["opus-mt"])
     ap.add_argument("--targets", nargs="+", default=["te", "hi"])
+    ap.add_argument("--split", choices=sorted(SPLITS), default="test")
+    ap.add_argument("--kinds", nargs="*", default=None,
+                    help="span kinds to protect (quantity protected crop); default: provider's")
     args = ap.parse_args()
-    rows = load_source()
-    config = {"providers": args.providers, "targets": args.targets, "source_set": str(
-        SOURCE.relative_to(ML_ROOT)), "n": len(rows), "reference_chrf": "pending native refs"}
+    global KINDS_OVERRIDE
+    KINDS_OVERRIDE = frozenset(args.kinds) if args.kinds is not None else None
+    rows = load_source(args.split)
+    config = {"providers": args.providers, "targets": args.targets,
+              "source_set": str(SPLITS[args.split].relative_to(ML_ROOT)), "n": len(rows),
+              "protect_kinds_override": sorted(KINDS_OVERRIDE) if KINDS_OVERRIDE else None,
+              "checker": "v2 (rs.-boundary fix, bracketless <ID placeholders)",
+              "reference_chrf": "pending native refs"}
     results: dict = {}
-    with track_experiment("mt_eval", config, seed=None, split_id="mt-source-en-v1") as rec:
+    split_id = "mt-source-en-v1" if args.split == "test" else "mt-source-en-dev-v1"
+    with track_experiment("mt_eval", config, seed=None, split_id=split_id) as rec:
         for name in args.providers:
             for tgt in args.targets:
                 res = asyncio.run(eval_provider(name, tgt, rows))

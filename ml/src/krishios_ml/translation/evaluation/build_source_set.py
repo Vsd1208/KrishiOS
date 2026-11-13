@@ -122,5 +122,32 @@ def build(per_pdf: int = 65, sachet: int = 30) -> Path:
     return out
 
 
+def build_dev(per_pdf: int = 20, sachet: int = 10) -> Path:
+    """Dev split for design decisions (ADR-013): sentences from the same sources that are NOT
+    in the test set (``source_en.tsv``). Never overwrites the test set."""
+    test_path = OUT_DIR / "source_en.tsv"
+    with test_path.open(encoding="utf-8") as fh:
+        seen = {r["text"].casefold() for r in csv.DictReader(fh, delimiter="\t")}
+    dev: list[dict] = []
+    by_doc: dict[str, list[dict]] = {}
+    for r in from_pdfs(DATA_DIR / "raw" / "advisories"):
+        by_doc.setdefault(r["source_doc"], []).append(r)
+    for rows in by_doc.values():
+        rows = _dedupe(rows, seen)
+        rows.sort(key=lambda r: not re.search(r"\d", r["text"]))
+        dev.extend(rows[:per_pdf])
+    dev.extend(_dedupe(from_sachet(limit=200), seen)[:sachet])
+    out = OUT_DIR / "source_en_dev.tsv"
+    with out.open("w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh, delimiter="\t")
+        w.writerow(["id", "source_doc", "locator", "text"])
+        for i, r in enumerate(dev, start=1):
+            w.writerow([f"mtdev{i:03d}", r["source_doc"], r["locator"], r["text"]])
+    logger.info("wrote {} dev sentences (disjoint from test) -> {}", len(dev), out)
+    return out
+
+
 if __name__ == "__main__":  # pragma: no cover
-    build()
+    import sys
+
+    build_dev() if "--dev" in sys.argv else build()

@@ -73,3 +73,34 @@ def test_placeholder_digits_are_not_quantities() -> None:
     masked = Protector().mask("Apply DAP 50 kg per acre", "en", "hi")
     quantities = [s.source for s in masked.spans if s.kind == "quantity"]
     assert quantities == ["50 kg per acre"]
+
+
+def test_indictrans2_bracketless_placeholders_restore() -> None:
+    # IndicTrans2 drops ">" (not in its source vocabulary): "<ID1>" comes back as "<ID1".
+    p = Protector()
+    masked = p.mask("Spray Tricyclazole at 0.6 g/L for blast.", "en", "hi",
+                    placeholder="<ID{i}>")
+    assert "<ID0>" in masked.text and "<ID1>" in masked.text
+    mt_output = "विस्फोट के लिए <ID0 पर <ID1 का छिड़काव करें ।"
+    restored, missing = Protector.restore(mt_output, masked.spans)
+    assert missing == []
+    assert "0.6 g/L" in restored and "Tricyclazole" in restored
+    assert check_translation("Spray Tricyclazole at 0.6 g/L for blast.", restored).passed
+
+
+def test_less_than_text_is_not_a_placeholder() -> None:
+    res = check_translation("Rain <5 mm expected", "<5 mm వర్షం")
+    assert res.passed and res.leftover_placeholders == []
+
+
+def test_rupee_spelling_does_not_match_inside_hours() -> None:
+    # Bug found in the Phase 2 probe: "rs." matched the end of "hours.".
+    assert extract_units("in next 3 hours.") == {}
+    assert extract_units("Rs. 500 per quintal") == {"rupee": 1, "quintal": 1}
+
+
+def test_bracketless_placeholder_with_prime_is_restored() -> None:
+    masked = Protector().mask("Spray Thiram @ 2 g per kg", "en", "hi", placeholder="<ID{i}>")
+    out = " ".join(f"<ID{s.index}′" for s in masked.spans)
+    restored, missing = Protector.restore(out, masked.spans)
+    assert missing == [] and "′" not in restored

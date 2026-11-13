@@ -54,6 +54,8 @@ def _legacy_cache_adapter(model: Any) -> None:
 class IndicTrans2Provider:
     provider_name = "indictrans2"
     model_version = "dist-200M"
+    # ">" is not in the source vocabulary; "<ID{i}>" returns as "<ID{i}", which restore accepts.
+    placeholder_format = "<ID{i}>"
 
     def __init__(self, max_new_tokens: int = 256, num_beams: int | None = None) -> None:
         self._max_new_tokens = max_new_tokens

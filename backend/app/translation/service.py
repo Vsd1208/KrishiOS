@@ -123,8 +123,8 @@ class TranslationService:
                 None,
             )
 
-        masked = self._protector.mask(text, source_language, target_language)
         attempts: list[Attempt] = []
+        spans_emitted = 0
         best: tuple[str, CheckResult, str, str] | None = None
 
         for name in self._chain():
@@ -160,6 +160,12 @@ class TranslationService:
                 provider_version=provider.model_version,
                 glossary_version=self._glossary.version,
             )
+            masked = self._protector.mask(
+                text, source_language, target_language,
+                placeholder=getattr(provider, "placeholder_format", None),
+                kinds=getattr(provider, "protect_kinds", None),
+            )
+            spans_emitted = len(masked.spans)
             cached = self._cache.get(key)
             t0 = time.perf_counter()
             if cached is not None:
@@ -192,7 +198,7 @@ class TranslationService:
                     glossary_version=self._glossary.version,
                     content_hash=key,
                     cached=cached is not None,
-                    protected_spans=len(masked.spans),
+                    protected_spans=spans_emitted,
                     attempts=attempts,
                 )
                 if back_translate:
@@ -231,7 +237,7 @@ class TranslationService:
             provider_version=ver,
             glossary_version=self._glossary.version,
             content_hash=None,
-            protected_spans=len(masked.spans),
+            protected_spans=spans_emitted,
             attempts=attempts,
         )
 
