@@ -183,6 +183,10 @@ class Settings(BaseSettings):
     STT_INDICCONFORMER_DECODING: str = "rnnt"  # rnnt | ctc
     INDICTRANS2_NUM_BEAMS: int = 4
     ML_DEVICE: str = "auto"  # auto | cpu | cuda (local models)
+    # Phase 3: dialogue state store (memory for dev/tests, redis for multi-instance).
+    CONVERSATION_STATE_BACKEND: str = "memory"
+    # Load configured local STT/MT models at startup (cold load measured at 78 s).
+    PRELOAD_MODELS: bool = False
     STT_WHISPER_MODEL: str = "small"
     STT_WHISPER_COMPUTE_TYPE: str = "int8"
     STT_WHISPER_BEAM_SIZE: int = 5

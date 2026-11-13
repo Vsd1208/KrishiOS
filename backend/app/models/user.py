@@ -41,6 +41,8 @@ class UserRole(str, enum.Enum):
     FARMER = "farmer"
     OFFICER = "officer"
     AGRONOMIST = "agronomist"
+    # Sprint 11 (F6): KVK staff / extension workers / FPO coordinators acting for farmers.
+    EXTENSION_WORKER = "extension_worker"
     ADMIN = "admin"
     SYSTEM = "system"
 

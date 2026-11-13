@@ -67,3 +67,13 @@ from app.translation.api.routes import router as translation_router
 api_router.include_router(translation_router)
 from app.nlu.api.routes import router as nlu_router
 api_router.include_router(nlu_router)
+
+# Sprint 11 — Phase 3: multilingual bot, assisted mode (F6), media (F7), feedback (F13)
+from app.conversation.api import router as conversation_router
+from app.extension.api import router as extension_router
+from app.feedback.api import router as feedback_router
+from app.media.api import router as media_router
+api_router.include_router(conversation_router)
+api_router.include_router(extension_router)
+api_router.include_router(feedback_router)
+api_router.include_router(media_router)
