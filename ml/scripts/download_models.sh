@@ -4,14 +4,15 @@
 # Reads HF_TOKEN from backend/.env (never printed).
 set -u
 T=$(grep "^HF_TOKEN=" .env 2>/dev/null | head -1 | cut -d= -f2- | tr -d '\r" ')
-export HF_TOKEN="$T" HF_HUB_DOWNLOAD_TIMEOUT=600 HF_HUB_ETAG_TIMEOUT=120
+# Xet transfers stalled at 0 bytes on a slow link (2026-11-12); plain HTTPS works.
+export HF_TOKEN="$T" HF_HUB_DOWNLOAD_TIMEOUT=600 HF_HUB_ETAG_TIMEOUT=120 HF_HUB_DISABLE_XET=1
 for m in "$@"; do
   for attempt in 1 2 3 4 5 6 7 8; do
     if uv run python - "$m" <<'PY'
 import sys
 from huggingface_hub import snapshot_download
 repo = sys.argv[1]
-allow = None if repo.startswith("Helsinki-NLP/") else [
+allow = None if repo.startswith(("Helsinki-NLP/", "facebook/mms-tts")) else [
     "*.json", "*.py", "*.txt", "*.model", "*.spm", "*.SRC", "*.TGT", "*.safetensors",
     "assets/*",
 ]
