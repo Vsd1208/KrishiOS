@@ -14,7 +14,7 @@ Read this file at the start of every session, and update it at the end of every 
 | 1 Foundations | done | `feat/sprint-11-phase1-foundations` | [01_foundations.md](../ml/reports/01_foundations.md) |
 | 2 Multilingual core | done | `feat/sprint-11-phase2-multilingual` | [02_multilingual_core.md](../ml/reports/02_multilingual_core.md) |
 | 3 Multilingual bot (+F6, F7, F13) | done (awaiting review) | `feat/sprint-11-phase3-bot` | [03_multilingual_bot.md](../ml/reports/03_multilingual_bot.md) |
-| 4 Govt Connect: publishing (+F2, F4) | todo | — | — |
+| 4 Govt Connect: publishing (+F2, F4) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [04_govconnect_publishing.md](../ml/reports/04_govconnect_publishing.md) |
 | 5 Govt Connect: automated (+F1, F3, F5) | todo | — | — |
 | 6 Yield label audit | todo | — | — |
 | 7 Yield predictor pipeline | todo | — | — |
@@ -29,9 +29,9 @@ Read this file at the start of every session, and update it at the end of every 
 | # | Feature | Phase | Status | Notes |
 |---|---|---|---|---|
 | F1 | DPI interoperability adapters | 0 → 5 | in-progress (investigated) | Orientation §8 |
-| F2 | Block / GP locations | 4–5 | in-progress | LGD blocks reference (7,327) + `/catalog/districts/{code}/blocks` done in Phase 1 |
+| F2 | Block / GP locations | 4–5 | in-progress | Saved farmer locations with LGD block validation; block-level bulletin targeting (Phase 4). Block-level weather feeds: Phase 5 |
 | F3 | Offline-first PWA | 5 | todo | |
-| F4 | Scheme assistant + grievance tickets | 4 | todo | No public scheme API; no scraping |
+| F4 | Scheme assistant + grievance tickets | 4 | done | Grievance tickets with SLA; officer-verified scheme catalog + eligibility Q&A (PM-KISAN draft awaiting officer verification). No public scheme API; no scraping |
 | F5 | IVR / SMS / WhatsApp channels | 5 | todo | Real providers blocked-on-approval (cost) |
 | F6 | Extension-worker assisted mode | 3 | done | Assignment + recorded consent, act-as, review-before-share, batch registration (ADR-017) |
 | F7 | Video / how-to answers + video queries | 3, 10b | in-progress | Verified, licensed media matched to answers (ADR-018); no assets loaded yet; video queries in 10b |
@@ -56,7 +56,7 @@ Read this file at the start of every session, and update it at the end of every 
 | NLU | done | Rule-based: intent acc 0.796, crop F1 0.968 (run b74f7a0eb8c7; draft labels); planner routes on NLU |
 | Real STT / TTS | done | IndicConformer RNNT recommended: FLEURS CER te 0.073 / hi 0.063 (65d3ea90da08); CPU median 2.2 s/utterance, RTF 0.25 (3d65e68d0266). MMS-TTS demo-only (CC BY-NC); deployable voice in Phase 3 |
 | Conversation / dialogue state | done | Clarify-and-resume, carry-over, re-ask; dialogue task success 0.90 (run 98898e7cfba1, result of record; draft scripts); text + voice turns; optional preload (`PRELOAD_MODELS`) |
-| Govt Connect | todo | SACHET CAP preferred feed (ADR-004) |
+| Govt Connect | in-progress | Publishing side done (Phase 4): upload/compose → extraction with provenance → translate → approve/schedule → targeted delivery → inbox (listen / ask / ack / flag) → RAG with validity → analytics. Automated feeds: Phase 5 (SACHET CAP preferred, ADR-004) |
 | Yield Intelligence | todo | |
 | Real vision | todo | Field-photo dataset gap |
 
@@ -69,9 +69,9 @@ Read this file at the start of every session, and update it at the end of every 
 
 ## Test status (latest)
 
-- **Backend:** 251 passed, 3 skipped (Phase 3); Postgres integration 3 passed.
+- **Backend:** 264 passed, 6 skipped (Phase 4); Postgres integration 6 passed.
 - **ml:** 13 passed.
-- **Frontend:** 29 files / 63 tests passed; typecheck, lint (0 errors) and build OK.
+- **Frontend:** 30 files / 68 tests passed; typecheck, lint (0 errors) and build OK.
 
 ## Pending approvals and actions
 

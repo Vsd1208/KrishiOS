@@ -40,11 +40,20 @@ export interface FarmerChatProps {
   profile?: FarmerProfileHint | null;
   /** Assisted mode (extension worker). Answers wait in the worker's review queue. */
   actAsFarmerId?: number | null;
+  /** "Ask about this": questions are answered with this official bulletin as context. */
+  bulletinUuid?: string | null;
+  bulletinTitle?: string | null;
 }
 
-export const FarmerChat: React.FC<FarmerChatProps> = ({ initialLanguage, profile, actAsFarmerId }) => {
+export const FarmerChat: React.FC<FarmerChatProps> = ({
+  initialLanguage,
+  profile,
+  actAsFarmerId,
+  bulletinUuid,
+  bulletinTitle,
+}) => {
   const { t, i18n } = useTranslation();
-  const chat = useConversation({ initialLanguage, profile, actAsFarmerId });
+  const chat = useConversation({ initialLanguage, profile, actAsFarmerId, bulletinUuid });
   const [draft, setDraft] = useState('');
   const endRef = useRef<HTMLDivElement | null>(null);
 
@@ -111,6 +120,11 @@ export const FarmerChat: React.FC<FarmerChatProps> = ({ initialLanguage, profile
         </div>
       </header>
 
+      {bulletinUuid && (
+        <p className="px-4 py-2 border-b border-info-200 bg-info-50 text-caption text-info-700">
+          {t('govt.askingAbout', { title: bulletinTitle || t('govt.official') })}
+        </p>
+      )}
       <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3" aria-live="polite">
         {chat.messages.length === 0 && (
           <div className="max-w-xl mx-auto text-center py-8 space-y-2">

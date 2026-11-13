@@ -23,6 +23,7 @@ import { FarmSummaryCard } from '@/features/farmer/components/FarmSummaryCard';
 import { WeatherWidget } from '@/features/farmer/components/WeatherWidget';
 import { HeroActionGrid } from '@/features/farmer/components/HeroActionGrid';
 import { AlertBanner } from '@/features/farmer/components/AlertBanner';
+import { ActiveWarningsCard } from '@/features/govconnect/ActiveWarningsCard';
 import { VoiceRecorderModal } from '@/features/farmer/components/VoiceRecorderModal';
 import { CropVisionModal } from '@/features/farmer/components/CropVisionModal';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
@@ -102,6 +103,9 @@ export const FarmerDashboard: React.FC = () => {
 
       {/* Hero Multimodal Action Launcher */}
       <HeroActionGrid onSelectAction={handleHeroAction} />
+
+      {/* Official Govt warnings (Govt Connect) */}
+      <ActiveWarningsCard />
 
       {/* Proactive Risk Alerts Banner (High Priority) */}
       <AlertBanner

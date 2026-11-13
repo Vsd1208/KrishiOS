@@ -20,6 +20,10 @@ import {
   ShieldCheck,
   MessageSquareWarning,
   HandHelping,
+  Landmark,
+  Megaphone,
+  Activity,
+  LifeBuoy,
 } from 'lucide-react';
 import type { UserRole } from '@/types/auth';
 
@@ -77,6 +81,34 @@ const officerNavItems: OfficerNavItem[] = [
     path: '/officer/evaluation',
     icon: ShieldCheck,
     isActive: (pathname) => pathname.startsWith('/officer/evaluation'),
+  },
+  {
+    id: 'bulletins',
+    label: 'Bulletins',
+    path: '/officer/bulletins',
+    icon: Landmark,
+    isActive: (pathname) => pathname.startsWith('/officer/bulletins'),
+  },
+  {
+    id: 'publish',
+    label: 'Publish Advisory',
+    path: '/officer/publish',
+    icon: Megaphone,
+    isActive: (pathname) => pathname.startsWith('/officer/publish'),
+  },
+  {
+    id: 'connect',
+    label: 'Connect Analytics',
+    path: '/officer/connect',
+    icon: Activity,
+    isActive: (pathname) => pathname.startsWith('/officer/connect'),
+  },
+  {
+    id: 'grievances',
+    label: 'Grievances & Schemes',
+    path: '/officer/grievances',
+    icon: LifeBuoy,
+    isActive: (pathname) => pathname.startsWith('/officer/grievances'),
   },
   {
     id: 'feedback',

@@ -131,3 +131,29 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
 - **Caveats:**
   - FLEURS is general-domain and near ceiling, so it does not separate C from D. An agricultural te/hi query set (pending native review) must confirm the choice before it is final.
   - Embedding times in this run are noisy because other jobs shared the CPU; only the translation cost is a reliable latency difference.
+
+## ADR-020: Govt Connect targeting, delivery and lifecycle
+- **Status:** accepted (Phase 4)
+- **Decision:**
+  - **Targeting:** a farmer matches by registered district or any saved location (F2). Block-targeted bulletins match farmers with a saved location in a listed block (`block`), and farmers in the district whose block is unknown (`district`, so a warning is never missed for missing data). Farmers whose known blocks are all outside the list are excluded. Crop filters exclude only farmers whose recorded crops do not overlap; farmers with no recorded crops are included. Language: preferred if a deliverable translation exists, else English, else the original.
+  - **Delivery:** through `NotificationService`, so preferences and quiet hours apply. CRITICAL maps to URGENT priority (bypasses quiet hours) only when `GOVCONNECT_CRITICAL_BYPASS_QUIET_HOURS` is true. A farmer who already holds an active same-hazard bulletin for an overlapping district gets the new one in the inbox without a second notification.
+  - **Lifecycle:** draft → needs_review → approved → scheduled → published → withdrawn / superseded / expired. Published bulletins are immutable: corrections go through supersede. Every action writes `govconnect_audit`.
+  - **RAG:** published bulletins are indexed with `effective_from` / `effective_until` (retrieval already drops expired chunks). Withdrawn and superseded bulletins are expired in Postgres and Qdrant at once; the maintenance job retries failures.
+  - **Authority:** the inbox always shows the issuing authority, issue date and validity, and the official original is one tap away. AI only translates; it never rewrites an instruction.
+
+## ADR-021: Bulletin extraction is rule-based first, with character-span provenance
+- **Status:** accepted (Phase 4)
+- **Context:** the brief asks for LLM extraction, but the free Gemini tier is exhausted and bulletins pasted by officers may contain farmer context.
+- **Decision:** `rules-v1` (local, deterministic) extracts:
+  - authority and level, issue and validity dates (IST, cue words in en/hi/te, "next N hours");
+  - LGD districts and blocks (issuer office names and word-collision names excluded) and catalog crops;
+  - hazard (first mentioned is primary), severity from IMD colour codes (yellow MEDIUM, orange HIGH, red CRITICAL), and advice sentences.
+
+  Every value links to the exact source spans. Values below 0.7 confidence are flagged, and uploads always go to officer review. An LLM extractor can implement the same protocol and be compared on the same labelled set.
+- **Known gap:** te/hi district names are not in the LGD reference, so Indic-script district mentions are not resolved (same gap as dialogue te04).
+
+## ADR-022: Grievances and schemes: configurable SLA, officer-verified eligibility, no scraping
+- **Status:** accepted (Phase 4, F4)
+- **Decision:**
+  - **Grievances:** tickets follow open → assigned → in_progress → resolved / rejected → closed, and the farmer can reopen once. Resolve and reject need a note. SLA hours per category come from `GRIEVANCE_SLA_HOURS`; these are configurable defaults, not official service standards. Public updates notify the farmer; internal notes stay hidden. Ticket text is personal data and stays on the device.
+  - **Schemes:** the catalog is officer-maintained, and every eligibility criterion cites its source. Bundled entries (PM-KISAN) are DRAFTS, invisible to farmers until an officer verifies each criterion against `source_url`. Results are labelled "guidance only". Personal status is a link to the official portal; nothing is looked up or scraped.

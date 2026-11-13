@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useFarmerProfile } from '@/features/farmer/hooks/useFarmerData';
 import { useTranslation } from 'react-i18next';
+import { LocationsCard } from '@/features/govconnect/LocationsCard';
 import {
   Phone,
   MapPin,
@@ -204,6 +205,8 @@ export const ProfilePage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      <LocationsCard />
 
       {/* Logout Action */}
       <div className="flex justify-end pt-2">

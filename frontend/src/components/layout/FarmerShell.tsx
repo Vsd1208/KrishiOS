@@ -10,7 +10,8 @@ import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/layout/Header';
-import { Home, Sparkles, MapPin, Bell, User } from 'lucide-react';
+import { Home, Sparkles, MapPin, Bell, User, Landmark } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface FarmerNavTab {
   id: string;
@@ -43,6 +44,13 @@ const farmerTabs: FarmerNavTab[] = [
     isActive: (pathname) => pathname.startsWith('/farmer/fields'),
   },
   {
+    id: 'updates',
+    label: 'Govt',
+    path: '/farmer/updates',
+    icon: Landmark,
+    isActive: (pathname) => pathname.startsWith('/farmer/updates'),
+  },
+  {
     id: 'alerts',
     label: 'Alerts',
     path: '/farmer/alerts',
@@ -60,6 +68,7 @@ const farmerTabs: FarmerNavTab[] = [
 
 export const FarmerShell: React.FC = () => {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -116,7 +125,7 @@ export const FarmerShell: React.FC = () => {
                   )}
                 </div>
                 <span className="text-[11px] mt-1 tracking-tight leading-none">
-                  {tab.label}
+                  {t(`nav.${tab.id}`, { defaultValue: tab.label })}
                 </span>
               </button>
             );

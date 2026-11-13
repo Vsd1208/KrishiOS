@@ -53,6 +53,7 @@ import { documentsApi } from '@/services/api/documents';
 import type { BotLanguage } from '@/services/api/conversation';
 import { FarmerChat } from '@/features/conversation/FarmerChat';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 /* ============================================================
    COMPONENT
@@ -66,6 +67,10 @@ export const AskPage: React.FC = () => {
   const { data: farmer } = useFarmerProfile();
   const { crops, fieldCrops } = useFarmerCrops();
   const [mode, setMode] = useState<'chat' | 'workspace'>('chat');
+  const [params] = useSearchParams();
+  const location = useLocation();
+  const bulletinUuid = params.get('bulletin');
+  const bulletinTitle = (location.state as { bulletinTitle?: string } | null)?.bulletinTitle;
 
   const preferred = (farmer?.preferred_language || '').slice(0, 2).toLowerCase();
   const initialLanguage = (BOT_LANGUAGES as string[]).includes(preferred)
@@ -97,8 +102,10 @@ export const AskPage: React.FC = () => {
       {mode === 'chat' ? (
         <div className="flex-1 min-h-0 bg-surface rounded-2xl border border-border/80 shadow-card overflow-hidden">
           <FarmerChat
-            key={initialLanguage}
+            key={`${initialLanguage}-${bulletinUuid ?? ''}`}
             initialLanguage={initialLanguage}
+            bulletinUuid={bulletinUuid}
+            bulletinTitle={bulletinTitle}
             profile={profileCrops.length ? { crops: profileCrops } : null}
           />
         </div>

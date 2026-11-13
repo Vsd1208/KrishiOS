@@ -80,6 +80,8 @@ export interface TurnRequest {
   profile?: FarmerProfileHint | null;
   /** Assisted mode: an extension worker asking for a consenting, assigned farmer. */
   act_as_farmer_id?: number | null;
+  /** "Ask about this" on a Govt Connect bulletin (official text given to the bot). */
+  bulletin_uuid?: string | null;
 }
 
 export type FeedbackReason =

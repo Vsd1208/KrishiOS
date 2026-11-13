@@ -94,9 +94,21 @@ async def resolve_crop(req: CropResolveRequest) -> CropResolveResponse:
 
 
 @router.get("/districts", response_model=list[DistrictOut])
-async def find_districts(name: str, state: str | None = None) -> list[DistrictOut]:
-    """Look up LGD districts by name (optionally within a state)."""
-    return [_district_out(d) for d in get_lgd_directory().find_districts(name, state)]
+async def find_districts(name: str, state: str | None = None,
+                         prefix: bool = False) -> list[DistrictOut]:
+    """Look up LGD districts by name (optionally within a state). ``prefix=true`` matches the
+    start of the name (for pickers; at most 20 results)."""
+    lgd = get_lgd_directory()
+    if not prefix:
+        return [_district_out(d) for d in lgd.find_districts(name, state)]
+    from app.catalog.text import normalize  # noqa: PLC0415
+
+    start = normalize(name)
+    if len(start) < 2:  # noqa: PLR2004
+        return []
+    hits = [d for d in lgd.districts() if normalize(d.district_name).startswith(start)
+            and (state is None or normalize(d.state_name) == normalize(state))]
+    return [_district_out(d) for d in sorted(hits, key=lambda d: d.district_name)[:20]]
 
 
 @router.get("/districts/{lgd_district_code}", response_model=DistrictOut)

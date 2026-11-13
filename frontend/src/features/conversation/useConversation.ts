@@ -22,6 +22,7 @@ export interface UseConversationOptions {
   initialLanguage?: BotLanguage;
   profile?: FarmerProfileHint | null;
   actAsFarmerId?: number | null;
+  bulletinUuid?: string | null;
 }
 
 let counter = 0;
@@ -31,6 +32,7 @@ export function useConversation({
   initialLanguage = 'en',
   profile,
   actAsFarmerId = null,
+  bulletinUuid = null,
 }: UseConversationOptions = {}) {
   const [language, setLanguage] = useState<BotLanguage>(initialLanguage);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -75,10 +77,11 @@ export function useConversation({
           speak,
           profile: profile ?? null,
           act_as_farmer_id: actAsFarmerId,
+          bulletin_uuid: bulletinUuid,
         }),
       );
     },
-    [actAsFarmerId, language, profile, run, speak],
+    [actAsFarmerId, bulletinUuid, language, profile, run, speak],
   );
 
   const choose = useCallback(
@@ -91,9 +94,10 @@ export function useConversation({
           speak,
           profile: profile ?? null,
           act_as_farmer_id: actAsFarmerId,
+          bulletin_uuid: bulletinUuid,
         }),
       ),
-    [actAsFarmerId, language, profile, run, speak],
+    [actAsFarmerId, bulletinUuid, language, profile, run, speak],
   );
 
   const sendVoice = useCallback(
