@@ -146,7 +146,9 @@ def main() -> None:
     global KINDS_OVERRIDE
     KINDS_OVERRIDE = frozenset(args.kinds) if args.kinds is not None else None
     rows = load_source(args.split)
-    config = {"providers": args.providers, "targets": args.targets,
+    from app.providers.device import resolve_device
+
+    config = {"providers": args.providers, "targets": args.targets, "device": resolve_device(),
               "source_set": str(SPLITS[args.split].relative_to(ML_ROOT)), "n": len(rows),
               "protect_kinds_override": sorted(KINDS_OVERRIDE) if KINDS_OVERRIDE else None,
               "checker": "v2 (rs.-boundary fix, bracketless <ID placeholders)",

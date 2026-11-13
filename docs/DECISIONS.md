@@ -92,6 +92,14 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
 - **Consequences:**
   - The 4 GB of VRAM limits training to compact models with AMP.
   - GPU scripts must use `uv run --extra gpu`.
+- **Update (2026-11-13, user request):** the backend also gets an opt-in `gpu` extra (`uv sync --extra local-ml --extra gpu`, torch 2.14.1+cu130). Without it, torch stays the PyPI CPU build, which is what the container uses. Measured on the RTX 2050 against the same dev configuration on the laptop CPU:
+
+  | Model | CPU ms/sentence (`8b5381fbede6`) | GPU ms/sentence (`eee4fcb9d0c8`) | Speed-up | Check pass rate |
+  |---|---|---|---|---|
+  | IndicTrans2 en→te | 5217 | 1356 | 3.8× | 0.317, identical |
+  | IndicTrans2 en→hi | 4101 | 771 | 5.3× | 0.488, identical |
+
+  IndicConformer STT is an ONNX export run by ONNX Runtime on the CPU, so the CUDA PyTorch build does not accelerate it. Run `be5141cad716` (local, `ML_DEVICE=cuda`) gave the same CER as the CPU run but slower latency (te 9.2 s / hi 8.0 s median versus 2.2 / 2.3 s), which points to CPU contention during that run rather than a device effect. Using the GPU for STT would need `onnxruntime-gpu` (not installed).
 
 ## ADR-016: Conversation = deterministic dialogue manager around the agent runtime
 - **Status:** accepted (Phase 3)

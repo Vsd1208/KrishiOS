@@ -44,6 +44,15 @@ local-ml = [
     "sacremoses>=0.1.1",
     "sentencepiece>=0.2.0",
 ]
+# Local NVIDIA GPU (laptop RTX 2050, 4 GB): `uv sync --extra local-ml --extra gpu`, then
+# ML_DEVICE=auto|cuda. CUDA wheels come from PyTorch's cu130 index (ADR-015). Default (no extra)
+# keeps the CPU build from PyPI, which is what the container uses.
+gpu = [
+    "torch>=2.14,<2.15",
+]
+cpu = [
+    "torch>=2.13",
+]
 
 [dependency-groups]
 dev = [
@@ -56,6 +65,15 @@ dev = [
 
 [tool.uv]
 package = false
+conflicts = [[{ extra = "cpu" }, { extra = "gpu" }]]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu130", extra = "gpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true  # only torch comes from this index
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
