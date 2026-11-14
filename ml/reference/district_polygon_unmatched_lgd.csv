@@ -1,0 +1,124 @@
+lgd_district_code,district_name,state_name
+10,Poonch,Jammu And Kashmir
+39,Sri Muktsar Sahib,Punjab
+52,Pauri Garhwal,Uttarakhand
+62,Gurugram,Haryana
+120,Prayagraj,Uttar Pradesh
+140,Ayodhya,Uttar Pradesh
+154,Amroha,Uttar Pradesh
+163,Hathras,Uttar Pradesh
+179,Bhadohi,Uttar Pradesh
+225,Gangtok,Sikkim
+226,Mangan,Sikkim
+227,Namchi,Sikkim
+228,Gyalshing,Sikkim
+293,Sribhumi,Assam
+303,North 24 Parganas,West Bengal
+304,South 24 Parganas,West Bengal
+306,Purba Bardhaman,West Bengal
+312,Hooghly,West Bengal
+313,Howrah,West Bengal
+327,East Singhbum,Jharkhand
+343,West Singhbhum,Jharkhand
+344,Anugola,Odisha
+347,Baragada,Odisha
+350,Kataka,Odisha
+351,Debagada,Odisha
+367,Nayagada,Odisha
+373,Sundaragada,Odisha
+384,Korea,Chhattisgarh
+409,Narmadapuram,Madhya Pradesh
+444,Dangs,Gujarat
+445,Dahod,Gujarat
+463,Daman,The Dadra And Nagar Haveli And Daman And Diu
+464,Diu,The Dadra And Nagar Haveli And Daman And Diu
+465,Dadra And Nagar Haveli,The Dadra And Nagar Haveli And Daman And Diu
+466,Ahilyanagar,Maharashtra
+469,Chhatrapati Sambhajinagar,Maharashtra
+470,Beed,Maharashtra
+488,Dharashiv,Maharashtra
+491,Raigad,Maharashtra
+504,Y.S.R. Kadapa,Andhra Pradesh
+525,Bengaluru Urban,Karnataka
+526,Bengaluru Rural,Karnataka
+527,Belagavi,Karnataka
+528,Ballari,Karnataka
+530,Vijayapura,Karnataka
+538,Kalaburagi,Karnataka
+545,Mysuru,Karnataka
+553,Lakshadweep District,Lakshadweep
+604,Nuh,Haryana
+608,S.A.S Nagar,Punjab
+618,Kamrup Metro,Assam
+631,Bengaluru South,Karnataka
+633,Kasganj,Uttar Pradesh
+644,Balodabazar-Bhatapara,Chhattisgarh
+649,Balrampur-Ramanujganj,Chhattisgarh
+667,Agar-Malwa,Madhya Pradesh
+676,Botad,Gujarat
+686,Hanumakonda,Telangana
+687,Jayashankar Bhupalapally,Telangana
+690,Bhadradri Kothagudem,Telangana
+695,Jogulamba Gadwal,Telangana
+699,Kumuram Bheem Asifabad,Telangana
+700,Medchal Malkajgiri,Telangana
+701,Charkhi Dadri,Haryana
+710,West Karbi Anglong,Assam
+736,Noklak,Nagaland
+737,Malerkotla,Punjab
+738,Vijayanagara,Karnataka
+739,Bajali,Assam
+740,Eastern West Khasi Hills,Meghalaya
+741,Pakyong,Sikkim
+742,Soreng,Sikkim
+743,Parvathipuram Manyam,Andhra Pradesh
+744,Anakapalli,Andhra Pradesh
+745,Alluri Sitharama Raju,Andhra Pradesh
+746,Kakinada,Andhra Pradesh
+747,Dr. B.R. Ambedkar Konaseema,Andhra Pradesh
+748,Eluru,Andhra Pradesh
+749,Ntr,Andhra Pradesh
+750,Bapatla,Andhra Pradesh
+751,Palnadu,Andhra Pradesh
+752,Tirupati,Andhra Pradesh
+753,Annamayya,Andhra Pradesh
+754,Sri Sathya Sai,Andhra Pradesh
+755,Nandyal,Andhra Pradesh
+756,Tamulpur,Assam
+757,Tseminyu,Nagaland
+758,Chumoukedima,Nagaland
+759,Khairagarh-Chhuikhadan-Gandai,Chhattisgarh
+760,Manendragarh-Chirmiri-Bharatpur(M C B),Chhattisgarh
+761,Mohla-Manpur-Ambagarh Chouki,Chhattisgarh
+762,Sakti,Chhattisgarh
+763,Sarangarh-Bilaigarh,Chhattisgarh
+764,Niuland,Nagaland
+765,Shamator,Nagaland
+766,MAUGANJ,Madhya Pradesh
+767,Deeg,Rajasthan
+768,Didwana-Kuchaman,Rajasthan
+770,Khairthal-Tijara,Rajasthan
+772,Phalodi,Rajasthan
+774,Beawar,Rajasthan
+775,Balotra,Rajasthan
+777,Salumbar,Rajasthan
+782,Kotputli-Behror,Rajasthan
+784,Maihar,Madhya Pradesh
+785,Pandhurna,Madhya Pradesh
+786,Keyi Panyor,Arunachal Pradesh
+787,Bichom,Arunachal Pradesh
+788,Meluri,Nagaland
+789,Vav-Tharad,Gujarat
+790,Markapuram,Andhra Pradesh
+791,Polavaram,Andhra Pradesh
+792,Hansi,Haryana
+793,Kushavati,Goa
+794,Outer North,Delhi
+795,Old Delhi,Delhi
+796,Central North,Delhi
+797,Sham,Ladakh
+798,Changthang,Ladakh
+799,Nubra,Ladakh
+800,Zanskar,Ladakh
+801,Drass,Ladakh
+802,Sankoo,Ladakh

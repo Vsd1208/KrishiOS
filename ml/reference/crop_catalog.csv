@@ -52,3 +52,8 @@ brinjal,Brinjal,వంకాయ,बैंगन,baingan|vankaya|eggplant|aubergi
 okra,Okra (Bhindi),బెండ,भिंडी,bhindi|benda|bendakaya|lady finger|ladies finger|బెండకాయ,Abelmoschus esculentus,vegetable,crop,kharif|summer,t/ha,Bhindi,unassigned,false,draft
 cabbage,Cabbage,క్యాబేజీ,पत्तागोभी,patta gobhi|bandh gobhi|gobhi|gobi|गोभी,Brassica oleracea var. capitata,vegetable,crop,rabi,t/ha,Cabbage,unassigned,false,draft
 cauliflower,Cauliflower,కాలీఫ్లవర్,फूलगोभी,phool gobhi|phool gobi|gobhi|gobi|गोभी,Brassica oleracea var. botrytis,vegetable,crop,rabi,t/ha,Cauliflower,unassigned,false,draft
+cowpea,Cowpea (Lobia),అలసందలు,लोबिया,lobia|alasandalu|alasanda|bobbarlu|బొబ్బర్లు|chawli|चौली|cow pea,Vigna unguiculata,pulse,crop,kharif|summer,t/ha,Cowpea(Lobia),unassigned,false,draft
+guar,Guar (Cluster bean),గోరుచిక్కుడు,ग्वार,cluster bean|clusterbean|guar seed|gwar|goruchikkudu,Cyamopsis tetragonoloba,pulse,crop,kharif,t/ha,Guar seed,unassigned,false,draft
+khesari,Khesari (Grass pea),ఖేసారి,खेसारी,grass pea|lathyrus|teora|लतरी,Lathyrus sativus,pulse,crop,rabi,t/ha,Khesari,unassigned,false,draft
+moth_bean,Moth bean,మోత్,मोठ,moth|matki|मटकी|dew bean,Vigna aconitifolia,pulse,crop,kharif,t/ha,Moth,unassigned,false,draft
+sunn_hemp,Sunn hemp,జనుము,सनई,sannhamp|sunnhemp|san hemp|janumu|san|सन,Crotalaria juncea,fibre,crop,kharif,t/ha,Sannhamp,unassigned,false,draft
