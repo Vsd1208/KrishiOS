@@ -183,3 +183,13 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
   - **Inbound:** inbound SMS/IVR webhooks are officer-only harnesses until a provider with signed callbacks is chosen.
   - **Web push:** uses VAPID. It sends only when keys are configured; payloads are end-to-end encrypted, so the push service only relays ciphertext.
   - **DPI:** AgriStack (consent-gated), Bharat-VISTAAR and Bhashini are interfaces with sandbox adapters that return no data with a reason, never fabricated records.
+
+## ADR-025: Yield labels: APY primary, UPAg cross-check, LGD-keyed, season mapping
+- **Status:** proposed (Phase 6); awaiting the scope freeze
+- **Decision:**
+  - **Labels:** DES/MoA&FW APY district statistics, via the India Data Portal mirror (ODC-By). UPAg (same ministry, 2013-14 to 2024-25) is an independent cross-check on overlapping district-crop-season-years and a candidate extension for recent years.
+  - **Keys:** both files carry LGD district codes (551/558 APY code-name pairs match our LGD reference exactly; the 7 others are Odia spelling variants), so no name crosswalk is needed.
+  - **Seasons:** Kharif, Rabi and Whole Year are kept. The APY rice seasons Autumn (aus) and Winter (aman) map to Kharif, and Summer (boro) maps to Zaid; this needs agronomist confirmation. "Total" rows are aggregates and are dropped.
+  - **Units:** APY yields are t/ha. UPAg publishes kg/ha and is converted on load. Units are audited per series from the magnitudes, not only from the unit column.
+  - **Crop calendar:** `ml/reference/crop_calendar.csv` is season-level and draft; crop × state calendars must replace it before lead-time windows are final (Phase 7).
+  - **ICRISAT-TCI DLD:** not ingested. The portal is unreachable (`data.icrisat.org` timed out 2026-11-14), the Dataverse needs a login, and the licence conflict (CC BY vs CC BY-NC) is unresolved.

@@ -16,7 +16,7 @@ Read this file at the start of every session, and update it at the end of every 
 | 3 Multilingual bot (+F6, F7, F13) | done (awaiting review) | `feat/sprint-11-phase3-bot` | [03_multilingual_bot.md](../ml/reports/03_multilingual_bot.md) |
 | 4 Govt Connect: publishing (+F2, F4) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [04_govconnect_publishing.md](../ml/reports/04_govconnect_publishing.md) |
 | 5 Govt Connect: automated (+F1, F3, F5) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [05_govconnect_automated.md](../ml/reports/05_govconnect_automated.md) |
-| 6 Yield label audit | todo | — | — |
+| 6 Yield label audit | done (**awaiting scope freeze**) | `feat/sprint-11-phase4-govconnect` | [06_yield_label_audit.md](../ml/reports/06_yield_label_audit.md) |
 | 7 Yield predictor pipeline | todo | — | — |
 | 8 Yield baselines & integration (+F15) | todo | — | — |
 | 9 Real computer vision (+F8) | todo | — | — |

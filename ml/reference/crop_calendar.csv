@@ -1,0 +1,5 @@
+season,sowing_start_month,sowing_end_month,harvest_start_month,harvest_end_month,crosses_year,status,note
+Kharif,6,7,9,11,false,draft,"Monsoon season. General season definition; crop x state calendars replace this after agronomist review."
+Rabi,10,12,2,4,true,draft,"Winter season, sown after the monsoon and harvested in spring. General definition; refine per crop and state."
+Zaid,3,4,5,6,false,draft,"Short summer season between Rabi and Kharif (includes APY 'Summer' rice). General definition."
+Whole Year,1,12,1,12,false,draft,"Perennial or year-round crops (e.g. sugarcane, banana); no single window. Lead times need crop-specific calendars."
