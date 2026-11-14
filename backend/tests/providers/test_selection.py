@@ -30,8 +30,13 @@ def test_live_data_registry_no_longer_falls_back() -> None:
         LiveDataProviderRegistry().get_weather_provider("does-not-exist")
 
 
-def test_agmarknet_is_reported_as_mock() -> None:
-    assert market_selector.info("agmarknet-v1").kind is ProviderKind.MOCK
+def test_agmarknet_is_live_and_fails_loudly_without_a_key() -> None:
+    from app.providers import ProviderConfigurationError  # noqa: PLC0415
+
+    assert market_selector.info("agmarknet-v1").kind is ProviderKind.LIVE
+    market_selector.reset()
+    with pytest.raises(ProviderConfigurationError):
+        market_selector.get("agmarknet-v1")  # no DATA_GOV_IN_API_KEY in tests
 
 
 def test_active_providers_lists_every_capability() -> None:

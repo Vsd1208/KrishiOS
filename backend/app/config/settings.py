@@ -148,6 +148,9 @@ class Settings(BaseSettings):
 
     MARKET_PROVIDER_NAME: str = "mock-market-v1"
     MARKET_API_BASE_URL: str = "https://api.data.gov.in/resource"
+    # Free key from data.gov.in (never commit it). Resource: daily commodity prices by market.
+    DATA_GOV_IN_API_KEY: str | None = None
+    DATA_GOV_IN_AGMARKNET_RESOURCE: str = "9ef84268-d588-465a-a308-a864a43d0070"
     MARKET_CACHE_TTL_SECONDS: int = 21600  # 6 hours
 
     ADVISORY_PROVIDER_NAME: str = "mock-advisory-v1"
@@ -193,6 +196,20 @@ class Settings(BaseSettings):
     GOVCONNECT_CRITICAL_BYPASS_QUIET_HOURS: bool = True
     GOVCONNECT_DEFAULT_LANGUAGES: list[str] = ["te", "hi", "en"]
     GOVCONNECT_MAINTENANCE_INTERVAL_SECONDS: int = 300
+    # ── Sprint 11, Phase 5: automated official feeds ─────────────────────────
+    # NDMA SACHET CAP RSS (public domain). The national feed plus state feeds for service areas.
+    SACHET_FEED_URLS: list[str] = [
+        "https://sachet.ndma.gov.in/cap_public_website/rss/rss_india.xml",
+        "https://sachet.ndma.gov.in/cap_public_website/rss/rss_telangana.xml",
+    ]
+    SACHET_POLL_INTERVAL_SECONDS: int = 600
+    SACHET_REQUEST_INTERVAL_SECONDS: float = 1.0
+    SACHET_MAX_NEW_PER_RUN: int = 50
+    SACHET_SERVICE_AREA_ONLY: bool = True  # only districts with KrishiOS farmers
+    # Feed bulletins always go to officer review unless this is on; even then only LOW/MEDIUM
+    # alerts whose translations pass the checks are published automatically (ADR-023).
+    GOVCONNECT_FEED_AUTO_PUBLISH: bool = False
+    WEATHER_FEED_INTERVAL_SECONDS: int = 3600
     # Resolution SLA per grievance category, in hours (configurable defaults, not official SLAs).
     GRIEVANCE_SLA_HOURS: dict[str, int] = {
         "payment": 168, "insurance_claim": 168, "scheme_enrollment": 120,

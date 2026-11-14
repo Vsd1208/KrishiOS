@@ -221,7 +221,8 @@ async def create_bulletin(  # noqa: PLR0913 - keyword-only inputs
         b.target_languages = overrides["target_languages"]
     b.title = (b.title or body.splitlines()[0])[:300]
     b.authority = b.authority or "Unknown authority"
-    b.status = "needs_review" if source_type == "upload" or extraction.low_confidence else "draft"
+    b.status = ("needs_review" if source_type in {"upload", "feed"} or extraction.low_confidence
+                else "draft")
     session.add(b)
     await session.flush()
     audit(

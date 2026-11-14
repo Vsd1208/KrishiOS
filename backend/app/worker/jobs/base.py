@@ -40,8 +40,9 @@ class JobSpec:
         return f"{self.name}:{int(ts // self.interval_seconds)}"
 
 
-async def run_job(spec: JobSpec, store: JobStore, ctx: dict[str, Any],
-                  at: datetime | None = None) -> str:
+async def run_job(
+    spec: JobSpec, store: JobStore, ctx: dict[str, Any], at: datetime | None = None
+) -> str:
     """Run one scheduled slot of ``spec``. Returns the final status.
 
     Raises the job's exception after recording it, so arq's retry policy applies.

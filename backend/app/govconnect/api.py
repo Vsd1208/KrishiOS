@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import UUID, uuid4
@@ -668,3 +668,83 @@ async def bulletin_context(
         crops=list(b.crops),
     )
     return context, profile
+
+
+# ── Phase 5: district weather feed (farmer dashboard) and feed health ─────────
+
+
+async def _farmer_district_codes(session: AsyncSession, farmer_id: int) -> list[int]:
+    from app.models.district import District  # noqa: PLC0415
+    from app.models.farmer import Farmer  # noqa: PLC0415
+    from app.models.govconnect import FarmerLocation  # noqa: PLC0415
+
+    registered = await session.scalar(select(District.lgd_district_code).join(
+        Farmer, Farmer.district_id == District.id).where(Farmer.id == farmer_id))
+    saved = (await session.scalars(select(FarmerLocation.lgd_district_code).where(
+        FarmerLocation.farmer_id == farmer_id))).all()
+    return list(dict.fromkeys(c for c in [registered, *saved] if c is not None))
+
+
+async def _district_feed(session: AsyncSession, code: int, now: datetime) -> dict:
+    from app.catalog.lgd import get_lgd_directory  # noqa: PLC0415
+    from app.govconnect.weather_feed import latest_snapshot  # noqa: PLC0415
+
+    snap = await latest_snapshot(session, code)
+    published = (await session.scalars(select(GovtBulletin).where(
+        GovtBulletin.status == "published", GovtBulletin.valid_to > now))).all()
+    warnings = [_summary(b) for b in published if code in (b.district_codes or [])]
+    d = get_lgd_directory().district(code)
+    age_min = round((now - snap.fetched_at).total_seconds() / 60) if snap else None
+    return {
+        "lgd_district_code": code, "district_name": d.district_name if d else None,
+        "state_name": d.state_name if d else None,
+        "official_warnings": sorted(warnings, key=lambda w: svc.SEVERITIES.index(w["severity"]),
+                                    reverse=True),
+        "forecast": snap.forecast if snap else [], "spray": snap.spray if snap else None,
+        "crosscheck": snap.crosscheck if snap else None,
+        "providers": snap.providers if snap else None,
+        "fetched_at": _iso(snap.fetched_at) if snap else None, "age_minutes": age_min,
+        "stale": age_min is None or age_min > 3 * 60,
+        "attribution": ["Forecast: Open-Meteo (CC BY 4.0)", "Cross-check: NASA POWER",
+                        "Warnings: NDMA SACHET / IMD (official)"],
+    }
+
+
+@router.get("/weather-feed")
+async def weather_feed(session: DbSession, auth: Reader, district: int | None = None) -> list:
+    """Latest district forecast with its cross-check, plus active official warnings. Farmers
+    get their registered and saved districts; publishers may ask for any ``district``."""
+    now = datetime.now(UTC)
+    if district is not None and auth.has_permission(Permission.GOVCONNECT_PUBLISH):
+        codes = [district]
+    else:
+        codes = await _farmer_district_codes(session, await current_farmer_id(session, auth))
+    return [await _district_feed(session, c, now) for c in codes]
+
+
+@router.get("/feeds/status")
+async def feeds_status(session: DbSession, auth: Officer, hours: int = 24) -> dict:
+    """Job reliability from real runs: weather snapshots by status and freshness, and
+    bulletins created from official feeds."""
+    from app.models.govconnect import DistrictWeatherSnapshot as Snap  # noqa: PLC0415
+
+    since = datetime.now(UTC) - timedelta(hours=min(hours, 24 * 30))
+    by_status = dict((await session.execute(select(Snap.status, func.count(Snap.id)).where(
+        Snap.fetched_at >= since).group_by(Snap.status))).all())
+    latest = await session.scalar(select(func.max(Snap.fetched_at)))
+    checks = (await session.scalars(select(Snap.crosscheck).where(
+        Snap.fetched_at >= since))).all()
+    verdicts: dict[str, int] = {}
+    for c in checks:
+        key = (c or {}).get("status", "unverified")
+        verdicts[key] = verdicts.get(key, 0) + 1
+    feed_bulletins = dict((await session.execute(select(
+        GovtBulletin.status, func.count(GovtBulletin.id)).where(
+        GovtBulletin.source_type == "feed", GovtBulletin.created_at >= since)
+        .group_by(GovtBulletin.status))).all())
+    total = sum(by_status.values())
+    return {"window_hours": hours, "weather_snapshots": by_status,
+            "weather_success_rate": round((total - by_status.get("failed", 0)) / total, 3)
+            if total else None,
+            "weather_crosscheck": verdicts, "latest_weather_run": _iso(latest),
+            "feed_bulletins": feed_bulletins}

@@ -1,8 +1,8 @@
 """Weather Provider implementations (Mock and Open-Meteo)."""
 
 from datetime import UTC, datetime, timedelta
+
 import httpx
-from loguru import logger
 
 from app.live_data.schemas.common import FreshnessStatus, SourceAuthorityLevel
 from app.live_data.schemas.weather import (
@@ -114,6 +114,30 @@ class MockWeatherProvider:
         return True
 
 
+SPRAY_MAX_WIND_MPS = 4.0  # about 15 km/h
+SPRAY_MAX_RAIN_PROBABILITY = 40.0
+
+
+def spray_window(day: DailyForecastItem | None) -> tuple[bool, str]:
+    """Rule of thumb from the forecast: avoid spraying in strong wind or when rain is likely."""
+    if day is None:
+        return False, "No forecast available; spray window unknown."
+    if day.max_wind_speed_mps > SPRAY_MAX_WIND_MPS:
+        return False, (f"Wind up to {day.max_wind_speed_mps * 3.6:.0f} km/h today "
+                       "(above about 15 km/h): spray may drift.")
+    if day.precipitation_probability_percent >= SPRAY_MAX_RAIN_PROBABILITY:
+        return False, (f"{day.precipitation_probability_percent:.0f}% chance of rain today: "
+                       "spray may wash off.")
+    return True, (f"Wind up to {day.max_wind_speed_mps * 3.6:.0f} km/h and "
+                  f"{day.precipitation_probability_percent:.0f}% chance of rain today.")
+
+
+def _num(series: list | None, i: int) -> float | None:
+    if not series or i >= len(series) or series[i] is None:
+        return None
+    return float(series[i])
+
+
 class OpenMeteoWeatherProvider:
     """Real open weather provider using Open-Meteo API (requires no API key)."""
 
@@ -151,7 +175,15 @@ class OpenMeteoWeatherProvider:
             data = resp.json()
 
         current = data.get("current", {})
+        for required in ("temperature_2m", "relative_humidity_2m"):
+            if current.get(required) is None:  # never substitute a made-up value
+                raise ValueError(f"Open-Meteo response is missing {required}")
         now = datetime.now(UTC)
+
+        def opt(key: str) -> float | None:
+            value = current.get(key)
+            return float(value) if value is not None else None
+
         return WeatherObservation(
             provider_name=self.provider_name,
             provider_version=self.provider_version,
@@ -163,13 +195,13 @@ class OpenMeteoWeatherProvider:
             freshness=FreshnessStatus.FRESH,
             latitude=latitude,
             longitude=longitude,
-            temperature_celsius=float(current.get("temperature_2m", 25.0)),
-            apparent_temperature_celsius=float(current.get("apparent_temperature", 25.0)),
-            relative_humidity_percent=float(current.get("relative_humidity_2m", 50.0)),
-            rainfall_mm=float(current.get("precipitation", 0.0)),
-            wind_speed_mps=float(current.get("wind_speed_10m", 0.0)),
-            wind_direction_degrees=float(current.get("wind_direction_10m", 0.0)),
-            surface_pressure_hpa=float(current.get("surface_pressure", 1013.0)),
+            temperature_celsius=float(current["temperature_2m"]),
+            apparent_temperature_celsius=opt("apparent_temperature"),
+            relative_humidity_percent=float(current["relative_humidity_2m"]),
+            rainfall_mm=opt("precipitation") or 0.0,
+            wind_speed_mps=opt("wind_speed_10m") or 0.0,
+            wind_direction_degrees=opt("wind_direction_10m"),
+            surface_pressure_hpa=opt("surface_pressure"),
             weather_code=int(current.get("weather_code", 0)),
             weather_condition="Clear" if current.get("weather_code", 0) == 0 else "Cloudy",
         )
@@ -196,19 +228,26 @@ class OpenMeteoWeatherProvider:
         prob = daily.get("precipitation_probability_max", [])
         wind = daily.get("wind_speed_10m_max", [])
 
+        def at(series: list, i: int) -> float | None:
+            return float(series[i]) if i < len(series) and series[i] is not None else None
+
         forecast_items: list[DailyForecastItem] = []
+        dropped = 0
         for i in range(len(dates)):
+            values = [at(t_min, i), at(t_max, i), at(prob, i), at(precip, i), at(wind, i)]
+            if any(v is None for v in values):  # a day with missing values is dropped, not filled
+                dropped += 1
+                continue
+            lo, hi, p_rain, rain, w = values
             forecast_items.append(
                 DailyForecastItem(
-                    date=dates[i],
-                    temperature_min_celsius=float(t_min[i]) if i < len(t_min) else 20.0,
-                    temperature_max_celsius=float(t_max[i]) if i < len(t_max) else 30.0,
-                    precipitation_probability_percent=float(prob[i]) if i < len(prob) else 0.0,
-                    precipitation_sum_mm=float(precip[i]) if i < len(precip) else 0.0,
-                    max_wind_speed_mps=float(wind[i]) if i < len(wind) else 0.0,
-                    weather_condition="Rainy" if (i < len(precip) and float(precip[i]) > 1.0) else "Clear/Cloudy",
+                    date=dates[i], temperature_min_celsius=lo, temperature_max_celsius=hi,
+                    precipitation_probability_percent=p_rain, precipitation_sum_mm=rain,
+                    max_wind_speed_mps=w,
+                    weather_condition="Rainy" if rain > 1.0 else "Clear/Cloudy",
                 )
             )
+        favorable, reason = spray_window(forecast_items[0] if forecast_items else None)
 
         now = datetime.now(UTC)
         return WeatherForecast(
@@ -223,10 +262,29 @@ class OpenMeteoWeatherProvider:
             latitude=latitude,
             longitude=longitude,
             forecast_days=forecast_items,
-            summary="Multi-day numerical weather forecast from Open-Meteo.",
-            spray_window_favorable=True,
-            spray_window_reason="Favorable spray window based on wind speed and precipitation forecasts.",
+            summary=("Multi-day numerical weather forecast from Open-Meteo."
+                     + (f" {dropped} day(s) without complete data were left out." if dropped
+                        else "")),
+            spray_window_favorable=favorable,
+            spray_window_reason=reason,
         )
+
+    async def get_daily_history(self, latitude: float, longitude: float,
+                                past_days: int = 7) -> dict[str, dict[str, float | None]]:
+        """Model values for the last ``past_days`` days (for the cross-check)."""
+        params = {"latitude": round(latitude, 4), "longitude": round(longitude, 4),
+                  "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
+                  "past_days": past_days, "forecast_days": 1, "timezone": "Asia/Kolkata"}
+        async with httpx.AsyncClient(timeout=self._timeout) as client:
+            resp = await client.get(f"{self._base_url}/forecast", params=params)
+            resp.raise_for_status()
+            daily = resp.json().get("daily", {})
+        out: dict[str, dict[str, float | None]] = {}
+        for i, day in enumerate(daily.get("time", [])):
+            out[day] = {"precip_mm": _num(daily.get("precipitation_sum"), i),
+                        "tmax_c": _num(daily.get("temperature_2m_max"), i),
+                        "tmin_c": _num(daily.get("temperature_2m_min"), i)}
+        return out
 
     async def get_alerts(self, latitude: float, longitude: float) -> list[WeatherAlert]:
         return []

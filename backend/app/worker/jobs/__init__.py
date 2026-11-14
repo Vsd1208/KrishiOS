@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from app.config.settings import get_settings
 from app.worker.jobs.base import JobSkipped, JobSpec, run_job
+from app.worker.jobs.feeds import sachet_poll, weather_feed
 from app.worker.jobs.govconnect import govconnect_maintenance
 from app.worker.jobs.heartbeat import heartbeat
 
@@ -27,6 +28,22 @@ def build_jobs() -> list[JobSpec]:
             timeout_seconds=600,
             max_tries=3,
             description="Publish scheduled bulletins, expire old ones, retry RAG indexing.",
+        ),
+        JobSpec(
+            name="sachet_poll",
+            func=sachet_poll,
+            interval_seconds=settings.SACHET_POLL_INTERVAL_SECONDS,
+            timeout_seconds=900,
+            max_tries=3,
+            description="NDMA SACHET CAP warnings -> Govt Connect bulletins (officer review).",
+        ),
+        JobSpec(
+            name="weather_feed",
+            func=weather_feed,
+            interval_seconds=settings.WEATHER_FEED_INTERVAL_SECONDS,
+            timeout_seconds=1800,
+            max_tries=2,
+            description="District forecasts + NASA POWER cross-check -> snapshots + events.",
         ),
     ]
 

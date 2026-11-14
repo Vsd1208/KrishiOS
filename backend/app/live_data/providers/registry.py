@@ -52,11 +52,15 @@ def _register_defaults() -> None:
                      description="Synthetic mandi prices."),
         MockMarketDataProvider,
     )
-    # Honest labelling: this class does not call data.gov.in yet (real adapter: Phase 5).
     market_selector.register(
-        ProviderInfo("market", "agmarknet-v1", "1.0.0", ProviderKind.MOCK,
-                     description="Placeholder: returns mock prices; data.gov.in adapter pending."),
-        lambda: AgmarknetMarketProvider(api_base_url=get_settings().MARKET_API_BASE_URL),
+        ProviderInfo("market", "agmarknet-v1", "1.0.0", ProviderKind.LIVE,
+                     sends_data_off_device=False,
+                     description="Official AGMARKNET daily mandi prices via data.gov.in "
+                                 "(needs DATA_GOV_IN_API_KEY; sends state/district only)."),
+        lambda: AgmarknetMarketProvider(
+            api_base_url=get_settings().MARKET_API_BASE_URL,
+            api_key=get_settings().DATA_GOV_IN_API_KEY,
+            resource_id=get_settings().DATA_GOV_IN_AGMARKNET_RESOURCE),
     )
     advisory_selector.register(
         ProviderInfo("advisory", "mock-advisory-v1", "1.0.0", ProviderKind.MOCK,

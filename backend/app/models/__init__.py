@@ -13,6 +13,7 @@ from app.models.media import MediaAsset
 from app.models.govconnect import (
     BulletinDelivery,
     BulletinTranslation,
+    DistrictWeatherSnapshot,
     FarmerLocation,
     GovConnectAudit,
     GovtBulletin,
@@ -103,6 +104,7 @@ __all__ = [
     # Sprint 11, Phase 4 — Govt Connect, locations (F2), grievances and schemes (F4)
     "BulletinDelivery",
     "BulletinTranslation",
+    "DistrictWeatherSnapshot",
     "FarmerLocation",
     "GovConnectAudit",
     "GovtBulletin",
