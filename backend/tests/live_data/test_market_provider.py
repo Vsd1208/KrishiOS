@@ -4,6 +4,7 @@ import pytest
 from app.live_data.providers.market_provider import (
     AgmarknetMarketProvider,
     MockMarketDataProvider,
+    official_msp,
 )
 from app.providers import ProviderConfigurationError
 
@@ -66,3 +67,11 @@ async def test_agmarknet_parses_official_records(monkeypatch):
     p = prices[0]
     assert p.modal_price_inr_quintal == 2400 and p.msp_inr_quintal == 2441
     assert p.authority_level.value == "GOVERNMENT" and "data.gov.in" in p.source
+
+
+def test_msp_follows_the_grade_in_the_official_commodity_name():
+    assert official_msp("Paddy(Fine/Superfine/Grade A)")["msp_inr_quintal"] == 2461
+    assert official_msp("Paddy(Common)")["msp_inr_quintal"] == 2441
+    assert official_msp("Cotton", "Long Staple")["msp_inr_quintal"] == 8667
+    assert official_msp("Cotton", "Cotton (Unginned)")["msp_inr_quintal"] == 8267
+    assert official_msp("Tomato") is None

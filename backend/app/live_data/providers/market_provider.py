@@ -43,13 +43,18 @@ def _crop_key(name: str) -> str | None:
     return get_crop_catalog().resolve_name(name)
 
 
-def official_msp(commodity: str) -> dict[str, Any] | None:
-    """The first-listed (common / medium staple) MSP row for a crop, or None."""
-    key = _crop_key(commodity)
+def official_msp(commodity: str, variety: str | None = None) -> dict[str, Any] | None:
+    """The MSP row whose grade/variety is named in the commodity or variety text (e.g.
+    "Paddy(Fine/Superfine/Grade A)" -> Grade A), else the first-listed (common / medium
+    staple) row, or None when the crop has no official MSP in the reference."""
+    key = _crop_key(commodity.split("(", maxsplit=1)[0]) or _crop_key(commodity)
     rows = msp_table().get(key or "", [])
     if not rows:
         return None
-    r = rows[0]
+    text = f"{commodity} {variety or ''}".lower()
+    r = next(
+        (row for row in rows[1:] if row["variety"] and row["variety"].lower() in text), rows[0]
+    )
     return {
         "msp_inr_quintal": float(r["msp_inr_quintal"]),
         "variety": r["variety"] or None,
@@ -189,7 +194,6 @@ class AgmarknetMarketProvider:
     ) -> list[MarketPriceObservation]:
         wanted = _crop_key(commodity)
         now = datetime.now(UTC)
-        msp = await self.get_msp(commodity)
         out = []
         for rec in await self.fetch_records(state, district):
             name = str(rec.get("commodity", ""))
@@ -220,7 +224,9 @@ class AgmarknetMarketProvider:
                     min_price_inr_quintal=lo if lo is not None else modal,
                     max_price_inr_quintal=hi if hi is not None else modal,
                     modal_price_inr_quintal=modal,
-                    msp_inr_quintal=msp,
+                    msp_inr_quintal=(official_msp(name, str(rec.get("variety") or "")) or {}).get(
+                        "msp_inr_quintal"
+                    ),
                 )
             )
         return sorted(out, key=lambda o: o.arrival_date, reverse=True)

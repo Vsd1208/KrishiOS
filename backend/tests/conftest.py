@@ -10,6 +10,9 @@ from fastapi.testclient import TestClient
 os.environ.setdefault("APP_NAME", "KrishiOS")
 os.environ.setdefault("APP_ENV", "test")
 os.environ.setdefault("APP_VERSION", "0.1.0")
+# Tests are hermetic: never use live market data or a key from a developer's backend/.env.
+os.environ["MARKET_PROVIDER_NAME"] = "mock-market-v1"
+os.environ["DATA_GOV_IN_API_KEY"] = ""
 os.environ.setdefault("DEBUG", "false")
 os.environ.setdefault("API_PREFIX", "/api/v1")
 os.environ.setdefault("BACKEND_CORS_ORIGINS", '["http://testserver"]')

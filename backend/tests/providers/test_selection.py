@@ -30,9 +30,11 @@ def test_live_data_registry_no_longer_falls_back() -> None:
         LiveDataProviderRegistry().get_weather_provider("does-not-exist")
 
 
-def test_agmarknet_is_live_and_fails_loudly_without_a_key() -> None:
+def test_agmarknet_is_live_and_fails_loudly_without_a_key(monkeypatch) -> None:
+    from app.config.settings import get_settings  # noqa: PLC0415
     from app.providers import ProviderConfigurationError  # noqa: PLC0415
 
+    monkeypatch.setattr(get_settings(), "DATA_GOV_IN_API_KEY", None)  # ignore a local .env key
     assert market_selector.info("agmarknet-v1").kind is ProviderKind.LIVE
     market_selector.reset()
     with pytest.raises(ProviderConfigurationError):
