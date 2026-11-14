@@ -110,3 +110,32 @@ describe('Offline question queue', () => {
     expect(JSON.parse(localStorage.getItem('krishios_offline_questions') ?? '[]')).toEqual([]);
   });
 });
+
+describe('Mandi trend card', () => {
+  it('shows only official numbers, and says so when there are none', async () => {
+    await i18n.changeLanguage('en');
+    const { apiClient } = await import('@/services/api/client');
+    const spy = vi.spyOn(apiClient, 'get').mockResolvedValueOnce({
+      crop: 'cotton', district: 'Khammam', sharp: false, msp: 8267, source: 'AGMARKNET',
+      points: [
+        { date: '2026-11-06', median_modal: 8200, markets: 2 },
+        { date: '2026-11-13', median_modal: 8600, markets: 2 },
+      ],
+      latest: { date: '2026-11-13', median_modal: 8600, markets: 2 },
+      change_7d_pct: 4.9,
+    });
+    const { MandiTrendCard } = await import('../MandiTrendCard');
+    const view = wrap(<MandiTrendCard crop="Cotton" district="Khammam" />);
+    expect(await screen.findByText(/₹8,600/)).toBeInTheDocument();
+    expect(screen.getByText('+4.9% in 7 days')).toBeInTheDocument();
+    expect(screen.getByText('MSP ₹8,267')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /dashed line is MSP/ })).toBeInTheDocument();
+    view.unmount();
+
+    spy.mockResolvedValueOnce({ crop: 'chilli', district: 'Khammam', points: [], latest: null,
+      change_7d_pct: null, sharp: false, msp: null });
+    wrap(<MandiTrendCard crop="Chilli" district="Khammam" />);
+    expect(await screen.findByText(/No official price for Chilli in Khammam/)).toBeInTheDocument();
+    spy.mockRestore();
+  });
+});

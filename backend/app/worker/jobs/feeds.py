@@ -80,3 +80,78 @@ async def weather_feed(ctx: dict[str, Any]) -> dict[str, Any]:
     if result.districts and result.failed == result.districts:
         raise RuntimeError("weather feed failed for every district")
     return result.to_dict()
+
+
+async def mandi_history(ctx: dict[str, Any]) -> dict[str, Any]:
+    """Daily: store the last few days of official prices (late reports included) and raise
+    ``market.price_changed`` for sharp 7-day moves in districts with farmers."""
+    from datetime import date, timedelta  # noqa: PLC0415
+
+    from sqlalchemy import select  # noqa: PLC0415
+
+    from app.catalog.resolver import get_crop_catalog  # noqa: PLC0415
+    from app.config.settings import get_settings  # noqa: PLC0415
+    from app.database.session import async_session_factory  # noqa: PLC0415
+    from app.events.contracts import EventEnvelope, EventType  # noqa: PLC0415
+    from app.live_data.market_history import sync_days, trend  # noqa: PLC0415
+    from app.models.district import District  # noqa: PLC0415
+    from app.models.farmer import Farmer  # noqa: PLC0415
+    from app.models.govconnect import MandiPriceDaily  # noqa: PLC0415
+    from app.proactive.api.dependencies import get_event_processor  # noqa: PLC0415
+
+    s = get_settings()
+    today = date.today()
+    days = [today - timedelta(days=i) for i in range(s.MANDI_HISTORY_RECHECK_DAYS)]
+    alerts = 0
+    async with async_session_factory() as session:
+        result = await sync_days(session, days, s.MANDI_HISTORY_STATES)
+        await session.commit()
+        districts = (
+            await session.execute(
+                select(District.district_name, District.state)
+                .join(Farmer, Farmer.district_id == District.id)
+                .distinct()
+            )
+        ).all()
+        processor = get_event_processor(session=session)
+        catalog = get_crop_catalog()
+        for district, state in districts:
+            crops = (
+                await session.scalars(
+                    select(MandiPriceDaily.crop_canonical)
+                    .where(
+                        MandiPriceDaily.district.ilike(district),
+                        MandiPriceDaily.crop_canonical.is_not(None),
+                        MandiPriceDaily.arrival_date >= today - timedelta(days=3),
+                    )
+                    .distinct()
+                )
+            ).all()
+            for crop in crops:
+                t = await trend(session, crop=crop, district=district, days=30, today=today)
+                if not t.sharp or t.latest is None:
+                    continue
+                entry = catalog.get(crop)
+                await processor.process_event(
+                    session,
+                    EventEnvelope(
+                        event_type=EventType.MARKET_PRICE_CHANGED.value,
+                        source="mandi_history",
+                        payload={
+                            "commodity": entry.name_en.split("(")[0].strip() if entry else crop,
+                            "crop_canonical": crop,
+                            "change_percent": t.change_7d_pct,
+                            "current_price": t.latest["median_modal"],
+                            "market": f"{district} mandis (median of {t.latest['markets']})",
+                            "district": district,
+                            "state": state,
+                            "date": t.latest["date"],
+                            "source": "AGMARKNET via data.gov.in",
+                        },
+                    ),
+                )
+                alerts += 1
+        await session.commit()
+    if result.failed_days and result.rows == 0:
+        raise RuntimeError(f"mandi history failed: {result.failed_days[:3]}")
+    return {**result.to_dict(), "alerts": alerts}

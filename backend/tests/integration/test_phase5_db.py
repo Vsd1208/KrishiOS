@@ -108,3 +108,30 @@ def test_sms_and_ivr_inbound_for_a_registered_farmer(client) -> None:
         channel = c.execute(text("SELECT preferred_channel FROM notification_preference_record"
                                  " WHERE farmer_id=:i"), {"i": farmer.farmer_id}).scalar_one()
     assert channel == "IN_APP"
+
+
+async def test_trend_median_change_and_stale_guard() -> None:
+    from datetime import date  # noqa: PLC0415
+
+    from app.database.session import async_session_factory, dispose_database_engine  # noqa: PLC0415
+    from app.live_data.market_history import to_rows, trend, upsert  # noqa: PLC0415
+
+    district = f"TestDist{datetime.now(UTC).timestamp():.0f}"
+
+    def rec(day: str, market: str, modal: int) -> dict:
+        return {"State": "Telangana", "District": district, "Market": market,
+                "Commodity": "Cotton", "Variety": "V", "Grade": "G", "Arrival_Date": day,
+                "Modal_Price": modal}
+
+    records = [rec("01/11/2026", "A", 8000), rec("01/11/2026", "B", 8200),
+               rec("01/11/2026", "C", 9999),  # one unusual market does not move the median
+               rec("08/11/2026", "A", 9000), rec("08/11/2026", "B", 9100)]
+    async with async_session_factory() as session:
+        await upsert(session, to_rows(records, "test", datetime.now(UTC)))
+        await session.commit()
+        fresh = await trend(session, crop="cotton", district=district, today=date(2026, 11, 9))
+        assert [p["median_modal"] for p in fresh.points] == [8200.0, 9050.0]
+        assert fresh.change_7d_pct == 10.4 and fresh.sharp and not fresh.stale
+        old = await trend(session, crop="cotton", district=district, today=date(2026, 11, 30))
+        assert old.stale and not old.sharp and old.days_since_latest == 22
+    await dispose_database_engine()

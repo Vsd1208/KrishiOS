@@ -3,12 +3,13 @@ saved farmer locations (F2), grievance tickets and the scheme catalog (F4)."""
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
     JSON,
+    Date,
     DateTime,
     Float,
     ForeignKey,
@@ -256,3 +257,31 @@ class PushSubscription(TimestampMixin, Base):
     failures: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     last_success_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True),
                                                              nullable=True)
+
+
+class MandiPriceDaily(Base):
+    """One official AGMARKNET price row (market × commodity × variety × grade × day). Stored
+    so trends can be shown; values are exactly as published (₹/quintal)."""
+
+    __tablename__ = "mandi_price_daily"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    arrival_date: Mapped[date] = mapped_column(Date, nullable=False, index=True)
+    state: Mapped[str] = mapped_column(String(100), nullable=False)
+    district: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    market: Mapped[str] = mapped_column(String(150), nullable=False)
+    commodity: Mapped[str] = mapped_column(String(150), nullable=False)
+    variety: Mapped[str] = mapped_column(String(150), nullable=False, default="")
+    grade: Mapped[str] = mapped_column(String(60), nullable=False, default="")
+    crop_canonical: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    min_price: Mapped[float | None] = mapped_column(Float, nullable=True)
+    max_price: Mapped[float | None] = mapped_column(Float, nullable=True)
+    modal_price: Mapped[float] = mapped_column(Float, nullable=False)
+    source_resource: Mapped[str] = mapped_column(String(64), nullable=False)
+    fetched_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    __table_args__ = (
+        UniqueConstraint("arrival_date", "state", "district", "market", "commodity", "variety",
+                         "grade", name="uq_mandi_price_row"),
+        Index("ix_mandi_crop_district_date", "crop_canonical", "district", "arrival_date"),
+    )

@@ -119,6 +119,34 @@ async def get_market_prices(
 
 
 @router.get(
+    "/market/trend",
+    dependencies=[Depends(RequirePermission(Permission.MARKET_READ))],
+)
+async def get_market_trend(
+    commodity: str = Query(..., description="Crop name (any catalog alias, e.g. Cotton, Paddy)"),
+    district: str = Query(..., description="District name as published by AGMARKNET"),
+    days: int = Query(30, ge=7, le=180),
+    session: AsyncSession = Depends(get_db_session),
+) -> dict:
+    """Daily median modal price across the district's mandis (official AGMARKNET history),
+    with the 7-day change. Empty when no history has been stored yet."""
+    from app.live_data.market_history import crop_key, trend  # noqa: PLC0415
+    from app.live_data.providers.market_provider import official_msp  # noqa: PLC0415
+
+    key = crop_key(commodity)
+    if key is None:
+        return {"crop": None, "district": district, "points": [], "latest": None,
+                "change_7d_pct": None, "sharp": False, "msp": None}
+    t = await trend(session, crop=key, district=district, days=days)
+    msp = official_msp(commodity)
+    return {"crop": key, "district": district, "points": t.points, "latest": t.latest,
+            "change_7d_pct": t.change_7d_pct, "sharp": t.sharp, "stale": t.stale,
+            "days_since_latest": t.days_since_latest,
+            "msp": msp["msp_inr_quintal"] if msp else None,
+            "source": "AGMARKNET (DMI, MoA&FW) via data.gov.in"}
+
+
+@router.get(
     "/advisories",
     response_model=list[AgriculturalAdvisory],
     dependencies=[Depends(RequirePermission(Permission.ADVISORY_READ))],

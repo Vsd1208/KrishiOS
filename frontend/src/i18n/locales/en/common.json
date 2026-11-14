@@ -499,5 +499,19 @@
     "denied": "Notifications are blocked in your browser settings.",
     "unsupported": "This browser does not support notifications.",
     "notConfigured": "Notifications are not set up on the server yet."
+  },
+  "mandi": {
+    "title": "Mandi price",
+    "needCrop": "Add your crop and district to see official mandi prices.",
+    "noData": "No official price for {{crop}} in {{district}} in the last days.",
+    "quintal": "quintal",
+    "median": "Median of {{n}} mandi(s)",
+    "change": "{{pct}}% in 7 days",
+    "noChange": "Not enough days for a 7-day change",
+    "msp": "MSP {{msp}}",
+    "noMsp": "No MSP for this crop",
+    "chart": "Price over the last {{days}} days; dashed line is MSP",
+    "source": "Source: AGMARKNET (DMI, MoA&FW) via data.gov.in; MSP: PIB",
+    "stale": "Last official report was {{days}} days ago: this may not be today's price."
   }
 }

@@ -19,6 +19,7 @@ from app.models.govconnect import (
     GovtBulletin,
     GrievanceEvent,
     GrievanceTicket,
+    MandiPriceDaily,
     PushSubscription,
     SchemeEntry,
 )
@@ -111,6 +112,7 @@ __all__ = [
     "GovtBulletin",
     "GrievanceEvent",
     "GrievanceTicket",
+    "MandiPriceDaily",
     "PushSubscription",
     "SchemeEntry",
 ]

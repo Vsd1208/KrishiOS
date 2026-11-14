@@ -151,6 +151,11 @@ class Settings(BaseSettings):
     # Free key from data.gov.in (never commit it). Resource: daily commodity prices by market.
     DATA_GOV_IN_API_KEY: str | None = None
     DATA_GOV_IN_AGMARKNET_RESOURCE: str = "9ef84268-d588-465a-a308-a864a43d0070"
+    # Variety-wise daily price history (supports filtering by Arrival_Date) for trends.
+    DATA_GOV_IN_AGMARKNET_HISTORY_RESOURCE: str = "35985678-0d79-46b4-9ed6-6f13308a1d24"
+    MANDI_HISTORY_STATES: list[str] = ["Telangana"]
+    MANDI_HISTORY_RECHECK_DAYS: int = 3  # mandis sometimes report a day or two late
+    MANDI_ALERT_CHANGE_PCT: float = 10.0  # 7-day modal change that raises market.price_changed
     MARKET_CACHE_TTL_SECONDS: int = 21600  # 6 hours
 
     ADVISORY_PROVIDER_NAME: str = "mock-advisory-v1"

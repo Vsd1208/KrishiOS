@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from app.config.settings import get_settings
 from app.worker.jobs.base import JobSkipped, JobSpec, run_job
-from app.worker.jobs.feeds import sachet_poll, weather_feed
+from app.worker.jobs.feeds import mandi_history, sachet_poll, weather_feed
 from app.worker.jobs.govconnect import govconnect_maintenance
 from app.worker.jobs.heartbeat import heartbeat
 
@@ -44,6 +44,15 @@ def build_jobs() -> list[JobSpec]:
             timeout_seconds=1800,
             max_tries=2,
             description="District forecasts + NASA POWER cross-check -> snapshots + events.",
+        ),
+        JobSpec(
+            name="mandi_history",
+            func=mandi_history,
+            interval_seconds=6 * 3600,
+            timeout_seconds=1800,
+            max_tries=2,
+            description="Official AGMARKNET prices (last 3 days) -> history + sharp-move alerts.",
+            enabled=bool(settings.DATA_GOV_IN_API_KEY),
         ),
     ]
 
