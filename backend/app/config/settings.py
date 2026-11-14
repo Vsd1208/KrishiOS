@@ -210,6 +210,15 @@ class Settings(BaseSettings):
     # alerts whose translations pass the checks are published automatically (ADR-023).
     GOVCONNECT_FEED_AUTO_PUBLISH: bool = False
     WEATHER_FEED_INTERVAL_SECONDS: int = 3600
+    # F5 channels: only "sandbox" exists until a real provider is approved (cost, contract).
+    SMS_PROVIDER: str = "sandbox"
+    VOICE_PROVIDER: str = "sandbox"
+    WHATSAPP_PROVIDER: str = "sandbox"
+    # Web Push (VAPID). Without keys, push runs as a sandbox (composed, not sent). Generate with
+    # `uv run vapid --gen`; the subject is a contact URI for push services (e.g. mailto:ops@...).
+    VAPID_PUBLIC_KEY: str | None = None
+    VAPID_PRIVATE_KEY: str | None = None
+    VAPID_SUBJECT: str | None = None
     # Resolution SLA per grievance category, in hours (configurable defaults, not official SLAs).
     GRIEVANCE_SLA_HOURS: dict[str, int] = {
         "payment": 168, "insurance_claim": 168, "scheme_enrollment": 120,

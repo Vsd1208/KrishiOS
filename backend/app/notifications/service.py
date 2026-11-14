@@ -3,8 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, time
-from typing import Any
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 from loguru import logger
 from sqlalchemy import select
@@ -20,7 +19,6 @@ from app.models.proactive import (
 )
 from app.notifications.contracts import (
     BaseNotificationProvider,
-    NotificationDeliveryResult,
     NotificationPayload,
 )
 from app.notifications.providers import InMemoryNotificationProvider
@@ -36,12 +34,17 @@ class NotificationService:
         providers: dict[NotificationChannel, BaseNotificationProvider] | None = None,
     ) -> None:
         self._deduplicator = deduplicator or EventDeduplicator()
-        self._providers = providers or {
-            NotificationChannel.IN_APP: InMemoryNotificationProvider(NotificationChannel.IN_APP),
-            NotificationChannel.SMS: InMemoryNotificationProvider(NotificationChannel.SMS),
-            NotificationChannel.PUSH: InMemoryNotificationProvider(NotificationChannel.PUSH),
-            NotificationChannel.VOICE: InMemoryNotificationProvider(NotificationChannel.VOICE),
-        }
+        if providers is None:
+            from app.channels.providers import channel_providers  # noqa: PLC0415
+            from app.notifications.webpush import get_push_provider  # noqa: PLC0415
+
+            providers = {
+                NotificationChannel.IN_APP: InMemoryNotificationProvider(NotificationChannel.IN_APP),
+                NotificationChannel.PUSH: get_push_provider(),
+                # F5: SMS / voice / WhatsApp via the configured channel adapters (sandbox).
+                **channel_providers(),
+            }
+        self._providers = providers
 
     def register_provider(self, provider: BaseNotificationProvider) -> None:
         """Register a channel provider."""

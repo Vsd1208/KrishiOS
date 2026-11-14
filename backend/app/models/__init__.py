@@ -19,6 +19,7 @@ from app.models.govconnect import (
     GovtBulletin,
     GrievanceEvent,
     GrievanceTicket,
+    PushSubscription,
     SchemeEntry,
 )
 from app.models.crop import Crop
@@ -110,5 +111,6 @@ __all__ = [
     "GovtBulletin",
     "GrievanceEvent",
     "GrievanceTicket",
+    "PushSubscription",
     "SchemeEntry",
 ]

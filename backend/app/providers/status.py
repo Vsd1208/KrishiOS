@@ -98,7 +98,8 @@ _register_builtin()
 
 def _ensure_optional_capabilities() -> None:
     """Import modules that register capabilities on import (translation, NLU)."""
-    for module in ("app.translation.selection", "app.nlu.selection"):
+    for module in ("app.translation.selection", "app.nlu.selection", "app.channels.providers",
+                   "app.dpi.providers"):
         try:
             __import__(module)
         except ImportError:  # module not built yet

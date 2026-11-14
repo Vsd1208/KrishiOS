@@ -239,3 +239,20 @@ class DistrictWeatherSnapshot(Base):
     events_emitted: Mapped[list[dict[str, Any]]] = mapped_column(JSON, nullable=False,
                                                                  default=list)
     error: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+
+class PushSubscription(TimestampMixin, Base):
+    """A browser Web Push subscription for a farmer (Phase 5). Payloads are end-to-end
+    encrypted to the browser's keys; the push service cannot read them."""
+
+    __tablename__ = "push_subscription"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    farmer_id: Mapped[int] = mapped_column(ForeignKey("farmer.id", ondelete="CASCADE"),
+                                           nullable=False, index=True)
+    endpoint: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
+    p256dh: Mapped[str] = mapped_column(String(255), nullable=False)
+    auth: Mapped[str] = mapped_column(String(255), nullable=False)
+    failures: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    last_success_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True),
+                                                             nullable=True)
