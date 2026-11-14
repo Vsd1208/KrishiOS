@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useFarmerProfile } from '@/features/farmer/hooks/useFarmerData';
 import { useTranslation } from 'react-i18next';
 import { LocationsCard } from '@/features/govconnect/LocationsCard';
+import { PushOptIn } from '@/features/govconnect/PushOptIn';
 import {
   Phone,
   MapPin,
@@ -207,6 +208,8 @@ export const ProfilePage: React.FC = () => {
       </Card>
 
       <LocationsCard />
+
+      <PushOptIn />
 
       {/* Logout Action */}
       <div className="flex justify-end pt-2">

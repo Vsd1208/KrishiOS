@@ -157,3 +157,29 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
 - **Decision:**
   - **Grievances:** tickets follow open → assigned → in_progress → resolved / rejected → closed, and the farmer can reopen once. Resolve and reject need a note. SLA hours per category come from `GRIEVANCE_SLA_HOURS`; these are configurable defaults, not official service standards. Public updates notify the farmer; internal notes stay hidden. Ticket text is personal data and stays on the device.
   - **Schemes:** the catalog is officer-maintained, and every eligibility criterion cites its source. Bundled entries (PM-KISAN) are DRAFTS, invisible to farmers until an officer verifies each criterion against `source_url`. Results are labelled "guidance only". Personal status is a link to the official portal; nothing is looked up or scraped.
+
+## ADR-023: Automated official feeds, and cross-checking values across sources
+- **Status:** accepted (Phase 5; source use approved by the user on 2026-11-13 and 2026-11-14)
+- **Decision:**
+  - **SACHET:** NDMA SACHET CAP feeds (national plus Telangana; public domain) are polled every 10 min.
+    - **Fields:** official structured CAP fields (severity, LGD districts, validity, sender) are used as-is; the text extractor only adds advice and crops.
+    - **Skipped:** exercises, expired alerts, unsupported languages and alerts outside the service area (cached so they are not refetched).
+    - **Review:** feed bulletins go to officer review by default. `GOVCONNECT_FEED_AUTO_PUBLISH` publishes only LOW/MEDIUM alerts whose translations pass the checks.
+  - **Weather:** the district forecast (Open-Meteo, CC BY 4.0) is cross-checked hourly against NASA POWER (independent; about 2-day lag) on the last 7 days.
+    - **Verdict:** `agree` when max-temperature MAE ≤ 2.5 °C and rainfall totals differ by ≤ max(10 mm, 30%); otherwise `disagree`, or `unverified` with fewer than 3 overlapping days.
+    - **Display:** the verdict travels with every snapshot, event and SMS. Official warnings always outrank model forecasts in the UI.
+  - **No invented values:** missing provider fields are dropped or reported, never filled with defaults (Open-Meteo previously returned 25 °C / 50% / 1013 hPa when fields were missing). The spray window is computed from the forecast (wind ≤ about 15 km/h, rain chance < 40%), not hard-coded.
+  - **Prices:** MSP comes only from `ml/reference/msp.csv`, transcribed from the PIB release (Kharif 2026-27) with its URL; a crop without a row shows no MSP. Mock market data is labelled synthetic. The real Agmarknet adapter (data.gov.in) fails loudly without a key.
+- **Rejected:**
+  - **IMD agromet district bulletins:** an interactive form with MoES copyright and no stated reuse terms, so they stay on officer upload.
+  - **IMD API:** needs a key or IP whitelisting.
+  - **CWC flood forecasts and UPAg:** no public API found.
+  - **myScheme:** its terms forbid bots.
+
+## ADR-024: Feature-phone channels, web push and DPI behind sandbox adapters
+- **Status:** accepted (Phase 5, F1/F5)
+- **Decision:**
+  - **Channels:** SMS (GSM-7/UCS-2 segmenting, at most 3 parts, localized reply-keyword footer), IVR (provider-neutral call scripts) and WhatsApp sit behind `NotificationService`. Only sandbox adapters exist: they compose the exact message into an outbox with pseudonymised recipients and send nothing. Real providers need a contract and cost approval.
+  - **Inbound:** inbound SMS/IVR webhooks are officer-only harnesses until a provider with signed callbacks is chosen.
+  - **Web push:** uses VAPID. It sends only when keys are configured; payloads are end-to-end encrypted, so the push service only relays ciphertext.
+  - **DPI:** AgriStack (consent-gated), Bharat-VISTAAR and Bhashini are interfaces with sandbox adapters that return no data with a reason, never fabricated records.

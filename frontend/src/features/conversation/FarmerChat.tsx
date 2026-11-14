@@ -137,6 +137,9 @@ export const FarmerChat: React.FC<FarmerChatProps> = ({
             <div key={m.id} className="flex justify-end">
               <p className="max-w-[80%] rounded-2xl rounded-br-sm bg-primary-600 text-white px-3.5 py-2 text-small">
                 {m.text}
+                {m.queued && (
+                  <span className="block pt-1 text-caption text-primary-100">{t('chat.queuedOffline')}</span>
+                )}
               </p>
             </div>
           ) : (

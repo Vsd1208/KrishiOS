@@ -265,3 +265,61 @@ export const locationsApi = {
     apiClient.put<FarmerLocation>(`/farmers/me/locations/${id}`, body),
   remove: (id: number) => apiClient.delete(`/farmers/me/locations/${id}`),
 };
+
+// ── Phase 5: district weather feed, feed health, web push ─────────────────────
+
+export interface ForecastDay {
+  date: string;
+  temperature_min_celsius: number;
+  temperature_max_celsius: number;
+  precipitation_probability_percent: number;
+  precipitation_sum_mm: number;
+  max_wind_speed_mps: number;
+  weather_condition: string;
+}
+
+export interface CrossCheck {
+  status: 'agree' | 'disagree' | 'unverified';
+  days_compared?: number;
+  tmax_mae_c?: number | null;
+  rain_total_primary_mm?: number | null;
+  rain_total_reference_mm?: number | null;
+  reasons: string[];
+  primary?: string;
+  reference?: string;
+}
+
+export interface DistrictFeed {
+  lgd_district_code: number;
+  district_name: string | null;
+  state_name: string | null;
+  official_warnings: BulletinSummary[];
+  forecast: ForecastDay[];
+  spray: { favorable: boolean; reason: string } | null;
+  crosscheck: CrossCheck | null;
+  providers: Record<string, string> | null;
+  fetched_at: string | null;
+  age_minutes: number | null;
+  stale: boolean;
+  attribution: string[];
+}
+
+export interface FeedsStatus {
+  window_hours: number;
+  weather_snapshots: Record<string, number>;
+  weather_success_rate: number | null;
+  weather_crosscheck: Record<string, number>;
+  latest_weather_run: string | null;
+  feed_bulletins: Record<string, number>;
+}
+
+export const feedApi = {
+  weatherFeed: () => apiClient.get<DistrictFeed[]>('/govconnect/weather-feed'),
+  status: (hours = 24) => apiClient.get<FeedsStatus>(`/govconnect/feeds/status?hours=${hours}`),
+  pushConfig: () =>
+    apiClient.get<{ public_key: string | null; enabled: boolean }>('/notifications/push/config'),
+  subscribePush: (sub: PushSubscriptionJSON) =>
+    apiClient.post('/notifications/push/subscriptions', sub),
+  unsubscribePush: (endpoint: string) =>
+    apiClient.post('/notifications/push/subscriptions/remove', { endpoint }),
+};

@@ -140,7 +140,8 @@
       "unsafe": "Unsafe"
     },
     "advancedWorkspace": "Advanced workspace",
-    "simpleChat": "Chat"
+    "simpleChat": "Chat",
+    "queuedOffline": "Offline: will send when you are connected"
   },
   "extension": {
     "title": "Assisted mode",
@@ -438,7 +439,13 @@
     "flagActions": {
       "reviewed": "Reviewed",
       "dismissed": "Dismiss"
-    }
+    },
+    "feedHealth": "Feed health (last 24 h)",
+    "weatherSuccess": "Weather feed success",
+    "crosscheck": "Cross-check results",
+    "latestRun": "Latest run",
+    "feedBulletins": "Bulletins from official feeds",
+    "feedSource": "NDMA SACHET (IMD / SDMA)"
   },
   "gq": {
     "title": "Grievances and schemes",
@@ -467,5 +474,30 @@
     },
     "criteriaCount": "{{n}} eligibility questions",
     "verify": "I checked it against the source: verify"
+  },
+  "weather": {
+    "title": "Weather for {{district}}",
+    "forecast": "5-day forecast",
+    "noForecast": "No forecast yet.",
+    "check": {
+      "agree": "Checked with a 2nd source",
+      "disagree": "Sources disagree",
+      "unverified": "Not cross-checked"
+    },
+    "sprayOk": "OK to spray today",
+    "sprayNo": "Avoid spraying today",
+    "updated": "Updated {{minutes}} min ago",
+    "never": "Not updated yet",
+    "modelNote": "Forecasts are model estimates. Official warnings above always take priority.",
+    "attribution": "Sources: {{list}}"
+  },
+  "push": {
+    "title": "Phone notifications",
+    "help": "Get official warnings on this phone even when the app is closed.",
+    "enable": "Turn on notifications",
+    "on": "Notifications are on for this phone.",
+    "denied": "Notifications are blocked in your browser settings.",
+    "unsupported": "This browser does not support notifications.",
+    "notConfigured": "Notifications are not set up on the server yet."
   }
 }

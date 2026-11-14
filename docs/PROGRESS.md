@@ -15,7 +15,7 @@ Read this file at the start of every session, and update it at the end of every 
 | 2 Multilingual core | done | `feat/sprint-11-phase2-multilingual` | [02_multilingual_core.md](../ml/reports/02_multilingual_core.md) |
 | 3 Multilingual bot (+F6, F7, F13) | done (awaiting review) | `feat/sprint-11-phase3-bot` | [03_multilingual_bot.md](../ml/reports/03_multilingual_bot.md) |
 | 4 Govt Connect: publishing (+F2, F4) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [04_govconnect_publishing.md](../ml/reports/04_govconnect_publishing.md) |
-| 5 Govt Connect: automated (+F1, F3, F5) | todo | — | — |
+| 5 Govt Connect: automated (+F1, F3, F5) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [05_govconnect_automated.md](../ml/reports/05_govconnect_automated.md) |
 | 6 Yield label audit | todo | — | — |
 | 7 Yield predictor pipeline | todo | — | — |
 | 8 Yield baselines & integration (+F15) | todo | — | — |
@@ -28,11 +28,11 @@ Read this file at the start of every session, and update it at the end of every 
 
 | # | Feature | Phase | Status | Notes |
 |---|---|---|---|---|
-| F1 | DPI interoperability adapters | 0 → 5 | in-progress (investigated) | Orientation §8 |
+| F1 | DPI interoperability adapters | 0 → 5 | done (sandbox) | AgriStack (consent-gated), Bharat-VISTAAR, Bhashini interfaces; sandbox until access (ADR-024) |
 | F2 | Block / GP locations | 4–5 | in-progress | Saved farmer locations with LGD block validation; block-level bulletin targeting (Phase 4). Block-level weather feeds: Phase 5 |
-| F3 | Offline-first PWA | 5 | todo | |
+| F3 | Offline-first PWA | 5 | done | Service worker: app shell + weather feed / inbox / crop list readable offline; questions queued offline and sent on reconnect |
 | F4 | Scheme assistant + grievance tickets | 4 | done | Grievance tickets with SLA; officer-verified scheme catalog + eligibility Q&A (PM-KISAN draft awaiting officer verification). No public scheme API; no scraping |
-| F5 | IVR / SMS / WhatsApp channels | 5 | todo | Real providers blocked-on-approval (cost) |
+| F5 | IVR / SMS / WhatsApp channels | 5 | done (sandbox) | SMS segmenting + keywords, IVR scripts, WhatsApp; sandbox adapters; real providers need cost approval (ADR-024) |
 | F6 | Extension-worker assisted mode | 3 | done | Assignment + recorded consent, act-as, review-before-share, batch registration (ADR-017) |
 | F7 | Video / how-to answers + video queries | 3, 10b | in-progress | Verified, licensed media matched to answers (ADR-018); no assets loaded yet; video queries in 10b |
 | F8 | Outbreak surveillance heatmaps | 9 | todo | |
@@ -69,9 +69,9 @@ Read this file at the start of every session, and update it at the end of every 
 
 ## Test status (latest)
 
-- **Backend:** 264 passed, 6 skipped (Phase 4); Postgres integration 6 passed.
+- **Backend:** 279 passed, 8 skipped (Phase 5); Postgres integration 8 passed.
 - **ml:** 13 passed.
-- **Frontend:** 30 files / 68 tests passed; typecheck, lint (0 errors) and build OK.
+- **Frontend:** 31 files / 70 tests passed; typecheck, lint (0 errors) and build OK.
 
 ## Pending approvals and actions
 

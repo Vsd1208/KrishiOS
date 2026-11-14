@@ -14,3 +14,10 @@ createRoot(rootElement).render(
     <App />
   </StrictMode>,
 );
+
+// F3: offline reading and push notifications (production builds only; dev uses Vite HMR).
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    void navigator.serviceWorker.register('/sw.js').catch(() => undefined);
+  });
+}

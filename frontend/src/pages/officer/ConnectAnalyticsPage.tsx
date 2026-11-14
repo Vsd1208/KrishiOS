@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { formatDate } from '@/features/govconnect/format';
-import { govconnectApi } from '@/services/api/govconnect';
+import { feedApi, govconnectApi } from '@/services/api/govconnect';
 
 const pct = (v: number | null) => (v === null ? '—' : `${Math.round(v * 100)}%`);
 
@@ -27,6 +27,7 @@ export const ConnectAnalyticsPage: React.FC = () => {
   return (
     <div className="space-y-5">
       <h1 className="text-heading font-bold text-text">{t('gc.analyticsTitle')}</h1>
+      <FeedHealth />
       <section className="overflow-x-auto rounded-2xl border border-border bg-surface">
         <table className="w-full text-caption">
           <thead className="text-left text-text-muted">
@@ -100,6 +101,37 @@ export const ConnectAnalyticsPage: React.FC = () => {
         </ul>
       </section>
     </div>
+  );
+};
+
+const FeedHealth: React.FC = () => {
+  const { t } = useTranslation();
+  const { data } = useQuery({ queryKey: ['govconnect', 'feeds-status'], queryFn: () => feedApi.status(24) });
+  if (!data) return null;
+  const join = (o: Record<string, number>) =>
+    Object.entries(o).map(([k, v]) => `${k} ${v}`).join(' · ') || '—';
+  return (
+    <section className="grid gap-3 sm:grid-cols-3" aria-label={t('gc.feedHealth')}>
+      <div className="rounded-xl border border-border bg-surface p-3">
+        <p className="text-caption text-text-muted">{t('gc.weatherSuccess')}</p>
+        <p className="text-heading font-bold text-text">
+          {data.weather_success_rate === null ? '—' : `${Math.round(data.weather_success_rate * 100)}%`}
+        </p>
+        <p className="text-caption text-text-muted">{join(data.weather_snapshots)}</p>
+      </div>
+      <div className="rounded-xl border border-border bg-surface p-3">
+        <p className="text-caption text-text-muted">{t('gc.crosscheck')}</p>
+        <p className="text-small font-semibold text-text">{join(data.weather_crosscheck)}</p>
+        <p className="text-caption text-text-muted">
+          {t('gc.latestRun')}: {formatDate(data.latest_weather_run, 'en')}
+        </p>
+      </div>
+      <div className="rounded-xl border border-border bg-surface p-3">
+        <p className="text-caption text-text-muted">{t('gc.feedBulletins')}</p>
+        <p className="text-small font-semibold text-text">{join(data.feed_bulletins)}</p>
+        <p className="text-caption text-text-muted">{t('gc.feedSource')}</p>
+      </div>
+    </section>
   );
 };
 

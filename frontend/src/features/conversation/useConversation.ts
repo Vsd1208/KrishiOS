@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   conversationApi,
@@ -16,6 +16,34 @@ export interface ChatMessage {
   text: string;
   result?: TurnResult;
   feedback?: 'up' | 'down';
+  /** Typed while offline; sent automatically when the connection returns (F3). */
+  queued?: boolean;
+}
+
+const QUEUE_KEY = 'krishios_offline_questions';
+const MAX_QUEUE = 10;
+
+interface QueuedQuestion {
+  id: string;
+  text: string;
+  language: BotLanguage;
+}
+
+/** Questions stay on this device only (localStorage) until they can be sent. */
+function readQueue(): QueuedQuestion[] {
+  try {
+    return JSON.parse(localStorage.getItem(QUEUE_KEY) ?? '[]') as QueuedQuestion[];
+  } catch {
+    return [];
+  }
+}
+
+function writeQueue(q: QueuedQuestion[]): void {
+  try {
+    localStorage.setItem(QUEUE_KEY, JSON.stringify(q.slice(-MAX_QUEUE)));
+  } catch {
+    /* storage unavailable: the question is still shown, just not persisted */
+  }
 }
 
 export interface UseConversationOptions {
@@ -69,6 +97,12 @@ export function useConversation({
     (text: string) => {
       const trimmed = text.trim();
       if (!trimmed) return Promise.resolve();
+      if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+        const id = nextId();
+        writeQueue([...readQueue(), { id, text: trimmed, language }]);
+        push({ id, role: 'user', text: trimmed, queued: true });
+        return Promise.resolve();
+      }
       return run(trimmed, () =>
         conversationApi.sendTurn({
           text: trimmed,
@@ -83,6 +117,31 @@ export function useConversation({
     },
     [actAsFarmerId, bulletinUuid, language, profile, run, speak],
   );
+
+  // Send questions queued while offline, oldest first, once the connection returns.
+  useEffect(() => {
+    const flush = async (): Promise<void> => {
+      const queue = readQueue();
+      if (queue.length === 0) return;
+      writeQueue([]);
+      for (const q of queue) {
+        setMessages((prev) => prev.map((m) => (m.id === q.id ? { ...m, queued: false } : m)));
+        await run(null, () =>
+          conversationApi.sendTurn({
+            text: q.text,
+            language: q.language,
+            conversation_id: conversationId.current,
+            profile: profile ?? null,
+            act_as_farmer_id: actAsFarmerId,
+            bulletin_uuid: bulletinUuid,
+          }),
+        );
+      }
+    };
+    window.addEventListener('online', flush);
+    if (navigator.onLine) void flush();
+    return () => window.removeEventListener('online', flush);
+  }, [actAsFarmerId, bulletinUuid, profile, run]);
 
   const choose = useCallback(
     (slot: string, choice: ClarificationChoice) =>
