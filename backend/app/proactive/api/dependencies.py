@@ -59,7 +59,7 @@ def get_event_processor(
     )
 
     runtime_engine = get_runtime_engine()
-    proactive_agent = runtime_engine.agents.get("proactive_intelligence_agent")  # type: ignore
+    proactive_agent = runtime_engine.registry().get("proactive_intelligence_agent")
 
     return EventProcessor(
         deduplicator=_deduplicator,

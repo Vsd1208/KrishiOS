@@ -23,6 +23,7 @@ const AlertsPage = React.lazy(() => import('@/pages/farmer/AlertsPage'));
 const ProfilePage = React.lazy(() => import('@/pages/farmer/ProfilePage'));
 const GovtUpdatesPage = React.lazy(() => import('@/pages/farmer/GovtUpdatesPage'));
 const GrievancePage = React.lazy(() => import('@/pages/farmer/GrievancePage'));
+const InsurancePage = React.lazy(() => import('@/pages/farmer/InsurancePage'));
 
 // Lazy-loaded officer views
 const OfficerDashboard = React.lazy(() => import('@/pages/officer/OfficerDashboard'));
@@ -37,6 +38,7 @@ const BulletinsPage = React.lazy(() => import('@/pages/officer/BulletinsPage'));
 const PublishAdvisoryPage = React.lazy(() => import('@/pages/officer/PublishAdvisoryPage'));
 const ConnectAnalyticsPage = React.lazy(() => import('@/pages/officer/ConnectAnalyticsPage'));
 const GrievanceQueuePage = React.lazy(() => import('@/pages/officer/GrievanceQueuePage'));
+const YieldOutlookPage = React.lazy(() => import('@/pages/officer/YieldOutlookPage'));
 
 export const router = createBrowserRouter([
   {
@@ -110,6 +112,14 @@ export const router = createBrowserRouter([
                 element: (
                   <Suspense fallback={<LoadingState fullPage message="Loading Help..." />}>
                     <GrievancePage />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'insurance',
+                element: (
+                  <Suspense fallback={<LoadingState fullPage message="Loading Insurance Helper..." />}>
+                    <InsurancePage />
                   </Suspense>
                 ),
               },
@@ -239,6 +249,14 @@ export const router = createBrowserRouter([
                     element: (
                       <Suspense fallback={<LoadingState fullPage message="Loading Grievances..." />}>
                         <GrievanceQueuePage />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'yield',
+                    element: (
+                      <Suspense fallback={<LoadingState fullPage message="Loading Yield Outlook..." />}>
+                        <YieldOutlookPage />
                       </Suspense>
                     ),
                   },

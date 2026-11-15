@@ -51,6 +51,45 @@ MESSAGES: dict[str, dict[str, str]] = {
         "hi": "इस सवाल के लिए सत्यापित जानकारी नहीं मिली। इसे कृषि अधिकारी को भेज दिया गया है।",
         "te": "ఈ ప్రశ్నకు ధృవీకరించిన సమాచారం దొరకలేదు. దీనిని వ్యవసాయ అధికారికి పంపించాం.",
     },
+    # Yield outlook (Phase 8). Numbers are filled in by code, never translated.
+    "yield_forecast": {
+        "en": "Model estimate for {crop} in {district} ({season} {year}): about {value} {unit} "
+              "(likely range {low}-{high}); the normal is {normal} {unit}, so this is {change}.",
+        "hi": "{district} में {crop} ({season} {year}) का मॉडल अनुमान: लगभग {value} {unit} "
+              "(संभावित सीमा {low}-{high}); सामान्य {normal} {unit} है, यानी {change}।",
+        "te": "{district}లో {crop} ({season} {year}) మోడల్ అంచనా: సుమారు {value} {unit} "
+              "(సంభావ్య పరిధి {low}-{high}); సాధారణం {normal} {unit}, అంటే {change}.",
+    },
+    "yield_change_below": {"en": "{pct}% below normal", "hi": "सामान्य से {pct}% कम",
+                           "te": "సాధారణం కంటే {pct}% తక్కువ"},
+    "yield_change_above": {"en": "{pct}% above normal", "hi": "सामान्य से {pct}% अधिक",
+                           "te": "సాధారణం కంటే {pct}% ఎక్కువ"},
+    "yield_change_near": {"en": "close to normal", "hi": "सामान्य के आसपास",
+                          "te": "సాధారణానికి దగ్గరగా"},
+    "yield_disclaimer": {
+        "en": "This is a model estimate, not an official crop-cutting, YES-TECH or insurance "
+              "figure.",
+        "hi": "यह एक मॉडल अनुमान है, आधिकारिक फसल कटाई, YES-TECH या बीमा आंकड़ा नहीं।",
+        "te": "ఇది మోడల్ అంచనా మాత్రమే; అధికారిక పంట కోత, YES-TECH లేదా బీమా అంకె కాదు.",
+    },
+    "yield_review": {
+        "en": "The uncertainty is high for this crop, so an officer will review it.",
+        "hi": "इस फसल के लिए अनिश्चितता अधिक है, इसलिए एक अधिकारी इसकी समीक्षा करेगा।",
+        "te": "ఈ పంటకు అనిశ్చితి ఎక్కువ, కాబట్టి అధికారి దీనిని పరిశీలిస్తారు.",
+    },
+    "yield_abstain": {
+        "en": "There is not enough data to forecast {crop} yield in {district} reliably, so no "
+              "number is given.",
+        "hi": "{district} में {crop} की उपज का भरोसेमंद अनुमान लगाने के लिए पर्याप्त डेटा नहीं है, "
+              "इसलिए कोई संख्या नहीं दी जा रही।",
+        "te": "{district}లో {crop} దిగుబడిని నమ్మకంగా అంచనా వేయడానికి తగినంత సమాచారం లేదు, "
+              "అందుకే సంఖ్య ఇవ్వడం లేదు.",
+    },
+    "yield_none": {
+        "en": "There is no yield forecast for {crop} in {district} yet.",
+        "hi": "{district} में {crop} के लिए अभी कोई उपज अनुमान नहीं है।",
+        "te": "{district}లో {crop}కు ఇంకా దిగుబడి అంచనా లేదు.",
+    },
 }
 
 

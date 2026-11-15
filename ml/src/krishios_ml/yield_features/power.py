@@ -13,6 +13,7 @@ import time
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 import pandas as pd
@@ -42,11 +43,13 @@ class Chunk:
     box: tuple[float, float, float, float]
     parameter: str
     year: int
+    end_mmdd: str = "1231"  # a partial current year ends earlier (recent fetches)
 
     @property
     def name(self) -> str:
         la0, la1, lo0, lo1 = self.box
-        return f"{self.parameter}_{self.year}_{la0:g}_{la1:g}_{lo0:g}_{lo1:g}.parquet"
+        tail = "" if self.end_mmdd == "1231" else f"_to{self.end_mmdd}"
+        return f"{self.parameter}_{self.year}_{la0:g}_{la1:g}_{lo0:g}_{lo1:g}{tail}.parquet"
 
 
 def fetch(chunk: Chunk, timeout: int = 300) -> pd.DataFrame:
@@ -61,7 +64,7 @@ def fetch(chunk: Chunk, timeout: int = 300) -> pd.DataFrame:
             "longitude-min": lo0,
             "longitude-max": lo1,
             "start": f"{chunk.year}0101",
-            "end": f"{chunk.year}1231",
+            "end": f"{chunk.year}{chunk.end_mmdd}",
         }
     )
     req = urllib.request.Request(f"{BASE}?{query}", headers={"User-Agent": USER_AGENT})
@@ -112,5 +115,36 @@ def download(
                             log(f"failed {chunk.name}: {type(exc).__name__}")
                         time.sleep(10 * attempt)
                 time.sleep(pause)
+        log(f"{year}: {stats}")
+    return stats
+
+
+def download_recent(cache: Path, start_year: int, end: date, log=print, **kw) -> dict[str, int]:
+    """Serving inputs: whole years from ``start_year`` and the current year up to ``end``
+    (POWER publishes with a few days' delay). Same grid and parameters as training."""
+    stats = {"cached": 0, "fetched": 0, "failed": 0}
+    cache.mkdir(parents=True, exist_ok=True)
+    for year in range(start_year, end.year + 1):
+        mmdd = end.strftime("%m%d") if year == end.year else "1231"
+        for parameter in PARAMETERS:
+            for box in BOXES:
+                chunk = Chunk(box, parameter, year, mmdd)
+                path = cache / chunk.name
+                if path.exists():
+                    stats["cached"] += 1
+                    continue
+                for attempt in range(1, kw.get("retries", 3) + 1):
+                    try:
+                        tmp = path.with_suffix(".part")
+                        fetch(chunk).to_parquet(tmp, index=False)
+                        tmp.replace(path)
+                        stats["fetched"] += 1
+                        break
+                    except Exception as exc:  # network: retry, then record and move on
+                        if attempt == kw.get("retries", 3):
+                            stats["failed"] += 1
+                            log(f"failed {chunk.name}: {type(exc).__name__}")
+                        time.sleep(10 * attempt)
+                time.sleep(kw.get("pause", 1.0))
         log(f"{year}: {stats}")
     return stats

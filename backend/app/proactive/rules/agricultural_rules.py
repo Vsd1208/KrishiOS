@@ -321,6 +321,61 @@ class SchemeEligibilityRule(BaseRelevanceRule):
         )
 
 
+HIGH_SHORTFALL = 0.35
+
+
+class YieldShortfallRule(BaseRelevanceRule):
+    """A forecast says this district's crop is likely to fall well short of its normal yield.
+
+    The forecast is a model estimate (not an official crop-cutting or insurance figure): the
+    alert is MEDIUM at most unless the shortfall is >= 35%, always asks for officer review,
+    and never fires for tier C (abstained) or for a different crop than the farmer grows."""
+
+    @property
+    def rule_id(self) -> str:
+        return "RULE_AGRI_YIELD_006"
+
+    @property
+    def rule_name(self) -> str:
+        return "Yield Shortfall Forecast Rule"
+
+    @property
+    def supported_events(self) -> list[str]:
+        return [EventType.YIELD_SHORTFALL_FORECAST]
+
+    async def evaluate(self, event: EventEnvelope, context: dict[str, Any]) -> RuleResult:
+        from app.catalog.resolver import get_crop_catalog  # noqa: PLC0415
+
+        payload = event.payload or {}
+        crop = str(payload.get("crop_canonical", ""))
+        catalog = get_crop_catalog()
+        farmer_crop = catalog.resolve_name(str(context.get("crop", ""))) or ""
+        base = {"rule_id": self.rule_id, "risk_type": "agronomy.yield_shortfall"}
+        if payload.get("abstained") or payload.get("crop_tier") == "C":
+            return RuleResult(matched=False, reason="Forecast abstained (insufficient data)",
+                              **base)
+        if not crop or farmer_crop != crop:
+            return RuleResult(matched=False,
+                              reason=f"Forecast crop {crop!r} is not the farmer's crop", **base)
+        shortfall = float(payload.get("shortfall_pct", 0.0))
+        severity = RiskSeverity.HIGH if shortfall >= HIGH_SHORTFALL else RiskSeverity.MEDIUM
+        entry = catalog.get(crop)
+        name = entry.name_en if entry else crop
+        return RuleResult(
+            matched=True,
+            severity=severity,
+            confidence=0.6 if payload.get("requires_human_review") else 0.75,
+            reason=(f"Model forecast: {name} yield in {payload.get('district', 'the district')} "
+                    f"may be about {shortfall:.0%} below normal this {payload.get('season')}."),
+            evidence={k: payload.get(k) for k in (
+                "crop_canonical", "season", "crop_year", "predicted_yield", "normal_yield",
+                "interval_low", "interval_high", "unit", "model_version", "forecast_lead")},
+            recommended_action_summary=(
+                "Model estimate, not an official figure: officer review before any advisory."),
+            **base,
+        )
+
+
 class RuleRegistry:
     """Registry maintaining active relevance rules for the proactive engine."""
 
@@ -332,6 +387,7 @@ class RuleRegistry:
         self.register(DiseaseRiskRule())
         self.register(MarketPriceVolatilityRule())
         self.register(SchemeEligibilityRule())
+        self.register(YieldShortfallRule())
 
     def register(self, rule: BaseRelevanceRule) -> None:
         """Register a new agricultural relevance rule."""

@@ -118,7 +118,7 @@ class ProactiveContextEngine:
             stmt = stmt.where(Farmer.id == int(target_farmer_id))
         elif target_district_name:
             stmt = stmt.join(District, Farmer.district_id == District.id).where(
-                District.name.ilike(f"%{target_district_name}%")
+                District.district_name.ilike(f"%{target_district_name}%")
             )
             if target_state_name:
                 stmt = stmt.where(District.state.ilike(f"%{target_state_name}%"))
@@ -129,7 +129,7 @@ class ProactiveContextEngine:
 
         contexts: list[FarmerFieldContext] = []
         for farmer in farmers:
-            district_name = farmer.district.name if farmer.district else (target_district_name or "Unknown")
+            district_name = farmer.district.district_name if farmer.district else (target_district_name or "Unknown")
             state_name = farmer.district.state if farmer.district else (target_state_name or "Unknown")
 
             # If farmer has no registered fields, still produce a base farmer context
@@ -164,7 +164,7 @@ class ProactiveContextEngine:
                     None,
                 )
 
-                crop_name = active_crop.crop.name if active_crop and active_crop.crop else None
+                crop_name = active_crop.crop.crop_name if active_crop and active_crop.crop else None
                 crop_stage = active_crop.status.value if active_crop else None
                 sowing_date = str(active_crop.sowing_date) if active_crop else None
 

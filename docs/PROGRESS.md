@@ -4,7 +4,7 @@ Read this file at the start of every session, and update it at the end of every 
 
 **Status values:** `todo` · `in-progress` · `done` · `blocked-on-approval` · `blocked`
 
-**Last updated:** 2026-11-13. **Phase 2 is complete.** All AI4Bharat benchmarks are measured (Colab T4 for accuracy, laptop CPU for latency). Next: Phase 3 (multilingual bot).
+**Last updated:** 2026-11-15. **Phase 8 is complete (awaiting review).** Phases 0-7 are merged to `main`; Phase 8 onward is on `feat/sprint-11-phase8-yield-models`. Next: Phase 9 (real computer vision).
 
 ## Phases
 
@@ -18,7 +18,7 @@ Read this file at the start of every session, and update it at the end of every 
 | 5 Govt Connect: automated (+F1, F3, F5) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [05_govconnect_automated.md](../ml/reports/05_govconnect_automated.md) |
 | 6 Yield label audit | done (**awaiting scope freeze**) | `feat/sprint-11-phase4-govconnect` | [06_yield_label_audit.md](../ml/reports/06_yield_label_audit.md) |
 | 7 Yield predictor pipeline | done (weather); **NDVI pending at NASA**; scope-freeze defaults need sign-off | `feat/sprint-11-phase4-govconnect` | [07_yield_predictor_pipeline.md](../ml/reports/07_yield_predictor_pipeline.md) |
-| 8 Yield baselines & integration (+F15) | todo | — | — |
+| 8 Yield baselines & integration (+F15) | done (awaiting review) | `feat/sprint-11-phase8-yield-models` | [08_yield_baselines.md](../ml/reports/08_yield_baselines.md) |
 | 9 Real computer vision (+F8) | todo | — | — |
 | 10 KrishiOS yield model & research | todo | — | — |
 | 10b Farmer toolkit (F9–F12, F14, F7 video) | todo | — | — |
@@ -42,7 +42,7 @@ Read this file at the start of every session, and update it at the end of every 
 | F12 | Community Q&A | 10b | todo | |
 | F13 | Answer feedback loop | 3 | done | Thumbs + reasons, down-vote to officer review, dashboard, triage, regression export |
 | F14 | Livestock / fisheries advisories | 10b | todo | Catalog has a `domain` column ready |
-| F15 | Insurance helper | 8 | todo | |
+| F15 | Insurance helper | 8 | done (draft content) | PMFBY draft scheme entry + sourced guidance (`app/schemes/insurance_guidance.yaml`), shown to farmers only after officer verification; yield context labelled not YES-TECH/claim. 72-hour / 14-day items still need an official source |
 
 ## Pillar components
 
@@ -57,7 +57,7 @@ Read this file at the start of every session, and update it at the end of every 
 | Real STT / TTS | done | IndicConformer RNNT recommended: FLEURS CER te 0.073 / hi 0.063 (65d3ea90da08); CPU median 2.2 s/utterance, RTF 0.25 (3d65e68d0266). MMS-TTS demo-only (CC BY-NC); deployable voice in Phase 3 |
 | Conversation / dialogue state | done | Clarify-and-resume, carry-over, re-ask; dialogue task success 0.90 (run 98898e7cfba1, result of record; draft scripts); text + voice turns; optional preload (`PRELOAD_MODELS`) |
 | Govt Connect | in-progress | Publishing side done (Phase 4): upload/compose → extraction with provenance → translate → approve/schedule → targeted delivery → inbox (listen / ask / ack / flag) → RAG with validity → analytics. Automated feeds: Phase 5 (SACHET CAP preferred, ADR-004) |
-| Yield Intelligence | in-progress | Labels 340,765 rows / 108 series; NASA POWER weather features with leak-safe lead windows (run 99682d517b17); NDVI requested |
+| Yield Intelligence | in-progress | B3 multi-crop LightGBM serving: test median nMAE 0.236-0.242 vs 0.273 historical mean; unseen districts 0.222 vs 0.267 (run 37dc01be91cf); 80% intervals cover 0.81-0.85. Forecast import, outlook page, bot card, shortfall drafts. NDVI pending at NASA |
 | Real vision | todo | Field-photo dataset gap |
 
 ## Known debt (tracked)

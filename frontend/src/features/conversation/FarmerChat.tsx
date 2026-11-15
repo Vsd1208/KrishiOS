@@ -25,6 +25,7 @@ import {
   type FarmerProfileHint,
   type FeedbackReason,
 } from '@/services/api/conversation';
+import { YieldCard } from '@/features/forecasting/YieldCard';
 import { useConversation, type ChatMessage } from './useConversation';
 
 const LANGUAGES: { code: BotLanguage; label: string }[] = [
@@ -231,6 +232,7 @@ const BotMessage: React.FC<{
           ))}
         </ul>
       )}
+      {r?.yield_forecast && <YieldCard forecast={r.yield_forecast} compact />}
       {r && r.media.length > 0 && (
         <div className="space-y-1.5">
           {r.media.map((v) => (

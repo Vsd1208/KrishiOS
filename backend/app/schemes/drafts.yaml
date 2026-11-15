@@ -82,3 +82,30 @@
         en: Is anyone in your family a practising doctor, engineer, lawyer, chartered accountant or architect registered with a professional body?
         hi: क्या आपके परिवार में कोई पेशेवर निकाय में पंजीकृत डॉक्टर, इंजीनियर, वकील, चार्टर्ड अकाउंटेंट या आर्किटेक्ट प्रैक्टिस करता है?
         te: మీ కుటుంబంలో ఎవరైనా వృత్తిపరమైన సంస్థలో నమోదైన డాక్టర్, ఇంజనీర్, న్యాయవాది, చార్టర్డ్ అకౌంటెంట్ లేదా ఆర్కిటెక్ట్‌గా పనిచేస్తున్నారా?
+- key: pmfby
+  scope: central
+  authority: Ministry of Agriculture & Farmers Welfare, Government of India
+  source_url: https://pmfby.gov.in/
+  status_lookup_url: https://pmfby.gov.in/
+  names:
+    en: PMFBY (Pradhan Mantri Fasal Bima Yojana)
+    hi: पीएमएफबीवाई (प्रधानमंत्री फसल बीमा योजना)
+    te: పీఎంఎఫ్‌బీవై (ప్రధాన మంత్రి ఫసల్ బీమా యోజన)
+  summary:
+    en: Crop insurance for notified crops in notified areas against yield loss from natural risks, localised calamities and post-harvest losses. Verifying this entry also verifies the insurance-helper guidance (app/schemes/insurance_guidance.yaml).
+    hi: अधिसूचित क्षेत्रों में अधिसूचित फसलों के लिए प्राकृतिक जोखिम, स्थानीय आपदा और कटाई के बाद के नुकसान से उपज हानि के विरुद्ध फसल बीमा।
+    te: ప్రకటిత ప్రాంతాల్లో ప్రకటిత పంటలకు సహజ ప్రమాదాలు, స్థానిక విపత్తులు, కోత తర్వాతి నష్టాల వల్ల దిగుబడి నష్టానికి పంట బీమా.
+  benefits:
+    en: Low farmer premium (at most 2% Kharif, 1.5% Rabi, 5% annual commercial/horticultural crops; verify at the source). Claims are assessed by the insurer, not by KrishiOS.
+    hi: किसान का कम प्रीमियम (अधिकतम खरीफ 2%, रबी 1.5%, वार्षिक वाणिज्यिक/बागवानी 5%; स्रोत पर जांचें)। दावों का आकलन बीमा कंपनी करती है, KrishiOS नहीं।
+    te: రైతుకు తక్కువ ప్రీమియం (గరిష్ఠం ఖరీఫ్ 2%, రబీ 1.5%, వార్షిక వాణిజ్య/ఉద్యాన 5%; మూలంలో తనిఖీ చేయండి). క్లెయిమ్‌లను బీమా కంపెనీ అంచనా వేస్తుంది, KrishiOS కాదు.
+  criteria:
+    - id: grows_notified_crop
+      type: bool
+      kind: require
+      rule: {op: eq, value: true}
+      source: PMFBY operational guidelines (coverage of notified crops in notified areas)
+      question:
+        en: Do you grow a crop that your state has notified for PMFBY in your area this season? (Your bank, CSC or agriculture office can tell you.)
+        hi: क्या आप इस मौसम में अपने क्षेत्र में राज्य द्वारा PMFBY के लिए अधिसूचित फसल उगाते हैं? (आपका बैंक, CSC या कृषि कार्यालय बता सकता है।)
+        te: ఈ సీజన్‌లో మీ ప్రాంతంలో రాష్ట్రం PMFBYకి ప్రకటించిన పంటను మీరు పండిస్తున్నారా? (మీ బ్యాంకు, CSC లేదా వ్యవసాయ కార్యాలయం చెప్పగలదు.)
