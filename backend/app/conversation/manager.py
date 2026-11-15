@@ -13,6 +13,11 @@ One turn:
    translate the answer back with the translation safety checks. If the translation is
    blocked, show the English answer with a notice and flag the turn for officer review.
 7. Optional TTS of the reply. Persist the turn (audit, feedback).
+
+Yield questions (Phase 8) skip the agent runtime: the answer is the imported forecast from the
+yield provider, rendered from fixed localized templates (numbers filled in by code) with a
+"model estimate, not official" notice and a structured ``yield_forecast`` card. Tier C and
+missing forecasts are said plainly, with no number.
 """
 
 from __future__ import annotations
@@ -92,6 +97,7 @@ class TurnResult:
     resumed_question: str | None = None
     symptoms: list[str] = field(default_factory=list)
     media: list[dict[str, Any]] = field(default_factory=list)
+    yield_forecast: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -109,17 +115,33 @@ class _Question:
 
 
 TurnSink = Callable[[DialogueState, TurnInput, TurnResult], Awaitable[None]]
+YieldLookup = Callable[[int, str, str | None], Awaitable[dict[str, Any] | None]]
+UNIT_LABEL = {"Tonnes/Hectare": "t/ha", "bales_170kg/ha": "bales/ha",
+              "bales_180kg/ha": "bales/ha", "nuts/ha": "nuts/ha"}
+NEAR_NORMAL = 0.05
+
+
+async def default_yield_lookup(lgd: int, crop: str, season: str | None) -> dict[str, Any] | None:
+    from app.database.session import async_session_factory  # noqa: PLC0415
+    from app.forecasting.selection import get_yield_provider  # noqa: PLC0415
+
+    async with async_session_factory() as session:
+        f = await get_yield_provider().forecast(session, lgd, crop, season)
+    return f.to_dict() if f else None
 
 
 class ConversationManager:
-    def __init__(self, store: StateStore | None = None, runner: AnswerRunner | None = None,
+    def __init__(  # noqa: PLR0913, PLR0917 - injectable collaborators (tests)
+        self, store: StateStore | None = None, runner: AnswerRunner | None = None,
                  translator: TranslationService | None = None,
-                 sink: TurnSink | None = None, tts: Any = None) -> None:
+                 sink: TurnSink | None = None, tts: Any = None,
+                 yield_lookup: YieldLookup | None = None) -> None:
         self._store = store or InMemoryStateStore()
         self._runner = runner or RuntimeAnswerRunner()
         self._translator = translator or get_translation_service()
         self._sink = sink
         self._tts = tts
+        self._yield_lookup = yield_lookup or default_yield_lookup
         self._catalog = get_crop_catalog()
         self._lgd = get_lgd_directory()
 
@@ -199,7 +221,47 @@ class ConversationManager:
         if q.intent in REFUSED:
             return self._result(state, "refused", message("out_of_scope", state.language), q,
                                 nlu)
+        if q.intent is Intent.YIELD and state.crop and state.district_lgd_code:
+            return await self._answer_yield(state, nlu, q)
         return await self._answer(state, inp, nlu, q)
+
+    async def _answer_yield(self, state: DialogueState, nlu: NLUResult,
+                            q: _Question) -> TurnResult:
+        lang = state.language
+        entry = self._catalog.get(state.crop)
+        names = {"crop": entry.display_name(lang) if entry else state.crop,
+                 "district": state.district_name or str(state.district_lgd_code)}
+        try:
+            f = await self._yield_lookup(state.district_lgd_code, state.crop, state.season)
+        except Exception as exc:
+            logger.warning("yield lookup failed: {}", exc)
+            f = None
+        providers = {"nlu": nlu.provider, "yield": f["model_version"] if f else None}
+        if f is None:
+            return self._result(state, "answered", message("yield_none", lang).format(**names),
+                                q, nlu, providers=providers)
+        if f["abstained"]:
+            return self._result(state, "answered",
+                                message("yield_abstain", lang).format(**names), q, nlu,
+                                providers=providers, yield_forecast={**f, "official": False})
+        change = f["change_vs_normal"]
+        pct = round(abs(change) * 100)
+        key = ("yield_change_near" if abs(change) < NEAR_NORMAL
+               else "yield_change_below" if change < 0 else "yield_change_above")
+        year = f"{f['crop_year']}-{str(f['crop_year'] + 1)[-2:]}"
+        text = message("yield_forecast", lang).format(
+            **names, season=f["season"], year=year, value=f"{f['predicted_yield']:.2f}",
+            low=f"{f['interval_low']:.2f}", high=f"{f['interval_high']:.2f}",
+            normal=f"{f['normal_yield']:.2f}", unit=UNIT_LABEL.get(f["unit"], f["unit"]),
+            change=message(key, lang).format(pct=pct))
+        parts = [text, message("yield_disclaimer", lang)]
+        review = bool(f["requires_human_review"])
+        if review:
+            parts.append(message("yield_review", lang))
+        return self._result(state, "answered", "\n\n".join(parts), q, nlu, providers=providers,
+                            requires_review=review,
+                            review_reason="yield_uncertain" if review else None,
+                            yield_forecast={**f, "official": False})
 
     async def _persist(self, state: DialogueState, inp: TurnInput, result: TurnResult) -> None:
         if self._sink is None:
@@ -352,6 +414,7 @@ class ConversationManager:
         citations: list[dict[str, Any]] | None = None, translation_status: str | None = None,
         providers: dict[str, Any] | None = None, requires_review: bool = False,
         review_reason: str | None = None, weather: dict[str, Any] | None = None,
+        yield_forecast: dict[str, Any] | None = None,
     ) -> TurnResult:
         return TurnResult(
             conversation_id=state.conversation_id, turn_id=uuid.uuid4().hex, status=status,
@@ -363,4 +426,5 @@ class ConversationManager:
             translation_status=translation_status, requires_review=requires_review,
             review_reason=review_reason, providers=providers or {"nlu": nlu.provider},
             weather=weather, symptoms=list(nlu.entities.symptoms),
+            yield_forecast=yield_forecast,
         )

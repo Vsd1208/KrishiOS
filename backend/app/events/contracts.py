@@ -23,6 +23,7 @@ class EventType(StrEnum):
     PEST_RISK_DETECTED = "agronomy.pest_risk_detected"
     FIELD_ANALYSIS_COMPLETED = "agronomy.field_analysis_completed"
     VISION_RISK_DETECTED = "vision.risk_detected"
+    YIELD_SHORTFALL_FORECAST = "agronomy.yield_shortfall_forecast"
 
     # ── Economic & Market Events ──────────────────────────────────────────────
     MARKET_PRICE_CHANGED = "market.price_changed"

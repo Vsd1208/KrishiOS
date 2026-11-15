@@ -185,6 +185,10 @@ def build_runtime_engine(
     for tool in stub_tools:
         tool_registry.register(tool)
 
+    from app.agents.tools.yield_forecast import YieldForecastTool
+
+    tool_registry.register(YieldForecastTool())
+
     from app.agents.proactive_agent import ProactiveIntelligenceAgent
 
     guardrails = GuardrailEngine()

@@ -13,3 +13,11 @@ def reference_dir() -> Path:
     if configured:
         return Path(configured)
     return Path(__file__).resolve().parents[3] / "ml" / "reference"
+
+
+def artifacts_dir() -> Path:
+    """``ML_ARTIFACTS_DIR`` if set, else ``<repo>/ml/artifacts`` (local development)."""
+    configured = get_settings().ML_ARTIFACTS_DIR
+    if configured:
+        return Path(configured)
+    return Path(__file__).resolve().parents[3] / "ml" / "artifacts"

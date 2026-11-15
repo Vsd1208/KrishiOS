@@ -42,6 +42,9 @@ export const GovtUpdatesPage: React.FC = () => {
       <p className="text-caption text-text-muted">{t('govt.officialNote')}</p>
       <Link to="/farmer/help" className="inline-block text-caption text-info-700 underline">
         {t('govt.helpLink')}
+      </Link>{' '}
+      <Link to="/farmer/insurance" className="inline-block text-caption text-info-700 underline">
+        {t('insurance.link')}
       </Link>
       {isLoading && <p className="text-small text-text-muted">{t('extension.loading')}</p>}
       {isError && (

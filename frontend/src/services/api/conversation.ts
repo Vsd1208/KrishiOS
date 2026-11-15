@@ -7,6 +7,8 @@
  *   POST /feedback                   thumbs up/down on an answer
  */
 
+import type { YieldForecast } from '@/services/api/forecasting';
+
 import { config } from '@/app/config';
 import { apiClient, getAccessToken } from '@/services/api/client';
 import { ApiError } from '@/types/api';
@@ -63,6 +65,8 @@ export interface TurnResult {
   audio_uuid: string | null;
   resumed_question: string | null;
   media: MediaCard[];
+  /** Phase 8: structured yield forecast for yield questions (a model estimate). */
+  yield_forecast?: YieldForecast | null;
   transcript?: string;
 }
 

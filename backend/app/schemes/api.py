@@ -82,6 +82,30 @@ async def list_schemes(
     ]
 
 
+@router.get("/insurance/helper")
+async def insurance_helper(  # noqa: PLR0913, PLR0917 - query parameters
+    session: DbSession, auth: Reader, lgd_district_code: int | None = None,
+    crop: str | None = None, season: str | None = None,
+    language: Literal["en", "hi", "te"] = "en",
+) -> dict:
+    """F15: PMFBY guidance + the district yield outlook (labelled as a model estimate)."""
+    from app.catalog.resolver import get_crop_catalog  # noqa: PLC0415
+    from app.forecasting.selection import get_yield_provider  # noqa: PLC0415
+    from app.schemes.insurance import build_helper  # noqa: PLC0415
+
+    officer = Permission.SCHEME_MANAGE in auth.permissions
+    s = await session.scalar(select(SchemeEntry).where(SchemeEntry.key == "pmfby"))
+    verified = s is not None and s.status == "verified"
+    scheme = _out(s, language) if s is not None and (verified or officer) else None
+    card = None
+    crop_key = get_crop_catalog().resolve_name(crop) if crop else None
+    if lgd_district_code and crop_key:
+        f = await get_yield_provider().forecast(session, lgd_district_code, crop_key, season)
+        card = f.to_dict() if f else None
+    return build_helper(scheme=scheme, verified=verified, officer=officer, language=language,
+                        yield_card=card)
+
+
 @router.get("/{key}")
 async def get_scheme(
     key: str, session: DbSession, auth: Reader, language: Literal["en", "hi", "te"] = "en"

@@ -1,0 +1,57 @@
+# F15 insurance helper: PMFBY guidance items (Phase 8). DRAFT.
+# Shown to farmers only after an officer verifies the PMFBY scheme entry (POST
+# /schemes/pmfby/verify), checking every item below against its source. Officers always see
+# them with their status. hi/te text is a draft pending native-speaker review.
+# "checked" records what the source said when this file was written; "needs_official_source"
+# marks items seen only in empanelled insurers' guidance, not yet on a government page.
+- id: premium
+  source: MyGov PMFBY campaign page ("Lowest premium for all farmers of India")
+  source_url: https://mygov.in/campaigns/pmfby
+  checked: "2026-11-15: wording matches"
+  text:
+    en: "The farmer pays at most 2% of the sum insured for Kharif food and oilseed crops, 1.5% for Rabi food and oilseed crops, and 5% for annual commercial or horticultural crops. The rest of the premium is paid by the government."
+    hi: "किसान बीमित राशि का अधिकतम 2% खरीफ खाद्य और तिलहन फसलों के लिए, 1.5% रबी खाद्य और तिलहन फसलों के लिए, और 5% वार्षिक वाणिज्यिक या बागवानी फसलों के लिए देता है। बाकी प्रीमियम सरकार देती है।"
+    te: "రైతు బీమా మొత్తంలో గరిష్ఠంగా ఖరీఫ్ ఆహార, నూనెగింజల పంటలకు 2%, రబీ ఆహార, నూనెగింజల పంటలకు 1.5%, వార్షిక వాణిజ్య లేదా ఉద్యాన పంటలకు 5% చెల్లిస్తారు. మిగతా ప్రీమియం ప్రభుత్వం చెల్లిస్తుంది."
+- id: voluntary
+  source: MyGov PMFBY campaign page
+  source_url: https://mygov.in/campaigns/pmfby
+  checked: "2026-11-15: 'Voluntary (post Kharif 2020 season)'"
+  text:
+    en: "Enrolment is voluntary for all farmers since Kharif 2020. Farmers with a crop loan who do not want cover must tell their bank before the enrolment cut-off."
+    hi: "खरीफ 2020 से सभी किसानों के लिए नामांकन स्वैच्छिक है। फसल ऋण वाले किसान जो बीमा नहीं चाहते, उन्हें नामांकन की अंतिम तिथि से पहले अपने बैंक को बताना होगा।"
+    te: "ఖరీఫ్ 2020 నుండి రైతులందరికీ నమోదు స్వచ్ఛందం. పంట రుణం ఉన్న రైతులు బీమా వద్దనుకుంటే, నమోదు గడువుకు ముందే తమ బ్యాంకుకు తెలియజేయాలి."
+  needs_official_source: "opt-out-before-cut-off detail is from secondary summaries"
+- id: enrolment_cutoff
+  source: MyGov PMFBY campaign page
+  source_url: https://mygov.in/campaigns/pmfby
+  checked: "2026-11-15: Kharif '15th July & 31st July', Rabi '15th October & 31st December'; states may fix their own dates"
+  text:
+    en: "Enrolment cut-off dates are notified by your state for each crop and district. They are usually around 15-31 July for Kharif and 15 October-31 December for Rabi. Check your state's notification with your bank, CSC or agriculture office."
+    hi: "नामांकन की अंतिम तिथियां आपका राज्य हर फसल और जिले के लिए अधिसूचित करता है। आमतौर पर खरीफ के लिए 15-31 जुलाई और रबी के लिए 15 अक्टूबर-31 दिसंबर के आसपास होती हैं। अपने बैंक, CSC या कृषि कार्यालय से राज्य की अधिसूचना जांचें।"
+    te: "నమోదు గడువు తేదీలను మీ రాష్ట్రం ప్రతి పంట, జిల్లాకు ప్రకటిస్తుంది. సాధారణంగా ఖరీఫ్‌కు జూలై 15-31, రబీకి అక్టోబర్ 15-డిసెంబర్ 31 చుట్టూ ఉంటాయి. మీ బ్యాంకు, CSC లేదా వ్యవసాయ కార్యాలయంలో రాష్ట్ర ప్రకటనను తనిఖీ చేయండి."
+- id: loss_intimation
+  source: Empanelled PMFBY insurers' claim guidance (Bajaj Allianz, SBI General); to verify on pmfby.gov.in
+  source_url: https://pmfby.gov.in/
+  checked: "2026-11-15: 72 hours and helpline 14447 per insurer pages; official page not reached"
+  needs_official_source: "verify the 72-hour window and channels on pmfby.gov.in before verifying"
+  text:
+    en: "For damage to your own field from a localised calamity (hailstorm, landslide, inundation, cloudburst, natural fire) or post-harvest losses, report it within 72 hours: through the Crop Insurance App, the helpline 14447, your insurance company, your bank or the agriculture office. Keep photos and the date of the event."
+    hi: "स्थानीय आपदा (ओलावृष्टि, भूस्खलन, जलभराव, बादल फटना, प्राकृतिक आग) या कटाई के बाद के नुकसान से अपने खेत की क्षति की सूचना 72 घंटे के भीतर दें: क्रॉप इंश्योरेंस ऐप, हेल्पलाइन 14447, अपनी बीमा कंपनी, बैंक या कृषि कार्यालय के माध्यम से। फोटो और घटना की तारीख रखें।"
+    te: "స్థానిక విపత్తు (వడగళ్లు, కొండచరియలు, నీటముంపు, మేఘ విస్ఫోటనం, సహజ అగ్ని) లేదా కోత తర్వాతి నష్టంతో మీ పొలానికి నష్టం జరిగితే 72 గంటల్లోపు తెలియజేయండి: క్రాప్ ఇన్సూరెన్స్ యాప్, హెల్ప్‌లైన్ 14447, మీ బీమా కంపెనీ, బ్యాంకు లేదా వ్యవసాయ కార్యాలయం ద్వారా. ఫోటోలు, సంఘటన తేదీ ఉంచుకోండి."
+- id: post_harvest
+  source: PMFBY coverage summaries (insurers, current-affairs sources); to verify on pmfby.gov.in
+  source_url: https://pmfby.gov.in/
+  checked: "2026-11-15: most sources say 14 days; one quiz page says 7"
+  needs_official_source: "confirm the 14-day period and covered perils in the operational guidelines"
+  text:
+    en: "Crops left in the field in cut-and-spread condition to dry are covered for up to 14 days after harvest against cyclone, cyclonic rain and unseasonal rain."
+    hi: "कटाई के बाद सूखने के लिए खेत में फैलाकर रखी गई फसल कटाई से 14 दिन तक चक्रवात, चक्रवाती वर्षा और बेमौसम बारिश से सुरक्षित है।"
+    te: "కోసి ఆరబెట్టడానికి పొలంలో పరచి ఉంచిన పంటకు కోత తర్వాత 14 రోజుల వరకు తుఫాను, తుఫాను వర్షం, అకాల వర్షం నుండి రక్షణ ఉంటుంది."
+- id: claims_assessment
+  source: PMFBY design (area approach; crop-cutting experiments and YES-TECH technology-based yield estimation)
+  source_url: https://pmfby.gov.in/
+  checked: "2026-11-15: general scheme design; officer to confirm wording"
+  text:
+    en: "Area-wide yield losses are assessed for the notified area from crop-cutting experiments and the government's technology-based yield estimates (YES-TECH). KrishiOS yield forecasts are model estimates and are never used to decide a claim."
+    hi: "अधिसूचित क्षेत्र के व्यापक उपज नुकसान का आकलन फसल कटाई प्रयोगों और सरकार के तकनीक-आधारित उपज अनुमान (YES-TECH) से होता है। KrishiOS के उपज अनुमान मॉडल अनुमान हैं और दावे तय करने में कभी उपयोग नहीं होते।"
+    te: "ప్రకటిత ప్రాంతంలో విస్తృత దిగుబడి నష్టాన్ని పంట కోత ప్రయోగాలు, ప్రభుత్వ సాంకేతిక ఆధారిత దిగుబడి అంచనాల (YES-TECH) ద్వారా అంచనా వేస్తారు. KrishiOS దిగుబడి అంచనాలు మోడల్ అంచనాలు మాత్రమే, క్లెయిమ్ నిర్ణయానికి ఎప్పుడూ ఉపయోగించరు."

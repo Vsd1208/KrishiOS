@@ -211,3 +211,25 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
     - soil: SoilGrids was unreachable, so soil is a missing modality;
     - remote sensing: MODIS MOD13A3 monthly 1 km NDVI from Feb 2000 via AppEEARS (requested 2026-11-15). Only good/marginal pixels are kept. A monthly composite enters a forecast only if month end + 15 days (publication lag) is before the cutoff, and a test enforces this. Label years 1997-1999 have no NDVI.
   - **Known limitation:** labels from before a district split are mapped to the 2021 polygon of the parent's LGD code.
+
+## ADR-027: Yield baselines, serving B3 through batch import, shortfalls as review drafts
+- **Status:** proposed (Phase 8)
+- **Decision:**
+  - **Target and evaluation:**
+    - Models predict yield / the series' historical mean (history <= Y-2).
+    - All baselines share one evaluation set (at least 3 prior years, with weather).
+    - The primary metrics drop implausible high labels (flagged outliers above history, or more than 10x it) and keep crop failures. This rule was fixed before scoring.
+    - Metrics are per crop (nMAE, MAE, RMSE, R2), summarised over tier-A crops as median and worst decile.
+  - **Protocol:** tuning, selection and conformal calibration on validation only. The selection is frozen (`ml/reports/data/yield_baselines_selection.json`), and test plus spatial test are scored once per frozen configuration; the script refuses a re-run. LightGBM uses 3 seeds.
+  - **Serving model:** B3 multi-crop LightGBM.
+    - Test median nMAE 0.237-0.242 vs 0.273 for the historical mean, and 0.222 vs 0.267 on unseen districts (run 37dc01be91cf).
+    - Ridge ties B3 in the median on the time test but is worse in the worst decile and on unseen districts.
+    - RQ5: the shared model is at least as good as per-crop models on held-out data.
+  - **Intervals:** split-conformal, 80% per tier, from validation residuals. Test coverage is 0.81-0.88.
+  - **Serving path:**
+    - Forecasts are produced offline (`ml/scripts/export_yield_forecasts.py`, the same NASA POWER source and aggregation as training; never Open-Meteo) as a versioned artifact with a manifest.
+    - The backend `forecast_import` job imports it all-or-nothing and re-checks the contract. Tier C abstains with no number; tier B, a missing modality or out-of-distribution requires review.
+  - **Normal yield shown to people:** the mean of the 5 most recent reported years (<= Y-2).
+  - **Shortfalls:** a forecast at least 20% below normal *and* an upper bound below normal. It raises `agronomy.yield_shortfall_forecast` for farmers of that crop, and creates one `needs_review` advisory draft per district and season, labelled as a model estimate. Nothing is published without officer review.
+  - **Bot:** yield questions are answered from the imported forecast with fixed localized templates, not by the LLM runtime.
+  - **F15:** PMFBY guidance items carry their sources and are shown to farmers only after an officer verifies the PMFBY entry. The yield context is never presented as a YES-TECH or claim estimate.

@@ -105,3 +105,8 @@ api_router.include_router(channels_router)
 from app.notifications.api import router as push_router  # noqa: E402
 
 api_router.include_router(push_router)
+
+# ── Sprint 11, Phase 8: Yield Intelligence ──
+from app.forecasting.api.routes import router as forecasting_router  # noqa: E402
+
+api_router.include_router(forecasting_router)

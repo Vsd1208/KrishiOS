@@ -179,7 +179,10 @@ class Settings(BaseSettings):
     TRANSLATION_FALLBACK_PROVIDER: str | None = None
     NLU_PROVIDER: str = "rule-based-nlu"
     NLU_FALLBACK_PROVIDER: str | None = "rule-based-nlu"
-    YIELD_PROVIDER: str | None = None
+    # Phase 8: forecasts are imported from ml/ batch exports (ML_ARTIFACTS_DIR/forecasts).
+    YIELD_PROVIDER: str = "baseline-lgbm-batch"
+    YIELD_SHORTFALL_PCT: float = 0.20  # forecast >= 20% below normal (and interval below normal)
+    YIELD_FORECAST_IMPORT_INTERVAL_SECONDS: int = 6 * 3600
     NOTIFICATION_CHANNELS: list[str] = Field(default_factory=lambda: ["in_app"])
     SUPPORTED_LANGUAGES: list[str] = Field(default_factory=lambda: ["en", "hi", "te"])
     # Third-party processing of farmer data is opt-in per provider (DPDP).
