@@ -57,7 +57,7 @@ Read this file at the start of every session, and update it at the end of every 
 | Real STT / TTS | done | IndicConformer RNNT recommended: FLEURS CER te 0.073 / hi 0.063 (65d3ea90da08); CPU median 2.2 s/utterance, RTF 0.25 (3d65e68d0266). MMS-TTS demo-only (CC BY-NC); deployable voice in Phase 3 |
 | Conversation / dialogue state | done | Clarify-and-resume, carry-over, re-ask; dialogue task success 0.90 (run 98898e7cfba1, result of record; draft scripts); text + voice turns; optional preload (`PRELOAD_MODELS`) |
 | Govt Connect | in-progress | Publishing side done (Phase 4): upload/compose → extraction with provenance → translate → approve/schedule → targeted delivery → inbox (listen / ask / ack / flag) → RAG with validity → analytics. Automated feeds: Phase 5 (SACHET CAP preferred, ADR-004) |
-| Yield Intelligence | in-progress | B3 multi-crop LightGBM serving: test median nMAE 0.237-0.242 vs 0.273 historical mean; unseen districts 0.222 vs 0.267 (run 37dc01be91cf); 80% intervals cover 0.81-0.85. Forecast import, outlook page, bot card, shortfall drafts. NDVI pending at NASA |
+| Yield Intelligence | in-progress | B3 multi-crop LightGBM serving: test median nMAE 0.236-0.242 vs 0.273 historical mean; unseen districts 0.222 vs 0.267 (run 37dc01be91cf); 80% intervals cover 0.81-0.85. Forecast import, outlook page, bot card, shortfall drafts. NDVI pending at NASA |
 | Real vision | todo | Field-photo dataset gap |
 
 ## Known debt (tracked)

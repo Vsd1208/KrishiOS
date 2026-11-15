@@ -100,7 +100,7 @@ The median per-crop R² for B3 is 0.45-0.46 on the time test and 0.55-0.57 on th
 
 **What this shows.**
 
-1. **B3 beats the historical mean.** On the time test it cuts the median error by about **12-13%** (0.273 → 0.237-0.242) and the worst decile by about 16%. On unseen districts the cut is about **17%** (0.267 → 0.222).
+1. **B3 beats the historical mean.** On the time test it cuts the median error by about **11-14%** (0.273 → 0.236-0.242) and the worst decile by about 16%. On unseen districts the cut is about **17%** (0.267 → 0.222).
 2. **Ridge matches B3 in the median on the time test.** But B3 is clearly better in the worst decile (0.31 vs 0.34) and on unseen districts. B3 therefore stays the serving model, as the brief requires a multi-crop LightGBM first.
 3. **RQ5: the shared multi-crop model helps the weaker crops.** On held-out data it is better than per-crop models in the median, the worst decile and tier B on the time test. On unseen districts it is better in the median and similar in the worst decile. On validation, per-crop models had a similar median but a worse worst decile.
 4. **Weather alone carries signal** (B4 beats B1 everywhere), **but most of the skill comes from the yield history.** More in-season weather (lead 0 → 90) improves B3 only slightly on the time test (0.2415 → 0.2369) and not on unseen districts. Two likely causes:

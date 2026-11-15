@@ -222,7 +222,7 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
     - Metrics are per crop (nMAE, MAE, RMSE, R2), summarised over tier-A crops as median and worst decile.
   - **Protocol:** tuning, selection and conformal calibration on validation only. The selection is frozen (`ml/reports/data/yield_baselines_selection.json`), and test plus spatial test are scored once per frozen configuration; the script refuses a re-run. LightGBM uses 3 seeds.
   - **Serving model:** B3 multi-crop LightGBM.
-    - Test median nMAE 0.237-0.242 vs 0.273 for the historical mean, and 0.222 vs 0.267 on unseen districts (run 37dc01be91cf).
+    - Test median nMAE 0.236-0.242 vs 0.273 for the historical mean, and 0.222 vs 0.267 on unseen districts (run 37dc01be91cf).
     - Ridge ties B3 in the median on the time test but is worse in the worst decile and on unseen districts.
     - RQ5: the shared model is at least as good as per-crop models on held-out data.
   - **Intervals:** split-conformal, 80% per tier, from validation residuals. Test coverage is 0.81-0.88.
