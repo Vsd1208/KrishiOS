@@ -41,7 +41,7 @@ const EVENT_TEMPLATES: EventTemplate[] = [
     label: 'Unseasonal Heavy Rainfall Warning',
     defaultCrop: 'Cotton',
     defaultSeverity: 'CRITICAL',
-    defaultNotes: 'Forecast of 60mm+ rain in next 48h. Postpone spraying and harvest.',
+    defaultNotes: '[Expected rainfall and timing from the official forecast]. Postpone spraying and harvest.',
   },
   {
     type: 'market.price.shift',

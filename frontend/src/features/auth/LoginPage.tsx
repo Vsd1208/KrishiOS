@@ -27,6 +27,8 @@ function getRoleRedirectPath(role: UserRole): string {
     case 'admin':
     case 'system':
       return '/officer';
+    case 'extension_worker':
+      return '/officer/extension';
     default:
       return '/farmer';
   }

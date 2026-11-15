@@ -43,6 +43,11 @@ const roleBadgeColors: Record<UserRole, { bg: string; text: string; border: stri
     text: 'text-gray-700',
     border: 'border-gray-300',
   },
+  extension_worker: {
+    bg: 'bg-amber-50',
+    text: 'text-amber-800',
+    border: 'border-amber-200',
+  },
 };
 
 export const Header: React.FC<HeaderProps> = ({

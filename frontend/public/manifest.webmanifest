@@ -1,0 +1,11 @@
+{
+  "name": "KrishiOS",
+  "short_name": "KrishiOS",
+  "description": "Farm advice, official government updates and weather in Telugu, Hindi and English.",
+  "start_url": "/farmer",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#15803d",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

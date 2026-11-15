@@ -1,0 +1,7 @@
+alias,lgd_district_code,lgd_name,note
+East Midnapore,317,Purba Medinipur,English rendering used in IMD Kolkata nowcasts (SACHET dev split)
+West Midnapore,318,Paschim Medinipur,English rendering of Paschim (= West) Medinipur
+Coochbehar,308,Cooch Behar,Spelling without a space used in IMD Kolkata nowcasts (SACHET dev split)
+Koch Bihar,308,Cooch Behar,Spelling used in SACHET CAP areaDesc
+East Burdwan,306,Purba Bardhaman,English rendering used in IMD Kolkata nowcasts (SACHET dev split)
+West Burdwan,704,Paschim Bardhaman,English rendering of Paschim (= West) Bardhaman

@@ -58,6 +58,7 @@ class NotificationChannel(str, enum.Enum):
     PUSH = "PUSH"
     IN_APP = "IN_APP"
     VOICE = "VOICE"
+    WHATSAPP = "WHATSAPP"
 
 
 class AlertPriority(str, enum.Enum):

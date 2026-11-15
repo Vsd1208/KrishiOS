@@ -33,6 +33,26 @@ dependencies = [
     "PyJWT>=2.8.0,<3.0.0",
     # ── Sprint 6 — Knowledge Graph & GraphRAG ────────────────────────────────
     "neo4j>=5.18.0,<6.0.0",
+    "psutil>=6.0.0,<8.0.0",
+    "arq>=0.26.0,<1.0.0",
+    "pywebpush>=2.0,<3",
+]
+
+[project.optional-dependencies]
+local-ml = [
+    "av>=14.0.0,<16.0.0",
+    "faster-whisper>=1.1.0,<2.0.0",
+    "sacremoses>=0.1.1",
+    "sentencepiece>=0.2.0",
+]
+# Local NVIDIA GPU (laptop RTX 2050, 4 GB): `uv sync --extra local-ml --extra gpu`, then
+# ML_DEVICE=auto|cuda. CUDA wheels come from PyTorch's cu130 index (ADR-015). Default (no extra)
+# keeps the CPU build from PyPI, which is what the container uses.
+gpu = [
+    "torch>=2.14,<2.15",
+]
+cpu = [
+    "torch>=2.13",
 ]
 
 [dependency-groups]
@@ -46,6 +66,15 @@ dev = [
 
 [tool.uv]
 package = false
+conflicts = [[{ extra = "cpu" }, { extra = "gpu" }]]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu130", extra = "gpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true  # only torch comes from this index
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -82,10 +111,14 @@ select = [
 ]
 ignore = [
     "S101",
+    # Multilingual product: Devanagari/Telugu digits and scripts are intentional (Sprint 11).
+    "RUF001",
+    "RUF002",
+    "RUF003",
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101"]
+"tests/**/*.py" = ["S101", "PLR2004"]
 
 [tool.ruff.format]
 quote-style = "double"

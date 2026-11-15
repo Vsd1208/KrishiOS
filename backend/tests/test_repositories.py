@@ -1,6 +1,6 @@
 """Unit tests for repository data-access query behavior."""
 
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
@@ -10,7 +10,8 @@ from app.repositories.farmer import FarmerRepository
 @pytest.mark.asyncio
 async def test_farmer_repository_filters_by_phone(mock_session: AsyncMock) -> None:
     expected_farmer = object()
-    scalar_result = AsyncMock()
+    # ScalarResult.one_or_none() is synchronous in SQLAlchemy 2.x.
+    scalar_result = MagicMock()
     scalar_result.one_or_none.return_value = expected_farmer
     mock_session.scalars.return_value = scalar_result
 

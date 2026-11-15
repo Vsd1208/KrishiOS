@@ -19,7 +19,7 @@ interface VisionDiagnosticLabProps {
 
 export const VisionDiagnosticLab: React.FC<VisionDiagnosticLabProps> = ({
   image,
-  crop = 'Paddy',
+  crop,
 }) => {
   const candidateConditions = [
     {

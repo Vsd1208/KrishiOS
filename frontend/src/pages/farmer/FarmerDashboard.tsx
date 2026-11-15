@@ -13,19 +13,24 @@ import {
   useFarmerProfile,
   useFarmerFields,
   useFarmerCrops,
+  usePrimaryCropName,
   useCurrentWeather,
   useWeatherForecast,
   useFarmerAlerts,
-  useMarketPrices,
 } from '@/features/farmer/hooks/useFarmerData';
 import { FarmSummaryCard } from '@/features/farmer/components/FarmSummaryCard';
 import { WeatherWidget } from '@/features/farmer/components/WeatherWidget';
 import { HeroActionGrid } from '@/features/farmer/components/HeroActionGrid';
 import { AlertBanner } from '@/features/farmer/components/AlertBanner';
+import { ActiveWarningsCard } from '@/features/govconnect/ActiveWarningsCard';
+import { WeatherFeedCard } from '@/features/govconnect/WeatherFeedCard';
+import { MandiTrendCard } from '@/features/govconnect/MandiTrendCard';
+import { feedApi } from '@/services/api/govconnect';
+import { useQuery } from '@tanstack/react-query';
 import { VoiceRecorderModal } from '@/features/farmer/components/VoiceRecorderModal';
 import { CropVisionModal } from '@/features/farmer/components/CropVisionModal';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { TrendingUp, Sprout, Calendar } from 'lucide-react';
+import { Sprout, Calendar } from 'lucide-react';
 
 export const FarmerDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -39,14 +44,17 @@ export const FarmerDashboard: React.FC = () => {
   const { data: farmer, isLoading: isFarmerLoading } = useFarmerProfile();
   const { data: fields = [], isLoading: isFieldsLoading } = useFarmerFields(farmer?.id);
   const { fieldCrops } = useFarmerCrops();
+  const primaryCrop = usePrimaryCropName();
+  // The farmer's LGD district name (from the weather feed), not the village.
+  const { data: feeds } = useQuery({ queryKey: ['govconnect', 'weather-feed'], queryFn: feedApi.weatherFeed });
+  const feedDistrict = feeds?.[0]?.district_name ?? null;
   const { data: weather, isLoading: isWeatherLoading } = useCurrentWeather(
-    farmer?.village || 'Khammam',
+    farmer?.village || undefined,
   );
   const { data: forecast, isLoading: isForecastLoading } = useWeatherForecast(
-    farmer?.village || 'Khammam',
+    farmer?.village || undefined,
   );
   const { alerts, acknowledgeAlert, isAcknowledging } = useFarmerAlerts(farmer?.id);
-  const { data: mandiPrices } = useMarketPrices('Paddy', farmer?.village || 'Khammam');
 
   const currentDate = new Date().toLocaleDateString('en-IN', {
     weekday: 'long',
@@ -65,7 +73,6 @@ export const FarmerDashboard: React.FC = () => {
     }
   };
 
-  const primaryMandiPrice = mandiPrices?.[0];
 
   return (
     <div className="space-y-6">
@@ -101,6 +108,12 @@ export const FarmerDashboard: React.FC = () => {
       {/* Hero Multimodal Action Launcher */}
       <HeroActionGrid onSelectAction={handleHeroAction} />
 
+      {/* Official Govt warnings (Govt Connect) */}
+      <ActiveWarningsCard />
+
+      {/* District weather feed, cross-checked against a second source */}
+      <WeatherFeedCard />
+
       {/* Proactive Risk Alerts Banner (High Priority) */}
       <AlertBanner
         alerts={alerts}
@@ -128,35 +141,8 @@ export const FarmerDashboard: React.FC = () => {
 
       {/* Market & Crop Progression Snapshot */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Mandi Rate Snapshot */}
-        <Card variant="raised" padding="md" className="space-y-2">
-          <CardHeader className="pb-1">
-            <div className="flex items-center justify-between">
-              <span className="text-caption font-bold text-text-secondary uppercase">
-                Mandi Benchmark Price
-              </span>
-              <div className="w-8 h-8 rounded-lg bg-info-50 text-info-600 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5" aria-hidden="true" />
-              </div>
-            </div>
-            <CardTitle as="h3" className="text-heading font-extrabold text-text">
-              {primaryMandiPrice
-                ? `₹${primaryMandiPrice.modal_price_inr_quintal} / qtl`
-                : '₹2,320 / qtl'}
-            </CardTitle>
-            <p className="text-caption text-text-secondary">
-              {primaryMandiPrice
-                ? `${primaryMandiPrice.commodity} (${primaryMandiPrice.variety}) • ${primaryMandiPrice.market}`
-                : 'Paddy Common • Warangal Mandi'}
-            </p>
-          </CardHeader>
-          <CardContent className="pt-2 border-t border-border">
-            <div className="flex items-center justify-between text-caption">
-              <span className="text-success-700 font-semibold">+2.4% vs last week</span>
-              <span className="text-text-muted">MSP: ₹2,183 / qtl</span>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Official mandi price + 30-day trend (AGMARKNET) */}
+        <MandiTrendCard crop={primaryCrop} district={feedDistrict} />
 
         {/* Crop Stage Snapshot */}
         <Card variant="raised" padding="md" className="space-y-2">
@@ -192,7 +178,7 @@ export const FarmerDashboard: React.FC = () => {
       <CropVisionModal
         isOpen={isVisionOpen}
         onClose={() => setIsVisionOpen(false)}
-        defaultCrop="Paddy"
+        defaultCrop={primaryCrop}
       />
     </div>
   );

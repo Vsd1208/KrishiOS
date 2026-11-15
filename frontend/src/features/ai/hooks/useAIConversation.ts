@@ -398,9 +398,9 @@ export function useAIConversation(
 ) {
   const {
     crop,
-    state = 'Telangana',
-    district = 'Khammam',
-    season = 'Kharif',
+    state,
+    district,
+    season,
   } = context;
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);

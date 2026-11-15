@@ -1,0 +1,104 @@
+{
+ "run_id": "bf4365b06b28",
+ "config": {
+  "benchmark": "FLEURS test parallel (en corpus, te/hi queries)",
+  "corpus_size": 350,
+  "n_queries": {
+   "te": 302,
+   "hi": 265
+  },
+  "strategies": {
+   "A": "sentence-transformers/all-MiniLM-L6-v2",
+   "B": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+   "C": "intfloat/multilingual-e5-small",
+   "D": "sentence-transformers/all-MiniLM-L6-v2"
+  },
+  "device": "cpu"
+ },
+ "results": {
+  "A": {
+   "model": "sentence-transformers/all-MiniLM-L6-v2",
+   "te": {
+    "recall@1": 0.1457,
+    "recall@5": 0.2053,
+    "recall@10": 0.2318,
+    "mrr": 0.1826,
+    "n": 302,
+    "embed_ms_per_query": 84.12,
+    "translate_ms_per_query": 0.0
+   },
+   "hi": {
+    "recall@1": 0.0075,
+    "recall@5": 0.0264,
+    "recall@10": 0.0906,
+    "mrr": 0.0333,
+    "n": 265,
+    "embed_ms_per_query": 160.07,
+    "translate_ms_per_query": 0.0
+   }
+  },
+  "B": {
+   "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+   "te": {
+    "recall@1": 0.2583,
+    "recall@5": 0.3311,
+    "recall@10": 0.3775,
+    "mrr": 0.2987,
+    "n": 302,
+    "embed_ms_per_query": 78.55,
+    "translate_ms_per_query": 0.0
+   },
+   "hi": {
+    "recall@1": 0.9925,
+    "recall@5": 0.9962,
+    "recall@10": 0.9962,
+    "mrr": 0.9946,
+    "n": 265,
+    "embed_ms_per_query": 122.84,
+    "translate_ms_per_query": 0.0
+   }
+  },
+  "C": {
+   "model": "intfloat/multilingual-e5-small",
+   "te": {
+    "recall@1": 0.9934,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.9961,
+    "n": 302,
+    "embed_ms_per_query": 133.06,
+    "translate_ms_per_query": 0.0
+   },
+   "hi": {
+    "recall@1": 0.9962,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.9981,
+    "n": 265,
+    "embed_ms_per_query": 201.34,
+    "translate_ms_per_query": 0.0
+   }
+  },
+  "D": {
+   "model": "sentence-transformers/all-MiniLM-L6-v2",
+   "te": {
+    "recall@1": 0.9967,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.9983,
+    "n": 302,
+    "embed_ms_per_query": 18.14,
+    "translate_ms_per_query": 3412.8
+   },
+   "hi": {
+    "recall@1": 0.9962,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.9975,
+    "n": 265,
+    "embed_ms_per_query": 6.14,
+    "translate_ms_per_query": 2283.7
+   }
+  }
+ }
+}

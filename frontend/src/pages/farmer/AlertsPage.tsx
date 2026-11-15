@@ -13,6 +13,7 @@ import {
   useFarmerProfile,
   useFarmerAlerts,
   useCropAdvisories,
+  usePrimaryCropName,
 } from '@/features/farmer/hooks/useFarmerData';
 import { CheckCircle2, BookOpen } from 'lucide-react';
 
@@ -21,7 +22,7 @@ export const AlertsPage: React.FC = () => {
 
   const { data: farmer } = useFarmerProfile();
   const { alerts, isLoading, acknowledgeAlert, isAcknowledging } = useFarmerAlerts(farmer?.id);
-  const { data: advisories = [] } = useCropAdvisories('Paddy', farmer?.village || 'Khammam');
+  const { data: advisories = [] } = useCropAdvisories(usePrimaryCropName() ?? '', farmer?.village || undefined);
 
   const unacknowledgedAlerts = alerts.filter((a) => a.status !== 'ACKNOWLEDGED');
   const displayedAlerts = activeTab === 'active' ? unacknowledgedAlerts : alerts;

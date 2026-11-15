@@ -18,7 +18,7 @@ interface AdvisoryActionToolbarProps {
 
 export const AdvisoryActionToolbar: React.FC<AdvisoryActionToolbarProps> = ({
   advisoryText,
-  crop = 'Paddy',
+  crop,
   onEscalate,
 }) => {
   const [saved, setSaved] = useState(false);

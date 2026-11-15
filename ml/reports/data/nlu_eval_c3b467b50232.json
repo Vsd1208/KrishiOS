@@ -1,0 +1,1194 @@
+{
+ "run_id": "c3b467b50232",
+ "config": {
+  "providers": [
+   "rule-based-nlu",
+   "gemini-nlu"
+  ],
+  "dataset": "evaluation_sets\\nlu\\utterances_v1.jsonl",
+  "n": 152,
+  "label_status": "draft-unreviewed"
+ },
+ "results": {
+  "rule-based-nlu": {
+   "n": 152,
+   "errors": 0,
+   "intent_accuracy": 0.7961,
+   "intent_macro_f1": 0.8261,
+   "intent_accuracy_by_segment": {
+    "en": {
+     "acc": 0.7021,
+     "n": 47
+    },
+    "hi": {
+     "acc": 0.8529,
+     "n": 34
+    },
+    "hi-cs": {
+     "acc": 0.7368,
+     "n": 19
+    },
+    "te": {
+     "acc": 0.8529,
+     "n": 34
+    },
+    "te-cs": {
+     "acc": 0.8889,
+     "n": 18
+    }
+   },
+   "language_accuracy": 0.9342,
+   "code_switch_accuracy": 0.9342,
+   "slot_crop": {
+    "precision": 1.0,
+    "recall": 0.9383,
+    "f1": 0.9682,
+    "tp": 76,
+    "fp": 0,
+    "fn": 5
+   },
+   "slot_district": {
+    "precision": 1.0,
+    "recall": 0.8571,
+    "f1": 0.9231,
+    "tp": 6,
+    "fp": 0,
+    "fn": 1
+   },
+   "latency_ms_median": 0.45,
+   "top_confusions": [
+    {
+     "gold": "disease",
+     "pred": "advisory",
+     "count": 11
+    },
+    {
+     "gold": "market",
+     "pred": "advisory",
+     "count": 4
+    },
+    {
+     "gold": "govt_bulletin",
+     "pred": "out_of_scope",
+     "count": 3
+    },
+    {
+     "gold": "yield",
+     "pred": "advisory",
+     "count": 3
+    },
+    {
+     "gold": "weather",
+     "pred": "out_of_scope",
+     "count": 2
+    },
+    {
+     "gold": "scheme",
+     "pred": "out_of_scope",
+     "count": 2
+    },
+    {
+     "gold": "officer",
+     "pred": "disease",
+     "count": 2
+    },
+    {
+     "gold": "govt_bulletin",
+     "pred": "weather",
+     "count": 1
+    },
+    {
+     "gold": "govt_bulletin",
+     "pred": "advisory",
+     "count": 1
+    },
+    {
+     "gold": "yield",
+     "pred": "weather",
+     "count": 1
+    }
+   ],
+   "errors_detail": [
+    {
+     "id": "n003",
+     "text": "Tomato leaves have dark rings on the lower side, what is this",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n004",
+     "text": "White flies are sitting under the chilli leaves",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n007",
+     "text": "మిరప ఆకులు ముడుచుకుపోతున్నాయి, ఏం మందు కొట్టాలి?",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n009",
+     "text": "गेहूं की पत्तियों पर पीले रंग की धारियां हैं",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n012",
+     "text": "टमाटर के पौधे मुरझा रहे हैं",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n018",
+     "text": "pathi lo tella doma ekkuva undi",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n019",
+     "text": "gehun ki patti peeli ho rahi hai",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n020",
+     "text": "tamatar ke paudhe sukh rahe hain",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n021",
+     "text": "Maize stems have holes and sawdust like material",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n023",
+     "text": "मक्का में फॉल आर्मीवर्म दिख रहा है",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n024",
+     "text": "groundnut leaves showing tikka leaf spot",
+     "gold": "disease",
+     "pred": "advisory"
+    },
+    {
+     "id": "n028",
+     "text": "How hot will it be this week?",
+     "gold": "weather",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n041",
+     "text": "Should I expect frost tonight?",
+     "gold": "weather",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n046",
+     "text": "Where can I get the best rate for my chillies?",
+     "gold": "market",
+     "pred": "advisory"
+    },
+    {
+     "id": "n047",
+     "text": "Should I sell my paddy now or wait?",
+     "gold": "market",
+     "pred": "advisory"
+    },
+    {
+     "id": "n054",
+     "text": "మిర్చి rate ఈరోజు ఎంత ఉంది?",
+     "gold": "market",
+     "pred": "advisory"
+    },
+    {
+     "id": "n055",
+     "text": "आज tomato का rate क्या है?",
+     "gold": "market",
+     "pred": "advisory"
+    },
+    {
+     "id": "n064",
+     "text": "పీఎం కిసాన్ డబ్బులు ఎప్పుడు పడతాయి?",
+     "gold": "scheme",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n076",
+     "text": "मृदा स्वास्थ्य कार्ड कैसे बनवाएं?",
+     "gold": "scheme",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n077",
+     "text": "What did the agriculture department say about this week's rains?",
+     "gold": "govt_bulletin",
+     "pred": "weather"
+    },
+    {
+     "id": "n078",
+     "text": "Is there any new advisory from KVK for paddy?",
+     "gold": "govt_bulletin",
+     "pred": "advisory"
+    },
+    {
+     "id": "n081",
+     "text": "కేవీకే నుంచి కొత్త సలహా ఏమైనా వచ్చిందా?",
+     "gold": "govt_bulletin",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n085",
+     "text": "KVK की नई advisory क्या है?",
+     "gold": "govt_bulletin",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n089",
+     "text": "ప్రభుత్వం నుంచి వచ్చిన హెచ్చరిక ఏంటి?",
+     "gold": "govt_bulletin",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n092",
+     "text": "What is the expected cotton production in my district this year?",
+     "gold": "yield",
+     "pred": "advisory"
+    },
+    {
+     "id": "n095",
+     "text": "ఎకరానికి పత్తి ఎన్ని క్వింటాళ్లు వస్తుంది?",
+     "gold": "yield",
+     "pred": "advisory"
+    },
+    {
+     "id": "n097",
+     "text": "एक एकड़ में कितना धान निकलेगा?",
+     "gold": "yield",
+     "pred": "advisory"
+    },
+    {
+     "id": "n102",
+     "text": "Will this drought reduce my groundnut output?",
+     "gold": "yield",
+     "pred": "weather"
+    },
+    {
+     "id": "n126",
+     "text": "mirch ki kheti kaise karein",
+     "gold": "advisory",
+     "pred": "out_of_scope"
+    },
+    {
+     "id": "n145",
+     "text": "Give me the district summary of pest reports for this week",
+     "gold": "officer",
+     "pred": "disease"
+    },
+    {
+     "id": "n151",
+     "text": "How many farmers reported whitefly this week?",
+     "gold": "officer",
+     "pred": "disease"
+    }
+   ]
+  },
+  "gemini-nlu": {
+   "n": 152,
+   "errors": 132,
+   "intent_accuracy": 0.1316,
+   "intent_macro_f1": 0.1772,
+   "intent_accuracy_by_segment": {
+    "en": {
+     "acc": 0.1064,
+     "n": 47
+    },
+    "hi": {
+     "acc": 0.1471,
+     "n": 34
+    },
+    "hi-cs": {
+     "acc": 0.0526,
+     "n": 19
+    },
+    "te": {
+     "acc": 0.1765,
+     "n": 34
+    },
+    "te-cs": {
+     "acc": 0.1667,
+     "n": 18
+    }
+   },
+   "language_accuracy": 0.125,
+   "code_switch_accuracy": 0.125,
+   "slot_crop": {
+    "precision": 1.0,
+    "recall": 0.1605,
+    "f1": 0.2766,
+    "tp": 13,
+    "fp": 0,
+    "fn": 68
+   },
+   "slot_district": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 7
+   },
+   "latency_ms_median": 302.85,
+   "top_confusions": [
+    {
+     "gold": "advisory",
+     "pred": "error",
+     "count": 22
+    },
+    {
+     "gold": "weather",
+     "pred": "error",
+     "count": 17
+    },
+    {
+     "gold": "market",
+     "pred": "error",
+     "count": 16
+    },
+    {
+     "gold": "scheme",
+     "pred": "error",
+     "count": 16
+    },
+    {
+     "gold": "govt_bulletin",
+     "pred": "error",
+     "count": 14
+    },
+    {
+     "gold": "yield",
+     "pred": "error",
+     "count": 14
+    },
+    {
+     "gold": "disease",
+     "pred": "error",
+     "count": 13
+    },
+    {
+     "gold": "out_of_scope",
+     "pred": "error",
+     "count": 10
+    },
+    {
+     "gold": "officer",
+     "pred": "error",
+     "count": 8
+    },
+    {
+     "gold": "smalltalk",
+     "pred": "error",
+     "count": 2
+    }
+   ],
+   "errors_detail": [
+    {
+     "id": "n001",
+     "text": "There are brown spots with a yellow ring on my paddy leaves",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n002",
+     "text": "My cotton bolls are getting damaged by pink worms inside",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n008",
+     "text": "కంది పంట ఎండిపోతోంది, వేరు కుళ్ళు ఏమైనా ఉందా?",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n015",
+     "text": "मेरे cotton में pink bollworm आ गया है",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n016",
+     "text": "धान की leaves पर brown spots हैं",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n018",
+     "text": "pathi lo tella doma ekkuva undi",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n020",
+     "text": "tamatar ke paudhe sukh rahe hain",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n021",
+     "text": "Maize stems have holes and sawdust like material",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n022",
+     "text": "మొక్కజొన్నలో కత్తెర పురుగు వచ్చింది",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n023",
+     "text": "मक्का में फॉल आर्मीवर्म दिख रहा है",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n024",
+     "text": "groundnut leaves showing tikka leaf spot",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n025",
+     "text": "వేరుశనగ ఆకుల మీద నల్ల మచ్చలు",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n026",
+     "text": "सरसों में माहू लगा है",
+     "gold": "disease",
+     "pred": "error"
+    },
+    {
+     "id": "n027",
+     "text": "Will it rain in Nalgonda in the next two days?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n028",
+     "text": "How hot will it be this week?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n030",
+     "text": "రేపు వర్షం పడే అవకాశం ఉందా?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n031",
+     "text": "ఈ వారం ఉష్ణోగ్రత ఎంత ఉంటుంది?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n032",
+     "text": "గుంటూరులో వాన ఎప్పుడు పడుతుంది?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n033",
+     "text": "कल बारिश होगी क्या?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n034",
+     "text": "इस हफ्ते मौसम कैसा रहेगा?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n035",
+     "text": "क्या आंधी आने वाली है?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n036",
+     "text": "రేపు rain chance ఎంత?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n037",
+     "text": "कल rain होगी क्या मेरे गांव में?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n038",
+     "text": "repu vaana padutunda?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n039",
+     "text": "kal barish hogi kya?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n040",
+     "text": "is hafte mausam kaisa rahega",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n041",
+     "text": "Should I expect frost tonight?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n042",
+     "text": "వడగండ్ల వాన వస్తుందా?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n043",
+     "text": "लू कब तक चलेगी?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n044",
+     "text": "What's the weather forecast for Warangal tomorrow?",
+     "gold": "weather",
+     "pred": "error"
+    },
+    {
+     "id": "n045",
+     "text": "What is today's cotton price in Warangal market?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n046",
+     "text": "Where can I get the best rate for my chillies?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n047",
+     "text": "Should I sell my paddy now or wait?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n048",
+     "text": "ఈరోజు మిర్చి ధర ఎంత?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n049",
+     "text": "పత్తి క్వింటాల్ ధర ఎంత ఉంది?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n050",
+     "text": "వరి ధాన్యం ఎక్కడ అమ్మితే మంచి ధర వస్తుంది?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n051",
+     "text": "आज प्याज का भाव क्या है?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n052",
+     "text": "गेहूं का समर्थन मूल्य कितना है?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n053",
+     "text": "सोयाबीन मंडी में कितने में बिक रहा है?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n054",
+     "text": "మిర్చి rate ఈరోజు ఎంత ఉంది?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n055",
+     "text": "आज tomato का rate क्या है?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n056",
+     "text": "mirchi dhara entha undi",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n057",
+     "text": "aaj pyaz ka bhav kya hai",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n058",
+     "text": "MSP for chickpea this year?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n059",
+     "text": "కందుల ధర పెరుగుతుందా?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n060",
+     "text": "मूंगफली का दाम गिर गया क्या?",
+     "gold": "market",
+     "pred": "error"
+    },
+    {
+     "id": "n061",
+     "text": "When will the next PM-KISAN installment come?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n062",
+     "text": "How do I apply for crop insurance for my cotton?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n063",
+     "text": "Is there any subsidy for drip irrigation?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n064",
+     "text": "పీఎం కిసాన్ డబ్బులు ఎప్పుడు పడతాయి?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n065",
+     "text": "పంట బీమా కి ఎలా దరఖాస్తు చేయాలి?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n066",
+     "text": "రైతు భరోసా డబ్బులు వచ్చాయా?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n067",
+     "text": "किसान सम्मान निधि की अगली किस्त कब आएगी?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n068",
+     "text": "फसल बीमा का क्लेम कैसे करें?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n069",
+     "text": "ड्रिप सिंचाई पर सब्सिडी मिलती है क्या?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n070",
+     "text": "PMFBY లో register ఎలా చేయాలి?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n071",
+     "text": "PM Kisan का paisa कब आएगा?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n072",
+     "text": "fasal bima ka claim kaise milega",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n073",
+     "text": "rythu bharosa dabbulu eppudu vastayi",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n074",
+     "text": "Am I eligible for a Kisan Credit Card?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n075",
+     "text": "సోలార్ పంపు కి సబ్సిడీ ఉందా?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n076",
+     "text": "मृदा स्वास्थ्य कार्ड कैसे बनवाएं?",
+     "gold": "scheme",
+     "pred": "error"
+    },
+    {
+     "id": "n077",
+     "text": "What did the agriculture department say about this week's rains?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n078",
+     "text": "Is there any new advisory from KVK for paddy?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n079",
+     "text": "Show me the latest IMD warning for my district",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n080",
+     "text": "వ్యవసాయ శాఖ ఈ వారం ఏం సూచనలు ఇచ్చింది?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n081",
+     "text": "కేవీకే నుంచి కొత్త సలహా ఏమైనా వచ్చిందా?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n082",
+     "text": "कृषि विभाग ने इस हफ्ते क्या सलाह दी है?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n083",
+     "text": "मौसम विभाग की नई चेतावनी क्या है?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n084",
+     "text": "department advisory లో ఏం చెప్పారు?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n085",
+     "text": "KVK की नई advisory क्या है?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n086",
+     "text": "krishi vibhag ne kya kaha",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n087",
+     "text": "vyavasaya sakha emi cheppindi",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n088",
+     "text": "Did the officer send any notice about spraying?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n089",
+     "text": "ప్రభుత్వం నుంచి వచ్చిన హెచ్చరిక ఏంటి?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n090",
+     "text": "सरकार की तरफ से कोई सूचना आई है क्या?",
+     "gold": "govt_bulletin",
+     "pred": "error"
+    },
+    {
+     "id": "n091",
+     "text": "How much paddy yield can I expect this season?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n092",
+     "text": "What is the expected cotton production in my district this year?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n093",
+     "text": "Yield forecast for maize in Karimnagar",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n094",
+     "text": "ఈ సీజన్ లో వరి దిగుబడి ఎంత వస్తుంది?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n095",
+     "text": "ఎకరానికి పత్తి ఎన్ని క్వింటాళ్లు వస్తుంది?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n096",
+     "text": "इस साल गेहूं की पैदावार कितनी होगी?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n097",
+     "text": "एक एकड़ में कितना धान निकलेगा?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n098",
+     "text": "నా maize yield ఎంత వస్తుంది?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n099",
+     "text": "इस बार soybean की yield कैसी रहेगी?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n100",
+     "text": "vari digubadi entha vastundi",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n101",
+     "text": "is baar gehun ki paidavar kitni hogi",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n102",
+     "text": "Will this drought reduce my groundnut output?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n103",
+     "text": "మిర్చి దిగుబడి తగ్గుతుందా?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n104",
+     "text": "कपास का उत्पादन अनुमान क्या है?",
+     "gold": "yield",
+     "pred": "error"
+    },
+    {
+     "id": "n105",
+     "text": "When should I sow groundnut this kharif?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n106",
+     "text": "How much urea should I apply to maize?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n107",
+     "text": "Which paddy variety is good for low water?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n108",
+     "text": "How often should I irrigate wheat?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n109",
+     "text": "వరి నాట్లు ఎప్పుడు వేయాలి?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n110",
+     "text": "పత్తికి ఎన్ని సార్లు ఎరువు వేయాలి?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n111",
+     "text": "కందిలో కలుపు ఎలా తీయాలి?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n112",
+     "text": "మిర్చి నారు ఎలా పెంచాలి?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n113",
+     "text": "गेहूं की बुवाई कब करनी चाहिए?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n114",
+     "text": "धान में कितना यूरिया डालें?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n115",
+     "text": "चने में सिंचाई कब करें?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n116",
+     "text": "मक्का की अच्छी किस्म कौन सी है?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n117",
+     "text": "పత్తి కి fertilizer ఎంత వేయాలి?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n118",
+     "text": "मेरे गेहूं में fertilizer कितना डालूं?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n119",
+     "text": "vari ki eruvu entha veyali",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n120",
+     "text": "dhan ki buvai kab kare",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n121",
+     "text": "Can I grow sunflower in rabi on black soil?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n122",
+     "text": "Spacing for tomato transplanting?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n123",
+     "text": "టమాటా మొక్కల మధ్య దూరం ఎంత ఉండాలి?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n124",
+     "text": "प्याज की नर्सरी कैसे तैयार करें?",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n125",
+     "text": "chilli కి spray ఏం చేయాలి",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n126",
+     "text": "mirch ki kheti kaise karein",
+     "gold": "advisory",
+     "pred": "error"
+    },
+    {
+     "id": "n127",
+     "text": "Hello",
+     "gold": "smalltalk",
+     "pred": "error"
+    },
+    {
+     "id": "n132",
+     "text": "बहुत धन्यवाद",
+     "gold": "smalltalk",
+     "pred": "error"
+    },
+    {
+     "id": "n134",
+     "text": "Who won the cricket match yesterday?",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n135",
+     "text": "Tell me a movie name",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n136",
+     "text": "What is the capital of France?",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n138",
+     "text": "బస్సు ఎన్ని గంటలకు వస్తుంది?",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n139",
+     "text": "मेरा फोन रिचार्ज कैसे करूं?",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n140",
+     "text": "आज कौन सी फिल्म लगी है?",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n141",
+     "text": "train kab aayegi",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n142",
+     "text": "cinema ticket ela book cheyali",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n143",
+     "text": "Can you book a taxi for me?",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n144",
+     "text": "My buffalo is not eating properly",
+     "gold": "out_of_scope",
+     "pred": "error"
+    },
+    {
+     "id": "n145",
+     "text": "Give me the district summary of pest reports for this week",
+     "gold": "officer",
+     "pred": "error"
+    },
+    {
+     "id": "n146",
+     "text": "Prepare a field inspection report for Khammam",
+     "gold": "officer",
+     "pred": "error"
+    },
+    {
+     "id": "n147",
+     "text": "Escalate this case to the district officer",
+     "gold": "officer",
+     "pred": "error"
+    },
+    {
+     "id": "n148",
+     "text": "జిల్లా నివేదిక తయారు చేయండి",
+     "gold": "officer",
+     "pred": "error"
+    },
+    {
+     "id": "n149",
+     "text": "जिला रिपोर्ट तैयार करो",
+     "gold": "officer",
+     "pred": "error"
+    },
+    {
+     "id": "n150",
+     "text": "Show the outbreak report for cotton in Warangal",
+     "gold": "officer",
+     "pred": "error"
+    },
+    {
+     "id": "n151",
+     "text": "How many farmers reported whitefly this week?",
+     "gold": "officer",
+     "pred": "error"
+    },
+    {
+     "id": "n152",
+     "text": "Summarize the review queue items",
+     "gold": "officer",
+     "pred": "error"
+    }
+   ]
+  }
+ }
+}

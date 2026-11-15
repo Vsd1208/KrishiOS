@@ -1,0 +1,58 @@
+{
+ "run_id": "8db2250e2287",
+ "config": {
+  "dataset": "evaluation_sets\\dialogue\\dialogues_v1.jsonl",
+  "n_dialogues": 30,
+  "runtime": "stubbed (dialogue management only)",
+  "label_status": "draft"
+ },
+ "metrics": {
+  "task_success": 0.9333,
+  "task_success_by_language": {
+   "en": {
+    "rate": 0.9,
+    "n": 10
+   },
+   "hi": {
+    "rate": 1.0,
+    "n": 10
+   },
+   "te": {
+    "rate": 0.9,
+    "n": 10
+   }
+  },
+  "turn_accuracy": 0.9524,
+  "n_turns": 42,
+  "failures": [
+   {
+    "id": "te04",
+    "turns": [
+     {
+      "text": "రేపు వర్షం పడుతుందా",
+      "errors": []
+     },
+     {
+      "text": "ఖమ్మం",
+      "errors": [
+       "status: expected 'answered', got 'clarification'",
+       "district: expected 509, got None"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "en09",
+    "turns": [
+     {
+      "text": "What did the agriculture department say about this week's rains?",
+      "errors": [
+       "status: expected 'answered', got 'clarification'",
+       "intent: expected 'govt_bulletin', got 'weather'"
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, PostgresDsn, RedisDsn, computed_field
+from pydantic import AliasChoices, Field, PostgresDsn, RedisDsn, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -101,9 +101,10 @@ class Settings(BaseSettings):
         default_factory=lambda: ["image/jpeg", "image/png", "image/webp"]
     )
 
-    # Vision model
-    VISION_MODEL_NAME: str = "mock-v1"
-    VISION_MODEL_VERSION: str = "0.1.0"
+    # Vision model (Sprint 11: selected by VISION_PROVIDER; VISION_MODEL_NAME still accepted)
+    VISION_PROVIDER: str = Field(
+        default="mock-v1", validation_alias=AliasChoices("VISION_PROVIDER", "VISION_MODEL_NAME")
+    )
 
     # Quality and confidence thresholds
     VISION_QUALITY_MIN_SCORE: float = 0.3
@@ -129,10 +130,13 @@ class Settings(BaseSettings):
         ]
     )
 
-    STT_PROVIDER_NAME: str = "mock-stt-v1"
-    STT_MODEL_VERSION: str = "0.1.0"
-    TTS_PROVIDER_NAME: str = "mock-tts-v1"
-    TTS_MODEL_VERSION: str = "0.1.0"
+    # Sprint 11: STT_PROVIDER / TTS_PROVIDER (the *_PROVIDER_NAME forms are still accepted)
+    STT_PROVIDER: str = Field(
+        default="mock-stt-v1", validation_alias=AliasChoices("STT_PROVIDER", "STT_PROVIDER_NAME")
+    )
+    TTS_PROVIDER: str = Field(
+        default="mock-tts-v1", validation_alias=AliasChoices("TTS_PROVIDER", "TTS_PROVIDER_NAME")
+    )
 
     VOICE_CACHE_TTL_SECONDS: int = 3600
 
@@ -144,6 +148,14 @@ class Settings(BaseSettings):
 
     MARKET_PROVIDER_NAME: str = "mock-market-v1"
     MARKET_API_BASE_URL: str = "https://api.data.gov.in/resource"
+    # Free key from data.gov.in (never commit it). Resource: daily commodity prices by market.
+    DATA_GOV_IN_API_KEY: str | None = None
+    DATA_GOV_IN_AGMARKNET_RESOURCE: str = "9ef84268-d588-465a-a308-a864a43d0070"
+    # Variety-wise daily price history (supports filtering by Arrival_Date) for trends.
+    DATA_GOV_IN_AGMARKNET_HISTORY_RESOURCE: str = "35985678-0d79-46b4-9ed6-6f13308a1d24"
+    MANDI_HISTORY_STATES: list[str] = ["Telangana"]
+    MANDI_HISTORY_RECHECK_DAYS: int = 3  # mandis sometimes report a day or two late
+    MANDI_ALERT_CHANGE_PCT: float = 10.0  # 7-day modal change that raises market.price_changed
     MARKET_CACHE_TTL_SECONDS: int = 21600  # 6 hours
 
     ADVISORY_PROVIDER_NAME: str = "mock-advisory-v1"
@@ -156,6 +168,81 @@ class Settings(BaseSettings):
     CIRCUIT_BREAKER_RECOVERY_TIME_SECONDS: float = 30.0
     CIRCUIT_BREAKER_TIMEOUT_SECONDS: float = 5.0
     LIVE_DATA_RATE_LIMIT_PER_MINUTE: int = 60
+
+    # ── Sprint 11: platform foundations ───────────────────────────────────────
+    # Reference tables (crop catalog, LGD) live in ml/reference; mounted read-only in Docker.
+    REFERENCE_DATA_DIR: str | None = None
+    ML_ARTIFACTS_DIR: str | None = None
+    # Mocks are allowed outside production. In production a mock provider is a startup error.
+    ALLOW_MOCK_PROVIDERS: bool = True
+    TRANSLATION_PROVIDER: str = "mock-translation"
+    TRANSLATION_FALLBACK_PROVIDER: str | None = None
+    NLU_PROVIDER: str = "rule-based-nlu"
+    NLU_FALLBACK_PROVIDER: str | None = "rule-based-nlu"
+    YIELD_PROVIDER: str | None = None
+    NOTIFICATION_CHANNELS: list[str] = Field(default_factory=lambda: ["in_app"])
+    SUPPORTED_LANGUAGES: list[str] = Field(default_factory=lambda: ["en", "hi", "te"])
+    # Third-party processing of farmer data is opt-in per provider (DPDP).
+    ALLOW_OFF_DEVICE_PROVIDERS: bool = False
+
+    # Local speech models (local-ml extra). Whisper sizes: tiny|base|small|medium|large-v3.
+    # Hugging Face read token for gated AI4Bharat checkpoints (never logged or committed).
+    HF_TOKEN: str | None = None
+    STT_INDICCONFORMER_DECODING: str = "rnnt"  # rnnt | ctc
+    INDICTRANS2_NUM_BEAMS: int = 4
+    ML_DEVICE: str = "auto"  # auto | cpu | cuda (local models)
+    # Phase 3: dialogue state store (memory for dev/tests, redis for multi-instance).
+    CONVERSATION_STATE_BACKEND: str = "memory"
+    # Load configured local STT/MT models at startup (cold load measured at 78 s).
+    PRELOAD_MODELS: bool = False
+    # ── Sprint 11, Phase 4: Govt Connect, grievances ─────────────────────────
+    GOVCONNECT_STORAGE_PATH: str = "/data/govconnect"
+    # CRITICAL bulletins are sent with URGENT priority (bypassing quiet hours) only when enabled.
+    GOVCONNECT_CRITICAL_BYPASS_QUIET_HOURS: bool = True
+    GOVCONNECT_DEFAULT_LANGUAGES: list[str] = ["te", "hi", "en"]
+    GOVCONNECT_MAINTENANCE_INTERVAL_SECONDS: int = 300
+    # ── Sprint 11, Phase 5: automated official feeds ─────────────────────────
+    # NDMA SACHET CAP RSS (public domain). The national feed plus state feeds for service areas.
+    SACHET_FEED_URLS: list[str] = [
+        "https://sachet.ndma.gov.in/cap_public_website/rss/rss_india.xml",
+        "https://sachet.ndma.gov.in/cap_public_website/rss/rss_telangana.xml",
+    ]
+    SACHET_POLL_INTERVAL_SECONDS: int = 600
+    SACHET_REQUEST_INTERVAL_SECONDS: float = 1.0
+    SACHET_MAX_NEW_PER_RUN: int = 50
+    SACHET_SERVICE_AREA_ONLY: bool = True  # only districts with KrishiOS farmers
+    # Feed bulletins always go to officer review unless this is on; even then only LOW/MEDIUM
+    # alerts whose translations pass the checks are published automatically (ADR-023).
+    GOVCONNECT_FEED_AUTO_PUBLISH: bool = False
+    WEATHER_FEED_INTERVAL_SECONDS: int = 3600
+    # F5 channels: only "sandbox" exists until a real provider is approved (cost, contract).
+    SMS_PROVIDER: str = "sandbox"
+    VOICE_PROVIDER: str = "sandbox"
+    WHATSAPP_PROVIDER: str = "sandbox"
+    # Web Push (VAPID). Without keys, push runs as a sandbox (composed, not sent). Generate with
+    # `uv run vapid --gen`; the subject is a contact URI for push services (e.g. mailto:ops@...).
+    VAPID_PUBLIC_KEY: str | None = None
+    VAPID_PRIVATE_KEY: str | None = None
+    VAPID_SUBJECT: str | None = None
+    # Resolution SLA per grievance category, in hours (configurable defaults, not official SLAs).
+    GRIEVANCE_SLA_HOURS: dict[str, int] = {
+        "payment": 168, "insurance_claim": 168, "scheme_enrollment": 120,
+        "input_quality": 72, "advisory": 48, "infrastructure": 168, "other": 120,
+    }
+    STT_WHISPER_MODEL: str = "small"
+    STT_WHISPER_COMPUTE_TYPE: str = "int8"
+    STT_WHISPER_BEAM_SIZE: int = 5
+    # Whisper's temperature fallback re-decodes an utterance up to 6 times when output looks
+    # repetitive (common for Telugu); off by default to bound CPU latency.
+    STT_WHISPER_TEMPERATURE_FALLBACK: bool = False
+    TTS_MMS_MODEL_PREFIX: str = "facebook/mms-tts-"
+
+    # Worker / scheduler (arq on Redis)
+    WORKER_QUEUE_NAME: str = "krishios:jobs"
+    WORKER_JOB_TIMEOUT_SECONDS: int = 300
+    WORKER_MAX_TRIES: int = 3
+    WORKER_HEARTBEAT_INTERVAL_SECONDS: int = 60
+    WORKER_JOB_STALE_FACTOR: float = 3.0
 
     # ── Logging ───────────────────────────────────────────────────────────────
     LOG_LEVEL: Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"] = "INFO"

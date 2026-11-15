@@ -177,10 +177,19 @@ async function request<T>(
 
   if (!response.ok) {
     const errorBody = data as ApiErrorResponse | null;
+    // Some endpoints return a structured detail ({message, reasons}); flatten it for display.
+    const raw: unknown = errorBody?.error?.message;
+    const structured = raw as { message?: string; reasons?: string[] } | null;
+    const message =
+      typeof raw === 'string'
+        ? raw
+        : structured && typeof structured === 'object' && structured.message
+          ? [structured.message, ...(structured.reasons ?? [])].join(' — ')
+          : `Request failed with status ${response.status}`;
     throw new ApiError(
       response.status,
       errorBody?.error?.code ?? 'unknown_error',
-      errorBody?.error?.message ?? `Request failed with status ${response.status}`,
+      message,
       errorBody?.error?.details,
     );
   }

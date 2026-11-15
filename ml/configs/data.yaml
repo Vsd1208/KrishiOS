@@ -1,0 +1,9 @@
+# Data locations and versions. Paths are relative to ml/.
+reference:
+  crop_catalog: reference/crop_catalog.csv
+  lgd_districts: reference/lgd_districts.csv
+  lgd_blocks: reference/lgd_blocks.csv
+  lgd_snapshot_observed_on: "2026-11-12"
+raw_dir: data/raw
+interim_dir: data/interim
+processed_dir: data/processed

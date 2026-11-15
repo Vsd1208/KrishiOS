@@ -1,0 +1,102 @@
+# KrishiOS agri glossary (Sprint 11). Status: DRAFT, pending native-speaker review (te, hi).
+# - protected_terms are never translated (kept verbatim, Latin script).
+# - units maps a canonical unit to its spellings in en/hi/te; used by the number/unit check.
+# - crop names are mapped from ml/reference/crop_catalog.csv at runtime (not duplicated here).
+version: "2026.11.0-draft"
+
+protected_terms:
+  # Active ingredients commonly named in ICAR/SAU/state advisories
+  - tricyclazole
+  - carbendazim
+  - mancozeb
+  - hexaconazole
+  - propiconazole
+  - tebuconazole
+  - azoxystrobin
+  - validamycin
+  - streptocycline
+  - copper oxychloride
+  - imidacloprid
+  - thiamethoxam
+  - acetamiprid
+  - chlorantraniliprole
+  - flubendiamide
+  - emamectin benzoate
+  - spinosad
+  - fipronil
+  - chlorpyrifos
+  - profenofos
+  - cartap hydrochloride
+  - buprofezin
+  - pymetrozine
+  - dimethoate
+  - pretilachlor
+  - butachlor
+  - pendimethalin
+  - bispyribac sodium
+  - glyphosate
+  - atrazine
+  - thiram
+  - captan
+  - metalaxyl
+  - trichoderma viride
+  - pseudomonas fluorescens
+  - quinalphos
+  - cypermethrin
+  - lambda-cyhalothrin
+  - wettable sulphur
+  - zinc sulphate
+  - ferrous sulphate
+  - borax
+  - urea
+  - DAP
+  - MOP
+  - SSP
+  - NPK
+  # Formulation codes
+  - WP
+  - EC
+  - SC
+  - WG
+  - WDG
+  - SL
+  - GR
+  - CS
+  - ZC
+  # Schemes and programmes
+  - PM-KISAN
+  - PMFBY
+  - RWBCIS
+  - KCC
+  - PM-KUSUM
+  - RKVY
+  - PKVY
+  - e-NAM
+  - Rythu Bharosa
+  - Rythu Bandhu
+  # Agencies
+  - IMD
+  - ICAR
+  - KVK
+  - NDMA
+  - SDMA
+  - AMFU
+  - DAMU
+  - CRIDA
+  - ANGRAU
+  - PJTSAU
+
+units:
+  kg: [kg, kgs, kilogram, kilograms, "कि.ग्रा.", किलोग्राम, किलो, కిలో, కిలోలు, "కి.గ్రా."]
+  g: [g, gm, gms, gram, grams, ग्राम, గ్రాము, గ్రాములు, "గ్రా."]
+  ml: [ml, millilitre, millilitres, milliliter, milliliters, "मि.ली.", मिलीलीटर, "మి.లీ.", మిల్లీలీటర్లు]
+  l: [l, lt, ltr, litre, litres, liter, liters, लीटर, "ली.", లీటరు, లీటర్లు]
+  ha: [ha, hectare, hectares, हेक्टेयर, హెక్టారు, హెక్టార్లు]
+  acre: [acre, acres, एकड़, ఎకరం, ఎకరా, ఎకరాలు]  # ఎకరా: oblique stem (ఎకరానికి = per acre)
+  mm: [mm, millimetre, millimetres, millimeter, मिमी, "मि.मी.", "మి.మీ."]
+  cm: [cm, centimetre, centimetres, सेमी, "సెం.మీ."]
+  degc: ["°c", "°", celsius, सेल्सियस, సెల్సియస్]
+  pct: ["%", percent, प्रतिशत, శాతం]
+  kmph: [kmph, "km/h", "km/hr", "कि.मी./घंटा", "కి.మీ./గం."]
+  quintal: [quintal, quintals, qtl, क्विंटल, క్వింటాల్, క్వింటాళ్లు]
+  rupee: ["₹", rs, "rs.", rupees, रुपये, रुपए, రూపాయలు]

@@ -1,0 +1,59 @@
+crop_canonical,name_en,name_te,name_hi,aliases,scientific_name,crop_group,domain,seasons,yield_unit,apy_names,tier,vision_supported,review_status
+paddy,Paddy (Rice),వరి,धान,rice|paddy crop|rice crop|chawal|dhaan|dhan|vari|vadlu|వడ్లు|వరి పంట|బియ్యం|चावल|धान की फसल,Oryza sativa,cereal,crop,kharif|rabi|summer,t/ha,Rice,unassigned,false,draft
+wheat,Wheat,గోధుమ,गेहूं,gehun|gehu|godhuma|godhumalu|గోధుమలు|गेहूँ,Triticum aestivum,cereal,crop,rabi,t/ha,Wheat,unassigned,false,draft
+maize,Maize,మొక్కజొన్న,मक्का,corn|makka|makai|mokkajonna|bhutta|मकई|भुट्टा,Zea mays,cereal,crop,kharif|rabi,t/ha,Maize,unassigned,false,draft
+sorghum,Sorghum (Jowar),జొన్న,ज्वार,jowar|jonna|jonnalu|జొన్నలు|jola|cholam,Sorghum bicolor,millet,crop,kharif|rabi,t/ha,Jowar,unassigned,false,draft
+pearl_millet,Pearl millet (Bajra),సజ్జ,बाजरा,bajra|bajri|sajja|sajjalu|సజ్జలు|cumbu,Pennisetum glaucum,millet,crop,kharif|summer,t/ha,Bajra,unassigned,false,draft
+finger_millet,Finger millet (Ragi),రాగి,रागी,ragi|ragulu|రాగులు|mandua|मंडुआ|nachni,Eleusine coracana,millet,crop,kharif,t/ha,Ragi,unassigned,false,draft
+small_millets,Small millets,చిరుధాన్యాలు,लघु धान्य,small millet|foxtail millet|little millet|kodo millet|korra|korralu|samalu|కొర్రలు|సామలు|kodo|kutki|कोदो|कुटकी,,millet,crop,kharif,t/ha,Small millets,unassigned,false,draft
+barley,Barley,బార్లీ,जौ,jau|jav|barli,Hordeum vulgare,cereal,crop,rabi,t/ha,Barley,unassigned,false,draft
+pigeonpea,Pigeon pea (Tur/Arhar),కంది,अरहर,tur|toor|arhar|red gram|redgram|kandi|kandulu|కందులు|तुअर|तूर,Cajanus cajan,pulse,crop,kharif,t/ha,Arhar/Tur,unassigned,false,draft
+chickpea,Chickpea (Gram),శనగ,चना,gram|chana|bengal gram|kabuli chana|senaga|senagalu|శనగలు|छोले,Cicer arietinum,pulse,crop,rabi,t/ha,Gram,unassigned,false,draft
+green_gram,Green gram (Moong),పెసర,मूंग,moong|mung|mung bean|green gram|pesara|pesalu|పెసలు|మూంగ్|मूँग,Vigna radiata,pulse,crop,kharif|rabi|summer,t/ha,Moong(Green Gram),unassigned,false,draft
+black_gram,Black gram (Urad),మినుము,उड़द,urad|urd|black gram|minumu|minumulu|మినుములు|उडद,Vigna mungo,pulse,crop,kharif|rabi|summer,t/ha,Urad,unassigned,false,draft
+lentil,Lentil (Masoor),మసూర్,मसूर,masoor|masur|lentils|మసూర్ పప్పు,Lens culinaris,pulse,crop,rabi,t/ha,Masoor,unassigned,false,draft
+horse_gram,Horse gram,ఉలవ,कुलथी,horsegram|ulava|ulavalu|ఉలవలు|kulthi|kulath,Macrotyloma uniflorum,pulse,crop,kharif|rabi,t/ha,Horse-gram,unassigned,false,draft
+field_pea,Field pea,బఠాణీ,मटर,matar|peas|batani|బఠానీ|बटाना,Pisum sativum,pulse,crop,rabi,t/ha,Peas & beans (Pulses),unassigned,false,draft
+groundnut,Groundnut,వేరుశనగ,मूंगफली,peanut|moongphali|verusenaga|verusenagalu|palli|పల్లీలు|వేరుశెనగ|मूँगफली,Arachis hypogaea,oilseed,crop,kharif|rabi,t/ha,Groundnut,unassigned,false,draft
+rapeseed_mustard,Rapeseed and mustard,ఆవాలు,सरसों,mustard|rapeseed|sarson|toria|avalu|तोरिया|राई सरसों,Brassica spp.,oilseed,crop,rabi,t/ha,Rapeseed &Mustard,unassigned,false,draft
+soybean,Soybean,సోయాబీన్,सोयाबीन,soya|soyabean|soya bean|soybeans|సోయా,Glycine max,oilseed,crop,kharif,t/ha,Soyabean,unassigned,false,draft
+sunflower,Sunflower,పొద్దుతిరుగుడు,सूरजमुखी,surajmukhi|poddutirugudu|sunflower seed,Helianthus annuus,oilseed,crop,kharif|rabi,t/ha,Sunflower,unassigned,false,draft
+sesame,Sesame (Til),నువ్వులు,तिल,til|sesamum|gingelly|nuvvulu|నువ్వు,Sesamum indicum,oilseed,crop,kharif|rabi|summer,t/ha,Sesamum,unassigned,false,draft
+safflower,Safflower,కుసుమ,कुसुम,kusum|kusuma|kardi,Carthamus tinctorius,oilseed,crop,rabi,t/ha,Safflower,unassigned,false,draft
+castor,Castor,ఆముదం,अरंडी,castor seed|arandi|amudam|amudalu|ఆముదాలు|अरण्डी,Ricinus communis,oilseed,crop,kharif|rabi,t/ha,Castor seed,unassigned,false,draft
+linseed,Linseed,అవిసె,अलसी,alsi|avise|flax|flaxseed,Linum usitatissimum,oilseed,crop,rabi,t/ha,Linseed,unassigned,false,draft
+niger_seed,Niger seed,వెర్రి నువ్వులు,रामतिल,niger|ramtil|verri nuvvulu,Guizotia abyssinica,oilseed,crop,kharif|rabi,t/ha,Niger seed,unassigned,false,draft
+cotton,Cotton,పత్తి,कपास,kapas|kappas|patti|pathi|pratti|bt cotton|narma|desi cotton|ప్రత్తి|కపాస్|नरमा,Gossypium spp.,fibre,crop,kharif,bales_170kg/ha,Cotton(lint),unassigned,false,draft
+jute,Jute,జనపనార,जूट,patsan|janapanara|पटसन,Corchorus spp.,fibre,crop,kharif,bales_180kg/ha,Jute,unassigned,false,draft
+mesta,Mesta,గోగు,मेस्ता,kenaf|roselle|gongura|gogu|గోంగూర,Hibiscus spp.,fibre,crop,kharif,bales_180kg/ha,Mesta,unassigned,false,draft
+sugarcane,Sugarcane,చెరకు,गन्ना,ganna|cheruku|ikh|ikshu|ईख,Saccharum officinarum,sugar,crop,whole_year,t/ha,Sugarcane,unassigned,false,draft
+tobacco,Tobacco,పొగాకు,तंबाकू,tambaku|pogaku|तम्बाकू,Nicotiana tabacum,commercial,crop,kharif|rabi,t/ha,Tobacco,unassigned,false,draft
+potato,Potato,బంగాళదుంప,आलू,aloo|aloo gadda|bangaladumpa|bangala dumpa|ఆలుగడ్డ,Solanum tuberosum,vegetable,crop,rabi,t/ha,Potato,unassigned,false,draft
+onion,Onion,ఉల్లిపాయ,प्याज,pyaz|pyaj|ullipaya|ullipayalu|ఉల్లి|कांदा|प्याज़,Allium cepa,vegetable,crop,kharif|rabi,t/ha,Onion,unassigned,false,draft
+tomato,Tomato,టమాట,टमाटर,tamatar|tomato crop|tomatoes|టమోటా|టొమాటో,Solanum lycopersicum,vegetable,crop,kharif|rabi|summer,t/ha,Tomato,unassigned,false,draft
+chilli,Chilli,మిరప,मिर्च,chili|chillies|chilies|mirchi|mirapa|mirapakaya|dry chilli|red chilli|lal mirch|మిరపకాయ|మిర్చి|लाल मिर्च|मिर्ची,Capsicum annuum,spice,crop,kharif|rabi,t/ha,Dry chillies,unassigned,false,draft
+turmeric,Turmeric,పసుపు,हल्दी,haldi|pasupu,Curcuma longa,spice,crop,kharif,t/ha,Turmeric,unassigned,false,draft
+ginger,Ginger,అల్లం,अदरक,adrak|allam,Zingiber officinale,spice,crop,kharif,t/ha,Ginger,unassigned,false,draft
+garlic,Garlic,వెల్లుల్లి,लहसुन,lahsun|vellulli,Allium sativum,spice,crop,rabi,t/ha,Garlic,unassigned,false,draft
+coriander,Coriander,ధనియాలు,धनिया,dhaniya|dhaniyalu|kothimeera|కొత్తిమీర,Coriandrum sativum,spice,crop,rabi,t/ha,Coriander,unassigned,false,draft
+black_pepper,Black pepper,మిరియాలు,काली मिर्च,kali mirch|miriyalu|pepper,Piper nigrum,spice,crop,whole_year,t/ha,Black pepper,unassigned,false,draft
+cardamom,Cardamom,యాలకులు,इलायची,elaichi|yalakulu|elakulu|ఏలకులు,Elettaria cardamomum,spice,crop,whole_year,t/ha,Cardamom,unassigned,false,draft
+banana,Banana,అరటి,केला,kela|arati|aratikaya|అరటికాయ|bananas,Musa spp.,fruit,crop,whole_year,t/ha,Banana,unassigned,false,draft
+mango,Mango,మామిడి,आम,mamidi|mangoes|mango orchard,Mangifera indica,fruit,crop,whole_year,t/ha,Mango,unassigned,false,draft
+grapes,Grapes,ద్రాక్ష,अंगूर,angoor|draksha|grape,Vitis vinifera,fruit,crop,whole_year,t/ha,Grapes,unassigned,false,draft
+citrus,Citrus,బత్తాయి,नींबू वर्गीय,sweet orange|mosambi|batthayi|santra|kinnow|lemon|nimma|నిమ్మ|मौसमी|संतरा,Citrus spp.,fruit,crop,whole_year,t/ha,Citrus Fruit,unassigned,false,draft
+papaya,Papaya,బొప్పాయి,पपीता,papita|boppayi,Carica papaya,fruit,crop,whole_year,t/ha,Papaya,unassigned,false,draft
+coconut,Coconut,కొబ్బరి,नारियल,nariyal|kobbari|tenkaya|టెంకాయ,Cocos nucifera,plantation,crop,whole_year,nuts/ha,Coconut,unassigned,false,draft
+arecanut,Arecanut,వక్క,सुपारी,supari|vakka|areca,Areca catechu,plantation,crop,whole_year,t/ha,Arecanut,unassigned,false,draft
+cashew,Cashew,జీడిమామిడి,काजू,kaju|jeedi|jeedimamidi|cashewnut,Anacardium occidentale,plantation,crop,whole_year,t/ha,Cashewnut,unassigned,false,draft
+sweet_potato,Sweet potato,చిలగడదుంప,शकरकंद,shakarkand|chilagada dumpa|sweetpotato,Ipomoea batatas,vegetable,crop,kharif|rabi,t/ha,Sweet potato,unassigned,false,draft
+tapioca,Tapioca (Cassava),కర్రపెండలం,टैपिओका,cassava|kappa|karrapendalam,Manihot esculenta,vegetable,crop,whole_year,t/ha,Tapioca,unassigned,false,draft
+brinjal,Brinjal,వంకాయ,बैंगन,baingan|vankaya|eggplant|aubergine,Solanum melongena,vegetable,crop,kharif|rabi|summer,t/ha,Brinjal,unassigned,false,draft
+okra,Okra (Bhindi),బెండ,भिंडी,bhindi|benda|bendakaya|lady finger|ladies finger|బెండకాయ,Abelmoschus esculentus,vegetable,crop,kharif|summer,t/ha,Bhindi,unassigned,false,draft
+cabbage,Cabbage,క్యాబేజీ,पत्तागोभी,patta gobhi|bandh gobhi|gobhi|gobi|गोभी,Brassica oleracea var. capitata,vegetable,crop,rabi,t/ha,Cabbage,unassigned,false,draft
+cauliflower,Cauliflower,కాలీఫ్లవర్,फूलगोभी,phool gobhi|phool gobi|gobhi|gobi|गोभी,Brassica oleracea var. botrytis,vegetable,crop,rabi,t/ha,Cauliflower,unassigned,false,draft
+cowpea,Cowpea (Lobia),అలసందలు,लोबिया,lobia|alasandalu|alasanda|bobbarlu|బొబ్బర్లు|chawli|चौली|cow pea,Vigna unguiculata,pulse,crop,kharif|summer,t/ha,Cowpea(Lobia),unassigned,false,draft
+guar,Guar (Cluster bean),గోరుచిక్కుడు,ग्वार,cluster bean|clusterbean|guar seed|gwar|goruchikkudu,Cyamopsis tetragonoloba,pulse,crop,kharif,t/ha,Guar seed,unassigned,false,draft
+khesari,Khesari (Grass pea),ఖేసారి,खेसारी,grass pea|lathyrus|teora|लतरी,Lathyrus sativus,pulse,crop,rabi,t/ha,Khesari,unassigned,false,draft
+moth_bean,Moth bean,మోత్,मोठ,moth|matki|मटकी|dew bean,Vigna aconitifolia,pulse,crop,kharif,t/ha,Moth,unassigned,false,draft
+sunn_hemp,Sunn hemp,జనుము,सनई,sannhamp|sunnhemp|san hemp|janumu|san|सन,Crotalaria juncea,fibre,crop,kharif,t/ha,Sannhamp,unassigned,false,draft

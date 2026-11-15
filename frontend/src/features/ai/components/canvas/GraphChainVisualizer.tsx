@@ -16,7 +16,7 @@ interface GraphChainVisualizerProps {
 
 export const GraphChainVisualizer: React.FC<GraphChainVisualizerProps> = ({
   graphPaths = [],
-  crop = 'Paddy',
+  crop,
 }) => {
   // Parse path string into structured nodes if available
   const sampleChains = graphPaths.length > 0

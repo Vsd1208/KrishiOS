@@ -91,6 +91,21 @@ export function useFarmerCrops() {
   };
 }
 
+const STATUS_RANK: Record<string, number> = { Growing: 0, Sown: 1, Planned: 2 };
+
+/**
+ * Name of the farmer's current crop (growing > sown > planned), or undefined when the farmer
+ * has none recorded. Never falls back to a made-up crop.
+ */
+export function usePrimaryCropName(): string | undefined {
+  const { crops, fieldCrops } = useFarmerCrops();
+  const active = [...fieldCrops]
+    .filter((fc) => fc.status in STATUS_RANK)
+    .sort((a, b) => (STATUS_RANK[a.status] ?? 99) - (STATUS_RANK[b.status] ?? 99))[0];
+  const crop = crops.find((c) => c.id === active?.crop_id);
+  return crop?.crop_name?.trim() || crop?.name?.trim() || undefined;
+}
+
 /** Hook to fetch live weather observations. */
 export function useCurrentWeather(district?: string, fieldId?: number) {
   return useQuery({

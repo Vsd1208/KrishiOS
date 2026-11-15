@@ -192,7 +192,7 @@ export const AskKrishiOS: React.FC<
 
   const districtName =
     farmer?.village ||
-    'Khammam';
+    undefined;
 
   /* ==========================================================
      SEND QUERY
@@ -218,14 +218,8 @@ export const AskKrishiOS: React.FC<
       const agentRequest = {
         goal: textToSend,
 
-        state:
-          'Telangana',
-
         district:
           districtName,
-
-        season:
-          'Kharif',
 
         ...(activeCropName
           ? {

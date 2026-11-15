@@ -1,0 +1,69 @@
+{
+ "run_id": "ef1960297312",
+ "config": {
+  "stage": "labels",
+  "audit_run": "ee75501cc5ef",
+  "split": {
+   "val_from": 2016,
+   "test_from": 2019,
+   "spatial_share": 0.1
+  },
+  "east_rice_annual": [
+   "Assam",
+   "Odisha",
+   "Bihar",
+   "West Bengal",
+   "Jharkhand"
+  ],
+  "parameters": [
+   "PRECTOTCORR",
+   "T2M_MAX",
+   "T2M_MIN",
+   "RH2M",
+   "ALLSKY_SFC_SW_DWN"
+  ],
+  "leads": [
+   0,
+   30,
+   60,
+   90
+  ],
+  "pre_days": 60,
+  "years": [
+   1997,
+   2024
+  ],
+  "weather_source": "NASA POWER daily regional (0.5x0.625), area-weighted"
+ },
+ "metrics": {
+  "labels": {
+   "rows": 340765,
+   "series": 108,
+   "crops": 43,
+   "districts": 740,
+   "years": [
+    1997,
+    2022
+   ],
+   "by_split": {
+    "train": 211612,
+    "test": 58224,
+    "val": 41814,
+    "spatial_test": 29115
+   },
+   "by_tier": {
+    "A": 283097,
+    "B": 31652,
+    "C": 26016
+   },
+   "by_season": {
+    "Kharif": 149173,
+    "Rabi": 107952,
+    "Whole Year": 60025,
+    "Zaid": 23615
+   },
+   "outlier_rate": 0.0606,
+   "east_rice_annual_rows": 3428
+  }
+ }
+}

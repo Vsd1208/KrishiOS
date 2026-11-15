@@ -15,6 +15,8 @@ services:
       REDIS_HOST: redis
       QDRANT_HOST: qdrant
       NEO4J_HOST: neo4j
+      REFERENCE_DATA_DIR: /app/reference
+      ML_ARTIFACTS_DIR: /app/ml_artifacts
 
     ports:
       - "8000:8000"
@@ -24,6 +26,9 @@ services:
       - ./backend/migrations:/app/migrations
       - ./backend/tests:/app/tests
       - documents_data:/data/documents
+      # Sprint 11: committed reference tables and exported ML artifacts (read-only)
+      - ./ml/reference:/app/reference:ro
+      - ./ml/artifacts:/app/ml_artifacts:ro
 
     depends_on:
       postgres:
@@ -33,6 +38,44 @@ services:
       qdrant:
         condition: service_started
       neo4j:
+        condition: service_started
+
+    restart: unless-stopped
+
+  # Sprint 11: scheduled, idempotent background jobs (arq on Redis); health at /api/v1/health/jobs
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: krishios-worker
+
+    env_file:
+      - ./backend/.env.example
+      - ./backend/.env
+
+    environment:
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+      QDRANT_HOST: qdrant
+      NEO4J_HOST: neo4j
+      REFERENCE_DATA_DIR: /app/reference
+      ML_ARTIFACTS_DIR: /app/ml_artifacts
+      RUN_MIGRATIONS: "false"
+
+    command: ["uv", "run", "arq", "app.worker.main.WorkerSettings"]
+
+    volumes:
+      - ./backend/app:/app/app
+      - ./ml/reference:/app/reference:ro
+      - ./ml/artifacts:/app/ml_artifacts:ro
+
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      backend:
         condition: service_started
 
     restart: unless-stopped

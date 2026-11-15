@@ -1,0 +1,107 @@
+# Govt bulletin extraction lexicon (rules-v1). hi/te terms are DRAFT, pending native review.
+# Phrases are matched on normalised tokens (case-folded, punctuation removed).
+
+hazards:
+  heavy_rain:
+    en: [heavy rain, heavy rainfall, very heavy rain, extremely heavy rain, heavy to very heavy rainfall, intense rainfall]
+    hi: [भारी बारिश, भारी वर्षा, अति भारी वर्षा, मूसलाधार बारिश]
+    te: [భారీ వర్షం, భారీ వర్షాలు, అతి భారీ వర్షాలు, కుండపోత వర్షం]
+  thunderstorm:
+    en: [thunderstorm, thunderstorms, lightning, thunder squall]
+    hi: [आंधी, गरज, बिजली गिरने, वज्रपात, आंधी तूफान]
+    te: [ఉరుములు, మెరుపులు, పిడుగులు, ఉరుములతో కూడిన]
+  hailstorm:
+    en: [hail, hailstorm]
+    hi: [ओलावृष्टि, ओले]
+    te: [వడగళ్ళు, వడగండ్ల]
+  strong_wind:
+    en: [strong wind, strong winds, gusty wind, gusty winds, squally weather, gale]
+    hi: [तेज हवा, तेज हवाएं, तेज़ हवा]
+    te: [ఈదురు గాలులు, బలమైన గాలులు]
+  cyclone:
+    en: [cyclone, cyclonic storm, depression, deep depression]
+    hi: [चक्रवात, चक्रवाती तूफान]
+    te: [తుఫాను, తుపాను, వాయుగుండం]
+  flood:
+    en: [flood, floods, flooding, inundation, waterlogging, water logging]
+    hi: [बाढ़, जलभराव]
+    te: [వరద, వరదలు, ముంపు]
+  heatwave:
+    en: [heat wave, heatwave, hot day, severe heat]
+    hi: [लू, गर्म हवा, भीषण गर्मी]
+    te: [వడగాల్పులు, వడగాలులు, తీవ్ర ఎండ]
+  cold_wave:
+    en: [cold wave, cold day, ground frost, frost]
+    hi: [शीत लहर, पाला]
+    te: [చలిగాలులు, శీతల గాలులు, మంచు]
+  fog:
+    en: [dense fog, fog]
+    hi: [घना कोहरा, कोहरा]
+    te: [పొగమంచు]
+  dry_spell:
+    en: [dry spell, drought, deficient rainfall, moisture stress]
+    hi: [सूखा, सूखे]
+    te: [కరువు, వర్షాభావం]
+  pest_outbreak:
+    en: [pest outbreak, pest attack, pest incidence, infestation]
+    hi: [कीट प्रकोप, कीटों का प्रकोप]
+    te: [పురుగుల దాడి, తెగుళ్ల ఉధృతి]
+  disease_outbreak:
+    en: [disease outbreak, disease incidence]
+    hi: [रोग प्रकोप]
+    te: [వ్యాధి ఉధృతి]
+
+# IMD colour code -> KrishiOS severity: yellow (be aware) MEDIUM, orange (be prepared) HIGH,
+# red (take action) CRITICAL.
+severity:
+  CRITICAL:
+    en: [red alert, red warning, red colour, red color, extremely severe]
+    hi: [रेड अलर्ट, लाल चेतावनी]
+    te: [రెడ్ అలర్ట్, ఎరుపు హెచ్చరిక]
+  HIGH:
+    en: [orange alert, orange warning, orange colour, orange color, severe]
+    hi: [ऑरेंज अलर्ट, नारंगी चेतावनी]
+    te: [ఆరెంజ్ అలర్ట్, నారింజ హెచ్చరిక]
+  MEDIUM:
+    en: [yellow alert, yellow warning, yellow colour, yellow color]
+    hi: [येलो अलर्ट, पीली चेतावनी]
+    te: [ఎల్లో అలర్ట్, పసుపు హెచ్చరిక]
+
+# Sentences containing these are taken as recommended actions.
+action_markers:
+  en: [farmers are advised, are advised, advised to, should, avoid, postpone, do not, apply, spray, harvest, drain, provide drainage, keep, shift, store, irrigate, take shelter, stay indoors, recommended]
+  hi: [सलाह, करें, न करें, बचें, स्थगित, छिड़काव, कटाई, निकासी]
+  te: [సూచించారు, సూచన, చేయండి, చేయవద్దు, వాయిదా, పిచికారీ, కోత, నీటిని తీసివేయండి]
+
+# Issuing authority patterns -> level. First match wins (longest phrases first).
+authorities:
+  - {phrase: india meteorological department, name: India Meteorological Department, level: national}
+  - {phrase: regional meteorological centre, name: Regional Meteorological Centre (IMD), level: state}
+  - {phrase: meteorological centre, name: Meteorological Centre (IMD), level: state}
+  - {phrase: national disaster management authority, name: NDMA, level: national}
+  - {phrase: ndma, name: NDMA, level: national}
+  - {phrase: state disaster management authority, name: State Disaster Management Authority, level: state}
+  - {phrase: sdma, name: State Disaster Management Authority, level: state}
+  - {phrase: icar crida, name: ICAR-CRIDA, level: national}
+  - {phrase: crida, name: ICAR-CRIDA, level: national}
+  - {phrase: indian council of agricultural research, name: ICAR, level: national}
+  - {phrase: krishi vigyan kendra, name: Krishi Vigyan Kendra, level: district}
+  - {phrase: kvk, name: Krishi Vigyan Kendra, level: district}
+  - {phrase: district agromet unit, name: District Agromet Unit, level: district}
+  - {phrase: damu, name: District Agromet Unit, level: district}
+  - {phrase: agromet field unit, name: Agromet Field Unit, level: state}
+  - {phrase: disaster management department, name: Disaster Management Department, level: state}
+  - {phrase: department of agriculture, name: Department of Agriculture, level: state}
+  - {phrase: agriculture department, name: Department of Agriculture, level: state}
+  - {phrase: imd, name: India Meteorological Department, level: national}
+  - {phrase: भारत मौसम विज्ञान विभाग, name: India Meteorological Department, level: national}
+  - {phrase: कृषि विज्ञान केंद्र, name: Krishi Vigyan Kendra, level: district}
+  - {phrase: कृषि विभाग, name: Department of Agriculture, level: state}
+  - {phrase: భారత వాతావరణ శాఖ, name: India Meteorological Department, level: national}
+  - {phrase: కృషి విజ్ఞాన కేంద్రం, name: Krishi Vigyan Kendra, level: district}
+  - {phrase: వ్యవసాయ శాఖ, name: Department of Agriculture, level: state}
+
+date_cues:
+  issued: [issued on, issued at, date of issue, issue date, issued, dated, जारी, జారీ]
+  valid_from: [valid from, with effect from, from]
+  valid_to: [valid till, valid until, valid upto, valid up to, till, until, upto, up to, तक, వరకు]

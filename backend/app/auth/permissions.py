@@ -94,6 +94,23 @@ class Permission:
     ALERT_REVIEW = "alert:review"
     PREFERENCE_READ = "preference:read"
     PREFERENCE_UPDATE = "preference:update"
+    # Sprint 11: multilingual core
+    TRANSLATION_USE = "translation:use"
+    TRANSLATION_APPROVE = "translation:approve"
+    NLU_USE = "nlu:use"
+    # Sprint 11, Phase 3
+    CONVERSATION_USE = "conversation:use"
+    EXTENSION_ACT_AS = "extension:act_as"  # act for assigned, consenting farmers (F6)
+    EXTENSION_MANAGE = "extension:manage"  # assign farmers to extension workers (officers)
+    FEEDBACK_SUBMIT = "feedback:submit"  # rate answers / bulletins / diagnoses (F13)
+    FEEDBACK_REVIEW = "feedback:review"  # feedback dashboard + regression export (F13)
+    MEDIA_MANAGE = "media:manage"  # add and verify how-to videos (F7)
+    # Sprint 11, Phase 4
+    GOVCONNECT_PUBLISH = "govconnect:publish"  # ingest, review, translate, approve, publish
+    GOVCONNECT_READ = "govconnect:read"  # farmer Govt Updates inbox
+    GRIEVANCE_SUBMIT = "grievance:submit"
+    GRIEVANCE_MANAGE = "grievance:manage"
+    SCHEME_MANAGE = "scheme:manage"  # maintain and verify the scheme catalog (F4)
 
 
 # ---------------------------------------------------------------------------
@@ -102,6 +119,12 @@ class Permission:
 
 _FARMER_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.CONVERSATION_USE,
+        Permission.GOVCONNECT_READ,
+        Permission.GRIEVANCE_SUBMIT,
+        Permission.FEEDBACK_SUBMIT,
+        Permission.TRANSLATION_USE,
+        Permission.NLU_USE,
         Permission.FARMER_READ_SELF,
         Permission.FARMER_UPDATE_SELF,
         Permission.FIELD_READ,
@@ -128,6 +151,18 @@ _FARMER_PERMISSIONS: frozenset[str] = frozenset(
 
 _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.CONVERSATION_USE,
+        Permission.GOVCONNECT_PUBLISH,
+        Permission.GOVCONNECT_READ,
+        Permission.GRIEVANCE_MANAGE,
+        Permission.SCHEME_MANAGE,
+        Permission.FEEDBACK_SUBMIT,
+        Permission.FEEDBACK_REVIEW,
+        Permission.EXTENSION_MANAGE,
+        Permission.MEDIA_MANAGE,
+        Permission.TRANSLATION_USE,
+        Permission.TRANSLATION_APPROVE,
+        Permission.NLU_USE,
         Permission.FARMER_READ,
         Permission.FARMER_CREATE,
         Permission.FARMER_UPDATE,
@@ -167,6 +202,12 @@ _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
 
 _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.CONVERSATION_USE,
+        Permission.FEEDBACK_SUBMIT,
+        Permission.FEEDBACK_REVIEW,
+        Permission.MEDIA_MANAGE,
+        Permission.TRANSLATION_USE,
+        Permission.NLU_USE,
         Permission.FARMER_READ,
         Permission.FIELD_READ,
         Permission.SOIL_SAMPLE_READ,
@@ -195,6 +236,31 @@ _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
     }
 )
 
+_EXTENSION_WORKER_PERMISSIONS: frozenset[str] = frozenset(
+    {
+        Permission.CONVERSATION_USE,
+        Permission.GOVCONNECT_READ,
+        Permission.GRIEVANCE_SUBMIT,
+        Permission.EXTENSION_ACT_AS,
+        Permission.FEEDBACK_SUBMIT,
+        Permission.FARMER_CREATE,
+        Permission.AGENT_EXECUTE,
+        Permission.TRANSLATION_USE,
+        Permission.NLU_USE,
+        Permission.KNOWLEDGE_SEARCH,
+        Permission.ADVISORY_READ,
+        Permission.VISION_ANALYZE,
+        Permission.VISION_READ_OWN,
+        Permission.VOICE_SUBMIT,
+        Permission.VOICE_READ_OWN,
+        Permission.LIVE_DATA_READ,
+        Permission.WEATHER_READ,
+        Permission.MARKET_READ,
+        Permission.SCHEME_READ,
+        Permission.ALERT_READ,
+    }
+)
+
 _ALL_PERMISSIONS: frozenset[str] = frozenset(
     {v for k, v in vars(Permission).items() if not k.startswith("_")}
 )
@@ -203,6 +269,7 @@ ROLE_PERMISSIONS: dict[UserRole, frozenset[str]] = {
     UserRole.FARMER: _FARMER_PERMISSIONS,
     UserRole.OFFICER: _OFFICER_PERMISSIONS,
     UserRole.AGRONOMIST: _AGRONOMIST_PERMISSIONS,
+    UserRole.EXTENSION_WORKER: _EXTENSION_WORKER_PERMISSIONS,
     UserRole.ADMIN: _ALL_PERMISSIONS,
     UserRole.SYSTEM: _ALL_PERMISSIONS,
 }

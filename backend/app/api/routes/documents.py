@@ -308,8 +308,13 @@ async def _run_ingestion_background(
     document_id: int,
     vector_store: QdrantVectorStore,
     embedding_pipeline: EmbeddingPipeline,
-) -> None:
+    chunk_metadata: dict | None = None,
+) -> bool:
     """Run canonical ingestion followed by production delta indexing.
+
+    ``chunk_metadata`` (e.g. ``effective_from`` / ``effective_until`` for Govt Connect
+    bulletins) is merged into every chunk before indexing, so validity reaches the retrieval
+    payload. Returns True when the document reached the delta index.
 
     Flow
     ----
@@ -359,7 +364,7 @@ async def _run_ingestion_background(
                     "not found after canonical ingestion",
                     document_id,
                 )
-                return
+                return False
 
             if document.status != DocumentStatus.COMPLETED:
                 logger.warning(
@@ -369,7 +374,18 @@ async def _run_ingestion_background(
                     document_id,
                     document.status.value,
                 )
-                return
+                return False
+
+            if chunk_metadata:
+                from app.models.document_chunk import DocumentChunk  # noqa: PLC0415
+
+                chunk_rows = (await session.scalars(
+                    select(DocumentChunk).where(DocumentChunk.document_id == document_id)
+                )).all()
+                for chunk_row in chunk_rows:
+                    chunk_row.metadata_json = {**(chunk_row.metadata_json or {}),
+                                               **chunk_metadata}
+                await session.flush()
 
             # ─────────────────────────────────────────────────────────────
             # Stage 3: Production retrieval providers
@@ -424,6 +440,7 @@ async def _run_ingestion_background(
                 settings.RETRIEVAL_DELTA_ALIAS,
                 settings.RETRIEVAL_LIVE_ALIAS,
             )
+            return True
 
         except Exception as exc:
             logger.exception(
@@ -454,6 +471,7 @@ async def _run_ingestion_background(
                     "status for document_id={}",
                     document_id,
                 )
+            return False
 
 
 # ── List documents ────────────────────────────────────────────────────────────

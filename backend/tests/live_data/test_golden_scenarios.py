@@ -40,6 +40,8 @@ async def test_scenario_2_agricultural_spray_decision():
     class MockItem:
         class Hit:
             chunk_text = "Spray tricyclazole 75% WP @ 0.6g/L for blast. Do not spray if rain is expected within 24 hours."
+            similarity = 0.88
+            metadata = {"crop": "Paddy", "source": "ICAR"}
         class Citation:
             title = "ICAR Guidelines (2026)"
             source = "ICAR"
@@ -107,7 +109,7 @@ async def test_scenario_3_market_price_query():
     assert res.success is True
     assert res.data["commodity"] == "Paddy"
     assert res.data["modal_price_inr_quintal"] >= res.data["min_price_inr_quintal"]
-    assert res.data["msp_inr_quintal"] == 2300.0
+    assert res.data["msp_inr_quintal"] == 2441.0  # PIB, KMS 2026-27 (ml/reference/msp.csv)
     assert res.data["freshness"] == "FRESH"
 
 

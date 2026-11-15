@@ -12,7 +12,9 @@
     "farmers": "Farmers",
     "reviews": "Reviews",
     "knowledge": "Knowledge",
-    "analytics": "Analytics"
+    "analytics": "Analytics",
+    "ask": "Ask AI",
+    "updates": "Govt"
   },
   "auth": {
     "login": "Log In",
@@ -31,7 +33,8 @@
     "farmer": "Farmer",
     "officer": "Agricultural Officer",
     "agronomist": "Agronomist",
-    "admin": "Administrator"
+    "admin": "Administrator",
+    "extension_worker": "Extension Worker"
   },
   "ai": {
     "confidence": "AI Confidence",
@@ -92,5 +95,423 @@
     "pendingReviews": "Pending Reviews",
     "activeAlerts": "Active Alerts",
     "totalFarmers": "Total Farmers"
+  },
+  "providers": {
+    "tab": "Providers",
+    "title": "Active AI Providers",
+    "subtitle": "Shows which model or data source produced each answer.",
+    "live": "Live",
+    "sandbox": "Sandbox",
+    "mock": "Mock (not real)",
+    "offDevice": "Sends data off device",
+    "notConfigured": "Not configured",
+    "loadError": "Could not load provider status.",
+    "policyViolations": "Policy warnings"
+  },
+  "canvas": {
+    "contextNotSet": "Not set"
+  },
+  "chat": {
+    "title": "Ask KrishiOS",
+    "language": "Language",
+    "speakReplies": "Speak replies",
+    "newConversation": "New conversation",
+    "welcome": "Ask about your crop",
+    "welcomeHint": "Type or speak in Telugu, Hindi or English.",
+    "thinking": "Finding an answer…",
+    "error": "Something went wrong. Please try again.",
+    "placeholder": "Type your question",
+    "send": "Send",
+    "record": "Record a question",
+    "stopRecording": "Stop recording",
+    "listen": "Listen",
+    "translationNotice": "We could not verify the translation, so the answer is shown in English. An officer will check it.",
+    "reviewNotice": "An agricultural officer will review this answer.",
+    "source": "Source",
+    "verifiedVideo": "Verified video",
+    "thanks": "Thank you for your feedback.",
+    "helpful": "Helpful",
+    "notHelpful": "Not helpful",
+    "reasons": {
+      "wrong": "Wrong",
+      "unclear": "Unclear",
+      "not_applicable": "Not for my farm",
+      "translation": "Bad translation",
+      "unsafe": "Unsafe"
+    },
+    "advancedWorkspace": "Advanced workspace",
+    "simpleChat": "Chat",
+    "queuedOffline": "Offline: will send when you are connected"
+  },
+  "extension": {
+    "title": "Assisted mode",
+    "loading": "Loading…",
+    "noFarmers": "No farmers are assigned to you yet.",
+    "tabs": {
+      "farmers": "My farmers",
+      "queue": "Review before sharing",
+      "register": "Register farmers"
+    },
+    "consent": {
+      "pending": "Consent pending",
+      "granted": "Consent recorded",
+      "revoked": "Consent revoked"
+    },
+    "consentMethod": "How consent was given",
+    "evidence": "Evidence (form no., recording ref.)",
+    "recordConsent": "Record consent",
+    "methods": {
+      "verbal_recorded": "Verbal (recorded)",
+      "signed_form": "Signed form",
+      "otp": "OTP",
+      "in_app": "In the app"
+    },
+    "askForFarmer": "Ask on their behalf",
+    "assistingBanner": "Asking on behalf of {{name}}. Answers wait for your review before they are shared.",
+    "endSession": "End session",
+    "queueEmpty": "No answers are waiting for review.",
+    "question": "Question",
+    "answer": "Answer",
+    "englishVersion": "English version",
+    "share": "Share with farmer",
+    "discard": "Discard",
+    "batchHelp": "One farmer per line: name, phone, language (te/hi/en), district id, village, acres. Up to 50 per batch. Consent below applies to every farmer in the batch.",
+    "register": "Register",
+    "badLines": "Fix line(s) {{lines}} and try again.",
+    "rowStatus": {
+      "created": "registered",
+      "duplicate_phone": "already registered",
+      "error": "could not register"
+    }
+  },
+  "feedbackOps": {
+    "title": "Farmer feedback",
+    "exportRegression": "Export regression cases",
+    "total": "Ratings",
+    "pendingTriage": "Awaiting triage",
+    "downRate": "Not helpful",
+    "byLanguage": "By language",
+    "byIntent": "By question type",
+    "reasons": "Reasons given",
+    "count": "Count",
+    "flagged": "Flagged answers",
+    "nothingToTriage": "Nothing to triage.",
+    "actions": {
+      "converted_to_regression": "Add to regression suite",
+      "triaged": "Mark triaged",
+      "dismissed": "Dismiss"
+    }
+  },
+  "govt": {
+    "title": "Govt Updates",
+    "showPast": "Show past updates",
+    "officialNote": "Official instructions from government departments. These are not AI advice.",
+    "helpLink": "Help: grievances and schemes",
+    "empty": "No official updates for your places right now.",
+    "official": "Official",
+    "severity": {
+      "LOW": "Advisory",
+      "MEDIUM": "Watch",
+      "HIGH": "Warning",
+      "CRITICAL": "Severe warning"
+    },
+    "state": {
+      "active": "Active",
+      "expired": "Expired",
+      "withdrawn": "Withdrawn",
+      "superseded": "Replaced"
+    },
+    "issuedBy": "Issued by {{authority}}",
+    "issued": "Issued",
+    "validUntil": "Valid until",
+    "withdrawnReason": "Withdrawn by the department: {{reason}}",
+    "supersededNote": "A corrected version of this update was published.",
+    "showOriginal": "Show the official original",
+    "showTranslation": "Show translation",
+    "translatedNote": "Translated from the official text. The original is the authoritative version.",
+    "source": "Official source",
+    "audioUnavailable": "Audio is not available right now.",
+    "askAboutThis": "Ask about this",
+    "acknowledge": "I have read this",
+    "acknowledged": "Read",
+    "flag": "Not for me / unclear",
+    "flagged": "Reported to the officer",
+    "flagReasons": {
+      "not_applicable": "Doesn't apply to me",
+      "unclear": "Unclear",
+      "wrong_location": "Wrong place",
+      "other": "Other"
+    },
+    "activeWarnings": "Official warnings for your area",
+    "openUpdates": "Open Govt Updates",
+    "askingAbout": "Asking about the official update: {{title}}"
+  },
+  "help": {
+    "title": "Help",
+    "tabs": {
+      "tickets": "Grievances",
+      "schemes": "Schemes"
+    },
+    "raise": "Raise a grievance",
+    "category": "Category",
+    "subject": "Subject",
+    "description": "Describe the problem",
+    "privacy": "Your grievance is shared only with the agriculture officers handling it.",
+    "submit": "Submit",
+    "myTickets": "My grievances",
+    "noTickets": "You have not raised any grievance.",
+    "due": "Due",
+    "overdue": "Overdue",
+    "confirmResolved": "Yes, it is solved",
+    "reopen": "Not solved, reopen",
+    "categories": {
+      "payment": "Payment",
+      "insurance_claim": "Insurance claim",
+      "scheme_enrollment": "Scheme enrolment",
+      "input_quality": "Seed / fertiliser / pesticide quality",
+      "advisory": "Advice",
+      "infrastructure": "Irrigation / power / roads",
+      "other": "Other"
+    },
+    "status": {
+      "open": "Received",
+      "assigned": "Assigned",
+      "in_progress": "In progress",
+      "resolved": "Resolved",
+      "rejected": "Not accepted",
+      "reopened": "Reopened",
+      "closed": "Closed"
+    },
+    "noSchemes": "No verified schemes are available yet.",
+    "yes": "Yes",
+    "no": "No",
+    "checkEligibility": "Check eligibility",
+    "result": {
+      "likely_eligible": "You are likely eligible.",
+      "not_eligible": "You are likely not eligible.",
+      "incomplete": "Please answer all questions."
+    },
+    "guidanceOnly": "This is guidance only. The scheme authority makes the final decision.",
+    "officialPortal": "Apply or check your status on the official portal"
+  },
+  "places": {
+    "title": "My places",
+    "help": "Save your fields and villages. Official warnings reach you for every saved place.",
+    "district": "District",
+    "searchDistrict": "Type at least 2 letters",
+    "block": "Block / mandal",
+    "blockUnknown": "Not sure",
+    "label": "Name",
+    "labelHint": "e.g. Paddy field near canal",
+    "add": "Save place",
+    "change": "Change",
+    "primary": "Main place",
+    "makePrimary": "Make main place",
+    "remove": "Remove"
+  },
+  "gc": {
+    "bulletinsTitle": "Bulletins",
+    "uploadFile": "Official bulletin (PDF, image, DOCX or text)",
+    "sourceUrl": "Source link",
+    "uploadExtract": "Upload and extract",
+    "extracting": "Reading the bulletin…",
+    "filterStatus": "Status",
+    "all": "All",
+    "none": "No bulletins.",
+    "pickOne": "Select a bulletin to review it.",
+    "status": {
+      "draft": "Draft",
+      "needs_review": "Needs review",
+      "approved": "Approved",
+      "scheduled": "Scheduled",
+      "published": "Published",
+      "withdrawn": "Withdrawn",
+      "superseded": "Superseded",
+      "expired": "Expired"
+    },
+    "source": {
+      "upload": "Uploaded",
+      "composed": "Composed",
+      "feed": "Feed"
+    },
+    "supersedesNote": "Replaces an earlier bulletin",
+    "close": "Close",
+    "sourceText": "Official text",
+    "provenanceHelp": "Highlighted words are where each extracted field came from. Check them before publishing.",
+    "fields": {
+      "title": "Title",
+      "authority": "Issuing authority",
+      "authority_level": "Authority level",
+      "severity": "Severity",
+      "hazard_type": "Hazard",
+      "valid_from": "Valid from",
+      "valid_to": "Valid until",
+      "district_codes": "Target districts",
+      "block_codes": "Target blocks",
+      "crops": "Crops (catalog keys)",
+      "target_languages": "Languages",
+      "issued_at": "Issued",
+      "recommended_actions": "Recommended actions"
+    },
+    "levels": {
+      "national": "National",
+      "state": "State",
+      "district": "District",
+      "block": "Block"
+    },
+    "lowConfidence": "Low confidence: please check",
+    "addDistrict": "Add a district",
+    "maxAcres": "Only farmers with at most this many acres (optional)",
+    "save": "Save changes",
+    "translations": "Translations",
+    "generateTranslations": "Generate translations",
+    "translating": "Translating…",
+    "noTranslations": "No translations yet.",
+    "trStatus": {
+      "passthrough": "Original",
+      "auto_approved": "Checks passed",
+      "pending_review": "Needs your approval",
+      "blocked": "Failed checks",
+      "approved": "Approved"
+    },
+    "original": "Original",
+    "translation": "Translation",
+    "backTranslation": "Back-translation",
+    "approveTranslation": "Approve translation",
+    "approveEdited": "Approve my edited translation",
+    "publish": "Publish",
+    "ready": "Ready to publish.",
+    "scheduleFor": "Schedule for (optional)",
+    "approvePublish": "Approve and publish now",
+    "approveSchedule": "Approve and schedule",
+    "afterPublish": "Withdraw or correct",
+    "publishedAt": "Published {{when}}",
+    "scheduledAt": "Scheduled for {{when}}",
+    "index": "Knowledge index",
+    "withdrawReason": "Reason for withdrawal",
+    "withdraw": "Withdraw",
+    "supersede": "Publish a correction",
+    "audit": "Audit trail",
+    "publishTitle": "Publish an advisory",
+    "publishHelp": "Write the official text, then review targeting and translations before publishing.",
+    "template": "Template",
+    "writtenIn": "Written in",
+    "officialText": "Official text",
+    "composeNote": "Dates, places, crops and severity are suggested from the text; you confirm them on the next screen.",
+    "createDraft": "Create draft",
+    "templates": {
+      "weather": {
+        "name": "Weather warning",
+        "title": "Weather warning",
+        "body": "[Issuing office] warns of [hazard] in [district(s)] from [date] to [date].\nFarmers are advised to [action]."
+      },
+      "pest": {
+        "name": "Pest / disease advisory",
+        "title": "Pest and disease advisory",
+        "body": "[Pest or disease] has been observed on [crop] in [district(s)].\nFarmers are advised to [action, with product and dose]."
+      },
+      "scheme": {
+        "name": "Scheme announcement",
+        "title": "Scheme announcement",
+        "body": "[Scheme name]: [what changed], applicable to [who] in [district(s)] until [date]."
+      },
+      "general": {
+        "name": "General advisory",
+        "title": "Advisory",
+        "body": "[Advice for farmers in district(s)], valid until [date]."
+      }
+    },
+    "analyticsTitle": "Connect analytics",
+    "bulletin": "Bulletin",
+    "recipients": "Recipients",
+    "notified": "Notified",
+    "heldBack": "{{n}} held back (preferences / duplicates)",
+    "readRate": "Read",
+    "ackRate": "Acknowledged",
+    "flagRate": "Flagged",
+    "questions": "Questions",
+    "noPublished": "Nothing published yet.",
+    "flagQueue": "Farmer flags",
+    "match": {
+      "block": "block match",
+      "district": "district match"
+    },
+    "flagActions": {
+      "reviewed": "Reviewed",
+      "dismissed": "Dismiss"
+    },
+    "feedHealth": "Feed health (last 24 h)",
+    "weatherSuccess": "Weather feed success",
+    "crosscheck": "Cross-check results",
+    "latestRun": "Latest run",
+    "feedBulletins": "Bulletins from official feeds",
+    "feedSource": "NDMA SACHET (IMD / SDMA)"
+  },
+  "gq": {
+    "title": "Grievances and schemes",
+    "tabs": {
+      "queue": "Grievance queue",
+      "schemes": "Scheme catalog"
+    },
+    "breachedOnly": "Only overdue",
+    "empty": "No open grievances.",
+    "hoursLeft": "{{h}} h left",
+    "internal": "internal",
+    "note": "Note",
+    "visibleToFarmer": "Visible to the farmer",
+    "move": {
+      "assigned": "Assign to me",
+      "in_progress": "Start work",
+      "resolved": "Resolve",
+      "rejected": "Reject",
+      "closed": "Close"
+    },
+    "schemeHelp": "Farmers see a scheme only after you verify every criterion against its official source.",
+    "importDrafts": "Import draft schemes",
+    "schemeStatus": {
+      "draft": "Draft: not visible",
+      "verified": "Verified"
+    },
+    "criteriaCount": "{{n}} eligibility questions",
+    "verify": "I checked it against the source: verify"
+  },
+  "weather": {
+    "title": "Weather for {{district}}",
+    "forecast": "5-day forecast",
+    "noForecast": "No forecast yet.",
+    "check": {
+      "agree": "Checked with a 2nd source",
+      "disagree": "Sources disagree",
+      "unverified": "Not cross-checked"
+    },
+    "sprayOk": "OK to spray today",
+    "sprayNo": "Avoid spraying today",
+    "updated": "Updated {{minutes}} min ago",
+    "never": "Not updated yet",
+    "modelNote": "Forecasts are model estimates. Official warnings above always take priority.",
+    "attribution": "Sources: {{list}}"
+  },
+  "push": {
+    "title": "Phone notifications",
+    "help": "Get official warnings on this phone even when the app is closed.",
+    "enable": "Turn on notifications",
+    "on": "Notifications are on for this phone.",
+    "denied": "Notifications are blocked in your browser settings.",
+    "unsupported": "This browser does not support notifications.",
+    "notConfigured": "Notifications are not set up on the server yet."
+  },
+  "mandi": {
+    "title": "Mandi price",
+    "needCrop": "Add your crop and district to see official mandi prices.",
+    "noData": "No official price for {{crop}} in {{district}} in the last days.",
+    "quintal": "quintal",
+    "median": "Median of {{n}} mandi(s)",
+    "change": "{{pct}}% in 7 days",
+    "noChange": "Not enough days for a 7-day change",
+    "msp": "MSP {{msp}}",
+    "noMsp": "No MSP for this crop",
+    "chart": "Price over the last {{days}} days; dashed line is MSP",
+    "source": "Source: AGMARKNET (DMI, MoA&FW) via data.gov.in; MSP: PIB",
+    "stale": "Last official report was {{days}} days ago: this may not be today's price."
   }
 }

@@ -4,6 +4,25 @@ Sprint 0 / Sprint 1 — Domain models
 Sprint 2            — Knowledge infrastructure models
 """
 
+from app.models.crop_catalog import CropCatalogEntry
+from app.models.translation import TranslationRecord
+from app.models.conversation import ConversationTurnRecord
+from app.models.extension import ExtensionAssignment
+from app.models.feedback import AnswerFeedback
+from app.models.media import MediaAsset
+from app.models.govconnect import (
+    BulletinDelivery,
+    BulletinTranslation,
+    DistrictWeatherSnapshot,
+    FarmerLocation,
+    GovConnectAudit,
+    GovtBulletin,
+    GrievanceEvent,
+    GrievanceTicket,
+    MandiPriceDaily,
+    PushSubscription,
+    SchemeEntry,
+)
 from app.models.crop import Crop
 from app.models.district import District
 from app.models.document_chunk import DocumentChunk
@@ -77,4 +96,23 @@ __all__ = [
     "ProactiveDecisionRecord",
     "ProactiveEventRecord",
     "RiskSeverity",
+    # Sprint 11 — catalog, translation, conversation, assisted mode, feedback, media
+    "AnswerFeedback",
+    "ConversationTurnRecord",
+    "CropCatalogEntry",
+    "ExtensionAssignment",
+    "MediaAsset",
+    "TranslationRecord",
+    # Sprint 11, Phase 4 — Govt Connect, locations (F2), grievances and schemes (F4)
+    "BulletinDelivery",
+    "BulletinTranslation",
+    "DistrictWeatherSnapshot",
+    "FarmerLocation",
+    "GovConnectAudit",
+    "GovtBulletin",
+    "GrievanceEvent",
+    "GrievanceTicket",
+    "MandiPriceDaily",
+    "PushSubscription",
+    "SchemeEntry",
 ]

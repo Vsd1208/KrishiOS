@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.dependencies.auth import AuthContext
 from app.agents.crop_advisory_agent import CropAdvisoryAgent
 from app.agents.execution.context import ExecutionContext
-from app.agents.providers.llm import MockLocalLLMProvider
+from app.agents.runtime.factory import build_llm_provider
 from app.agents.tools.knowledge_search import KnowledgeSearchTool
 from app.agents.tools.vision_analysis import VisionAnalysisTool
 from app.agents.vision_agent import VisionIntelligenceAgent
@@ -22,8 +22,7 @@ from app.retrieval.retrieval.pipeline import EnterpriseRetrievalPipeline
 
 from app.voice.models.audio import AudioRecord
 from app.voice.models.transcript import SpeechTranscript
-from app.voice.providers.mock_stt import MockSTTProvider
-from app.voice.providers.mock_tts import MockTTSProvider
+from app.voice.providers.selection import get_stt_provider, get_tts_provider
 from app.voice.providers.stt_base import SpeechToTextProvider
 from app.voice.providers.tts_base import TextToSpeechProvider
 from app.voice.schemas.voice import VoiceQueryResponse
@@ -46,8 +45,8 @@ class VoiceService:
     ) -> None:
         self._session = session
         self._settings = get_settings()
-        self._stt = stt_provider or MockSTTProvider()
-        self._tts = tts_provider or MockTTSProvider()
+        self._stt = stt_provider or get_stt_provider()
+        self._tts = tts_provider or get_tts_provider()
         self._normalizer = normalizer or AgriculturalLanguageNormalizer()
         self._validator = validator or AudioValidator()
         self._storage = storage_service or AudioStorageService()
@@ -165,10 +164,12 @@ class VoiceService:
             session_id=str(audio_rec.uuid),
             auth=auth,
             language=stt_res.detected_language,
-            crop=norm_res.resolved_crop or "Paddy",
+            # Never guess a crop: an unresolved crop stays None (clarified downstream).
+            crop=norm_res.resolved_crop,
         )
 
-        llm = MockLocalLLMProvider()
+        # Respect LLM_PROVIDER (was hard-coded to the mock LLM before Sprint 11).
+        llm = build_llm_provider()
         vector_store = QdrantVectorStore(
             host=self._settings.QDRANT_HOST,
             port=self._settings.QDRANT_PORT,
@@ -203,7 +204,7 @@ class VoiceService:
             exec_res = await agent.execute(
                 task=norm_res.normalized_query,
                 context=exec_ctx,
-                parameters={"crop": norm_res.resolved_crop or "Paddy"},
+                parameters={"crop": norm_res.resolved_crop} if norm_res.resolved_crop else {},
             )
             agent_used = "crop_advisory_agent"
 
@@ -248,7 +249,7 @@ class VoiceService:
     ) -> str:
         """Localize advisory explanation into target language while preserving source citations."""
         if target_language == "te":
-            crop_name = crop or "వరి"
+            crop_name = crop or "పంట"
             dis_name = disease or "లక్షణాలు"
             return (
                 f"మీ {crop_name} పంటకు సంబంధించి {dis_name} సమాచారం: "

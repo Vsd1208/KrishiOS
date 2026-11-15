@@ -243,6 +243,10 @@ def test_evaluator_scores_results() -> None:
     assert report.overall_score > 0.5
 
 
+# Sprint 10 added ProactiveIntelligenceAgent (7th agent).
+EXPECTED_AGENT_COUNT = 7
+
+
 def test_builtin_workflows_registered() -> None:
     assert "crop_diagnosis" in BUILTIN_WORKFLOWS
     assert "scheme_lookup" in BUILTIN_WORKFLOWS
@@ -263,7 +267,7 @@ async def test_runtime_engine_health_check() -> None:
 
     runtime = build_runtime_engine()
     health = await runtime.health_check()
-    assert health["registered_agents"] == 6
+    assert health["registered_agents"] == EXPECTED_AGENT_COUNT
     assert health["registered_tools"] >= 7
     assert health["status"] in ("healthy", "degraded")
 
@@ -272,7 +276,7 @@ def test_api_list_agents(client) -> None:
     response = client.get("/api/v1/agents")
     assert response.status_code == 200
     agents = response.json()
-    assert len(agents) == 6
+    assert len(agents) == EXPECTED_AGENT_COUNT
     names = {a["name"] for a in agents}
     assert "knowledge_retrieval_agent" in names
     assert "crop_advisory_agent" in names
@@ -282,7 +286,7 @@ def test_api_runtime_status(client) -> None:
     response = client.get("/api/v1/runtime/status")
     assert response.status_code == 200
     data = response.json()
-    assert data["registered_agents"] == 6
+    assert data["registered_agents"] == EXPECTED_AGENT_COUNT
     assert "metrics" in data
 
 

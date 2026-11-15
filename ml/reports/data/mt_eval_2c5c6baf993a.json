@@ -1,0 +1,97 @@
+{
+ "run_id": "2c5c6baf993a",
+ "config": {
+  "providers": [
+   "indictrans2"
+  ],
+  "targets": [
+   "te",
+   "hi"
+  ],
+  "source_set": "evaluation_sets/mt/source_en.tsv",
+  "n": 160,
+  "protect_kinds_override": null,
+  "checker": "v2 (rs.-boundary fix, bracketless <ID placeholders)",
+  "reference_chrf": "pending native refs"
+ },
+ "results": {
+  "indictrans2:en-te": {
+   "n_sentences": 160,
+   "check_pass_rate": 0.55,
+   "number_preservation_protected": 0.8481,
+   "number_preservation_unprotected": 0.8418,
+   "n_with_numbers": 158,
+   "unit_preservation": 0.4051,
+   "n_with_units": 79,
+   "protected_term_preservation": 0.9563,
+   "placeholder_survival": 0.75,
+   "placeholders_emitted": 60,
+   "roundtrip_chrfpp_proxy": 66.6,
+   "roundtrip_n": 88,
+   "roundtrip_error": null,
+   "ms_per_sentence": 413.4,
+   "failure_reasons_top": {
+    "missing units": 47,
+    "missing numbers": 23,
+    "unexpected numbers": 9,
+    "missing protected terms": 7
+   },
+   "examples": [
+    {
+     "src": "` Extended Range Forecast System Rainfall forecast maps for the next 2 weeks (IC – 15th July, 2026) (17th to 30th July 2026).",
+     "out": "తదుపరి 2 వారాల ( ఐ. సి. ఐ. సి. 15 జూలై 2026 ( 17 నుండి 30 జూలై 2026 ) వర్షపాత సూచన పటాలు.",
+     "passed": true
+    },
+    {
+     "src": "Week 1 (17.07.2026 to 23.07.2026): Rainfall is likely to be above normal over many parts of East India, East Uttar Pradesh and.",
+     "out": "వారం 1 ( 17.07.2026 నుండి 23.07.2026 వరకు ) : తూర్పు భారతదేశంలోని అనేక ప్రాంతాలలో, తూర్పు ఉత్తరప్రదేశ్ మరియు ఉత్తర ప్రదేశ్ లో సాధారణం కంటే ఎక్కువ వర్షపాతం కురిసే అవకాశం ఉంది.",
+     "passed": true
+    },
+    {
+     "src": "Light to Moderate with Thunderstorm and lightning  Rain is likely to occur at isolated places over Mayiladuthurai, Nagapattinam, Ramanathapuram, Karaikal in next 3 hours.",
+     "out": "వచ్చే 3 గంటల్లో మయిలాడుతురై నాగపట్టణం రామనాథపురం కారైకల్లోని కొన్ని ప్రాంతాల్లో ఉరుములు, మెరుపులతో కూడిన తేలికపాటి నుండి మోస్తరు వర్షాలు కురిసే అవకాశం ఉంది.",
+     "passed": true
+    }
+   ]
+  },
+  "indictrans2:en-hi": {
+   "n_sentences": 160,
+   "check_pass_rate": 0.6438,
+   "number_preservation_protected": 0.7975,
+   "number_preservation_unprotected": 0.8228,
+   "n_with_numbers": 158,
+   "unit_preservation": 0.6962,
+   "n_with_units": 79,
+   "protected_term_preservation": 0.9375,
+   "placeholder_survival": 0.6,
+   "placeholders_emitted": 60,
+   "roundtrip_chrfpp_proxy": 67.08,
+   "roundtrip_n": 103,
+   "roundtrip_error": null,
+   "ms_per_sentence": 107.7,
+   "failure_reasons_top": {
+    "missing numbers": 28,
+    "missing units": 24,
+    "unexpected numbers": 15,
+    "missing protected terms": 10
+   },
+   "examples": [
+    {
+     "src": "` Extended Range Forecast System Rainfall forecast maps for the next 2 weeks (IC – 15th July, 2026) (17th to 30th July 2026).",
+     "out": "विस्तारित सीमा पूर्वानुमान प्रणाली अगले 2 हफ्तों के लिए वर्षा पूर्वानुमान मानचित्र ( आई. सी. 15 जुलाई 2026 ( 17 से 30 जुलाई 2026 ) ।",
+     "passed": true
+    },
+    {
+     "src": "Week 1 (17.07.2026 to 23.07.2026): Rainfall is likely to be above normal over many parts of East India, East Uttar Pradesh and.",
+     "out": "सप्ताह 1 ( 17 - 7 - 26 से 23 - 7 - 26 ) : पूर्वी भारत के पूर्वी उत्तर प्रदेश और उत्तर प्रदेश के कई हिस्सों में सामान्य से अधिक वर्षा होने की संभावना है ।",
+     "passed": false
+    },
+    {
+     "src": "Light to Moderate with Thunderstorm and lightning  Rain is likely to occur at isolated places over Mayiladuthurai, Nagapattinam, Ramanathapuram, Karaikal in next 3 hours.",
+     "out": "अगले 3 घंटों में मयिलाडुथुराई नागपट्टिनम रामनाथपुरम कराईकल में अलग - अलग स्थानों पर गरज के साथ हल्की से मध्यम बारिश होने की संभावना है ।",
+     "passed": true
+    }
+   ]
+  }
+ }
+}

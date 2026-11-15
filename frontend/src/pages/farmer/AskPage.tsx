@@ -37,7 +37,7 @@ import {
   ShieldCheck,
   Sparkles,
   Sprout,
-  SunMedium,
+
   Upload,
   XCircle,
   Zap,
@@ -50,12 +50,73 @@ import type {
   UserMessageContent,
 } from '@/features/ai/types/conversation';
 import { documentsApi } from '@/services/api/documents';
+import type { BotLanguage } from '@/services/api/conversation';
+import { FarmerChat } from '@/features/conversation/FarmerChat';
+import { useTranslation } from 'react-i18next';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 /* ============================================================
    COMPONENT
    ============================================================ */
 
+const BOT_LANGUAGES: BotLanguage[] = ['te', 'hi', 'en'];
+
+/** Default view: the multilingual chat. The analyst workspace stays one click away. */
 export const AskPage: React.FC = () => {
+  const { t } = useTranslation();
+  const { data: farmer } = useFarmerProfile();
+  const { crops, fieldCrops } = useFarmerCrops();
+  const [mode, setMode] = useState<'chat' | 'workspace'>('chat');
+  const [params] = useSearchParams();
+  const location = useLocation();
+  const bulletinUuid = params.get('bulletin');
+  const bulletinTitle = (location.state as { bulletinTitle?: string } | null)?.bulletinTitle;
+
+  const preferred = (farmer?.preferred_language || '').slice(0, 2).toLowerCase();
+  const initialLanguage = (BOT_LANGUAGES as string[]).includes(preferred)
+    ? (preferred as BotLanguage)
+    : 'en';
+  const profileCrops = crops
+    .filter((c) => fieldCrops.some((fc) => fc.crop_id === c.id))
+    .map((c) => (c.crop_name || c.name || '').trim().toLowerCase())
+    .filter(Boolean);
+
+  return (
+    <div className="flex flex-col flex-1 h-full min-h-0 w-full">
+      <div className="flex justify-end gap-1 pb-2" role="tablist">
+        {(['chat', 'workspace'] as const).map((m) => (
+          <button
+            key={m}
+            type="button"
+            role="tab"
+            aria-selected={mode === m}
+            onClick={() => setMode(m)}
+            className={`px-3 py-1 rounded-lg text-caption font-semibold border cursor-pointer ${
+              mode === m ? 'bg-surface text-text border-border shadow-xs' : 'text-text-muted border-transparent'
+            }`}
+          >
+            {m === 'chat' ? t('chat.simpleChat') : t('chat.advancedWorkspace')}
+          </button>
+        ))}
+      </div>
+      {mode === 'chat' ? (
+        <div className="flex-1 min-h-0 bg-surface rounded-2xl border border-border/80 shadow-card overflow-hidden">
+          <FarmerChat
+            key={`${initialLanguage}-${bulletinUuid ?? ''}`}
+            initialLanguage={initialLanguage}
+            bulletinUuid={bulletinUuid}
+            bulletinTitle={bulletinTitle}
+            profile={profileCrops.length ? { crops: profileCrops } : null}
+          />
+        </div>
+      ) : (
+        <AnalystWorkspace />
+      )}
+    </div>
+  );
+};
+
+const AnalystWorkspace: React.FC = () => {
   /* ==========================================================
      FARMER DATA
      ========================================================== */
@@ -82,9 +143,16 @@ export const AskPage: React.FC = () => {
     activeCropRecord?.name?.trim() ||
     undefined;
 
-  const districtName = farmer?.village || 'Khammam';
-  const totalAcres = farmer?.landholding_acres || fields.reduce((acc, f) => acc + (f.area_acres || 0), 0) || 4.5;
-  const farmContext = `${farmer?.full_name || 'Farmer'} • ${Number(totalAcres).toFixed(1)} Ac ${activeCropName || 'Crop'} (${districtName})`;
+  const districtName = farmer?.village || undefined;
+  const totalAcres = farmer?.landholding_acres || fields.reduce((acc, f) => acc + (f.area_acres || 0), 0);
+  const farmContext = [
+    farmer?.full_name,
+    totalAcres ? `${Number(totalAcres).toFixed(1)} Ac` : null,
+    activeCropName,
+    districtName,
+  ]
+    .filter(Boolean)
+    .join(' • ');
 
   /* ==========================================================
      UI STATE
@@ -117,9 +185,7 @@ export const AskPage: React.FC = () => {
     initialSuggestions,
   } = useAIConversation({
     crop: activeCropName,
-    state: 'Telangana',
     district: districtName,
-    season: 'Kharif',
   });
 
   useEffect(() => {
@@ -154,9 +220,7 @@ export const AskPage: React.FC = () => {
     try {
       await documentsApi.upload(selectedDocument, {
         crop: activeCropName?.toLowerCase(),
-        state: 'Telangana',
         district: farmer?.village || undefined,
-        season: 'Kharif',
       });
 
       setDocumentUploadStatus('Document uploaded successfully.');
@@ -205,12 +269,7 @@ export const AskPage: React.FC = () => {
             <span className="text-border-strong">•</span>
             <div className="flex items-center gap-1 text-text-secondary">
               <MapPin className="w-3.5 h-3.5 text-text-muted" aria-hidden="true" />
-              <span>{districtName}</span>
-            </div>
-            <span className="text-border-strong">•</span>
-            <div className="flex items-center gap-1 text-amber-700 font-medium">
-              <SunMedium className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Kharif</span>
+              <span>{districtName ?? '—'}</span>
             </div>
           </div>
 

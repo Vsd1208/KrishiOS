@@ -1,10 +1,20 @@
 """Mock Speech-to-Text provider supporting English, Hindi, Telugu, and Code-Switching."""
 
 import asyncio
+import re
 from pathlib import Path
 from time import perf_counter
 
 from app.voice.providers.stt_base import LanguageDetectionResult, STTResult
+
+
+def _filename_tokens(audio_path: Path) -> set[str]:
+    """Split the file stem on non-alphanumerics: 'query_te.wav' -> {'query', 'te'}.
+
+    Whole-token matching avoids the old substring bug where 'test.wav' or 'note.wav'
+    were treated as Telugu because they contain 'te'.
+    """
+    return {t for t in re.split(r"[^a-z0-9]+", audio_path.stem.lower()) if t}
 
 
 class MockSTTProvider:
@@ -24,12 +34,12 @@ class MockSTTProvider:
 
     async def detect_language(self, audio_path: Path) -> LanguageDetectionResult:
         """Detect language from filename hints or default to hint."""
-        fname = audio_path.name.lower()
-        if "te" in fname or "telugu" in fname:
+        tokens = _filename_tokens(audio_path)
+        if tokens & {"te", "telugu"}:
             return LanguageDetectionResult(language_code="te", confidence=0.96, script="Telugu")
-        elif "hi" in fname or "hindi" in fname:
+        elif tokens & {"hi", "hindi"}:
             return LanguageDetectionResult(language_code="hi", confidence=0.95, script="Devanagari")
-        elif "mixed" in fname or "codeswitch" in fname:
+        elif tokens & {"mixed", "codeswitch"}:
             return LanguageDetectionResult(language_code="te", confidence=0.88, script="Telugu/Latin")
         else:
             return LanguageDetectionResult(language_code="en", confidence=0.98, script="Latin")
@@ -39,22 +49,23 @@ class MockSTTProvider:
         t0 = perf_counter()
         await asyncio.sleep(0.1)  # Simulate ASR processing
 
-        fname = audio_path.name.lower()
+        fname = audio_path.stem.lower()
+        tokens = _filename_tokens(audio_path)
         lang = hint_language or "en"
-        
-        if "te" in fname or "telugu" in fname or lang == "te":
+
+        if tokens & {"te", "telugu"} or lang == "te":
             transcript = "నా వరి పైరుకు అగ్గి తెగులు వచ్చింది, ఏమి చేయాలి?"
             det_lang = "te"
             lang_conf = 0.96
             script = "Telugu"
             is_code_switched = False
-        elif "hi" in fname or "hindi" in fname or lang == "hi":
+        elif tokens & {"hi", "hindi"} or lang == "hi":
             transcript = "धान की फसल में भूरा धब्बा रोग का इलाज क्या है?"
             det_lang = "hi"
             lang_conf = 0.95
             script = "Devanagari"
             is_code_switched = False
-        elif "mixed" in fname or "codeswitch" in fname or lang == "mixed":
+        elif tokens & {"mixed", "codeswitch"} or lang == "mixed":
             transcript = "నా వరి crop కి yellow spots వస్తున్నాయి"
             det_lang = "te"
             lang_conf = 0.90

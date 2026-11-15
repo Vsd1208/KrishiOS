@@ -33,7 +33,7 @@ export const UserMessageBubble: React.FC<UserMessageBubbleProps> = ({
             />
             <div className="p-1.5 text-caption bg-black/40 text-white/90 flex items-center gap-1">
               <ImageIcon className="w-3 h-3" />
-              <span>Attached Crop Photo ({image.cropHint || 'Paddy'})</span>
+              <span>Attached Crop Photo{image.cropHint ? ` (${image.cropHint})` : ''}</span>
             </div>
           </div>
         )}

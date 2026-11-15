@@ -53,7 +53,7 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
   onStopAudio,
   onSelectFollowUp,
   onEscalate,
-  crop = 'Paddy',
+  crop,
 }) => {
   const [evidenceExpanded, setEvidenceExpanded] = useState(false);
   const [copied, setCopied] = useState(false);

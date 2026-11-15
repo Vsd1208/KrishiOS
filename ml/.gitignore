@@ -1,0 +1,9 @@
+data/raw/*
+data/interim/*
+data/processed/*
+artifacts/*
+!data/**/.gitkeep
+!artifacts/.gitkeep
+!artifacts/manifest.json
+experiments/*.jsonl.lock
+.venv/
