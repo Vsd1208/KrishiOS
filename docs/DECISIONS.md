@@ -193,3 +193,21 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
   - **Units:** APY yields are t/ha. UPAg publishes kg/ha and is converted on load. Units are audited per series from the magnitudes, not only from the unit column.
   - **Crop calendar:** `ml/reference/crop_calendar.csv` is season-level and draft; crop × state calendars must replace it before lead-time windows are final (Phase 7).
   - **ICRISAT-TCI DLD:** not ingested. The portal is unreachable (`data.icrisat.org` timed out 2026-11-14), the Dataverse needs a login, and the licence conflict (CC BY vs CC BY-NC) is unresolved.
+
+## ADR-026: Yield predictors: scope-freeze defaults, NASA POWER weather, leak-safe lead windows
+- **Status:** proposed (Phase 7); the defaults below were adopted to unblock work and need faculty/agronomist sign-off
+- **Decision:**
+  - **Scope-freeze defaults (answers to report 06 §6):**
+    - tier v2 (107 series, plus annual eastern rice = 108);
+    - rice in Assam, Odisha, Bihar, West Bengal and Jharkhand modelled annually (production/area summed over seasons);
+    - splits train ≤2015 / val 2016-18 / test 2019-22, plus a 10% spatial district hold-out;
+    - catalog adds cowpea, guar, khesari, moth bean and sunn hemp (korra skipped: it conflicts with an existing alias);
+    - ICRISAT DLD dropped;
+    - the season-level draft calendar is used until crop × state calendars arrive.
+  - **Weather:** NASA POWER daily regional grids, 1997-2024. Meteorology (precipitation, Tmax, Tmin, RH) is on the MERRA-2 0.5° × 0.625° grid; solar radiation is on the CERES 1° × 1° grid. Each parameter is aggregated to districts with its own grid's overlap weights (EPSG:6933). A weighted cell missing from the data raises an error. A missing cell-day is never filled.
+  - **Boundaries:** geoBoundaries IND ADM2 (2021, built from LGD; ODbL), matched to LGD codes by state and name. `reference/district_polygon_overrides.csv` holds 60 reviewed pairs (official renames, Odia transliterations, pre-split predecessors). Every match method is recorded per row, and fuzzy matches and overrides are flagged for review. Districts created after the polygon vintage stay without weather; they are not mapped to a parent. Polygons are used internally only.
+  - **Windows:** a forecast at lead L uses only days in [anchor − 60 d, anchor + L). Nothing on or after the cutoff can reach a feature; a poison test enforces this. Features are raw; climatologies, scalers and imputers are fitted on train only, at model time.
+  - **Not available:**
+    - soil: SoilGrids was unreachable, so soil is a missing modality;
+    - remote sensing: MODIS MOD13A3 monthly 1 km NDVI from Feb 2000 via AppEEARS (requested 2026-11-15). Only good/marginal pixels are kept. A monthly composite enters a forecast only if month end + 15 days (publication lag) is before the cutoff, and a test enforces this. Label years 1997-1999 have no NDVI.
+  - **Known limitation:** labels from before a district split are mapped to the 2021 polygon of the parent's LGD code.

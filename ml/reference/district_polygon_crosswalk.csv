@@ -1,736 +1,736 @@
 shapeID,shape_name,state_2011,lgd_district_code,match,lgd_name,review
-76128533B64156747739715,Koch Bihar,West Bengal,308.0,alias,Cooch Behar,False
-76128533B84772375641700,Baudh,Odisha,349.0,fuzzy:0.80,Boudh,True
-76128533B64898456093948,Dhaulpur,Rājasthān,98.0,fuzzy:0.80,Dholpur,True
-76128533B35468154415031,Saiha,Mizoram,267.0,fuzzy:0.80,Siaha,True
-76128533B37825396764028,Shupiyan,Jammu and Kashmīr,625.0,fuzzy:0.80,Shopian,True
-76128533B43965372582859,Sipahijula,Tripura,653.0,fuzzy:0.80,Sepahijala,True
-76128533B52664671961643,Anantapur,Andhra Pradesh,502.0,fuzzy:0.82,Ananthapuramu,True
-76128533B421757708753,Firozpur,Punjab,31.0,fuzzy:0.82,Ferozepur,True
-76128533B85389886560116,Shimoga,Karnātaka,547.0,fuzzy:0.82,Shivamogga,True
-76128533B88214376170788,Badgam,Jammu and Kashmīr,2.0,fuzzy:0.83,Budgam,True
-76128533B17109302371020,Darjiling,West Bengal,309.0,fuzzy:0.84,Darjeeling,True
-76128533B85157820615002,Yadadri Bhongiri,Telangāna,697.0,fuzzy:0.85,Yadadri Bhuvanagiri,True
-76128533B62153454383166,Aravali,Gujarāt,672.0,fuzzy:0.86,Arvalli,True
-76128533B8930157583904,Jangaon,Telangāna,689.0,fuzzy:0.86,Jangoan,True
-76128533B38548995376745,Karbi Anglong East,Assam,292.0,fuzzy:0.86,Karbi Anglong,True
-76128533B43180268042348,Kodarma,Jhārkhand,334.0,fuzzy:0.86,Koderma,True
-76128533B64905184636422,Tumkur,Karnātaka,548.0,fuzzy:0.86,Tumakuru,True
-76128533B4720703924950,Unokoti,Tripura,655.0,fuzzy:0.86,Unakoti,True
-76128533B58527154065354,Chittaurgarh,Rājasthān,95.0,fuzzy:0.87,Chittorgarh,True
-76128533B69417260894674,Chhota Udaipur,Gujarāt,668.0,fuzzy:0.88,Chhotaudepur,True
-76128533B15550697205080,Chikmagalur,Karnātaka,532.0,fuzzy:0.88,Chikkamagaluru,True
-76128533B17968019348564,Morigaon,Assam,296.0,fuzzy:0.88,Marigaon,True
-76128533B93113981386565,Ahmadabad,Gujarāt,438.0,fuzzy:0.89,Ahmedabad,True
-76128533B41744580856133,Bandipore,Jammu and Kashmīr,623.0,fuzzy:0.89,Bandipora,True
-76128533B49805675626253,Sahibganj,Jhārkhand,340.0,fuzzy:0.89,Sahebganj,True
-76128533B98951704707517,Kendrapara,Odisha,360.0,fuzzy:0.90,Kendrapada,True
-76128533B59459156188335,Jalor,Rājasthān,104.0,fuzzy:0.91,Jalore,True
-76128533B36734405131975,Maldah,West Bengal,316.0,fuzzy:0.91,Malda,True
-76128533B35465481868600,Samli,Uttar Pradesh,660.0,fuzzy:0.91,Shamli,True
-76128533B88669134807148,Chengalputtu,Tamil Nādu,730.0,fuzzy:0.92,Chengalpattu,True
-76128533B76286653784168,Gondiya,Mahārāshtra,476.0,fuzzy:0.92,Gondia,True
-76128533B91818883767147,Jajapur,Odisha,356.0,fuzzy:0.92,Jajpur,True
-76128533B73736605657091,Bemetra,Chhattīsgarh,650.0,fuzzy:0.93,Bemetara,True
-76128533B70021405538438,Buldana,Mahārāshtra,472.0,fuzzy:0.93,Buldhana,True
-76128533B87833640460819,Hardwar,Uttarākhand,50.0,fuzzy:0.93,Haridwar,True
-76128533B67054925852429,Jagtial,Telangāna,681.0,fuzzy:0.93,Jagitial,True
-76128533B49017555803526,Purba Champaran,Bihār,213.0,fuzzy:0.93,Purbi Champaran,True
-76128533B16811573188243,Puruliya,West Bengal,321.0,fuzzy:0.93,Purulia,True
-76128533B83278580643229,Bagalkot,Karnātaka,524.0,fuzzy:0.94,Bagalkote,True
-76128533B15567489974292,Baramula,Jammu and Kashmīr,3.0,fuzzy:0.94,Baramulla,True
-76128533B84676164211579,Hydrabad,Telangāna,507.0,fuzzy:0.94,Hyderabad,True
-76128533B63833971372360,Warangal (R),Telangāna,522.0,fuzzy:0.94,Warangal,True
-76128533B93063337202124,Gariaband,Chhattīsgarh,645.0,fuzzy:0.95,Gariyaband,True
-76128533B86135761305702,Jhunjhunun,Rājasthān,106.0,fuzzy:0.95,Jhunjhunu,True
-76128533B8798165946807,Kandhamal,Odisha,359.0,fuzzy:0.95,Kandhamala,True
-76128533B20298037622173,South Salmara-Mankachar,Assam,707.0,fuzzy:0.95,South Salmara Mancachar,True
-76128533B75359793481950,Lahul & Spiti,Himāchal Pradesh,21.0,fuzzy:0.96,Lahaul And Spiti,True
-76128533B99037046327658,Nabarangapur,Odisha,366.0,fuzzy:0.96,Nabarangpur,True
-76128533B22587307937261,South Andaman,Andaman and Nicobar Islands,602.0,fuzzy:0.96,South Andamans,True
-76128533B60845263086042,Paschim Barddhaman,West Bengal,704.0,fuzzy:0.97,Paschim Bardhaman,True
-76128533B38203190611533,Gaurella Pendra Marwahi,Chhattīsgarh,734.0,fuzzy:0.98,Gaurela-Pendra-Marwahi,True
-76128533B38354309367879,Adilabad,Telangāna,501.0,name,Adilabad,False
-76128533B26296891809198,Agra,Uttar Pradesh,118.0,name,Agra,False
-76128533B34203923268864,Aizawl,Mizoram,261.0,name,Aizawl,False
-76128533B60180372390230,Ajmer,Rājasthān,86.0,name,Ajmer,False
-76128533B12380735325851,Akola,Mahārāshtra,467.0,name,Akola,False
-76128533B86368264587575,Alappuzha,Kerala,554.0,name,Alappuzha,False
-76128533B60862799554879,Aligarh,Uttar Pradesh,119.0,name,Aligarh,False
-76128533B23858286755005,Alipurduar,West Bengal,664.0,name,Alipurduar,False
-76128533B35167844027544,Alirajpur,Madhya Pradesh,639.0,name,Alirajpur,False
-76128533B74917207853309,Almora,Uttarākhand,45.0,name,Almora,False
-76128533B5628791558965,Alwar,Rājasthān,87.0,name,Alwar,False
-76128533B95049353851516,Ambala,Haryāna,58.0,name,Ambala,False
-76128533B7879459377699,Ambedkar Nagar,Uttar Pradesh,121.0,name,Ambedkar Nagar,False
-76128533B13908294104682,Amethi,Uttar Pradesh,640.0,name,Amethi,False
-76128533B63815467309300,Amravati,Mahārāshtra,468.0,name,Amravati,False
-76128533B43737470294384,Amreli,Gujarāt,439.0,name,Amreli,False
-76128533B8426545955058,Amritsar,Punjab,27.0,name,Amritsar,False
-76128533B69438085511257,Anand,Gujarāt,440.0,name,Anand,False
-76128533B6393836306469,Anantnag,Jammu and Kashmīr,1.0,name,Anantnag,False
-76128533B55878637000592,Anjaw,Arunāchal Pradesh,628.0,name,Anjaw,False
-76128533B25468964623139,Anuppur,Madhya Pradesh,390.0,name,Anuppur,False
-76128533B4745348385341,Araria,Bihār,188.0,name,Araria,False
-76128533B16889790752134,Ariyalur,Tamil Nādu,610.0,name,Ariyalur,False
-76128533B45623818137574,Arwal,Bihār,611.0,name,Arwal,False
 76128533B75548370501185,Ashoknagar,Madhya Pradesh,391.0,name,Ashoknagar,False
-76128533B20660206691661,Auraiya,Uttar Pradesh,122.0,name,Auraiya,False
-76128533B21485639457044,Aurangabad,Bihār,189.0,name,Aurangabad,False
-76128533B73925919155567,Azamgarh,Uttar Pradesh,123.0,name,Azamgarh,False
-76128533B64217423710469,Bageshwar,Uttarākhand,46.0,name,Bageshwar,False
-76128533B46268976217915,Baghpat,Uttar Pradesh,124.0,name,Baghpat,False
-76128533B66612397499770,Bahraich,Uttar Pradesh,125.0,name,Bahraich,False
-76128533B8221925175605,Baksa,Assam,616.0,name,Baksa,False
-76128533B66134271591289,Balaghat,Madhya Pradesh,392.0,name,Balaghat,False
-76128533B44395557448920,Balangir,Odisha,345.0,name,Balangir,False
-76128533B81147724102706,Baleshwar,Odisha,346.0,name,Baleshwar,False
-76128533B73769926250842,Ballia,Uttar Pradesh,126.0,name,Ballia,False
-76128533B90169585758701,Balod,Chhattīsgarh,646.0,name,Balod,False
-76128533B87371000929659,Balrampur,Uttar Pradesh,127.0,name,Balrampur,False
-76128533B52902360321344,Banas Kantha,Gujarāt,441.0,name,Banas Kantha,False
-76128533B45099378029175,Banda,Uttar Pradesh,128.0,name,Banda,False
-76128533B54517225652088,Banka,Bihār,190.0,name,Banka,False
-76128533B20752885472650,Bankura,West Bengal,305.0,name,Bankura,False
-76128533B96584288929219,Banswara,Rājasthān,88.0,name,Banswara,False
-76128533B74938989340684,Bara Banki,Uttar Pradesh,129.0,name,Bara Banki,False
-76128533B98308664713511,Baran,Rājasthān,89.0,name,Baran,False
-76128533B68554447699730,Bareilly,Uttar Pradesh,130.0,name,Bareilly,False
-76128533B75922461866405,Barmer,Rājasthān,90.0,name,Barmer,False
-76128533B39051871473194,Barnala,Punjab,605.0,name,Barnala,False
-76128533B47772746709007,Barpeta,Assam,280.0,name,Barpeta,False
-76128533B668165975951,Barwani,Madhya Pradesh,393.0,name,Barwani,False
-76128533B47840093719460,Bastar,Chhattīsgarh,374.0,name,Bastar,False
-76128533B18648944871057,Basti,Uttar Pradesh,131.0,name,Basti,False
-76128533B13791982054894,Bathinda,Punjab,28.0,name,Bathinda,False
-76128533B5855800361016,Begusarai,Bihār,191.0,name,Begusarai,False
-76128533B82559220423608,Betul,Madhya Pradesh,394.0,name,Betul,False
-76128533B58797478961083,Bhadrak,Odisha,348.0,name,Bhadrak,False
-76128533B83462627230182,Bhagalpur,Bihār,192.0,name,Bhagalpur,False
-76128533B14243635342908,Bhandara,Mahārāshtra,471.0,name,Bhandara,False
-76128533B25576352747885,Bharatpur,Rājasthān,91.0,name,Bharatpur,False
-76128533B63599385776584,Bharuch,Gujarāt,442.0,name,Bharuch,False
-76128533B93450974047240,Bhavnagar,Gujarāt,443.0,name,Bhavnagar,False
-76128533B93441663686573,Bhilwara,Rājasthān,92.0,name,Bhilwara,False
-76128533B57712033428660,Bhind,Madhya Pradesh,395.0,name,Bhind,False
-76128533B42646400584570,Bhiwani,Haryāna,59.0,name,Bhiwani,False
-76128533B66426066081507,Bhojpur,Bihār,193.0,name,Bhojpur,False
-76128533B22439249004073,Bhopal,Madhya Pradesh,396.0,name,Bhopal,False
-76128533B9794868259401,Bidar,Karnātaka,529.0,name,Bidar,False
-76128533B66145460152555,Bijapur,Chhattīsgarh,636.0,name,Bijapur,False
-76128533B14534161138054,Bijnor,Uttar Pradesh,132.0,name,Bijnor,False
-76128533B55039756001726,Bikaner,Rājasthān,93.0,name,Bikaner,False
-76128533B85695392289827,Bilaspur,Himāchal Pradesh,15.0,name,Bilaspur,False
-76128533B81964529079574,Bilaspur,Chhattīsgarh,375.0,name,Bilaspur,False
-76128533B53366745705922,Birbhum,West Bengal,307.0,name,Birbhum,False
-76128533B14403163214152,Bishnupur,Manipur,252.0,name,Bishnupur,False
-76128533B40714385808093,Biswanath,Assam,705.0,name,Biswanath,False
-76128533B30016122738302,Bokaro,Jhārkhand,322.0,name,Bokaro,False
-76128533B46490409917345,Bongaigaon,Assam,281.0,name,Bongaigaon,False
-76128533B84679668760735,Budaun,Uttar Pradesh,133.0,name,Budaun,False
-76128533B13272482176343,Bulandshahr,Uttar Pradesh,134.0,name,Bulandshahr,False
-76128533B69412164931619,Bundi,Rājasthān,94.0,name,Bundi,False
-76128533B37096001761063,Burhanpur,Madhya Pradesh,397.0,name,Burhanpur,False
-76128533B12244320360965,Buxar,Bihār,194.0,name,Buxar,False
-76128533B26964150246712,Cachar,Assam,282.0,name,Cachar,False
-76128533B19832024635761,Central,Delhi,77.0,name,Central,False
-76128533B16628456658675,Chamarajanagar,Karnātaka,531.0,name,Chamarajanagar,False
-76128533B58537895532859,Chamba,Himāchal Pradesh,16.0,name,Chamba,False
-76128533B69844709752120,Chamoli,Uttarākhand,47.0,name,Chamoli,False
-76128533B2761749808956,Champawat,Uttarākhand,48.0,name,Champawat,False
-76128533B39039541714099,Champhai,Mizoram,262.0,name,Champhai,False
-76128533B13673614951516,Chandauli,Uttar Pradesh,135.0,name,Chandauli,False
-76128533B59855617266389,Chandel,Manipur,253.0,name,Chandel,False
-76128533B56050914259601,Chandigarh,Chandīgarh,44.0,name,Chandigarh,False
-76128533B31342633028465,Chandrapur,Mahārāshtra,473.0,name,Chandrapur,False
-76128533B9558749744242,Changlang,Arunāchal Pradesh,229.0,name,Changlang,False
-76128533B89228414823983,Charaideo,Assam,708.0,name,Charaideo,False
-76128533B44632955875385,Chatra,Jhārkhand,323.0,name,Chatra,False
-76128533B89024397489955,Chennai,Tamil Nādu,568.0,name,Chennai,False
-76128533B42922918567330,Chhatarpur,Madhya Pradesh,398.0,name,Chhatarpur,False
+76128533B57893545331548,Raisen,Madhya Pradesh,421.0,name,Raisen,False
 76128533B70646408240587,Chhindwara,Madhya Pradesh,399.0,name,Chhindwara,False
-76128533B80772392204057,Chikkaballapura,Karnātaka,630.0,name,Chikkaballapura,False
-76128533B56012535339305,Chirang,Assam,612.0,name,Chirang,False
-76128533B47594161132413,Chitradurga,Karnātaka,533.0,name,Chitradurga,False
-76128533B53725063754801,Chitrakoot,Uttar Pradesh,136.0,name,Chitrakoot,False
-76128533B22471914548132,Chittoor,Andhra Pradesh,503.0,name,Chittoor,False
-76128533B50969226102213,Churachandpur,Manipur,254.0,name,Churachandpur,False
-76128533B66825707357376,Churu,Rājasthān,96.0,name,Churu,False
-76128533B4753404177348,Coimbatore,Tamil Nādu,569.0,name,Coimbatore,False
-76128533B61321395333865,Cuddalore,Tamil Nādu,570.0,name,Cuddalore,False
-76128533B14292125820380,Dakshin Bastar Dantewada,Chhattīsgarh,376.0,name,Dakshin Bastar Dantewada,False
-76128533B43049220506604,Dakshin Dinajpur,West Bengal,310.0,name,Dakshin Dinajpur,False
-76128533B54396396829952,Dakshina Kannada,Karnātaka,534.0,name,Dakshina Kannada,False
-76128533B44250373880839,Damoh,Madhya Pradesh,400.0,name,Damoh,False
-76128533B12694285477701,Darbhanga,Bihār,195.0,name,Darbhanga,False
-76128533B96719327593873,Darrang,Assam,283.0,name,Darrang,False
-76128533B80958502091898,Datia,Madhya Pradesh,401.0,name,Datia,False
-76128533B73809971322123,Dausa,Rājasthān,97.0,name,Dausa,False
-76128533B49597693387243,Davanagere,Karnātaka,535.0,name,Davanagere,False
-76128533B67005208112053,Dehradun,Uttarākhand,49.0,name,Dehradun,False
-76128533B90068096507942,Deoghar,Jhārkhand,324.0,name,Deoghar,False
-76128533B40023971667984,Deoria,Uttar Pradesh,137.0,name,Deoria,False
-76128533B74381554567803,Devbhumi Dwarka,Gujarāt,674.0,name,Devbhumi Dwarka,False
-76128533B53549946596470,Dewas,Madhya Pradesh,402.0,name,Dewas,False
-76128533B42970684683247,Dhalai,Tripura,269.0,name,Dhalai,False
-76128533B71714250401862,Dhamtari,Chhattīsgarh,377.0,name,Dhamtari,False
-76128533B94847743365739,Dhanbad,Jhārkhand,325.0,name,Dhanbad,False
-76128533B42880544505675,Dhar,Madhya Pradesh,403.0,name,Dhar,False
-76128533B4743808419896,Dharmapuri,Tamil Nādu,571.0,name,Dharmapuri,False
-76128533B75110579117636,Dharwad,Karnātaka,536.0,name,Dharwad,False
-76128533B50650763703739,Dhemaji,Assam,284.0,name,Dhemaji,False
-76128533B32509926596077,Dhenkanal,Odisha,352.0,name,Dhenkanal,False
-76128533B25835998628545,Dhubri,Assam,285.0,name,Dhubri,False
-76128533B25344721013980,Dhule,Mahārāshtra,474.0,name,Dhule,False
-76128533B11651252780045,Dibang Valley,Arunāchal Pradesh,230.0,name,Dibang Valley,False
-76128533B57825981663822,Dibrugarh,Assam,286.0,name,Dibrugarh,False
-76128533B66125202864966,Dima Hasao,Assam,299.0,name,Dima Hasao,False
-76128533B85747247216737,Dimapur,Nāgāland,244.0,name,Dimapur,False
-76128533B28879432621383,Dindigul,Tamil Nādu,572.0,name,Dindigul,False
-76128533B20502827346807,Dindori,Madhya Pradesh,404.0,name,Dindori,False
-76128533B48708628358161,Doda,Jammu and Kashmīr,4.0,name,Doda,False
-76128533B18802630191461,Dumka,Jhārkhand,326.0,name,Dumka,False
-76128533B12079567451207,Dungarpur,Rājasthān,99.0,name,Dungarpur,False
-76128533B15993411864574,Durg,Chhattīsgarh,378.0,name,Durg,False
-76128533B72485933575946,East,Delhi,78.0,name,East,False
-76128533B40535123096970,East Garo Hills,Meghālaya,273.0,name,East Garo Hills,False
-76128533B29138015770556,East Godavari,Andhra Pradesh,505.0,name,East Godavari,False
-76128533B70185077694103,East Jaintia Hills,Meghālaya,657.0,name,East Jaintia Hills,False
-76128533B76129461078086,East Kameng,Arunāchal Pradesh,231.0,name,East Kameng,False
-76128533B49246671500878,East Khasi Hills,Meghālaya,274.0,name,East Khasi Hills,False
-76128533B53717296822608,East Siang,Arunāchal Pradesh,232.0,name,East Siang,False
-76128533B75519739609062,Ernakulam,Kerala,555.0,name,Ernakulam,False
-76128533B15337568968545,Erode,Tamil Nādu,573.0,name,Erode,False
-76128533B15342706434354,Etah,Uttar Pradesh,138.0,name,Etah,False
-76128533B79784438258239,Etawah,Uttar Pradesh,139.0,name,Etawah,False
-76128533B40638696154891,Faridabad,Haryāna,60.0,name,Faridabad,False
-76128533B13552746017223,Faridkot,Punjab,29.0,name,Faridkot,False
-76128533B59596968713717,Farrukhabad,Uttar Pradesh,141.0,name,Farrukhabad,False
-76128533B10727492375508,Fatehabad,Haryāna,61.0,name,Fatehabad,False
-76128533B99919205026025,Fatehgarh Sahib,Punjab,30.0,name,Fatehgarh Sahib,False
-76128533B7124697440629,Fatehpur,Uttar Pradesh,142.0,name,Fatehpur,False
-76128533B7291413308870,Fazilka,Punjab,651.0,name,Fazilka,False
-76128533B91640519747726,Firozabad,Uttar Pradesh,143.0,name,Firozabad,False
-76128533B33966968116377,Gadag,Karnātaka,537.0,name,Gadag,False
-76128533B36958871695926,Gadchiroli,Mahārāshtra,475.0,name,Gadchiroli,False
-76128533B73854359719990,Gajapati,Odisha,353.0,name,Gajapati,False
-76128533B20504715877560,Ganderbal,Jammu and Kashmīr,626.0,name,Ganderbal,False
-76128533B7606365706860,Gandhinagar,Gujarāt,446.0,name,Gandhinagar,False
-76128533B72079972234594,Ganganagar,Rājasthān,100.0,name,Ganganagar,False
-76128533B633842538351,Ganjam,Odisha,354.0,name,Ganjam,False
-76128533B12294379827032,Garhwa,Jhārkhand,328.0,name,Garhwa,False
-76128533B34462889864078,Gautam Buddha Nagar,Uttar Pradesh,144.0,name,Gautam Buddha Nagar,False
-76128533B91871300208785,Gaya,Bihār,196.0,name,Gaya,False
-76128533B68984344044805,Ghaziabad,Uttar Pradesh,145.0,name,Ghaziabad,False
-76128533B49460554954204,Ghazipur,Uttar Pradesh,146.0,name,Ghazipur,False
-76128533B45037556977273,Gir Somnath,Gujarāt,675.0,name,Gir Somnath,False
-76128533B75529869544465,Giridih,Jhārkhand,329.0,name,Giridih,False
-76128533B91472319248603,Goalpara,Assam,287.0,name,Goalpara,False
-76128533B58697472287618,Godda,Jhārkhand,330.0,name,Godda,False
-76128533B55519385298440,Golaghat,Assam,288.0,name,Golaghat,False
-76128533B94126463611805,Gomati,Tripura,654.0,name,Gomati,False
-76128533B67530641452031,Gonda,Uttar Pradesh,147.0,name,Gonda,False
-76128533B93214480696409,Gopalganj,Bihār,197.0,name,Gopalganj,False
-76128533B40226077866964,Gorakhpur,Uttar Pradesh,148.0,name,Gorakhpur,False
-76128533B80916614857890,Gumla,Jhārkhand,331.0,name,Gumla,False
-76128533B79048012717121,Guna,Madhya Pradesh,406.0,name,Guna,False
-76128533B72541188260561,Guntur,Andhra Pradesh,506.0,name,Guntur,False
-76128533B51331331726928,Gurdaspur,Punjab,32.0,name,Gurdaspur,False
-76128533B90551733723251,Gwalior,Madhya Pradesh,407.0,name,Gwalior,False
-76128533B16749627383755,Hailakandi,Assam,289.0,name,Hailakandi,False
-76128533B35956162202704,Hamirpur,Himāchal Pradesh,17.0,name,Hamirpur,False
-76128533B27201270098470,Hamirpur,Uttar Pradesh,149.0,name,Hamirpur,False
-76128533B92044109913630,Hanumangarh,Rājasthān,101.0,name,Hanumangarh,False
-76128533B87317961648652,Hapur,Uttar Pradesh,661.0,name,Hapur,False
-76128533B21179322085415,Harda,Madhya Pradesh,408.0,name,Harda,False
-76128533B25208535254310,Hardoi,Uttar Pradesh,150.0,name,Hardoi,False
-76128533B54775433755383,Hassan,Karnātaka,539.0,name,Hassan,False
-76128533B86721175299079,Haveri,Karnātaka,540.0,name,Haveri,False
-76128533B1222571856670,Hazaribagh,Jhārkhand,332.0,name,Hazaribagh,False
-76128533B86424887513424,Hingoli,Mahārāshtra,477.0,name,Hingoli,False
-76128533B22732185131019,Hisar,Haryāna,63.0,name,Hisar,False
-76128533B64903504311414,Hnahthial,Mizoram,726.0,name,Hnahthial,False
-76128533B70315194619807,Hojai,Assam,709.0,name,Hojai,False
-76128533B41747884279129,Hoshiarpur,Punjab,33.0,name,Hoshiarpur,False
-76128533B35083559759016,Idukki,Kerala,556.0,name,Idukki,False
-76128533B30779259886340,Imphal East,Manipur,255.0,name,Imphal East,False
-76128533B99807650893733,Imphal West,Manipur,256.0,name,Imphal West,False
-76128533B60360721573267,Indore,Madhya Pradesh,410.0,name,Indore,False
+76128533B82559220423608,Betul,Madhya Pradesh,394.0,name,Betul,False
+76128533B45314020251888,Hoshangabad,Madhya Pradesh,409.0,override:rename,Narmadapuram,True
+76128533B39959897010345,Sehore,Madhya Pradesh,427.0,name,Sehore,False
 76128533B27615708126939,Jabalpur,Madhya Pradesh,411.0,name,Jabalpur,False
-76128533B32949331695897,Jagatsinghapur,Odisha,355.0,name,Jagatsinghapur,False
-76128533B28755611410447,Jaipur,Rājasthān,102.0,name,Jaipur,False
-76128533B14849085202492,Jaisalmer,Rājasthān,103.0,name,Jaisalmer,False
-76128533B91211372620495,Jalandhar,Punjab,34.0,name,Jalandhar,False
-76128533B15835290978888,Jalaun,Uttar Pradesh,151.0,name,Jalaun,False
-76128533B40156838070,Jalgaon,Mahārāshtra,478.0,name,Jalgaon,False
-76128533B55603381222870,Jalna,Mahārāshtra,479.0,name,Jalna,False
-76128533B99051523080987,Jalpaiguri,West Bengal,314.0,name,Jalpaiguri,False
-76128533B3371867518692,Jammu,Jammu and Kashmīr,5.0,name,Jammu,False
-76128533B35205406647638,Jamnagar,Gujarāt,447.0,name,Jamnagar,False
-76128533B17261532861377,Jamtara,Jhārkhand,333.0,name,Jamtara,False
-76128533B16781044866906,Jamui,Bihār,198.0,name,Jamui,False
-76128533B6310527412636,Janjgir-Champa,Chhattīsgarh,379.0,name,Janjgir-Champa,False
-76128533B53609934827566,Jashpur,Chhattīsgarh,380.0,name,Jashpur,False
-76128533B64732849735713,Jaunpur,Uttar Pradesh,152.0,name,Jaunpur,False
-76128533B24101991435637,Jehanabad,Bihār,199.0,name,Jehanabad,False
-76128533B67004768724668,Jhabua,Madhya Pradesh,412.0,name,Jhabua,False
-76128533B70554191137208,Jhajjar,Haryāna,64.0,name,Jhajjar,False
-76128533B91943656836526,Jhalawar,Rājasthān,105.0,name,Jhalawar,False
-76128533B66072086060089,Jhansi,Uttar Pradesh,153.0,name,Jhansi,False
-76128533B24861976740713,Jhargram,West Bengal,703.0,name,Jhargram,False
-76128533B93240759409313,Jharsuguda,Odisha,357.0,name,Jharsuguda,False
-76128533B45106682783501,Jind,Haryāna,65.0,name,Jind,False
-76128533B64881202564500,Jiribam,Manipur,713.0,name,Jiribam,False
-76128533B84094142280102,Jodhpur,Rājasthān,107.0,name,Jodhpur,False
-76128533B334793883930,Jorhat,Assam,290.0,name,Jorhat,False
-76128533B40923846274136,Junagadh,Gujarāt,448.0,name,Junagadh,False
-76128533B48077510234542,Kabeerdham,Chhattīsgarh,382.0,name,Kabeerdham,False
-76128533B91881382098572,Kachchh,Gujarāt,449.0,name,Kachchh,False
-76128533B78904410352326,Kaimur (Bhabua),Bihār,200.0,name,Kaimur (Bhabua),False
-76128533B64596101949699,Kaithal,Haryāna,66.0,name,Kaithal,False
-76128533B82279368215419,Kakching,Manipur,711.0,name,Kakching,False
-76128533B70759200975708,Kalahandi,Odisha,358.0,name,Kalahandi,False
-76128533B78458325839103,Kalimpong,West Bengal,702.0,name,Kalimpong,False
-76128533B19545859035458,Kallakurichi,Tamil Nādu,729.0,name,Kallakurichi,False
-76128533B21068662878849,Kamareddy,Telangāna,685.0,name,Kamareddy,False
-76128533B66815680293072,Kamjong,Manipur,717.0,name,Kamjong,False
-76128533B19898496046456,Kamle,Arunāchal Pradesh,718.0,name,Kamle,False
-76128533B66682530790248,Kamrup,Assam,291.0,name,Kamrup,False
-76128533B83644689337946,Kancheepuram,Tamil Nādu,574.0,name,Kancheepuram,False
-76128533B56326354019534,Kangpokpi,Manipur,712.0,name,Kangpokpi,False
-76128533B13697452453823,Kangra,Himāchal Pradesh,18.0,name,Kangra,False
-76128533B80966996849325,Kannauj,Uttar Pradesh,155.0,name,Kannauj,False
-76128533B53796141759805,Kanniyakumari,Tamil Nādu,575.0,name,Kanniyakumari,False
-76128533B41976979530466,Kannur,Kerala,557.0,name,Kannur,False
-76128533B80299348876357,Kanpur Dehat,Uttar Pradesh,156.0,name,Kanpur Dehat,False
-76128533B23710487943819,Kanpur Nagar,Uttar Pradesh,157.0,name,Kanpur Nagar,False
-76128533B37199077904074,Kapurthala,Punjab,35.0,name,Kapurthala,False
-76128533B62624361588317,Karaikal,Puducherry,598.0,name,Karaikal,False
-76128533B34069028331411,Karauli,Rājasthān,108.0,name,Karauli,False
-76128533B47664895117076,Kargil,Ladākh,6.0,name,Kargil,False
-76128533B58104976570569,Karimnagar,Telangāna,508.0,name,Karimnagar,False
-76128533B6330405394721,Karnal,Haryāna,67.0,name,Karnal,False
-76128533B19335918192159,Karur,Tamil Nādu,576.0,name,Karur,False
-76128533B63366045987285,Kasaragod,Kerala,558.0,name,Kasaragod,False
-76128533B79652855441225,Kathua,Jammu and Kashmīr,7.0,name,Kathua,False
-76128533B27432148084533,Katihar,Bihār,201.0,name,Katihar,False
-76128533B16674973717653,Katni,Madhya Pradesh,413.0,name,Katni,False
-76128533B98420041301261,Kaushambi,Uttar Pradesh,158.0,name,Kaushambi,False
-76128533B59504628511334,Kendujhar,Odisha,361.0,name,Kendujhar,False
-76128533B78970756356546,Khagaria,Bihār,202.0,name,Khagaria,False
-76128533B96571577519224,Khammam,Telangāna,509.0,name,Khammam,False
-76128533B71271011331008,Khandwa (East Nimar),Madhya Pradesh,405.0,name,Khandwa (East Nimar),False
-76128533B69481535535995,Khargone (West Nimar),Madhya Pradesh,414.0,name,Khargone (West Nimar),False
-76128533B41321006511827,Khawzawl,Mizoram,728.0,name,Khawzawl,False
-76128533B39046535416628,Kheda,Gujarāt,450.0,name,Kheda,False
-76128533B76479861129777,Kheri,Uttar Pradesh,159.0,name,Kheri,False
-76128533B52802748445403,Khordha,Odisha,362.0,name,Khordha,False
-76128533B67044589012853,Khowai,Tripura,652.0,name,Khowai,False
-76128533B27414563922025,Khunti,Jhārkhand,606.0,name,Khunti,False
-76128533B50011981829203,Kinnaur,Himāchal Pradesh,19.0,name,Kinnaur,False
-76128533B49100243723360,Kiphire,Nāgāland,614.0,name,Kiphire,False
-76128533B65773363805797,Kishanganj,Bihār,203.0,name,Kishanganj,False
-76128533B20458430922604,Kishtwar,Jammu and Kashmīr,620.0,name,Kishtwar,False
-76128533B57609583882472,Kodagu,Karnātaka,541.0,name,Kodagu,False
-76128533B53671786151110,Kohima,Nāgāland,245.0,name,Kohima,False
-76128533B91480770176940,Kokrajhar,Assam,294.0,name,Kokrajhar,False
-76128533B29292403538801,Kolar,Karnātaka,542.0,name,Kolar,False
-76128533B38141181853016,Kolasib,Mizoram,263.0,name,Kolasib,False
-76128533B66719908763317,Kolhapur,Mahārāshtra,480.0,name,Kolhapur,False
-76128533B72507508533064,Kolkata,West Bengal,315.0,name,Kolkata,False
-76128533B61117593923933,Kollam,Kerala,559.0,name,Kollam,False
-76128533B12144400448811,Kondagaon,Chhattīsgarh,643.0,name,Kondagaon,False
-76128533B79601545186231,Koppal,Karnātaka,543.0,name,Koppal,False
-76128533B47448948912370,Koraput,Odisha,363.0,name,Koraput,False
-76128533B89438858641946,Korba,Chhattīsgarh,383.0,name,Korba,False
-76128533B74447895476194,Kota,Rājasthān,109.0,name,Kota,False
-76128533B2576169508425,Kottayam,Kerala,560.0,name,Kottayam,False
-76128533B3985531353014,Kozhikode,Kerala,561.0,name,Kozhikode,False
-76128533B12129983841645,Kra Daadi,Arunāchal Pradesh,677.0,name,Kra Daadi,False
-76128533B4481773749911,Krishna,Andhra Pradesh,510.0,name,Krishna,False
-76128533B35717069663408,Krishnagiri,Tamil Nādu,577.0,name,Krishnagiri,False
-76128533B87327155385261,Kulgam,Jammu and Kashmīr,622.0,name,Kulgam,False
-76128533B97425778881707,Kullu,Himāchal Pradesh,20.0,name,Kullu,False
-76128533B68195849750399,Kupwara,Jammu and Kashmīr,8.0,name,Kupwara,False
-76128533B28294794137747,Kurnool,Andhra Pradesh,511.0,name,Kurnool,False
-76128533B94710820075529,Kurukshetra,Haryāna,68.0,name,Kurukshetra,False
-76128533B31405919461443,Kurung Kumey,Arunāchal Pradesh,233.0,name,Kurung Kumey,False
-76128533B26931973511551,Kushinagar,Uttar Pradesh,160.0,name,Kushinagar,False
-76128533B85627242103654,Lakhimpur,Assam,295.0,name,Lakhimpur,False
-76128533B98985252129882,Lakhisarai,Bihār,204.0,name,Lakhisarai,False
-76128533B59256192226816,Lalitpur,Uttar Pradesh,161.0,name,Lalitpur,False
-76128533B35143550659673,Latehar,Jhārkhand,335.0,name,Latehar,False
-76128533B98050240849249,Latur,Mahārāshtra,481.0,name,Latur,False
-76128533B70210707786180,Lawngtlai,Mizoram,264.0,name,Lawngtlai,False
-76128533B57183548666997,Leh(Ladakh),Ladākh,9.0,name,Leh Ladakh,False
-76128533B25448742967716,Leparada,Arunāchal Pradesh,724.0,name,Leparada,False
-76128533B35439951183692,Lohardaga,Jhārkhand,336.0,name,Lohardaga,False
-76128533B6828791241172,Lohit,Arunāchal Pradesh,234.0,name,Lohit,False
-76128533B22715430000002,Longding,Arunāchal Pradesh,666.0,name,Longding,False
-76128533B66411945144923,Longleng,Nāgāland,615.0,name,Longleng,False
-76128533B38784530776316,Lower Dibang Valley,Arunāchal Pradesh,235.0,name,Lower Dibang Valley,False
-76128533B49993259380917,Lower Siang,Arunāchal Pradesh,719.0,name,Lower Siang,False
-76128533B90913053845537,Lower Subansiri,Arunāchal Pradesh,236.0,name,Lower Subansiri,False
-76128533B49436035281620,Lucknow,Uttar Pradesh,162.0,name,Lucknow,False
-76128533B46195204843409,Ludhiana,Punjab,36.0,name,Ludhiana,False
-76128533B97836280165555,Lunglei,Mizoram,265.0,name,Lunglei,False
-76128533B29293163114565,Madhepura,Bihār,205.0,name,Madhepura,False
-76128533B90384580518633,Madhubani,Bihār,206.0,name,Madhubani,False
-76128533B71824979235503,Madurai,Tamil Nādu,578.0,name,Madurai,False
-76128533B28290181894983,Mahabubabad,Telangāna,688.0,name,Mahabubabad,False
-76128533B58170186574016,Mahabubnagar,Telangāna,512.0,name,Mahabubnagar,False
-76128533B9759621355294,Mahasamund,Chhattīsgarh,385.0,name,Mahasamund,False
-76128533B64161607349718,Mahendragarh,Haryāna,69.0,name,Mahendragarh,False
-76128533B81661995166840,Mahesana,Gujarāt,451.0,name,Mahesana,False
-76128533B49615943426842,Mahisagar,Gujarāt,669.0,name,Mahisagar,False
-76128533B11083100419963,Mahoba,Uttar Pradesh,165.0,name,Mahoba,False
-76128533B29554440319099,Mahrajganj,Uttar Pradesh,164.0,name,Mahrajganj,False
-76128533B84772439394056,Mainpuri,Uttar Pradesh,166.0,name,Mainpuri,False
-76128533B15157901669242,Majuli,Assam,706.0,name,Majuli,False
-76128533B83861010847920,Malappuram,Kerala,562.0,name,Malappuram,False
-76128533B85917349021677,Malkangiri,Odisha,364.0,name,Malkangiri,False
-76128533B77336742344288,Mamit,Mizoram,266.0,name,Mamit,False
-76128533B53018054761164,Mancherial,Telangāna,684.0,name,Mancherial,False
-76128533B23735146933631,Mandi,Himāchal Pradesh,22.0,name,Mandi,False
-76128533B79087524886024,Mandla,Madhya Pradesh,415.0,name,Mandla,False
+76128533B20683890392439,Narsimhapur,Madhya Pradesh,418.0,name,Narsimhapur,False
+76128533B81607600692021,Panna,Madhya Pradesh,420.0,name,Panna,False
+76128533B89286042589317,Ujjain,Madhya Pradesh,435.0,name,Ujjain,False
+76128533B31161316175613,Rewa,Madhya Pradesh,424.0,name,Rewa,False
+76128533B20502827346807,Dindori,Madhya Pradesh,404.0,name,Dindori,False
+76128533B66134271591289,Balaghat,Madhya Pradesh,392.0,name,Balaghat,False
+76128533B668165975951,Barwani,Madhya Pradesh,393.0,name,Barwani,False
+76128533B39705008578419,Satna,Madhya Pradesh,426.0,name,Satna,False
+76128533B42922918567330,Chhatarpur,Madhya Pradesh,398.0,name,Chhatarpur,False
+76128533B60360721573267,Indore,Madhya Pradesh,410.0,name,Indore,False
+76128533B19341883513630,Ratlam,Madhya Pradesh,423.0,name,Ratlam,False
+76128533B21179322085415,Harda,Madhya Pradesh,408.0,name,Harda,False
+76128533B30447764775083,Sagar,Madhya Pradesh,425.0,name,Sagar,False
+76128533B77191913035963,Neemuch,Madhya Pradesh,419.0,name,Neemuch,False
+76128533B1566053393466,Tikamgarh,Madhya Pradesh,434.0,name,Tikamgarh,False
+76128533B79048012717121,Guna,Madhya Pradesh,406.0,name,Guna,False
+76128533B53549946596470,Dewas,Madhya Pradesh,402.0,name,Dewas,False
 76128533B25679991785711,Mandsaur,Madhya Pradesh,416.0,name,Mandsaur,False
-76128533B43335986553000,Mandya,Karnātaka,544.0,name,Mandya,False
-76128533B41499938690181,Mansa,Punjab,37.0,name,Mansa,False
-76128533B88758450653156,Mathura,Uttar Pradesh,167.0,name,Mathura,False
-76128533B88623139855224,Mau,Uttar Pradesh,168.0,name,Mau,False
-76128533B63176236753619,Mayiladuthurai,Tamil Nādu,735.0,name,Mayiladuthurai,False
-76128533B34216851275023,Mayurbhanj,Odisha,365.0,name,Mayurbhanj,False
-76128533B97126567441665,Medak,Telangāna,513.0,name,Medak,False
-76128533B61760400952464,Meerut,Uttar Pradesh,169.0,name,Meerut,False
-76128533B18243475101734,Mirzapur,Uttar Pradesh,170.0,name,Mirzapur,False
-76128533B18834172694083,Moga,Punjab,38.0,name,Moga,False
-76128533B82793215586362,Mokokchung,Nāgāland,246.0,name,Mokokchung,False
-76128533B23611090346849,Mon,Nāgāland,247.0,name,Mon,False
-76128533B51849218363622,Moradabad,Uttar Pradesh,171.0,name,Moradabad,False
-76128533B2080752988715,Morbi,Gujarāt,673.0,name,Morbi,False
+76128533B69481535535995,Khargone (West Nimar),Madhya Pradesh,414.0,name,Khargone (West Nimar),False
+76128533B82240600990321,Sheopur,Madhya Pradesh,431.0,name,Sheopur,False
 76128533B12343314564708,Morena,Madhya Pradesh,417.0,name,Morena,False
-76128533B84398038505400,Mulugu,Telangāna,720.0,name,Mulugu,False
+76128533B57712033428660,Bhind,Madhya Pradesh,395.0,name,Bhind,False
+76128533B67004768724668,Jhabua,Madhya Pradesh,412.0,name,Jhabua,False
+76128533B78482805703540,Seoni,Madhya Pradesh,428.0,name,Seoni,False
+76128533B71271011331008,Khandwa (East Nimar),Madhya Pradesh,405.0,name,Khandwa (East Nimar),False
+76128533B4466876522971,Umaria,Madhya Pradesh,436.0,name,Umaria,False
+76128533B90551733723251,Gwalior,Madhya Pradesh,407.0,name,Gwalior,False
+76128533B44250373880839,Damoh,Madhya Pradesh,400.0,name,Damoh,False
+76128533B42880544505675,Dhar,Madhya Pradesh,403.0,name,Dhar,False
+76128533B16674973717653,Katni,Madhya Pradesh,413.0,name,Katni,False
+76128533B53791014455989,Sidhi,Madhya Pradesh,433.0,name,Sidhi,False
+76128533B35167844027544,Alirajpur,Madhya Pradesh,639.0,name,Alirajpur,False
+76128533B50014751336341,Singrauli,Madhya Pradesh,638.0,name,Singrauli,False
+76128533B22439249004073,Bhopal,Madhya Pradesh,396.0,name,Bhopal,False
+76128533B28521131010314,Rajgarh,Madhya Pradesh,422.0,name,Rajgarh,False
+76128533B79087524886024,Mandla,Madhya Pradesh,415.0,name,Mandla,False
+76128533B30477486088156,Shajapur,Madhya Pradesh,430.0,name,Shajapur,False
+76128533B66335428496945,Shivpuri,Madhya Pradesh,432.0,name,Shivpuri,False
+76128533B80958502091898,Datia,Madhya Pradesh,401.0,name,Datia,False
+76128533B37096001761063,Burhanpur,Madhya Pradesh,397.0,name,Burhanpur,False
+76128533B25468964623139,Anuppur,Madhya Pradesh,390.0,name,Anuppur,False
+76128533B79303776608295,Shahdol,Madhya Pradesh,429.0,name,Shahdol,False
+76128533B64834018186186,Vidisha,Madhya Pradesh,437.0,name,Vidisha,False
+76128533B75262864015847,Una,Himāchal Pradesh,26.0,name,Una,False
+76128533B58569599021232,Solan,Himāchal Pradesh,25.0,name,Solan,False
+76128533B11802210119774,Sirmaur,Himāchal Pradesh,24.0,name,Sirmaur,False
+76128533B50011981829203,Kinnaur,Himāchal Pradesh,19.0,name,Kinnaur,False
+76128533B97425778881707,Kullu,Himāchal Pradesh,20.0,name,Kullu,False
+76128533B58537895532859,Chamba,Himāchal Pradesh,16.0,name,Chamba,False
+76128533B77537928419507,Shimla,Himāchal Pradesh,23.0,name,Shimla,False
+76128533B85695392289827,Bilaspur,Himāchal Pradesh,15.0,name,Bilaspur,False
+76128533B13697452453823,Kangra,Himāchal Pradesh,18.0,name,Kangra,False
+76128533B75359793481950,Lahul & Spiti,Himāchal Pradesh,21.0,fuzzy:0.96,Lahaul And Spiti,True
+76128533B23735146933631,Mandi,Himāchal Pradesh,22.0,name,Mandi,False
+76128533B35956162202704,Hamirpur,Himāchal Pradesh,17.0,name,Hamirpur,False
+76128533B2782141712775,DATA NOT AVAILABLE,Ladākh,,unmatched,,True
+76128533B6393836306469,Anantnag,Jammu and Kashmīr,1.0,name,Anantnag,False
+76128533B15567489974292,Baramula,Jammu and Kashmīr,3.0,fuzzy:0.94,Baramulla,True
+76128533B87327155385261,Kulgam,Jammu and Kashmīr,622.0,name,Kulgam,False
+76128533B37825396764028,Shupiyan,Jammu and Kashmīr,625.0,fuzzy:0.80,Shopian,True
+76128533B50784044604286,Reasi,Jammu and Kashmīr,627.0,name,Reasi,False
+76128533B45655211862788,Rajouri,Jammu and Kashmīr,12.0,name,Rajouri,False
+76128533B3371867518692,Jammu,Jammu and Kashmīr,5.0,name,Jammu,False
+76128533B57183548666997,Leh(Ladakh),Ladākh,9.0,name,Leh Ladakh,False
+76128533B32249045995424,Srinagar,Jammu and Kashmīr,13.0,name,Srinagar,False
+76128533B48708628358161,Doda,Jammu and Kashmīr,4.0,name,Doda,False
+76128533B74958462315105,Pulwama,Jammu and Kashmīr,11.0,name,Pulwama,False
+76128533B92985585225784,Ramban,Jammu and Kashmīr,621.0,name,Ramban,False
+76128533B20504715877560,Ganderbal,Jammu and Kashmīr,626.0,name,Ganderbal,False
+76128533B31127900859310,Udhampur,Jammu and Kashmīr,14.0,name,Udhampur,False
+76128533B88214376170788,Badgam,Jammu and Kashmīr,2.0,fuzzy:0.83,Budgam,True
+76128533B32998994032811,Punch,Jammu and Kashmīr,10.0,override:rename,Poonch,True
+76128533B68195849750399,Kupwara,Jammu and Kashmīr,8.0,name,Kupwara,False
+76128533B49429513424897,Samba,Jammu and Kashmīr,624.0,name,Samba,False
+76128533B41744580856133,Bandipore,Jammu and Kashmīr,623.0,fuzzy:0.89,Bandipora,True
+76128533B79652855441225,Kathua,Jammu and Kashmīr,7.0,name,Kathua,False
+76128533B47664895117076,Kargil,Ladākh,6.0,name,Kargil,False
+76128533B20458430922604,Kishtwar,Jammu and Kashmīr,620.0,name,Kishtwar,False
+76128533B15180319517641,Daman,Dādra and Nagar Haveli and Damān and Diu,463.0,name,Daman,False
+76128533B56857410767766,Diu,Dādra and Nagar Haveli and Damān and Diu,464.0,name,Diu,False
+76128533B93450974047240,Bhavnagar,Gujarāt,443.0,name,Bhavnagar,False
+76128533B93113981386565,Ahmadabad,Gujarāt,438.0,fuzzy:0.89,Ahmedabad,True
+76128533B69417260894674,Chhota Udaipur,Gujarāt,668.0,fuzzy:0.88,Chhotaudepur,True
+76128533B48885555323596,Batod,Gujarāt,676.0,override:rename,Botad,True
+76128533B33151011563565,Vadodara,Gujarāt,461.0,name,Vadodara,False
+76128533B62153454383166,Aravali,Gujarāt,672.0,fuzzy:0.86,Arvalli,True
+76128533B35129325000613,Sabar Kantha,Gujarāt,458.0,name,Sabar Kantha,False
+76128533B52902360321344,Banas Kantha,Gujarāt,441.0,name,Banas Kantha,False
+76128533B7851306475665,Surendranagar,Gujarāt,460.0,name,Surendranagar,False
+76128533B69438085511257,Anand,Gujarāt,440.0,name,Anand,False
+76128533B46866455993508,Narmada,Gujarāt,452.0,name,Narmada,False
+76128533B43737470294384,Amreli,Gujarāt,439.0,name,Amreli,False
+76128533B70576899889534,Dohad,Gujarāt,445.0,override:rename,Dahod,True
+76128533B74992405432705,Rajkot,Gujarāt,457.0,name,Rajkot,False
+76128533B91881382098572,Kachchh,Gujarāt,449.0,name,Kachchh,False
+76128533B16271917438029,The Dangs,Gujarāt,444.0,override:rename,Dangs,True
+76128533B81661995166840,Mahesana,Gujarāt,451.0,name,Mahesana,False
+76128533B42839853072341,Patan,Gujarāt,455.0,name,Patan,False
+76128533B63599385776584,Bharuch,Gujarāt,442.0,name,Bharuch,False
+76128533B45037556977273,Gir Somnath,Gujarāt,675.0,name,Gir Somnath,False
+76128533B40923846274136,Junagadh,Gujarāt,448.0,name,Junagadh,False
+76128533B74381554567803,Devbhumi Dwarka,Gujarāt,674.0,name,Devbhumi Dwarka,False
+76128533B6397758882978,Navsari,Gujarāt,453.0,name,Navsari,False
+76128533B97372652494648,Surat,Gujarāt,459.0,name,Surat,False
+76128533B35205406647638,Jamnagar,Gujarāt,447.0,name,Jamnagar,False
+76128533B12519626815499,Tapi,Gujarāt,641.0,name,Tapi,False
+76128533B84417945851362,Porbandar,Gujarāt,456.0,name,Porbandar,False
+76128533B60261306484775,Valsad,Gujarāt,462.0,name,Valsad,False
+76128533B7606365706860,Gandhinagar,Gujarāt,446.0,name,Gandhinagar,False
+76128533B49615943426842,Mahisagar,Gujarāt,669.0,name,Mahisagar,False
+76128533B2080752988715,Morbi,Gujarāt,673.0,name,Morbi,False
+76128533B16476001647323,Panch Mahals,Gujarāt,454.0,name,Panch Mahals,False
+76128533B39046535416628,Kheda,Gujarāt,450.0,name,Kheda,False
+76128533B43252171579976,Dadra & Nagar Haveli,Dādra and Nagar Haveli and Damān and Diu,465.0,name,Dadra And Nagar Haveli,False
+76128533B95075104846315,Prakasam,Andhra Pradesh,517.0,name,Prakasam,False
+76128533B4481773749911,Krishna,Andhra Pradesh,510.0,name,Krishna,False
+76128533B29138015770556,East Godavari,Andhra Pradesh,505.0,name,East Godavari,False
+76128533B71485440235524,Visakhapatnam,Andhra Pradesh,520.0,name,Visakhapatnam,False
+76128533B55622097933343,Sri Potti Sriramulu Nellore,Andhra Pradesh,515.0,name,Sri Potti Sriramulu Nellore,False
+76128533B22471914548132,Chittoor,Andhra Pradesh,503.0,name,Chittoor,False
+76128533B59405966069108,Srikakulam,Andhra Pradesh,519.0,name,Srikakulam,False
+76128533B28294794137747,Kurnool,Andhra Pradesh,511.0,name,Kurnool,False
+76128533B72541188260561,Guntur,Andhra Pradesh,506.0,name,Guntur,False
+76128533B36164606132718,Vizianagaram,Andhra Pradesh,521.0,name,Vizianagaram,False
+76128533B52664671961643,Anantapur,Andhra Pradesh,502.0,fuzzy:0.82,Ananthapuramu,True
+76128533B19792346411952,West Godavari,Andhra Pradesh,523.0,name,West Godavari,False
+76128533B72109128179340,Kadapa(YSR),Andhra Pradesh,504.0,override:rename,Y.S.R. Kadapa,True
+76128533B17261532861377,Jamtara,Jhārkhand,333.0,name,Jamtara,False
+76128533B50275440439236,Saraikela-Kharsawan,Jhārkhand,341.0,name,Saraikela Kharsawan,False
+76128533B15601995412161,Simdega,Jhārkhand,342.0,name,Simdega,False
+76128533B35143550659673,Latehar,Jhārkhand,335.0,name,Latehar,False
+76128533B27414563922025,Khunti,Jhārkhand,606.0,name,Khunti,False
+76128533B60893804631193,Pashchimi Singhbhum,Jhārkhand,343.0,override:rename,West Singhbhum,True
+76128533B1222571856670,Hazaribagh,Jhārkhand,332.0,name,Hazaribagh,False
+76128533B44632955875385,Chatra,Jhārkhand,323.0,name,Chatra,False
+76128533B18931932305748,Purbi Singhbhum,Jhārkhand,327.0,override:rename,East Singhbum,True
+76128533B43180268042348,Kodarma,Jhārkhand,334.0,fuzzy:0.86,Koderma,True
+76128533B75529869544465,Giridih,Jhārkhand,329.0,name,Giridih,False
+76128533B35439951183692,Lohardaga,Jhārkhand,336.0,name,Lohardaga,False
+76128533B49805675626253,Sahibganj,Jhārkhand,340.0,fuzzy:0.89,Sahebganj,True
+76128533B58697472287618,Godda,Jhārkhand,330.0,name,Godda,False
+76128533B6050540865870,Palamu,Jhārkhand,338.0,name,Palamu,False
+76128533B94847743365739,Dhanbad,Jhārkhand,325.0,name,Dhanbad,False
+76128533B18802630191461,Dumka,Jhārkhand,326.0,name,Dumka,False
+76128533B30016122738302,Bokaro,Jhārkhand,322.0,name,Bokaro,False
+76128533B90068096507942,Deoghar,Jhārkhand,324.0,name,Deoghar,False
+76128533B80916614857890,Gumla,Jhārkhand,331.0,name,Gumla,False
+76128533B79263581040575,Ramgarh,Jhārkhand,607.0,name,Ramgarh,False
+76128533B12294379827032,Garhwa,Jhārkhand,328.0,name,Garhwa,False
+76128533B71439508543442,Ranchi,Jhārkhand,339.0,name,Ranchi,False
+76128533B45381195840581,Pakur,Jhārkhand,337.0,name,Pakur,False
+76128533B45623818137574,Arwal,Bihār,611.0,name,Arwal,False
+76128533B83462627230182,Bhagalpur,Bihār,192.0,name,Bhagalpur,False
+76128533B32499449492865,Purnia,Bihār,214.0,name,Purnia,False
+76128533B29293163114565,Madhepura,Bihār,205.0,name,Madhepura,False
+76128533B65773363805797,Kishanganj,Bihār,203.0,name,Kishanganj,False
+76128533B91871300208785,Gaya,Bihār,196.0,name,Gaya,False
+76128533B54517225652088,Banka,Bihār,190.0,name,Banka,False
+76128533B21485639457044,Aurangabad,Bihār,189.0,name,Aurangabad,False
+76128533B36625800127334,Nawada,Bihār,210.0,name,Nawada,False
+76128533B4745348385341,Araria,Bihār,188.0,name,Araria,False
+76128533B17762399278073,Pashchim Champaran,Bihār,211.0,name,Pashchim Champaran,False
+76128533B88481188307630,Muzaffarpur,Bihār,208.0,name,Muzaffarpur,False
+76128533B19903856317609,Saran,Bihār,218.0,name,Saran,False
+76128533B29672216830072,Sheikhpura,Bihār,219.0,name,Sheikhpura,False
+76128533B24101991435637,Jehanabad,Bihār,199.0,name,Jehanabad,False
+76128533B24755983727265,Saharsa,Bihār,216.0,name,Saharsa,False
+76128533B93214480696409,Gopalganj,Bihār,197.0,name,Gopalganj,False
+76128533B91445917652173,Vaishali,Bihār,224.0,name,Vaishali,False
+76128533B14033116794334,Siwan,Bihār,222.0,name,Siwan,False
+76128533B74961596993088,Sheohar,Bihār,220.0,name,Sheohar,False
+76128533B12244320360965,Buxar,Bihār,194.0,name,Buxar,False
+76128533B90384580518633,Madhubani,Bihār,206.0,name,Madhubani,False
+76128533B62794162648247,Supaul,Bihār,223.0,name,Supaul,False
+76128533B60721316645780,Patna,Bihār,212.0,name,Patna,False
+76128533B66426066081507,Bhojpur,Bihār,193.0,name,Bhojpur,False
+76128533B12694285477701,Darbhanga,Bihār,195.0,name,Darbhanga,False
+76128533B66790149147330,Samastipur,Bihār,217.0,name,Samastipur,False
+76128533B78904410352326,Kaimur (Bhabua),Bihār,200.0,name,Kaimur (Bhabua),False
+76128533B33458049385696,Rohtas,Bihār,215.0,name,Rohtas,False
+76128533B78970756356546,Khagaria,Bihār,202.0,name,Khagaria,False
+76128533B40868676647207,Munger,Bihār,207.0,name,Munger,False
+76128533B21922686388534,Sitamarhi,Bihār,221.0,name,Sitamarhi,False
+76128533B49017555803526,Purba Champaran,Bihār,213.0,fuzzy:0.93,Purbi Champaran,True
+76128533B98985252129882,Lakhisarai,Bihār,204.0,name,Lakhisarai,False
+76128533B16781044866906,Jamui,Bihār,198.0,name,Jamui,False
+76128533B5855800361016,Begusarai,Bihār,191.0,name,Begusarai,False
+76128533B51363853289247,Nalanda,Bihār,209.0,name,Nalanda,False
+76128533B27432148084533,Katihar,Bihār,201.0,name,Katihar,False
+76128533B67580812983244,Gurgaon,Haryāna,62.0,override:rename,Gurugram,True
+76128533B23956636471502,Yamunanagar,Haryāna,76.0,name,Yamunanagar,False
+76128533B71088079535368,Palwal,Haryāna,619.0,name,Palwal,False
+76128533B58876508630362,Panchkula,Haryāna,70.0,name,Panchkula,False
+76128533B80016894369263,Mewat,Haryāna,604.0,override:rename,Nuh,True
+76128533B70554191137208,Jhajjar,Haryāna,64.0,name,Jhajjar,False
+76128533B42646400584570,Bhiwani,Haryāna,59.0,name,Bhiwani,False
+76128533B64596101949699,Kaithal,Haryāna,66.0,name,Kaithal,False
+76128533B69536039643660,Sonipat,Haryāna,75.0,name,Sonipat,False
+76128533B6330405394721,Karnal,Haryāna,67.0,name,Karnal,False
+76128533B94710820075529,Kurukshetra,Haryāna,68.0,name,Kurukshetra,False
+76128533B45106682783501,Jind,Haryāna,65.0,name,Jind,False
+76128533B86048662040782,Panipat,Haryāna,71.0,name,Panipat,False
+76128533B64161607349718,Mahendragarh,Haryāna,69.0,name,Mahendragarh,False
+76128533B10727492375508,Fatehabad,Haryāna,61.0,name,Fatehabad,False
+76128533B40638696154891,Faridabad,Haryāna,60.0,name,Faridabad,False
+76128533B84837672903805,Sirsa,Haryāna,74.0,name,Sirsa,False
+76128533B22732185131019,Hisar,Haryāna,63.0,name,Hisar,False
+76128533B22722327711505,Rewari,Haryāna,72.0,name,Rewari,False
+76128533B12244045944458,Rohtak,Haryāna,73.0,name,Rohtak,False
+76128533B95049353851516,Ambala,Haryāna,58.0,name,Ambala,False
+76128533B56050914259601,Chandigarh,Chandīgarh,44.0,name,Chandigarh,False
+76128533B1711704044407,North Goa,Goa,551.0,name,North Goa,False
+76128533B63117839967753,South Goa,Goa,552.0,name,South Goa,False
+76128533B28397307540277,North  & Middle Andaman,Andaman and Nicobar Islands,632.0,name,North And Middle Andaman,False
+76128533B22587307937261,South Andaman,Andaman and Nicobar Islands,602.0,fuzzy:0.96,South Andamans,True
+76128533B33103505211400,Nicobars,Andaman and Nicobar Islands,603.0,name,Nicobars,False
+76128533B6828791241172,Lohit,Arunāchal Pradesh,234.0,name,Lohit,False
+76128533B95764075909869,West Siang,Arunāchal Pradesh,243.0,name,West Siang,False
+76128533B84689409020934,Upper Subansiri,Arunāchal Pradesh,241.0,name,Upper Subansiri,False
+76128533B9558749744242,Changlang,Arunāchal Pradesh,229.0,name,Changlang,False
+76128533B22715430000002,Longding,Arunāchal Pradesh,666.0,name,Longding,False
+76128533B90913053845537,Lower Subansiri,Arunāchal Pradesh,236.0,name,Lower Subansiri,False
+76128533B76129461078086,East Kameng,Arunāchal Pradesh,231.0,name,East Kameng,False
+76128533B76058958071350,Upper Siang,Arunāchal Pradesh,240.0,name,Upper Siang,False
+76128533B55878637000592,Anjaw,Arunāchal Pradesh,628.0,name,Anjaw,False
+76128533B95910687666425,Siang,Arunāchal Pradesh,679.0,name,Siang,False
+76128533B11651252780045,Dibang Valley,Arunāchal Pradesh,230.0,name,Dibang Valley,False
+76128533B31405919461443,Kurung Kumey,Arunāchal Pradesh,233.0,name,Kurung Kumey,False
+76128533B61235952222315,West Kameng,Arunāchal Pradesh,242.0,name,West Kameng,False
+76128533B38784530776316,Lower Dibang Valley,Arunāchal Pradesh,235.0,name,Lower Dibang Valley,False
+76128533B18668117085772,Tawang,Arunāchal Pradesh,238.0,name,Tawang,False
+76128533B17472905712757,Papum Pare,Arunāchal Pradesh,237.0,name,Papum Pare,False
+76128533B91472319248603,Goalpara,Assam,287.0,name,Goalpara,False
+76128533B40995085026980,Nalbari,Assam,298.0,name,Nalbari,False
+76128533B25835998628545,Dhubri,Assam,285.0,name,Dhubri,False
+76128533B21722277889516,Sivasagar,Assam,300.0,name,Sivasagar,False
+76128533B23092176497025,Karimganj,Assam,293.0,override:rename,Sribhumi,True
+76128533B8920527783032,Tinsukia,Assam,302.0,name,Tinsukia,False
+76128533B16749627383755,Hailakandi,Assam,289.0,name,Hailakandi,False
+76128533B56012535339305,Chirang,Assam,612.0,name,Chirang,False
+76128533B50650763703739,Dhemaji,Assam,284.0,name,Dhemaji,False
+76128533B17968019348564,Morigaon,Assam,296.0,fuzzy:0.88,Marigaon,True
+76128533B38548995376745,Karbi Anglong East,Assam,292.0,fuzzy:0.86,Karbi Anglong,True
+76128533B85627242103654,Lakhimpur,Assam,295.0,name,Lakhimpur,False
+76128533B46490409917345,Bongaigaon,Assam,281.0,name,Bongaigaon,False
+76128533B8221925175605,Baksa,Assam,616.0,name,Baksa,False
+76128533B13437137070957,Nagaon,Assam,297.0,name,Nagaon,False
+76128533B26964150246712,Cachar,Assam,282.0,name,Cachar,False
+76128533B96719327593873,Darrang,Assam,283.0,name,Darrang,False
+76128533B66682530790248,Kamrup,Assam,291.0,name,Kamrup,False
+76128533B57825981663822,Dibrugarh,Assam,286.0,name,Dibrugarh,False
+76128533B47772746709007,Barpeta,Assam,280.0,name,Barpeta,False
+76128533B41005496708834,Sonitpur,Assam,301.0,name,Sonitpur,False
+76128533B20307518801538,Udalguri,Assam,617.0,name,Udalguri,False
+76128533B55519385298440,Golaghat,Assam,288.0,name,Golaghat,False
+76128533B38230828972906,Kamrup Metropolitan,Assam,618.0,override:rename,Kamrup Metro,True
+76128533B66125202864966,Dima Hasao,Assam,299.0,name,Dima Hasao,False
+76128533B91480770176940,Kokrajhar,Assam,294.0,name,Kokrajhar,False
+76128533B334793883930,Jorhat,Assam,290.0,name,Jorhat,False
+76128533B83105693975079,Yanam,Andhra Pradesh,,unmatched,,True
+76128533B62624361588317,Karaikal,Puducherry,598.0,name,Karaikal,False
+76128533B29873478326363,Puducherry,Puducherry,600.0,name,Puducherry,False
+76128533B41246169049488,Mahe,Puducherry,,unmatched,,True
+76128533B97836280165555,Lunglei,Mizoram,265.0,name,Lunglei,False
+76128533B38141181853016,Kolasib,Mizoram,263.0,name,Kolasib,False
+76128533B70210707786180,Lawngtlai,Mizoram,264.0,name,Lawngtlai,False
+76128533B35468154415031,Saiha,Mizoram,267.0,fuzzy:0.80,Siaha,True
+76128533B39039541714099,Champhai,Mizoram,262.0,name,Champhai,False
+76128533B49456368048033,Serchhip,Mizoram,268.0,name,Serchhip,False
+76128533B34203923268864,Aizawl,Mizoram,261.0,name,Aizawl,False
+76128533B77336742344288,Mamit,Mizoram,266.0,name,Mamit,False
+76128533B59855617266389,Chandel,Manipur,253.0,name,Chandel,False
+76128533B11421856387892,Tamenglong,Manipur,258.0,name,Tamenglong,False
+76128533B44190672061408,Ukhrul,Manipur,260.0,name,Ukhrul,False
+76128533B14403163214152,Bishnupur,Manipur,252.0,name,Bishnupur,False
+76128533B50969226102213,Churachandpur,Manipur,254.0,name,Churachandpur,False
+76128533B44197302080139,Thoubal,Manipur,259.0,name,Thoubal,False
+76128533B30779259886340,Imphal East,Manipur,255.0,name,Imphal East,False
+76128533B56326354019534,Kangpokpi,Manipur,712.0,name,Kangpokpi,False
+76128533B99807650893733,Imphal West,Manipur,256.0,name,Imphal West,False
+76128533B23611090346849,Mon,Nāgāland,247.0,name,Mon,False
+76128533B82052450002431,Tuensang,Nāgāland,249.0,name,Tuensang,False
+76128533B82793215586362,Mokokchung,Nāgāland,246.0,name,Mokokchung,False
+76128533B66411945144923,Longleng,Nāgāland,615.0,name,Longleng,False
+76128533B13733639953372,Phek,Nāgāland,248.0,name,Phek,False
+76128533B53671786151110,Kohima,Nāgāland,245.0,name,Kohima,False
+76128533B67210465807627,Wokha,Nāgāland,250.0,name,Wokha,False
+76128533B58058152513003,Zunheboto,Nāgāland,251.0,name,Zunheboto,False
+76128533B49100243723360,Kiphire,Nāgāland,614.0,name,Kiphire,False
+76128533B85747247216737,Dimapur,Nāgāland,244.0,name,Dimapur,False
+76128533B2970909480221,Peren,Nāgāland,613.0,name,Peren,False
+76128533B67044589012853,Khowai,Tripura,652.0,name,Khowai,False
+76128533B43965372582859,Sipahijula,Tripura,653.0,fuzzy:0.80,Sepahijala,True
+76128533B97225684979956,West Tripura,Tripura,272.0,name,West Tripura,False
+76128533B42970684683247,Dhalai,Tripura,269.0,name,Dhalai,False
+76128533B4720703924950,Unokoti,Tripura,655.0,fuzzy:0.86,Unakoti,True
+76128533B77134386587213,North Tripura,Tripura,270.0,name,North Tripura,False
+76128533B94126463611805,Gomati,Tripura,654.0,name,Gomati,False
+76128533B67748245133340,South Tripura,Tripura,271.0,name,South Tripura,False
+76128533B79750857313751,South Garo Hills,Meghālaya,277.0,name,South Garo Hills,False
+76128533B70570208114113,Ribhoi,Meghālaya,276.0,name,Ri Bhoi,False
+76128533B49246671500878,East Khasi Hills,Meghālaya,274.0,name,East Khasi Hills,False
+76128533B42153891534463,West Khasi Hills,Meghālaya,279.0,name,West Khasi Hills,False
+76128533B27102120636500,South West Khasi Hills,Meghālaya,658.0,name,South West Khasi Hills,False
+76128533B96195300293897,West Garo Hills,Meghālaya,278.0,name,West Garo Hills,False
+76128533B52906466328910,South West Garo Hills,Meghālaya,663.0,name,South West Garo Hills,False
+76128533B70185077694103,East Jaintia Hills,Meghālaya,657.0,name,East Jaintia Hills,False
+76128533B84622469201834,West Jaintia Hills,Meghālaya,275.0,name,West Jaintia Hills,False
+76128533B40535123096970,East Garo Hills,Meghālaya,273.0,name,East Garo Hills,False
+76128533B35759455556328,North Garo Hills,Meghālaya,656.0,name,North Garo Hills,False
+76128533B73736605657091,Bemetra,Chhattīsgarh,650.0,fuzzy:0.93,Bemetara,True
+76128533B47840093719460,Bastar,Chhattīsgarh,374.0,name,Bastar,False
+76128533B17292264941997,Mungeli,Chhattīsgarh,647.0,name,Mungeli,False
+76128533B81964529079574,Bilaspur,Chhattīsgarh,375.0,name,Bilaspur,False
+76128533B93063337202124,Gariaband,Chhattīsgarh,645.0,fuzzy:0.95,Gariyaband,True
+76128533B48077510234542,Kabeerdham,Chhattīsgarh,382.0,name,Kabeerdham,False
+76128533B53316015271969,Sukma,Chhattīsgarh,642.0,name,Sukma,False
+76128533B26755490628656,Uttar Bastar Kanker,Chhattīsgarh,381.0,name,Uttar Bastar Kanker,False
+76128533B14292125820380,Dakshin Bastar Dantewada,Chhattīsgarh,376.0,name,Dakshin Bastar Dantewada,False
+76128533B52487813780503,Surguja,Chhattīsgarh,389.0,name,Surguja,False
+76128533B14598081584747,Balrampur,Chhattīsgarh,649.0,override:rename,Balrampur-Ramanujganj,True
+76128533B12144400448811,Kondagaon,Chhattīsgarh,643.0,name,Kondagaon,False
+76128533B89979485471283,Narayanpur,Chhattīsgarh,637.0,name,Narayanpur,False
+76128533B15993411864574,Durg,Chhattīsgarh,378.0,name,Durg,False
+76128533B46979893461805,Surajpur,Chhattīsgarh,648.0,name,Surajpur,False
+76128533B66145460152555,Bijapur,Chhattīsgarh,636.0,name,Bijapur,False
+76128533B57691508962219,Raipur,Chhattīsgarh,387.0,name,Raipur,False
+76128533B54306414631532,Baloda Bazar,Chhattīsgarh,644.0,override:rename,Balodabazar-Bhatapara,True
+76128533B90169585758701,Balod,Chhattīsgarh,646.0,name,Balod,False
+76128533B1621599562140,Koriya,Chhattīsgarh,384.0,override:predecessor,Korea,True
+76128533B71714250401862,Dhamtari,Chhattīsgarh,377.0,name,Dhamtari,False
+76128533B89438858641946,Korba,Chhattīsgarh,383.0,name,Korba,False
+76128533B67018657649043,Raigarh,Chhattīsgarh,386.0,name,Raigarh,False
+76128533B53609934827566,Jashpur,Chhattīsgarh,380.0,name,Jashpur,False
+76128533B9759621355294,Mahasamund,Chhattīsgarh,385.0,name,Mahasamund,False
+76128533B6310527412636,Janjgir-Champa,Chhattīsgarh,379.0,name,Janjgir-Champa,False
+76128533B25020556592153,Rajnandgaon,Chhattīsgarh,388.0,name,Rajnandgaon,False
+76128533B50374927918374,Nainital,Uttarākhand,51.0,name,Nainital,False
+76128533B67005208112053,Dehradun,Uttarākhand,49.0,name,Dehradun,False
+76128533B74917207853309,Almora,Uttarākhand,45.0,name,Almora,False
+76128533B2761749808956,Champawat,Uttarākhand,48.0,name,Champawat,False
+76128533B81694682724865,Uttarkashi,Uttarākhand,57.0,name,Uttarkashi,False
+76128533B46926146855114,Garhwal,Uttarākhand,52.0,override:rename,Pauri Garhwal,True
+76128533B87833640460819,Hardwar,Uttarākhand,50.0,fuzzy:0.93,Haridwar,True
+76128533B46038384763988,Rudraprayag,Uttarākhand,54.0,name,Rudraprayag,False
+76128533B61134942989820,Tehri Garhwal,Uttarākhand,55.0,name,Tehri Garhwal,False
+76128533B64217423710469,Bageshwar,Uttarākhand,46.0,name,Bageshwar,False
+76128533B38561771925520,Pithoragarh,Uttarākhand,53.0,name,Pithoragarh,False
+76128533B69844709752120,Chamoli,Uttarākhand,47.0,name,Chamoli,False
+76128533B46531174070538,Udham Singh Nagar,Uttarākhand,56.0,name,Udham Singh Nagar,False
+76128533B41976979530466,Kannur,Kerala,557.0,name,Kannur,False
+76128533B29330052395581,Pathanamthitta,Kerala,564.0,name,Pathanamthitta,False
+76128533B86368264587575,Alappuzha,Kerala,554.0,name,Alappuzha,False
+76128533B75519739609062,Ernakulam,Kerala,555.0,name,Ernakulam,False
+76128533B61117593923933,Kollam,Kerala,559.0,name,Kollam,False
+76128533B63366045987285,Kasaragod,Kerala,558.0,name,Kasaragod,False
+76128533B35083559759016,Idukki,Kerala,556.0,name,Idukki,False
+76128533B3985531353014,Kozhikode,Kerala,561.0,name,Kozhikode,False
+76128533B2576169508425,Kottayam,Kerala,560.0,name,Kottayam,False
+76128533B75696328527555,Thrissur,Kerala,566.0,name,Thrissur,False
+76128533B19581555782120,Palakkad,Kerala,563.0,name,Palakkad,False
+76128533B33162455176756,Thiruvananthapuram,Kerala,565.0,name,Thiruvananthapuram,False
+76128533B83861010847920,Malappuram,Kerala,562.0,name,Malappuram,False
+76128533B82539771173603,Wayanad,Kerala,567.0,name,Wayanad,False
+76128533B41477629049356,Lakshadweep,,,unmatched,,True
+76128533B65820903826030,North District,Sikkim,226.0,override:rename,Mangan,True
+76128533B10270619600482,South District,Sikkim,227.0,override:rename,Namchi,True
+76128533B30151252629779,West District,Sikkim,228.0,override:predecessor,Gyalshing,True
+76128533B67639510673366,East District,Sikkim,225.0,override:predecessor,Gangtok,True
+76128533B71390118115414,Nadia,West Bengal,320.0,name,Nadia,False
+76128533B43049220506604,Dakshin Dinajpur,West Bengal,310.0,name,Dakshin Dinajpur,False
+76128533B51402332870635,Murshidabad,West Bengal,319.0,name,Murshidabad,False
+76128533B72507508533064,Kolkata,West Bengal,315.0,name,Kolkata,False
+76128533B36734405131975,Maldah,West Bengal,316.0,fuzzy:0.91,Malda,True
+76128533B2860535426345,South Twenty Four Parganas,West Bengal,304.0,override:rename,South 24 Parganas,True
+76128533B17109302371020,Darjiling,West Bengal,309.0,fuzzy:0.84,Darjeeling,True
+76128533B99051523080987,Jalpaiguri,West Bengal,314.0,name,Jalpaiguri,False
+76128533B7157007143985,Uttar Dinajpur,West Bengal,311.0,name,Uttar Dinajpur,False
+76128533B25373378863054,Purba Medinipur,West Bengal,317.0,name,Purba Medinipur,False
+76128533B22077262393417,Haora,West Bengal,313.0,override:rename,Howrah,True
+76128533B93453964263910,North Twenty Four Parganas,West Bengal,303.0,override:rename,North 24 Parganas,True
+76128533B53366745705922,Birbhum,West Bengal,307.0,name,Birbhum,False
+76128533B59121537940607,Barddhaman,West Bengal,306.0,override:rename,Purba Bardhaman,True
+76128533B20752885472650,Bankura,West Bengal,305.0,name,Bankura,False
+76128533B16811573188243,Puruliya,West Bengal,321.0,fuzzy:0.93,Purulia,True
+76128533B64156747739715,Koch Bihar,West Bengal,308.0,alias,Cooch Behar,False
+76128533B88812350838807,Paschim Medinipur,West Bengal,318.0,name,Paschim Medinipur,False
+76128533B81857725777974,Hugli,West Bengal,312.0,override:rename,Hooghly,True
+76128533B19630094725383,Pathankot,Punjab,662.0,name,Pathankot,False
+76128533B51331331726928,Gurdaspur,Punjab,32.0,name,Gurdaspur,False
+76128533B39368211148513,Patiala,Punjab,41.0,name,Patiala,False
+76128533B54652028494758,Tarn Taran,Punjab,609.0,name,Tarn Taran,False
+76128533B37199077904074,Kapurthala,Punjab,35.0,name,Kapurthala,False
+76128533B99919205026025,Fatehgarh Sahib,Punjab,30.0,name,Fatehgarh Sahib,False
+76128533B82601690264832,Sangrur,Punjab,43.0,name,Sangrur,False
+76128533B41499938690181,Mansa,Punjab,37.0,name,Mansa,False
+76128533B8426545955058,Amritsar,Punjab,27.0,name,Amritsar,False
+76128533B13552746017223,Faridkot,Punjab,29.0,name,Faridkot,False
+76128533B46195204843409,Ludhiana,Punjab,36.0,name,Ludhiana,False
+76128533B13791982054894,Bathinda,Punjab,28.0,name,Bathinda,False
+76128533B91211372620495,Jalandhar,Punjab,34.0,name,Jalandhar,False
+76128533B50184713016881,Muktsar,Punjab,39.0,override:rename,Sri Muktsar Sahib,True
+76128533B18834172694083,Moga,Punjab,38.0,name,Moga,False
+76128533B41747884279129,Hoshiarpur,Punjab,33.0,name,Hoshiarpur,False
+76128533B24759700890118,Rupnagar,Punjab,42.0,name,Rupnagar,False
+76128533B421757708753,Firozpur,Punjab,31.0,fuzzy:0.82,Ferozepur,True
+76128533B7291413308870,Fazilka,Punjab,651.0,name,Fazilka,False
+76128533B39051871473194,Barnala,Punjab,605.0,name,Barnala,False
+76128533B12197302963241,Sahibzada Ajit Singh Nagar,Punjab,608.0,override:rename,S.A.S Nagar,True
+76128533B14984770113274,Shahid Bhagat Singh Nagar,Punjab,40.0,name,Shahid Bhagat Singh Nagar,False
+76128533B43335986553000,Mandya,Karnātaka,544.0,name,Mandya,False
+76128533B95879808095476,Mysore,Karnātaka,545.0,override:rename,Mysuru,True
+76128533B80772392204057,Chikkaballapura,Karnātaka,630.0,name,Chikkaballapura,False
+76128533B84927972855096,Yadgir,Karnātaka,635.0,name,Yadgir,False
+76128533B15550697205080,Chikmagalur,Karnātaka,532.0,fuzzy:0.88,Chikkamagaluru,True
+76128533B47594161132413,Chitradurga,Karnātaka,533.0,name,Chitradurga,False
+76128533B86721175299079,Haveri,Karnātaka,540.0,name,Haveri,False
+76128533B54396396829952,Dakshina Kannada,Karnātaka,534.0,name,Dakshina Kannada,False
+76128533B284680734793,Raichur,Karnātaka,546.0,name,Raichur,False
+76128533B29292403538801,Kolar,Karnātaka,542.0,name,Kolar,False
+76128533B40495457052818,Bijapur,Karnātaka,530.0,override:rename,Vijayapura,True
+76128533B79180273895456,Uttara Kannada,Karnātaka,550.0,name,Uttara Kannada,False
+76128533B49597693387243,Davanagere,Karnātaka,535.0,name,Davanagere,False
+76128533B75110579117636,Dharwad,Karnātaka,536.0,name,Dharwad,False
+76128533B9794868259401,Bidar,Karnātaka,529.0,name,Bidar,False
+76128533B16628456658675,Chamarajanagar,Karnātaka,531.0,name,Chamarajanagar,False
+76128533B1083016608278,Gulbarga,Karnātaka,538.0,override:rename,Kalaburagi,True
+76128533B33966968116377,Gadag,Karnātaka,537.0,name,Gadag,False
+76128533B4839184447445,Udupi,Karnātaka,549.0,name,Udupi,False
+76128533B83278580643229,Bagalkot,Karnātaka,524.0,fuzzy:0.94,Bagalkote,True
+76128533B54775433755383,Hassan,Karnātaka,539.0,name,Hassan,False
+76128533B85389886560116,Shimoga,Karnātaka,547.0,fuzzy:0.82,Shivamogga,True
+76128533B92621859299479,Bellary,Karnātaka,528.0,override:predecessor,Ballari,True
+76128533B57609583882472,Kodagu,Karnātaka,541.0,name,Kodagu,False
+76128533B48075109668277,Bangalore Rural,Karnātaka,526.0,override:rename,Bengaluru Rural,True
+76128533B64905184636422,Tumkur,Karnātaka,548.0,fuzzy:0.86,Tumakuru,True
+76128533B74319098136622,Belgaum,Karnātaka,527.0,override:rename,Belagavi,True
+76128533B79601545186231,Koppal,Karnātaka,543.0,name,Koppal,False
+76128533B76927648517269,Bangalore,Karnātaka,525.0,override:rename,Bengaluru Urban,True
+76128533B79600797037735,Ramanagara,Karnātaka,631.0,override:rename,Bengaluru South,True
+76128533B59866172845044,Washim,Mahārāshtra,499.0,name,Washim,False
+76128533B47816398970283,Ahmadnagar,Mahārāshtra,466.0,override:rename,Ahilyanagar,True
+76128533B98050240849249,Latur,Mahārāshtra,481.0,name,Latur,False
+76128533B62490300334729,Solapur,Mahārāshtra,496.0,name,Solapur,False
+76128533B50056157736049,Nashik,Mahārāshtra,487.0,name,Nashik,False
+76128533B20474666262371,Osmanabad,Mahārāshtra,488.0,override:rename,Dharashiv,True
+76128533B39238815774480,Sindhudurg,Mahārāshtra,495.0,name,Sindhudurg,False
+76128533B66719908763317,Kolhapur,Mahārāshtra,480.0,name,Kolhapur,False
+76128533B31342633028465,Chandrapur,Mahārāshtra,473.0,name,Chandrapur,False
+76128533B12380735325851,Akola,Mahārāshtra,467.0,name,Akola,False
+76128533B27609096170969,Parbhani,Mahārāshtra,489.0,name,Parbhani,False
+76128533B61814103412294,Yavatmal,Mahārāshtra,500.0,name,Yavatmal,False
+76128533B63783580004876,Nanded,Mahārāshtra,485.0,name,Nanded,False
+76128533B25344721013980,Dhule,Mahārāshtra,474.0,name,Dhule,False
+76128533B93152786731267,Satara,Mahārāshtra,494.0,name,Satara,False
+76128533B9892158671522,Sangli,Mahārāshtra,493.0,name,Sangli,False
+76128533B86424887513424,Hingoli,Mahārāshtra,477.0,name,Hingoli,False
+76128533B71380851181380,Pune,Mahārāshtra,490.0,name,Pune,False
+76128533B76286653784168,Gondiya,Mahārāshtra,476.0,fuzzy:0.92,Gondia,True
+76128533B63815467309300,Amravati,Mahārāshtra,468.0,name,Amravati,False
+76128533B61304308285665,Nandurbar,Mahārāshtra,486.0,name,Nandurbar,False
+76128533B8575303957680,Ratnagiri,Mahārāshtra,492.0,name,Ratnagiri,False
+76128533B37486272752374,Wardha,Mahārāshtra,498.0,name,Wardha,False
+76128533B39329594544563,Aurangabad,Mahārāshtra,469.0,override:rename,Chhatrapati Sambhajinagar,True
+76128533B70021405538438,Buldana,Mahārāshtra,472.0,fuzzy:0.93,Buldhana,True
+76128533B36958871695926,Gadchiroli,Mahārāshtra,475.0,name,Gadchiroli,False
+76128533B40156838070,Jalgaon,Mahārāshtra,478.0,name,Jalgaon,False
+76128533B99895802074414,Raigarh,Mahārāshtra,491.0,override:rename,Raigad,True
+76128533B14243635342908,Bhandara,Mahārāshtra,471.0,name,Bhandara,False
+76128533B5215906594478,Bid,Mahārāshtra,470.0,override:rename,Beed,True
+76128533B55603381222870,Jalna,Mahārāshtra,479.0,name,Jalna,False
+76128533B74859418903113,Thane,Mahārāshtra,497.0,name,Thane,False
+76128533B37148244536449,Palghar,Mahārāshtra,665.0,name,Palghar,False
 76128533B16442413169750,Mumbai,Mahārāshtra,482.0,name,Mumbai,False
 76128533B67326016655833,Mumbai Suburban,Mahārāshtra,483.0,name,Mumbai Suburban,False
-76128533B17292264941997,Mungeli,Chhattīsgarh,647.0,name,Mungeli,False
-76128533B40868676647207,Munger,Bihār,207.0,name,Munger,False
-76128533B51402332870635,Murshidabad,West Bengal,319.0,name,Murshidabad,False
-76128533B87051210355251,Muzaffarnagar,Uttar Pradesh,172.0,name,Muzaffarnagar,False
-76128533B88481188307630,Muzaffarpur,Bihār,208.0,name,Muzaffarpur,False
-76128533B71390118115414,Nadia,West Bengal,320.0,name,Nadia,False
-76128533B13437137070957,Nagaon,Assam,297.0,name,Nagaon,False
-76128533B88466433485589,Nagapattinam,Tamil Nādu,579.0,name,Nagapattinam,False
-76128533B31246189674263,Nagarkurnool,Telangāna,694.0,name,Nagarkurnool,False
-76128533B43544960343942,Nagaur,Rājasthān,110.0,name,Nagaur,False
 76128533B3026318797185,Nagpur,Mahārāshtra,484.0,name,Nagpur,False
-76128533B50374927918374,Nainital,Uttarākhand,51.0,name,Nainital,False
-76128533B51363853289247,Nalanda,Bihār,209.0,name,Nalanda,False
-76128533B40995085026980,Nalbari,Assam,298.0,name,Nalbari,False
-76128533B8892495882090,Nalgonda,Telangāna,514.0,name,Nalgonda,False
-76128533B51372664315362,Namakkal,Tamil Nādu,580.0,name,Namakkal,False
-76128533B1875965515331,Namsai,Arunāchal Pradesh,678.0,name,Namsai,False
-76128533B63783580004876,Nanded,Mahārāshtra,485.0,name,Nanded,False
-76128533B61304308285665,Nandurbar,Mahārāshtra,486.0,name,Nandurbar,False
-76128533B14968875277413,Narayanpet,Telangāna,721.0,name,Narayanpet,False
-76128533B89979485471283,Narayanpur,Chhattīsgarh,637.0,name,Narayanpur,False
-76128533B46866455993508,Narmada,Gujarāt,452.0,name,Narmada,False
-76128533B20683890392439,Narsimhapur,Madhya Pradesh,418.0,name,Narsimhapur,False
-76128533B50056157736049,Nashik,Mahārāshtra,487.0,name,Nashik,False
-76128533B6397758882978,Navsari,Gujarāt,453.0,name,Navsari,False
-76128533B36625800127334,Nawada,Bihār,210.0,name,Nawada,False
-76128533B77191913035963,Neemuch,Madhya Pradesh,419.0,name,Neemuch,False
-76128533B58262202014972,New Delhi,Delhi,79.0,name,New Delhi,False
-76128533B33103505211400,Nicobars,Andaman and Nicobar Islands,603.0,name,Nicobars,False
-76128533B25280172436550,Nirmal,Telangāna,680.0,name,Nirmal,False
-76128533B38767180038480,Niwari,Madhya Pradesh,722.0,name,Niwari,False
-76128533B58493775523243,Nizamabad,Telangāna,516.0,name,Nizamabad,False
-76128533B36594996191182,Noney,Manipur,714.0,name,Noney,False
-76128533B45574198291616,North ,Delhi,80.0,name,North,False
-76128533B28397307540277,North  & Middle Andaman,Andaman and Nicobar Islands,632.0,name,North And Middle Andaman,False
-76128533B9976625304286,North East,Delhi,81.0,name,North East,False
-76128533B35759455556328,North Garo Hills,Meghālaya,656.0,name,North Garo Hills,False
-76128533B1711704044407,North Goa,Goa,551.0,name,North Goa,False
-76128533B77134386587213,North Tripura,Tripura,270.0,name,North Tripura,False
-76128533B71353370080255,North West,Delhi,82.0,name,North West,False
-76128533B33451850475260,Nuapada,Odisha,368.0,name,Nuapada,False
-76128533B24017517661394,Pakke Kessang,Arunāchal Pradesh,723.0,name,Pakke Kessang,False
-76128533B45381195840581,Pakur,Jhārkhand,337.0,name,Pakur,False
-76128533B19581555782120,Palakkad,Kerala,563.0,name,Palakkad,False
-76128533B6050540865870,Palamu,Jhārkhand,338.0,name,Palamu,False
-76128533B37148244536449,Palghar,Mahārāshtra,665.0,name,Palghar,False
-76128533B9783509419210,Pali,Rājasthān,111.0,name,Pali,False
-76128533B71088079535368,Palwal,Haryāna,619.0,name,Palwal,False
-76128533B16476001647323,Panch Mahals,Gujarāt,454.0,name,Panch Mahals,False
-76128533B58876508630362,Panchkula,Haryāna,70.0,name,Panchkula,False
-76128533B86048662040782,Panipat,Haryāna,71.0,name,Panipat,False
-76128533B81607600692021,Panna,Madhya Pradesh,420.0,name,Panna,False
-76128533B17472905712757,Papum Pare,Arunāchal Pradesh,237.0,name,Papum Pare,False
-76128533B27609096170969,Parbhani,Mahārāshtra,489.0,name,Parbhani,False
-76128533B88812350838807,Paschim Medinipur,West Bengal,318.0,name,Paschim Medinipur,False
-76128533B17762399278073,Pashchim Champaran,Bihār,211.0,name,Pashchim Champaran,False
-76128533B42839853072341,Patan,Gujarāt,455.0,name,Patan,False
-76128533B29330052395581,Pathanamthitta,Kerala,564.0,name,Pathanamthitta,False
-76128533B19630094725383,Pathankot,Punjab,662.0,name,Pathankot,False
-76128533B39368211148513,Patiala,Punjab,41.0,name,Patiala,False
-76128533B60721316645780,Patna,Bihār,212.0,name,Patna,False
-76128533B53373614632193,Peddapalli,Telangāna,682.0,name,Peddapalli,False
-76128533B51799781997546,Perambalur,Tamil Nādu,581.0,name,Perambalur,False
-76128533B2970909480221,Peren,Nāgāland,613.0,name,Peren,False
-76128533B13733639953372,Phek,Nāgāland,248.0,name,Phek,False
-76128533B71254158898830,Pherzawl,Manipur,715.0,name,Pherzawl,False
-76128533B90071703601852,Pilibhit,Uttar Pradesh,173.0,name,Pilibhit,False
-76128533B38561771925520,Pithoragarh,Uttarākhand,53.0,name,Pithoragarh,False
-76128533B84417945851362,Porbandar,Gujarāt,456.0,name,Porbandar,False
-76128533B95075104846315,Prakasam,Andhra Pradesh,517.0,name,Prakasam,False
-76128533B50613523798301,Pratapgarh,Rājasthān,629.0,name,Pratapgarh,False
-76128533B20647769792365,Pratapgarh,Uttar Pradesh,174.0,name,Pratapgarh,False
-76128533B29873478326363,Puducherry,Puducherry,600.0,name,Puducherry,False
-76128533B64003397477352,Pudukkottai,Tamil Nādu,582.0,name,Pudukkottai,False
-76128533B74958462315105,Pulwama,Jammu and Kashmīr,11.0,name,Pulwama,False
-76128533B71380851181380,Pune,Mahārāshtra,490.0,name,Pune,False
-76128533B25373378863054,Purba Medinipur,West Bengal,317.0,name,Purba Medinipur,False
-76128533B80656256583567,Puri,Odisha,369.0,name,Puri,False
-76128533B32499449492865,Purnia,Bihār,214.0,name,Purnia,False
-76128533B74057284038879,Rae Bareli,Uttar Pradesh,175.0,name,Rae Bareli,False
-76128533B284680734793,Raichur,Karnātaka,546.0,name,Raichur,False
-76128533B67018657649043,Raigarh,Chhattīsgarh,386.0,name,Raigarh,False
-76128533B57691508962219,Raipur,Chhattīsgarh,387.0,name,Raipur,False
-76128533B57893545331548,Raisen,Madhya Pradesh,421.0,name,Raisen,False
-76128533B21485897206517,Rajanna Sircilla,Telangāna,683.0,name,Rajanna Sircilla,False
-76128533B28521131010314,Rajgarh,Madhya Pradesh,422.0,name,Rajgarh,False
-76128533B74992405432705,Rajkot,Gujarāt,457.0,name,Rajkot,False
-76128533B25020556592153,Rajnandgaon,Chhattīsgarh,388.0,name,Rajnandgaon,False
-76128533B45655211862788,Rajouri,Jammu and Kashmīr,12.0,name,Rajouri,False
-76128533B11082155919544,Rajsamand,Rājasthān,112.0,name,Rajsamand,False
-76128533B1629699732681,Ramanathapuram,Tamil Nādu,583.0,name,Ramanathapuram,False
-76128533B92985585225784,Ramban,Jammu and Kashmīr,621.0,name,Ramban,False
-76128533B79263581040575,Ramgarh,Jhārkhand,607.0,name,Ramgarh,False
-76128533B46682008877369,Rampur,Uttar Pradesh,176.0,name,Rampur,False
-76128533B71439508543442,Ranchi,Jhārkhand,339.0,name,Ranchi,False
-76128533B31175522938788,Rangareddy,Telangāna,518.0,name,Ranga Reddy,False
-76128533B22687502928564,Ranipet,Tamil Nādu,731.0,name,Ranipet,False
-76128533B19341883513630,Ratlam,Madhya Pradesh,423.0,name,Ratlam,False
-76128533B8575303957680,Ratnagiri,Mahārāshtra,492.0,name,Ratnagiri,False
-76128533B50498617372937,Rayagada,Odisha,370.0,name,Rayagada,False
-76128533B50784044604286,Reasi,Jammu and Kashmīr,627.0,name,Reasi,False
-76128533B31161316175613,Rewa,Madhya Pradesh,424.0,name,Rewa,False
-76128533B22722327711505,Rewari,Haryāna,72.0,name,Rewari,False
-76128533B70570208114113,Ribhoi,Meghālaya,276.0,name,Ri Bhoi,False
-76128533B12244045944458,Rohtak,Haryāna,73.0,name,Rohtak,False
-76128533B33458049385696,Rohtas,Bihār,215.0,name,Rohtas,False
-76128533B46038384763988,Rudraprayag,Uttarākhand,54.0,name,Rudraprayag,False
-76128533B24759700890118,Rupnagar,Punjab,42.0,name,Rupnagar,False
-76128533B35129325000613,Sabar Kantha,Gujarāt,458.0,name,Sabar Kantha,False
-76128533B30447764775083,Sagar,Madhya Pradesh,425.0,name,Sagar,False
-76128533B33437990510331,Saharanpur,Uttar Pradesh,177.0,name,Saharanpur,False
-76128533B24755983727265,Saharsa,Bihār,216.0,name,Saharsa,False
-76128533B62486414019241,Saitual,Mizoram,727.0,name,Saitual,False
-76128533B52590639744160,Salem,Tamil Nādu,584.0,name,Salem,False
-76128533B66790149147330,Samastipur,Bihār,217.0,name,Samastipur,False
-76128533B49429513424897,Samba,Jammu and Kashmīr,624.0,name,Samba,False
-76128533B84129562351919,Sambalpur,Odisha,371.0,name,Sambalpur,False
-76128533B7545062765383,Sambhal,Uttar Pradesh,659.0,name,Sambhal,False
-76128533B40480360118262,Sangareddy,Telangāna,691.0,name,Sangareddy,False
-76128533B9892158671522,Sangli,Mahārāshtra,493.0,name,Sangli,False
-76128533B82601690264832,Sangrur,Punjab,43.0,name,Sangrur,False
-76128533B54279951806726,Sant Kabir Nagar,Uttar Pradesh,178.0,name,Sant Kabir Nagar,False
-76128533B50275440439236,Saraikela-Kharsawan,Jhārkhand,341.0,name,Saraikela Kharsawan,False
-76128533B19903856317609,Saran,Bihār,218.0,name,Saran,False
-76128533B93152786731267,Satara,Mahārāshtra,494.0,name,Satara,False
-76128533B39705008578419,Satna,Madhya Pradesh,426.0,name,Satna,False
-76128533B28138828116492,Sawai Madhopur,Rājasthān,113.0,name,Sawai Madhopur,False
-76128533B39959897010345,Sehore,Madhya Pradesh,427.0,name,Sehore,False
-76128533B95642877176862,Senapati,Manipur,257.0,name,Senapati,False
-76128533B78482805703540,Seoni,Madhya Pradesh,428.0,name,Seoni,False
-76128533B49456368048033,Serchhip,Mizoram,268.0,name,Serchhip,False
-76128533B79303776608295,Shahdol,Madhya Pradesh,429.0,name,Shahdol,False
-76128533B14984770113274,Shahid Bhagat Singh Nagar,Punjab,40.0,name,Shahid Bhagat Singh Nagar,False
-76128533B96870418529164,Shahjahanpur,Uttar Pradesh,180.0,name,Shahjahanpur,False
-76128533B30477486088156,Shajapur,Madhya Pradesh,430.0,name,Shajapur,False
-76128533B29672216830072,Sheikhpura,Bihār,219.0,name,Sheikhpura,False
-76128533B74961596993088,Sheohar,Bihār,220.0,name,Sheohar,False
-76128533B82240600990321,Sheopur,Madhya Pradesh,431.0,name,Sheopur,False
-76128533B46084756537322,Shi Yomi,Arunāchal Pradesh,725.0,name,Shi Yomi,False
-76128533B77537928419507,Shimla,Himāchal Pradesh,23.0,name,Shimla,False
-76128533B66335428496945,Shivpuri,Madhya Pradesh,432.0,name,Shivpuri,False
-76128533B34832354589031,Shrawasti,Uttar Pradesh,181.0,name,Shrawasti,False
-76128533B95910687666425,Siang,Arunāchal Pradesh,679.0,name,Siang,False
-76128533B40509297062120,Siddharthnagar,Uttar Pradesh,182.0,name,Siddharthnagar,False
-76128533B31111781432113,Siddipet,Telangāna,692.0,name,Siddipet,False
-76128533B53791014455989,Sidhi,Madhya Pradesh,433.0,name,Sidhi,False
-76128533B20732636837048,Sikar,Rājasthān,114.0,name,Sikar,False
-76128533B15601995412161,Simdega,Jhārkhand,342.0,name,Simdega,False
-76128533B39238815774480,Sindhudurg,Mahārāshtra,495.0,name,Sindhudurg,False
-76128533B50014751336341,Singrauli,Madhya Pradesh,638.0,name,Singrauli,False
-76128533B11802210119774,Sirmaur,Himāchal Pradesh,24.0,name,Sirmaur,False
-76128533B49867917697487,Sirohi,Rājasthān,115.0,name,Sirohi,False
-76128533B84837672903805,Sirsa,Haryāna,74.0,name,Sirsa,False
-76128533B21922686388534,Sitamarhi,Bihār,221.0,name,Sitamarhi,False
-76128533B8998698404381,Sitapur,Uttar Pradesh,183.0,name,Sitapur,False
-76128533B89925537847414,Sivaganga,Tamil Nādu,585.0,name,Sivaganga,False
-76128533B21722277889516,Sivasagar,Assam,300.0,name,Sivasagar,False
-76128533B14033116794334,Siwan,Bihār,222.0,name,Siwan,False
-76128533B58569599021232,Solan,Himāchal Pradesh,25.0,name,Solan,False
-76128533B62490300334729,Solapur,Mahārāshtra,496.0,name,Solapur,False
-76128533B52058654769647,Sonbhadra,Uttar Pradesh,184.0,name,Sonbhadra,False
-76128533B69536039643660,Sonipat,Haryāna,75.0,name,Sonipat,False
-76128533B41005496708834,Sonitpur,Assam,301.0,name,Sonitpur,False
-76128533B97089774514948,South,Delhi,83.0,name,South,False
-76128533B1420136949169,South East,Delhi,670.0,name,South East,False
-76128533B79750857313751,South Garo Hills,Meghālaya,277.0,name,South Garo Hills,False
-76128533B63117839967753,South Goa,Goa,552.0,name,South Goa,False
-76128533B67748245133340,South Tripura,Tripura,271.0,name,South Tripura,False
-76128533B53136419849111,South West,Delhi,84.0,name,South West,False
-76128533B52906466328910,South West Garo Hills,Meghālaya,663.0,name,South West Garo Hills,False
-76128533B27102120636500,South West Khasi Hills,Meghālaya,658.0,name,South West Khasi Hills,False
-76128533B55622097933343,Sri Potti Sriramulu Nellore,Andhra Pradesh,515.0,name,Sri Potti Sriramulu Nellore,False
-76128533B59405966069108,Srikakulam,Andhra Pradesh,519.0,name,Srikakulam,False
-76128533B32249045995424,Srinagar,Jammu and Kashmīr,13.0,name,Srinagar,False
 76128533B6884509901047,Subarnapur,Odisha,372.0,name,Subarnapur,False
-76128533B53316015271969,Sukma,Chhattīsgarh,642.0,name,Sukma,False
-76128533B1996088953603,Sultanpur,Uttar Pradesh,185.0,name,Sultanpur,False
-76128533B62794162648247,Supaul,Bihār,223.0,name,Supaul,False
-76128533B46979893461805,Surajpur,Chhattīsgarh,648.0,name,Surajpur,False
-76128533B97372652494648,Surat,Gujarāt,459.0,name,Surat,False
-76128533B7851306475665,Surendranagar,Gujarāt,460.0,name,Surendranagar,False
-76128533B52487813780503,Surguja,Chhattīsgarh,389.0,name,Surguja,False
-76128533B24594618908349,Suryapet,Telangāna,696.0,name,Suryapet,False
-76128533B11421856387892,Tamenglong,Manipur,258.0,name,Tamenglong,False
-76128533B12519626815499,Tapi,Gujarāt,641.0,name,Tapi,False
-76128533B54652028494758,Tarn Taran,Punjab,609.0,name,Tarn Taran,False
-76128533B18668117085772,Tawang,Arunāchal Pradesh,238.0,name,Tawang,False
-76128533B61134942989820,Tehri Garhwal,Uttarākhand,55.0,name,Tehri Garhwal,False
-76128533B61831576863813,Tengnoupal,Manipur,716.0,name,Tengnoupal,False
-76128533B27604563137530,Tenkasi,Tamil Nādu,733.0,name,Tenkasi,False
-76128533B74859418903113,Thane,Mahārāshtra,497.0,name,Thane,False
-76128533B54279577656282,Thanjavur,Tamil Nādu,586.0,name,Thanjavur,False
-76128533B21812274124310,The Nilgiris,Tamil Nādu,587.0,name,The Nilgiris,False
-76128533B79135514077232,Theni,Tamil Nādu,588.0,name,Theni,False
-76128533B45592431373253,Thiruvallur,Tamil Nādu,589.0,name,Thiruvallur,False
-76128533B33162455176756,Thiruvananthapuram,Kerala,565.0,name,Thiruvananthapuram,False
-76128533B45072089356239,Thiruvarur,Tamil Nādu,590.0,name,Thiruvarur,False
-76128533B31241181851990,Thoothukkudi,Tamil Nādu,594.0,name,Thoothukkudi,False
-76128533B44197302080139,Thoubal,Manipur,259.0,name,Thoubal,False
-76128533B75696328527555,Thrissur,Kerala,566.0,name,Thrissur,False
-76128533B1566053393466,Tikamgarh,Madhya Pradesh,434.0,name,Tikamgarh,False
-76128533B8920527783032,Tinsukia,Assam,302.0,name,Tinsukia,False
-76128533B99469070633974,Tirap,Arunāchal Pradesh,239.0,name,Tirap,False
-76128533B1645877589145,Tiruchirappalli,Tamil Nādu,591.0,name,Tiruchirappalli,False
-76128533B52639434516056,Tirunelveli,Tamil Nādu,592.0,name,Tirunelveli,False
-76128533B11403491783632,Tirupathur,Tamil Nādu,732.0,name,Tirupathur,False
-76128533B57036825942975,Tiruppur,Tamil Nādu,634.0,name,Tiruppur,False
-76128533B89575258858457,Tiruvannamalai,Tamil Nādu,593.0,name,Tiruvannamalai,False
+76128533B80656256583567,Puri,Odisha,369.0,name,Puri,False
+76128533B60186573304899,Anugul,Odisha,344.0,override:transliteration,Anugola,True
+76128533B64749652826710,Debagarh,Odisha,351.0,override:transliteration,Debagada,True
+76128533B47448948912370,Koraput,Odisha,363.0,name,Koraput,False
+76128533B99037046327658,Nabarangapur,Odisha,366.0,fuzzy:0.96,Nabarangpur,True
+76128533B74482494441458,Bargarh,Odisha,347.0,override:transliteration,Baragada,True
+76128533B32949331695897,Jagatsinghapur,Odisha,355.0,name,Jagatsinghapur,False
+76128533B8798165946807,Kandhamal,Odisha,359.0,fuzzy:0.95,Kandhamala,True
+76128533B52802748445403,Khordha,Odisha,362.0,name,Khordha,False
+76128533B34216851275023,Mayurbhanj,Odisha,365.0,name,Mayurbhanj,False
+76128533B85917349021677,Malkangiri,Odisha,364.0,name,Malkangiri,False
+76128533B81147724102706,Baleshwar,Odisha,346.0,name,Baleshwar,False
+76128533B84129562351919,Sambalpur,Odisha,371.0,name,Sambalpur,False
+76128533B73854359719990,Gajapati,Odisha,353.0,name,Gajapati,False
+76128533B32509926596077,Dhenkanal,Odisha,352.0,name,Dhenkanal,False
+76128533B77719785699048,Nayagarh,Odisha,367.0,override:transliteration,Nayagada,True
+76128533B70842759816811,Cuttack,Odisha,350.0,override:transliteration,Kataka,True
+76128533B91818883767147,Jajapur,Odisha,356.0,fuzzy:0.92,Jajpur,True
+76128533B70759200975708,Kalahandi,Odisha,358.0,name,Kalahandi,False
+76128533B84772375641700,Baudh,Odisha,349.0,fuzzy:0.80,Boudh,True
+76128533B98951704707517,Kendrapara,Odisha,360.0,fuzzy:0.90,Kendrapada,True
+76128533B59504628511334,Kendujhar,Odisha,361.0,name,Kendujhar,False
+76128533B633842538351,Ganjam,Odisha,354.0,name,Ganjam,False
+76128533B6128685860104,Sundargarh,Odisha,373.0,override:transliteration,Sundaragada,True
+76128533B58797478961083,Bhadrak,Odisha,348.0,name,Bhadrak,False
+76128533B33451850475260,Nuapada,Odisha,368.0,name,Nuapada,False
+76128533B93240759409313,Jharsuguda,Odisha,357.0,name,Jharsuguda,False
+76128533B50498617372937,Rayagada,Odisha,370.0,name,Rayagada,False
+76128533B44395557448920,Balangir,Odisha,345.0,name,Balangir,False
+76128533B86135761305702,Jhunjhunun,Rājasthān,106.0,fuzzy:0.95,Jhunjhunu,True
+76128533B14849085202492,Jaisalmer,Rājasthān,103.0,name,Jaisalmer,False
+76128533B20732636837048,Sikar,Rājasthān,114.0,name,Sikar,False
+76128533B92044109913630,Hanumangarh,Rājasthān,101.0,name,Hanumangarh,False
+76128533B43544960343942,Nagaur,Rājasthān,110.0,name,Nagaur,False
+76128533B75922461866405,Barmer,Rājasthān,90.0,name,Barmer,False
+76128533B72079972234594,Ganganagar,Rājasthān,100.0,name,Ganganagar,False
+76128533B84094142280102,Jodhpur,Rājasthān,107.0,name,Jodhpur,False
+76128533B66825707357376,Churu,Rājasthān,96.0,name,Churu,False
+76128533B55039756001726,Bikaner,Rājasthān,93.0,name,Bikaner,False
+76128533B50613523798301,Pratapgarh,Rājasthān,629.0,name,Pratapgarh,False
+76128533B93441663686573,Bhilwara,Rājasthān,92.0,name,Bhilwara,False
 76128533B54301724756864,Tonk,Rājasthān,116.0,name,Tonk,False
-76128533B82052450002431,Tuensang,Nāgāland,249.0,name,Tuensang,False
+76128533B69412164931619,Bundi,Rājasthān,94.0,name,Bundi,False
+76128533B28755611410447,Jaipur,Rājasthān,102.0,name,Jaipur,False
+76128533B74447895476194,Kota,Rājasthān,109.0,name,Kota,False
+76128533B9783509419210,Pali,Rājasthān,111.0,name,Pali,False
+76128533B11082155919544,Rajsamand,Rājasthān,112.0,name,Rajsamand,False
+76128533B60180372390230,Ajmer,Rājasthān,86.0,name,Ajmer,False
+76128533B25576352747885,Bharatpur,Rājasthān,91.0,name,Bharatpur,False
+76128533B12079567451207,Dungarpur,Rājasthān,99.0,name,Dungarpur,False
+76128533B58527154065354,Chittaurgarh,Rājasthān,95.0,fuzzy:0.87,Chittorgarh,True
 76128533B37392223136185,Udaipur,Rājasthān,117.0,name,Udaipur,False
-76128533B20307518801538,Udalguri,Assam,617.0,name,Udalguri,False
-76128533B46531174070538,Udham Singh Nagar,Uttarākhand,56.0,name,Udham Singh Nagar,False
-76128533B31127900859310,Udhampur,Jammu and Kashmīr,14.0,name,Udhampur,False
-76128533B4839184447445,Udupi,Karnātaka,549.0,name,Udupi,False
-76128533B89286042589317,Ujjain,Madhya Pradesh,435.0,name,Ujjain,False
-76128533B44190672061408,Ukhrul,Manipur,260.0,name,Ukhrul,False
-76128533B4466876522971,Umaria,Madhya Pradesh,436.0,name,Umaria,False
-76128533B75262864015847,Una,Himāchal Pradesh,26.0,name,Una,False
-76128533B42623703243160,Unnao,Uttar Pradesh,186.0,name,Unnao,False
-76128533B76058958071350,Upper Siang,Arunāchal Pradesh,240.0,name,Upper Siang,False
-76128533B84689409020934,Upper Subansiri,Arunāchal Pradesh,241.0,name,Upper Subansiri,False
-76128533B26755490628656,Uttar Bastar Kanker,Chhattīsgarh,381.0,name,Uttar Bastar Kanker,False
-76128533B7157007143985,Uttar Dinajpur,West Bengal,311.0,name,Uttar Dinajpur,False
-76128533B79180273895456,Uttara Kannada,Karnātaka,550.0,name,Uttara Kannada,False
-76128533B81694682724865,Uttarkashi,Uttarākhand,57.0,name,Uttarkashi,False
-76128533B33151011563565,Vadodara,Gujarāt,461.0,name,Vadodara,False
-76128533B91445917652173,Vaishali,Bihār,224.0,name,Vaishali,False
-76128533B60261306484775,Valsad,Gujarāt,462.0,name,Valsad,False
-76128533B7622369120497,Varanasi,Uttar Pradesh,187.0,name,Varanasi,False
-76128533B89374164863010,Vellore,Tamil Nādu,595.0,name,Vellore,False
-76128533B64834018186186,Vidisha,Madhya Pradesh,437.0,name,Vidisha,False
-76128533B74887942950962,Vikarabad,Telangāna,698.0,name,Vikarabad,False
-76128533B86430586962522,Viluppuram,Tamil Nādu,596.0,name,Viluppuram,False
+76128533B59459156188335,Jalor,Rājasthān,104.0,fuzzy:0.91,Jalore,True
+76128533B73809971322123,Dausa,Rājasthān,97.0,name,Dausa,False
+76128533B49867917697487,Sirohi,Rājasthān,115.0,name,Sirohi,False
+76128533B16889790752134,Ariyalur,Tamil Nādu,610.0,name,Ariyalur,False
+76128533B89925537847414,Sivaganga,Tamil Nādu,585.0,name,Sivaganga,False
+76128533B54279577656282,Thanjavur,Tamil Nādu,586.0,name,Thanjavur,False
+76128533B89575258858457,Tiruvannamalai,Tamil Nādu,593.0,name,Tiruvannamalai,False
+76128533B1629699732681,Ramanathapuram,Tamil Nādu,583.0,name,Ramanathapuram,False
+76128533B52639434516056,Tirunelveli,Tamil Nādu,592.0,name,Tirunelveli,False
 76128533B70974512658911,Virudhunagar,Tamil Nādu,597.0,name,Virudhunagar,False
-76128533B71485440235524,Visakhapatnam,Andhra Pradesh,520.0,name,Visakhapatnam,False
-76128533B36164606132718,Vizianagaram,Andhra Pradesh,521.0,name,Vizianagaram,False
+76128533B45072089356239,Thiruvarur,Tamil Nādu,590.0,name,Thiruvarur,False
+76128533B45592431373253,Thiruvallur,Tamil Nādu,589.0,name,Thiruvallur,False
+76128533B1645877589145,Tiruchirappalli,Tamil Nādu,591.0,name,Tiruchirappalli,False
+76128533B57036825942975,Tiruppur,Tamil Nādu,634.0,name,Tiruppur,False
+76128533B79135514077232,Theni,Tamil Nādu,588.0,name,Theni,False
+76128533B52590639744160,Salem,Tamil Nādu,584.0,name,Salem,False
+76128533B71824979235503,Madurai,Tamil Nādu,578.0,name,Madurai,False
+76128533B51799781997546,Perambalur,Tamil Nādu,581.0,name,Perambalur,False
+76128533B28879432621383,Dindigul,Tamil Nādu,572.0,name,Dindigul,False
+76128533B19335918192159,Karur,Tamil Nādu,576.0,name,Karur,False
+76128533B4743808419896,Dharmapuri,Tamil Nādu,571.0,name,Dharmapuri,False
+76128533B51372664315362,Namakkal,Tamil Nādu,580.0,name,Namakkal,False
+76128533B51849218363622,Moradabad,Uttar Pradesh,171.0,name,Moradabad,False
+76128533B7545062765383,Sambhal,Uttar Pradesh,659.0,name,Sambhal,False
+76128533B84679668760735,Budaun,Uttar Pradesh,133.0,name,Budaun,False
+76128533B7643504807381,Kanshiram Nagar,Uttar Pradesh,633.0,override:rename,Kasganj,True
+76128533B66612397499770,Bahraich,Uttar Pradesh,125.0,name,Bahraich,False
+76128533B87317961648652,Hapur,Uttar Pradesh,661.0,name,Hapur,False
+76128533B8998698404381,Sitapur,Uttar Pradesh,183.0,name,Sitapur,False
+76128533B35465481868600,Samli,Uttar Pradesh,660.0,fuzzy:0.91,Shamli,True
+76128533B34832354589031,Shrawasti,Uttar Pradesh,181.0,name,Shrawasti,False
+76128533B61760400952464,Meerut,Uttar Pradesh,169.0,name,Meerut,False
+76128533B60862799554879,Aligarh,Uttar Pradesh,119.0,name,Aligarh,False
+76128533B13272482176343,Bulandshahr,Uttar Pradesh,134.0,name,Bulandshahr,False
+76128533B14534161138054,Bijnor,Uttar Pradesh,132.0,name,Bijnor,False
+76128533B46268976217915,Baghpat,Uttar Pradesh,124.0,name,Baghpat,False
+76128533B76479861129777,Kheri,Uttar Pradesh,159.0,name,Kheri,False
+76128533B46682008877369,Rampur,Uttar Pradesh,176.0,name,Rampur,False
+76128533B68554447699730,Bareilly,Uttar Pradesh,130.0,name,Bareilly,False
+76128533B88758450653156,Mathura,Uttar Pradesh,167.0,name,Mathura,False
+76128533B15342706434354,Etah,Uttar Pradesh,138.0,name,Etah,False
+76128533B25208535254310,Hardoi,Uttar Pradesh,150.0,name,Hardoi,False
+76128533B87371000929659,Balrampur,Uttar Pradesh,127.0,name,Balrampur,False
+76128533B8878807356913,Mahamaya Nagar,Uttar Pradesh,163.0,override:rename,Hathras,True
+76128533B96870418529164,Shahjahanpur,Uttar Pradesh,180.0,name,Shahjahanpur,False
+76128533B59596968713717,Farrukhabad,Uttar Pradesh,141.0,name,Farrukhabad,False
+76128533B80966996849325,Kannauj,Uttar Pradesh,155.0,name,Kannauj,False
+76128533B90071703601852,Pilibhit,Uttar Pradesh,173.0,name,Pilibhit,False
+76128533B84772439394056,Mainpuri,Uttar Pradesh,166.0,name,Mainpuri,False
+76128533B21119051307760,Jyotiba Phule Nagar,Uttar Pradesh,154.0,override:rename,Amroha,True
+76128533B91640519747726,Firozabad,Uttar Pradesh,143.0,name,Firozabad,False
+76128533B1996088953603,Sultanpur,Uttar Pradesh,185.0,name,Sultanpur,False
+76128533B53725063754801,Chitrakoot,Uttar Pradesh,136.0,name,Chitrakoot,False
+76128533B18648944871057,Basti,Uttar Pradesh,131.0,name,Basti,False
+76128533B40226077866964,Gorakhpur,Uttar Pradesh,148.0,name,Gorakhpur,False
+76128533B49436035281620,Lucknow,Uttar Pradesh,162.0,name,Lucknow,False
+76128533B73925919155567,Azamgarh,Uttar Pradesh,123.0,name,Azamgarh,False
+76128533B60320291189162,Faizabad,Uttar Pradesh,140.0,override:rename,Ayodhya,True
+76128533B7879459377699,Ambedkar Nagar,Uttar Pradesh,121.0,name,Ambedkar Nagar,False
+76128533B73769926250842,Ballia,Uttar Pradesh,126.0,name,Ballia,False
+76128533B23710487943819,Kanpur Nagar,Uttar Pradesh,157.0,name,Kanpur Nagar,False
+76128533B87515288456202,Sant Ravidas Nagar (Bhadohi),Uttar Pradesh,179.0,override:rename,Bhadohi,True
+76128533B40509297062120,Siddharthnagar,Uttar Pradesh,182.0,name,Siddharthnagar,False
+76128533B20660206691661,Auraiya,Uttar Pradesh,122.0,name,Auraiya,False
+76128533B54279951806726,Sant Kabir Nagar,Uttar Pradesh,178.0,name,Sant Kabir Nagar,False
+76128533B98420041301261,Kaushambi,Uttar Pradesh,158.0,name,Kaushambi,False
+76128533B15835290978888,Jalaun,Uttar Pradesh,151.0,name,Jalaun,False
+76128533B7622369120497,Varanasi,Uttar Pradesh,187.0,name,Varanasi,False
+76128533B20647769792365,Pratapgarh,Uttar Pradesh,174.0,name,Pratapgarh,False
+76128533B27201270098470,Hamirpur,Uttar Pradesh,149.0,name,Hamirpur,False
+76128533B67530641452031,Gonda,Uttar Pradesh,147.0,name,Gonda,False
+76128533B80299348876357,Kanpur Dehat,Uttar Pradesh,156.0,name,Kanpur Dehat,False
+76128533B64732849735713,Jaunpur,Uttar Pradesh,152.0,name,Jaunpur,False
+76128533B74938989340684,Bara Banki,Uttar Pradesh,129.0,name,Bara Banki,False
+76128533B11083100419963,Mahoba,Uttar Pradesh,165.0,name,Mahoba,False
+76128533B29554440319099,Mahrajganj,Uttar Pradesh,164.0,name,Mahrajganj,False
+76128533B18243475101734,Mirzapur,Uttar Pradesh,170.0,name,Mirzapur,False
+76128533B26931973511551,Kushinagar,Uttar Pradesh,160.0,name,Kushinagar,False
+76128533B40023971667984,Deoria,Uttar Pradesh,137.0,name,Deoria,False
+76128533B42623703243160,Unnao,Uttar Pradesh,186.0,name,Unnao,False
+76128533B7124697440629,Fatehpur,Uttar Pradesh,142.0,name,Fatehpur,False
+76128533B88623139855224,Mau,Uttar Pradesh,168.0,name,Mau,False
+76128533B74057284038879,Rae Bareli,Uttar Pradesh,175.0,name,Rae Bareli,False
+76128533B13908294104682,Amethi,Uttar Pradesh,640.0,name,Amethi,False
+76128533B68984344044805,Ghaziabad,Uttar Pradesh,145.0,name,Ghaziabad,False
+76128533B87051210355251,Muzaffarnagar,Uttar Pradesh,172.0,name,Muzaffarnagar,False
+76128533B34462889864078,Gautam Buddha Nagar,Uttar Pradesh,144.0,name,Gautam Buddha Nagar,False
+76128533B33437990510331,Saharanpur,Uttar Pradesh,177.0,name,Saharanpur,False
+76128533B79784438258239,Etawah,Uttar Pradesh,139.0,name,Etawah,False
+76128533B26296891809198,Agra,Uttar Pradesh,118.0,name,Agra,False
+76128533B61321395333865,Cuddalore,Tamil Nādu,570.0,name,Cuddalore,False
+76128533B64003397477352,Pudukkottai,Tamil Nādu,582.0,name,Pudukkottai,False
+76128533B89374164863010,Vellore,Tamil Nādu,595.0,name,Vellore,False
+76128533B89024397489955,Chennai,Tamil Nādu,568.0,name,Chennai,False
+76128533B88466433485589,Nagapattinam,Tamil Nādu,579.0,name,Nagapattinam,False
+76128533B86430586962522,Viluppuram,Tamil Nādu,596.0,name,Viluppuram,False
+76128533B83644689337946,Kancheepuram,Tamil Nādu,574.0,name,Kancheepuram,False
+76128533B53796141759805,Kanniyakumari,Tamil Nādu,575.0,name,Kanniyakumari,False
+76128533B31241181851990,Thoothukkudi,Tamil Nādu,594.0,name,Thoothukkudi,False
+76128533B51368558457506,Allahabad,Uttar Pradesh,120.0,override:rename,Prayagraj,True
+76128533B13673614951516,Chandauli,Uttar Pradesh,135.0,name,Chandauli,False
+76128533B66072086060089,Jhansi,Uttar Pradesh,153.0,name,Jhansi,False
+76128533B45099378029175,Banda,Uttar Pradesh,128.0,name,Banda,False
+76128533B52058654769647,Sonbhadra,Uttar Pradesh,184.0,name,Sonbhadra,False
+76128533B59256192226816,Lalitpur,Uttar Pradesh,161.0,name,Lalitpur,False
+76128533B49460554954204,Ghazipur,Uttar Pradesh,146.0,name,Ghazipur,False
+76128533B35717069663408,Krishnagiri,Tamil Nādu,577.0,name,Krishnagiri,False
+76128533B15337568968545,Erode,Tamil Nādu,573.0,name,Erode,False
+76128533B4753404177348,Coimbatore,Tamil Nādu,569.0,name,Coimbatore,False
+76128533B21812274124310,The Nilgiris,Tamil Nādu,587.0,name,The Nilgiris,False
+76128533B91943656836526,Jhalawar,Rājasthān,105.0,name,Jhalawar,False
+76128533B5628791558965,Alwar,Rājasthān,87.0,name,Alwar,False
+76128533B98308664713511,Baran,Rājasthān,89.0,name,Baran,False
+76128533B64898456093948,Dhaulpur,Rājasthān,98.0,fuzzy:0.80,Dholpur,True
+76128533B28138828116492,Sawai Madhopur,Rājasthān,113.0,name,Sawai Madhopur,False
+76128533B96584288929219,Banswara,Rājasthān,88.0,name,Banswara,False
+76128533B34069028331411,Karauli,Rājasthān,108.0,name,Karauli,False
+76128533B8930157583904,Jangaon,Telangāna,689.0,fuzzy:0.86,Jangoan,True
+76128533B30246762498957,Bhadradri,Telangāna,690.0,override:rename,Bhadradri Kothagudem,True
+76128533B84676164211579,Hydrabad,Telangāna,507.0,fuzzy:0.94,Hyderabad,True
+76128533B53018054761164,Mancherial,Telangāna,684.0,name,Mancherial,False
+76128533B58104976570569,Karimnagar,Telangāna,508.0,name,Karimnagar,False
+76128533B58493775523243,Nizamabad,Telangāna,516.0,name,Nizamabad,False
+76128533B97126567441665,Medak,Telangāna,513.0,name,Medak,False
+76128533B31175522938788,Rangareddy,Telangāna,518.0,name,Ranga Reddy,False
+76128533B8892495882090,Nalgonda,Telangāna,514.0,name,Nalgonda,False
+76128533B31246189674263,Nagarkurnool,Telangāna,694.0,name,Nagarkurnool,False
+76128533B38354309367879,Adilabad,Telangāna,501.0,name,Adilabad,False
+76128533B33226396095315,Komaram Bheem,Telangāna,699.0,override:rename,Kumuram Bheem Asifabad,True
+76128533B25280172436550,Nirmal,Telangāna,680.0,name,Nirmal,False
+76128533B21068662878849,Kamareddy,Telangāna,685.0,name,Kamareddy,False
+76128533B67054925852429,Jagtial,Telangāna,681.0,fuzzy:0.93,Jagitial,True
+76128533B60322704115131,Jayashankar,Telangāna,687.0,override:rename,Jayashankar Bhupalapally,True
+76128533B53373614632193,Peddapalli,Telangāna,682.0,name,Peddapalli,False
+76128533B21485897206517,Rajanna Sircilla,Telangāna,683.0,name,Rajanna Sircilla,False
+76128533B40480360118262,Sangareddy,Telangāna,691.0,name,Sangareddy,False
+76128533B31111781432113,Siddipet,Telangāna,692.0,name,Siddipet,False
+76128533B96571577519224,Khammam,Telangāna,509.0,name,Khammam,False
+76128533B28290181894983,Mahabubabad,Telangāna,688.0,name,Mahabubabad,False
+76128533B63833971372360,Warangal (R),Telangāna,522.0,fuzzy:0.94,Warangal,True
+76128533B34824326075805,Warangal (U),Telangāna,686.0,override:rename,Hanumakonda,True
+76128533B24594618908349,Suryapet,Telangāna,696.0,name,Suryapet,False
+76128533B85157820615002,Yadadri Bhongiri,Telangāna,697.0,fuzzy:0.85,Yadadri Bhuvanagiri,True
+76128533B71056110198347,Medchal,Telangāna,700.0,override:rename,Medchal Malkajgiri,True
+76128533B74887942950962,Vikarabad,Telangāna,698.0,name,Vikarabad,False
+76128533B72829420975835,Jogulamba,Telangāna,695.0,override:rename,Jogulamba Gadwal,True
 76128533B49394025943542,Wanaparthy,Telangāna,693.0,name,Wanaparthy,False
-76128533B37486272752374,Wardha,Mahārāshtra,498.0,name,Wardha,False
-76128533B59866172845044,Washim,Mahārāshtra,499.0,name,Washim,False
-76128533B82539771173603,Wayanad,Kerala,567.0,name,Wayanad,False
+76128533B58170186574016,Mahabubnagar,Telangāna,512.0,name,Mahabubnagar,False
+76128533B99469070633974,Tirap,Arunāchal Pradesh,239.0,name,Tirap,False
+76128533B1875965515331,Namsai,Arunāchal Pradesh,678.0,name,Namsai,False
+76128533B53717296822608,East Siang,Arunāchal Pradesh,232.0,name,East Siang,False
+76128533B12129983841645,Kra Daadi,Arunāchal Pradesh,677.0,name,Kra Daadi,False
+76128533B89228414823983,Charaideo,Assam,708.0,name,Charaideo,False
+76128533B15157901669242,Majuli,Assam,706.0,name,Majuli,False
+76128533B40714385808093,Biswanath,Assam,705.0,name,Biswanath,False
+76128533B70315194619807,Hojai,Assam,709.0,name,Hojai,False
+76128533B57995625790051,Karbi Anglong West,Assam,710.0,override:rename,West Karbi Anglong,True
+76128533B20298037622173,South Salmara-Mankachar,Assam,707.0,fuzzy:0.95,South Salmara Mancachar,True
+76128533B29721759389119,Agar,Madhya Pradesh,667.0,override:rename,Agar-Malwa,True
+76128533B71254158898830,Pherzawl,Manipur,715.0,name,Pherzawl,False
+76128533B36594996191182,Noney,Manipur,714.0,name,Noney,False
+76128533B61831576863813,Tengnoupal,Manipur,716.0,name,Tengnoupal,False
+76128533B66815680293072,Kamjong,Manipur,717.0,name,Kamjong,False
+76128533B95642877176862,Senapati,Manipur,257.0,name,Senapati,False
+76128533B82279368215419,Kakching,Manipur,711.0,name,Kakching,False
+76128533B64881202564500,Jiribam,Manipur,713.0,name,Jiribam,False
+76128533B71353370080255,North West,Delhi,82.0,name,North West,False
+76128533B58262202014972,New Delhi,Delhi,79.0,name,New Delhi,False
+76128533B72485933575946,East,Delhi,78.0,name,East,False
+76128533B53136419849111,South West,Delhi,84.0,name,South West,False
 76128533B68379889579232,West,Delhi,85.0,name,West,False
-76128533B96195300293897,West Garo Hills,Meghālaya,278.0,name,West Garo Hills,False
-76128533B19792346411952,West Godavari,Andhra Pradesh,523.0,name,West Godavari,False
-76128533B84622469201834,West Jaintia Hills,Meghālaya,275.0,name,West Jaintia Hills,False
-76128533B61235952222315,West Kameng,Arunāchal Pradesh,242.0,name,West Kameng,False
-76128533B42153891534463,West Khasi Hills,Meghālaya,279.0,name,West Khasi Hills,False
-76128533B95764075909869,West Siang,Arunāchal Pradesh,243.0,name,West Siang,False
-76128533B97225684979956,West Tripura,Tripura,272.0,name,West Tripura,False
-76128533B67210465807627,Wokha,Nāgāland,250.0,name,Wokha,False
-76128533B84927972855096,Yadgir,Karnātaka,635.0,name,Yadgir,False
-76128533B23956636471502,Yamunanagar,Haryāna,76.0,name,Yamunanagar,False
-76128533B61814103412294,Yavatmal,Mahārāshtra,500.0,name,Yavatmal,False
-76128533B58058152513003,Zunheboto,Nāgāland,251.0,name,Zunheboto,False
-76128533B29721759389119,Agar,Madhya Pradesh,,unmatched,,True
-76128533B47816398970283,Ahmadnagar,Mahārāshtra,,unmatched,,True
-76128533B51368558457506,Allahabad,Uttar Pradesh,,unmatched,,True
-76128533B60186573304899,Anugul,Odisha,,unmatched,,True
-76128533B39329594544563,Aurangabad,Mahārāshtra,,unmatched,,True
-76128533B54306414631532,Baloda Bazar,Chhattīsgarh,,unmatched,,True
-76128533B14598081584747,Balrampur,Chhattīsgarh,,unmatched,,True
-76128533B76927648517269,Bangalore,Karnātaka,,unmatched,,True
-76128533B48075109668277,Bangalore Rural,Karnātaka,,unmatched,,True
-76128533B59121537940607,Barddhaman,West Bengal,,unmatched,,True
-76128533B74482494441458,Bargarh,Odisha,,unmatched,,True
-76128533B48885555323596,Batod,Gujarāt,,unmatched,,True
-76128533B74319098136622,Belgaum,Karnātaka,,unmatched,,True
-76128533B92621859299479,Bellary,Karnātaka,,unmatched,,True
-76128533B30246762498957,Bhadradri,Telangāna,,unmatched,,True
-76128533B5215906594478,Bid,Mahārāshtra,,unmatched,,True
-76128533B40495457052818,Bijapur,Karnātaka,,unmatched,,True
-76128533B70842759816811,Cuttack,Odisha,,unmatched,,True
-76128533B2782141712775,DATA NOT AVAILABLE,Ladākh,,unmatched,,True
-76128533B43252171579976,Dadra & Nagar Haveli,Dādra and Nagar Haveli and Damān and Diu,,unmatched,,True
-76128533B15180319517641,Daman,Dādra and Nagar Haveli and Damān and Diu,,unmatched,,True
-76128533B64749652826710,Debagarh,Odisha,,unmatched,,True
-76128533B56857410767766,Diu,Dādra and Nagar Haveli and Damān and Diu,,unmatched,,True
-76128533B70576899889534,Dohad,Gujarāt,,unmatched,,True
-76128533B67639510673366,East District,Sikkim,,unmatched,,True
-76128533B60320291189162,Faizabad,Uttar Pradesh,,unmatched,,True
-76128533B46926146855114,Garhwal,Uttarākhand,,unmatched,,True
-76128533B1083016608278,Gulbarga,Karnātaka,,unmatched,,True
-76128533B67580812983244,Gurgaon,Haryāna,,unmatched,,True
-76128533B22077262393417,Haora,West Bengal,,unmatched,,True
-76128533B45314020251888,Hoshangabad,Madhya Pradesh,,unmatched,,True
-76128533B81857725777974,Hugli,West Bengal,,unmatched,,True
-76128533B60322704115131,Jayashankar,Telangāna,,unmatched,,True
-76128533B72829420975835,Jogulamba,Telangāna,,unmatched,,True
-76128533B21119051307760,Jyotiba Phule Nagar,Uttar Pradesh,,unmatched,,True
-76128533B72109128179340,Kadapa(YSR),Andhra Pradesh,,unmatched,,True
-76128533B38230828972906,Kamrup Metropolitan,Assam,,unmatched,,True
-76128533B7643504807381,Kanshiram Nagar,Uttar Pradesh,,unmatched,,True
-76128533B57995625790051,Karbi Anglong West,Assam,,unmatched,,True
-76128533B23092176497025,Karimganj,Assam,,unmatched,,True
-76128533B33226396095315,Komaram Bheem,Telangāna,,unmatched,,True
-76128533B1621599562140,Koriya,Chhattīsgarh,,unmatched,,True
-76128533B41477629049356,Lakshadweep,,,unmatched,,True
-76128533B8878807356913,Mahamaya Nagar,Uttar Pradesh,,unmatched,,True
-76128533B41246169049488,Mahe,Puducherry,,unmatched,,True
-76128533B71056110198347,Medchal,Telangāna,,unmatched,,True
-76128533B80016894369263,Mewat,Haryāna,,unmatched,,True
-76128533B50184713016881,Muktsar,Punjab,,unmatched,,True
-76128533B95879808095476,Mysore,Karnātaka,,unmatched,,True
-76128533B77719785699048,Nayagarh,Odisha,,unmatched,,True
-76128533B65820903826030,North District,Sikkim,,unmatched,,True
-76128533B93453964263910,North Twenty Four Parganas,West Bengal,,unmatched,,True
-76128533B20474666262371,Osmanabad,Mahārāshtra,,unmatched,,True
-76128533B60893804631193,Pashchimi Singhbhum,Jhārkhand,,unmatched,,True
-76128533B32998994032811,Punch,Jammu and Kashmīr,,unmatched,,True
-76128533B18931932305748,Purbi Singhbhum,Jhārkhand,,unmatched,,True
-76128533B99895802074414,Raigarh,Mahārāshtra,,unmatched,,True
-76128533B79600797037735,Ramanagara,Karnātaka,,unmatched,,True
-76128533B12197302963241,Sahibzada Ajit Singh Nagar,Punjab,,unmatched,,True
-76128533B87515288456202,Sant Ravidas Nagar (Bhadohi),Uttar Pradesh,,unmatched,,True
+76128533B97089774514948,South,Delhi,83.0,name,South,False
+76128533B45574198291616,North ,Delhi,80.0,name,North,False
+76128533B9976625304286,North East,Delhi,81.0,name,North East,False
+76128533B1420136949169,South East,Delhi,670.0,name,South East,False
+76128533B19832024635761,Central,Delhi,77.0,name,Central,False
 76128533B81419063387740,Shahdara,Delhi,,unmatched,,True
-76128533B10270619600482,South District,Sikkim,,unmatched,,True
-76128533B2860535426345,South Twenty Four Parganas,West Bengal,,unmatched,,True
-76128533B6128685860104,Sundargarh,Odisha,,unmatched,,True
-76128533B16271917438029,The Dangs,Gujarāt,,unmatched,,True
-76128533B34824326075805,Warangal (U),Telangāna,,unmatched,,True
-76128533B30151252629779,West District,Sikkim,,unmatched,,True
-76128533B83105693975079,Yanam,Andhra Pradesh,,unmatched,,True
+76128533B23858286755005,Alipurduar,West Bengal,664.0,name,Alipurduar,False
+76128533B24861976740713,Jhargram,West Bengal,703.0,name,Jhargram,False
+76128533B60845263086042,Paschim Barddhaman,West Bengal,704.0,fuzzy:0.97,Paschim Bardhaman,True
+76128533B78458325839103,Kalimpong,West Bengal,702.0,name,Kalimpong,False
+76128533B14968875277413,Narayanpet,Telangāna,721.0,name,Narayanpet,False
+76128533B84398038505400,Mulugu,Telangāna,720.0,name,Mulugu,False
+76128533B38767180038480,Niwari,Madhya Pradesh,722.0,name,Niwari,False
+76128533B24017517661394,Pakke Kessang,Arunāchal Pradesh,723.0,name,Pakke Kessang,False
+76128533B19898496046456,Kamle,Arunāchal Pradesh,718.0,name,Kamle,False
+76128533B46084756537322,Shi Yomi,Arunāchal Pradesh,725.0,name,Shi Yomi,False
+76128533B25448742967716,Leparada,Arunāchal Pradesh,724.0,name,Leparada,False
+76128533B49993259380917,Lower Siang,Arunāchal Pradesh,719.0,name,Lower Siang,False
+76128533B64903504311414,Hnahthial,Mizoram,726.0,name,Hnahthial,False
+76128533B62486414019241,Saitual,Mizoram,727.0,name,Saitual,False
+76128533B41321006511827,Khawzawl,Mizoram,728.0,name,Khawzawl,False
+76128533B11403491783632,Tirupathur,Tamil Nādu,732.0,name,Tirupathur,False
+76128533B22687502928564,Ranipet,Tamil Nādu,731.0,name,Ranipet,False
+76128533B88669134807148,Chengalputtu,Tamil Nādu,730.0,fuzzy:0.92,Chengalpattu,True
+76128533B19545859035458,Kallakurichi,Tamil Nādu,729.0,name,Kallakurichi,False
+76128533B63176236753619,Mayiladuthurai,Tamil Nādu,735.0,name,Mayiladuthurai,False
+76128533B27604563137530,Tenkasi,Tamil Nādu,733.0,name,Tenkasi,False
+76128533B38203190611533,Gaurella Pendra Marwahi,Chhattīsgarh,734.0,fuzzy:0.98,Gaurela-Pendra-Marwahi,True

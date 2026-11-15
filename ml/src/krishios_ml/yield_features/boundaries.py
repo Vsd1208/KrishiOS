@@ -27,6 +27,8 @@ STATE_PARENTS = {
     "telangana": "andhra pradesh",
     "ladakh": "jammu and kashmir",
     "the dadra and nagar haveli and daman and diu": "dadra and nagar haveli",
+    "dadra and nagar haveli and daman and diu": "dadra and nagar haveli",
+    "daman and diu": "dadra and nagar haveli",
 }
 
 
@@ -102,8 +104,33 @@ def _fuzzy(matches: pd.DataFrame, lgd: pd.DataFrame) -> None:
                 taken.add(code)
 
 
+def _apply_overrides(matches: pd.DataFrame, overrides: pd.DataFrame, valid: set[int]) -> None:
+    """Reviewed (state, polygon name) -> LGD code pairs for official renames and Odia
+    transliterations that no string similarity can find (Gurgaon -> Gurugram, Cuttack ->
+    Kataka). They win over automatic matches; each is recorded as ``override:<relation>``.
+    ``predecessor`` means the polygon predates a split, so it covers more than the LGD
+    district does today."""
+    want = {}
+    for r in overrides.itertuples():
+        code = int(r.lgd_district_code)
+        if code not in valid:
+            raise ValueError(f"override {r.shape_name}: LGD code {code} not in the reference")
+        want[(state_key(r.state_2011), compact(r.shape_name))] = (code, r.relation)
+    used = set()
+    for i in matches.index:
+        st = matches.at[i, "state_2011"]
+        key = (state_key(st) if isinstance(st, str) else "", compact(matches.at[i, "shape_name"]))
+        if key in want:
+            code, relation = want[key]
+            matches.at[i, "lgd_district_code"] = code
+            matches.at[i, "match"] = f"override:{relation}"
+            used.add(key)
+    if missing := set(want) - used:
+        raise ValueError(f"overrides matched no polygon: {sorted(missing)}")
+
+
 def match_lgd(
-    districts, lgd_csv: Path, alias_csv: Path | None = None
+    districts, lgd_csv: Path, alias_csv: Path | None = None, override_csv: Path | None = None
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     lgd = pd.read_csv(lgd_csv)
     aliases: dict[str, list[str]] = {}
@@ -135,6 +162,8 @@ def match_lgd(
             }
         )
     matches = pd.DataFrame(rows)
+    if override_csv and override_csv.exists():
+        _apply_overrides(matches, pd.read_csv(override_csv), set(lgd["lgd_district_code"]))
     _fuzzy(matches, lgd)
     matched_codes = set(matches["lgd_district_code"].dropna().astype(int))
     unmatched_lgd = lgd[~lgd["lgd_district_code"].isin(matched_codes)][

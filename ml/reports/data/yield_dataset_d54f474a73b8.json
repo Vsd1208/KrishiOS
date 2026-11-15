@@ -1,0 +1,54 @@
+{
+ "run_id": "d54f474a73b8",
+ "config": {
+  "stage": "weights",
+  "audit_run": "ee75501cc5ef",
+  "split": {
+   "val_from": 2016,
+   "test_from": 2019,
+   "spatial_share": 0.1
+  },
+  "east_rice_annual": [
+   "Assam",
+   "Odisha",
+   "Bihar",
+   "West Bengal",
+   "Jharkhand"
+  ],
+  "parameters": [
+   "PRECTOTCORR",
+   "T2M_MAX",
+   "T2M_MIN",
+   "RH2M",
+   "ALLSKY_SFC_SW_DWN"
+  ],
+  "leads": [
+   0,
+   30,
+   60,
+   90
+  ],
+  "pre_days": 60,
+  "years": [
+   1997,
+   2024
+  ],
+  "weather_source": "NASA POWER daily regional (0.5x0.625), area-weighted"
+ },
+ "metrics": {
+  "weights": {
+   "merra2": {
+    "centres": 2660,
+    "districts": 664,
+    "cells_per_district_median": 5.0,
+    "single_cell_districts": 11
+   },
+   "ceres1deg": {
+    "centres": 816,
+    "districts": 664,
+    "cells_per_district_median": 3.0,
+    "single_cell_districts": 71
+   }
+  }
+ }
+}

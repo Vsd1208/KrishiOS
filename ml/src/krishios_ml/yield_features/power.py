@@ -33,6 +33,7 @@ BOXES = [
     (26.0, 36.0, 78.0, 88.0),
     (26.0, 36.0, 88.0, 98.0),
     (36.0, 38.0, 72.0, 80.0),
+    (6.0, 16.0, 88.0, 98.0),  # Andaman & Nicobar Islands
 ]
 
 
@@ -100,7 +101,9 @@ def download(
                 for attempt in range(1, retries + 1):
                     try:
                         df = fetch(chunk)
-                        df.to_parquet(path, index=False)
+                        tmp = path.with_suffix(".part")  # atomic: never a half-written chunk
+                        df.to_parquet(tmp, index=False)
+                        tmp.replace(path)
                         stats["fetched"] += 1
                         break
                     except Exception as exc:  # network: retry, then record and move on

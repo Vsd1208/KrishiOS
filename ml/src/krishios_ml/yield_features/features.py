@@ -42,57 +42,73 @@ def window(season: str, crop_year: int, lead_days: int) -> Window:
     return Window(a - timedelta(days=PRE_DAYS), a + timedelta(days=lead_days))
 
 
+COLUMNS = ("PRECTOTCORR", "T2M_MAX", "T2M_MIN", "RH2M", "ALLSKY_SFC_SW_DWN")
+
+
 def _max_run(mask: np.ndarray) -> int:
-    best = run = 0
-    for v in mask:
-        run = run + 1 if v else 0
-        best = max(best, run)
-    return best
+    if not mask.any():
+        return 0
+    m = np.concatenate(([0], mask.astype(np.int8), [0]))
+    edges = np.flatnonzero(np.diff(m))
+    return int((edges[1::2] - edges[::2]).max())
 
 
-def summarise(days: pd.DataFrame, expected_days: int) -> dict[str, float]:
-    """``days``: one district's rows inside the window (date, PRECTOTCORR, T2M_MAX, ...)."""
-    rain = days["PRECTOTCORR"].to_numpy(dtype="float64")
-    tmax = days["T2M_MAX"].to_numpy(dtype="float64")
-    tmin = days["T2M_MIN"].to_numpy(dtype="float64")
+def _mean(v: np.ndarray) -> float:
+    ok = np.isfinite(v)
+    return float(v[ok].mean()) if ok.any() else np.nan
+
+
+def summarise_arrays(cols: dict[str, np.ndarray], expected_days: int) -> dict[str, float]:
+    """``cols``: one district's window, column name -> float64 array (NaN = missing)."""
+    empty = np.array([], dtype="float64")
+    rain, tmax, tmin = (cols.get(c, empty) for c in ("PRECTOTCORR", "T2M_MAX", "T2M_MIN"))
+    n = expected_days or np.nan
     out: dict[str, float] = {}
     ok = np.isfinite(rain)
-    out["rain_sum"] = float(np.nansum(rain)) if ok.any() else np.nan
-    out["rain_days"] = float((rain[ok] >= RAIN_DAY_MM).sum()) if ok.any() else np.nan
-    out["max_dry_spell"] = float(_max_run(ok & (np.nan_to_num(rain) < 1.0))) if ok.any() else np.nan
-    out["rain_coverage"] = float(ok.sum() / expected_days) if expected_days else np.nan
-    t_ok = np.isfinite(tmax) & np.isfinite(tmin)
-    out["tmax_mean"] = float(np.nanmean(tmax)) if np.isfinite(tmax).any() else np.nan
-    out["tmin_mean"] = float(np.nanmean(tmin)) if np.isfinite(tmin).any() else np.nan
-    out["heat_days"] = (
-        float((tmax[np.isfinite(tmax)] >= HEAT_C).sum()) if np.isfinite(tmax).any() else np.nan
-    )
+    has = bool(ok.any())
+    out["rain_sum"] = float(rain[ok].sum()) if has else np.nan
+    out["rain_days"] = float((rain[ok] >= RAIN_DAY_MM).sum()) if has else np.nan
+    out["max_dry_spell"] = float(_max_run(ok & (np.nan_to_num(rain) < 1.0))) if has else np.nan
+    out["rain_coverage"] = float(ok.sum() / n)
+    hot = np.isfinite(tmax)
+    t_ok = hot & np.isfinite(tmin)
+    out["tmax_mean"] = _mean(tmax)
+    out["tmin_mean"] = _mean(tmin)
+    out["heat_days"] = float((tmax[hot] >= HEAT_C).sum()) if hot.any() else np.nan
     if t_ok.any():
         tmean = (np.clip(tmax[t_ok], None, GDD_CAP) + tmin[t_ok]) / 2
         out["gdd"] = float(np.clip(tmean - GDD_BASE, 0, None).sum())
     else:
         out["gdd"] = np.nan
-    out["temp_coverage"] = float(t_ok.sum() / expected_days) if expected_days else np.nan
+    out["temp_coverage"] = float(t_ok.sum() / n)
     for col, name in (("RH2M", "rh_mean"), ("ALLSKY_SFC_SW_DWN", "srad_mean")):
-        v = days[col].to_numpy(dtype="float64") if col in days else np.array([])
-        out[name] = float(np.nanmean(v)) if np.isfinite(v).any() else np.nan
-        out[f"{name}_coverage"] = (
-            float(np.isfinite(v).sum() / expected_days) if expected_days else np.nan
-        )
+        v = cols.get(col, empty)
+        out[name] = _mean(v)
+        out[f"{name}_coverage"] = float(np.isfinite(v).sum() / n)
     return out
 
 
+def summarise(days: pd.DataFrame, expected_days: int) -> dict[str, float]:
+    """``days``: one district's rows inside the window (date, PRECTOTCORR, T2M_MAX, ...)."""
+    cols = {c: days[c].to_numpy(dtype="float64") for c in COLUMNS if c in days}
+    return summarise_arrays(cols, expected_days)
+
+
 def build(daily: pd.DataFrame, labels: pd.DataFrame, leads=LEADS) -> pd.DataFrame:
-    """One row per (district, crop_year, season, lead). ``labels`` supplies the keys only."""
+    """One row per (district, crop_year, season, lead). ``labels`` supplies the keys only.
+    Windows are sliced from each district's sorted dates with ``searchsorted``: the slice
+    ``[start, cutoff)`` excludes the cutoff day by construction."""
     keys = labels[["lgd_district_code", "crop_year", "season"]].drop_duplicates()
-    daily = daily.copy()
-    daily["date"] = pd.to_datetime(daily["date"]).dt.date
-    by_district = {
-        k: g.set_index("date").sort_index() for k, g in daily.groupby("lgd_district_code")
-    }
+    daily = daily.assign(date=pd.to_datetime(daily["date"]).values.astype("datetime64[D]"))
+    cols = [c for c in COLUMNS if c in daily]
+    by_district = {}
+    for k, g in daily.groupby("lgd_district_code"):
+        g = g.sort_values("date")
+        by_district[int(k)] = (g["date"].to_numpy(),
+                               {c: g[c].to_numpy(dtype="float64") for c in cols})
     rows = []
     for d_code, year, season in keys.itertuples(index=False):
-        g = by_district.get(int(d_code))
+        hit = by_district.get(int(d_code))
         for lead in leads:
             w = window(season, int(year), lead)
             row = {
@@ -103,12 +119,19 @@ def build(daily: pd.DataFrame, labels: pd.DataFrame, leads=LEADS) -> pd.DataFram
                 "window_start": w.start,
                 "cutoff": w.cutoff,
             }
-            if g is None:
+            if hit is None:
                 row["has_weather"] = False
             else:
-                part = g.loc[(g.index >= w.start) & (g.index < w.cutoff)]
-                row.update(summarise(part.reset_index(), (w.cutoff - w.start).days))
-                row["has_weather"] = len(part) > 0
-                row["last_input_date"] = max(part.index) if len(part) else None
+                dates, arrays = hit
+                lo = int(np.searchsorted(dates, np.datetime64(w.start, "D"), side="left"))
+                hi = int(np.searchsorted(dates, np.datetime64(w.cutoff, "D"), side="left"))
+                row.update(summarise_arrays({c: a[lo:hi] for c, a in arrays.items()},
+                                            (w.cutoff - w.start).days))
+                row["has_weather"] = hi > lo
+                row["last_input_date"] = dates[hi - 1].astype(date) if hi > lo else None
             rows.append(row)
-    return pd.DataFrame(rows)
+    out = pd.DataFrame(rows)
+    for c in ("window_start", "cutoff", "last_input_date"):
+        if c in out:
+            out[c] = pd.to_datetime(out[c])
+    return out

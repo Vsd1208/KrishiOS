@@ -17,7 +17,7 @@ Read this file at the start of every session, and update it at the end of every 
 | 4 Govt Connect: publishing (+F2, F4) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [04_govconnect_publishing.md](../ml/reports/04_govconnect_publishing.md) |
 | 5 Govt Connect: automated (+F1, F3, F5) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [05_govconnect_automated.md](../ml/reports/05_govconnect_automated.md) |
 | 6 Yield label audit | done (**awaiting scope freeze**) | `feat/sprint-11-phase4-govconnect` | [06_yield_label_audit.md](../ml/reports/06_yield_label_audit.md) |
-| 7 Yield predictor pipeline | todo | — | — |
+| 7 Yield predictor pipeline | done (weather); **NDVI pending at NASA**; scope-freeze defaults need sign-off | `feat/sprint-11-phase4-govconnect` | [07_yield_predictor_pipeline.md](../ml/reports/07_yield_predictor_pipeline.md) |
 | 8 Yield baselines & integration (+F15) | todo | — | — |
 | 9 Real computer vision (+F8) | todo | — | — |
 | 10 KrishiOS yield model & research | todo | — | — |
@@ -49,7 +49,7 @@ Read this file at the start of every session, and update it at the end of every 
 | Component | Status | Notes |
 |---|---|---|
 | Crop catalog (`catalog/`) | done (data in draft review) | 53 crops; te/hi names need native review |
-| LGD crosswalk | in-progress | LGD districts and blocks done; APY/ICRISAT name crosswalk is Phase 6 |
+| LGD crosswalk | done | LGD districts and blocks; APY carries LGD codes (Phase 6); district polygons 730/735 coded (Phase 7, 60 reviewed overrides) |
 | Provider selection + visible provider/version | done | `/api/v1/providers`, canvas Providers tab |
 | Worker service + job health | done | arq; `/api/v1/health/jobs`; verified on real Redis |
 | Translation service | done | IndicTrans2 recommended: test check pass te 0.550 / hi 0.644 (run 2c5c6baf993a), vs opus-mt 0.350 / 0.375 (a839daa3ac6c); failures blocked to officer review |
@@ -57,7 +57,7 @@ Read this file at the start of every session, and update it at the end of every 
 | Real STT / TTS | done | IndicConformer RNNT recommended: FLEURS CER te 0.073 / hi 0.063 (65d3ea90da08); CPU median 2.2 s/utterance, RTF 0.25 (3d65e68d0266). MMS-TTS demo-only (CC BY-NC); deployable voice in Phase 3 |
 | Conversation / dialogue state | done | Clarify-and-resume, carry-over, re-ask; dialogue task success 0.90 (run 98898e7cfba1, result of record; draft scripts); text + voice turns; optional preload (`PRELOAD_MODELS`) |
 | Govt Connect | in-progress | Publishing side done (Phase 4): upload/compose → extraction with provenance → translate → approve/schedule → targeted delivery → inbox (listen / ask / ack / flag) → RAG with validity → analytics. Automated feeds: Phase 5 (SACHET CAP preferred, ADR-004) |
-| Yield Intelligence | todo | |
+| Yield Intelligence | in-progress | Labels 340,765 rows / 108 series; NASA POWER weather features with leak-safe lead windows (run 99682d517b17); NDVI requested |
 | Real vision | todo | Field-photo dataset gap |
 
 ## Known debt (tracked)

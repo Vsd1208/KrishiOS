@@ -1,0 +1,59 @@
+{
+ "run_id": "1371b242058c",
+ "config": {
+  "stage": "boundaries",
+  "audit_run": "ee75501cc5ef",
+  "split": {
+   "val_from": 2016,
+   "test_from": 2019,
+   "spatial_share": 0.1
+  },
+  "east_rice_annual": [
+   "Assam",
+   "Odisha",
+   "Bihar",
+   "West Bengal",
+   "Jharkhand"
+  ],
+  "parameters": [
+   "PRECTOTCORR",
+   "T2M_MAX",
+   "T2M_MIN",
+   "RH2M",
+   "ALLSKY_SFC_SW_DWN"
+  ],
+  "leads": [
+   0,
+   30,
+   60,
+   90
+  ],
+  "pre_days": 60,
+  "years": [
+   1997,
+   2024
+  ],
+  "weather_source": "NASA POWER daily regional (0.5x0.625), area-weighted"
+ },
+ "metrics": {
+  "boundaries": {
+   "polygons": 735,
+   "coded_polygons": 730,
+   "lgd_codes_with_polygon": 730,
+   "codes_with_several_polygons": {},
+   "match_methods": {
+    "name": 619,
+    "override": 60,
+    "fuzzy": 50,
+    "unmatched": 5,
+    "alias": 1
+   },
+   "override_relations": {
+    "override:rename": 50,
+    "override:transliteration": 6,
+    "override:predecessor": 4
+   },
+   "unmatched_lgd": 60
+  }
+ }
+}

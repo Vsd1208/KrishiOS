@@ -1,0 +1,263 @@
+{
+ "run_id": "7a82c4965c22",
+ "config": {
+  "stage": "daily",
+  "audit_run": "ee75501cc5ef",
+  "split": {
+   "val_from": 2016,
+   "test_from": 2019,
+   "spatial_share": 0.1
+  },
+  "east_rice_annual": [
+   "Assam",
+   "Odisha",
+   "Bihar",
+   "West Bengal",
+   "Jharkhand"
+  ],
+  "parameters": [
+   "PRECTOTCORR",
+   "T2M_MAX",
+   "T2M_MIN",
+   "RH2M",
+   "ALLSKY_SFC_SW_DWN"
+  ],
+  "leads": [
+   0,
+   30,
+   60,
+   90
+  ],
+  "pre_days": 60,
+  "years": [
+   1997,
+   2023
+  ],
+  "weather_source": "NASA POWER daily regional (0.5x0.625), area-weighted"
+ },
+ "metrics": {
+  "daily": {
+   "years": [
+    1997,
+    1998,
+    1999,
+    2000,
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+   ],
+   "districts": 727,
+   "non_missing_share": {
+    "1997": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "1998": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "1999": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2000": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2001": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2002": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2003": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2004": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2005": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2006": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2007": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2008": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2009": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2010": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2011": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2012": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2013": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2014": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2015": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2016": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2017": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2018": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2019": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2020": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2021": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2022": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    },
+    "2023": {
+     "PRECTOTCORR": 1.0,
+     "T2M_MAX": 1.0,
+     "T2M_MIN": 1.0,
+     "RH2M": 1.0,
+     "ALLSKY_SFC_SW_DWN": 1.0
+    }
+   }
+  }
+ }
+}

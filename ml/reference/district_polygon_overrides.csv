@@ -1,0 +1,61 @@
+state_2011,shape_name,lgd_district_code,lgd_name,relation,note
+Andhra Pradesh,Kadapa(YSR),504,Y.S.R. Kadapa,rename,Name order differs
+Assam,Kamrup Metropolitan,618,Kamrup Metro,rename,Abbreviated in LGD
+Assam,Karbi Anglong West,710,West Karbi Anglong,rename,Word order
+Assam,Karimganj,293,Sribhumi,rename,Renamed Sribhumi (2024)
+Chhattisgarh,Baloda Bazar,644,Balodabazar-Bhatapara,rename,Short form
+Chhattisgarh,Balrampur,649,Balrampur-Ramanujganj,rename,Short form
+Chhattisgarh,Koriya,384,Korea,predecessor,Manendragarh-Chirmiri-Bharatpur carved out in 2022; polygon is pre-split
+Gujarat,Batod,676,Botad,rename,Spelling
+Gujarat,Dohad,445,Dahod,rename,Spelling
+Gujarat,The Dangs,444,Dangs,rename,Article dropped in LGD
+Haryana,Gurgaon,62,Gurugram,rename,Renamed 2016
+Haryana,Mewat,604,Nuh,rename,Renamed 2016
+Jammu and Kashmir,Punch,10,Poonch,rename,Spelling
+Jharkhand,Pashchimi Singhbhum,343,West Singhbhum,rename,Hindi vs English rendering
+Jharkhand,Purbi Singhbhum,327,East Singhbum,rename,Hindi vs English rendering (LGD spelling)
+Karnataka,Bangalore,525,Bengaluru Urban,rename,Renamed 2014
+Karnataka,Bangalore Rural,526,Bengaluru Rural,rename,Renamed 2014
+Karnataka,Belgaum,527,Belagavi,rename,Renamed 2014
+Karnataka,Bellary,528,Ballari,predecessor,Renamed 2014; Vijayanagara carved out in 2021; polygon is pre-split
+Karnataka,Bijapur,530,Vijayapura,rename,Renamed 2014
+Karnataka,Gulbarga,538,Kalaburagi,rename,Renamed 2014
+Karnataka,Mysore,545,Mysuru,rename,Renamed 2014
+Karnataka,Ramanagara,631,Bengaluru South,rename,Renamed 2025
+Madhya Pradesh,Agar,667,Agar-Malwa,rename,Short form
+Madhya Pradesh,Hoshangabad,409,Narmadapuram,rename,Renamed 2022
+Maharashtra,Ahmadnagar,466,Ahilyanagar,rename,Renamed 2024
+Maharashtra,Aurangabad,469,Chhatrapati Sambhajinagar,rename,Renamed 2023
+Maharashtra,Bid,470,Beed,rename,Spelling
+Maharashtra,Osmanabad,488,Dharashiv,rename,Renamed 2023
+Maharashtra,Raigarh,491,Raigad,rename,Spelling (Maharashtra; not Raigarh in Chhattisgarh)
+Odisha,Anugul,344,Anugola,transliteration,LGD uses Odia transliteration
+Odisha,Bargarh,347,Baragada,transliteration,LGD uses Odia transliteration
+Odisha,Cuttack,350,Kataka,transliteration,LGD uses Odia transliteration
+Odisha,Debagarh,351,Debagada,transliteration,LGD uses Odia transliteration
+Odisha,Nayagarh,367,Nayagada,transliteration,LGD uses Odia transliteration
+Odisha,Sundargarh,373,Sundaragada,transliteration,LGD uses Odia transliteration
+Punjab,Muktsar,39,Sri Muktsar Sahib,rename,Renamed 2012
+Punjab,Sahibzada Ajit Singh Nagar,608,S.A.S Nagar,rename,Abbreviated in LGD
+Sikkim,East District,225,Gangtok,predecessor,Renamed 2021; Pakyong carved out in 2021; polygon is pre-split
+Sikkim,North District,226,Mangan,rename,Renamed 2021
+Sikkim,South District,227,Namchi,rename,Renamed 2021
+Sikkim,West District,228,Gyalshing,predecessor,Renamed 2021; Soreng carved out in 2021; polygon is pre-split
+Telangana,Bhadradri,690,Bhadradri Kothagudem,rename,Short form
+Telangana,Jayashankar,687,Jayashankar Bhupalapally,rename,Short form
+Telangana,Jogulamba,695,Jogulamba Gadwal,rename,Short form
+Telangana,Komaram Bheem,699,Kumuram Bheem Asifabad,rename,Short form and spelling
+Telangana,Medchal,700,Medchal Malkajgiri,rename,Short form
+Telangana,Warangal (U),686,Hanumakonda,rename,Warangal Urban renamed Hanumakonda in 2021 (with minor boundary changes)
+Uttar Pradesh,Allahabad,120,Prayagraj,rename,Renamed 2018
+Uttar Pradesh,Faizabad,140,Ayodhya,rename,Renamed 2018
+Uttar Pradesh,Jyotiba Phule Nagar,154,Amroha,rename,Renamed 2012
+Uttar Pradesh,Kanshiram Nagar,633,Kasganj,rename,Renamed 2012
+Uttar Pradesh,Mahamaya Nagar,163,Hathras,rename,Renamed 2012
+Uttar Pradesh,Sant Ravidas Nagar (Bhadohi),179,Bhadohi,rename,Short form
+Uttarakhand,Garhwal,52,Pauri Garhwal,rename,Short form
+West Bengal,Barddhaman,306,Purba Bardhaman,rename,Remaining eastern part after the 2017 split (Paschim Barddhaman has its own polygon)
+West Bengal,Haora,313,Howrah,rename,Spelling
+West Bengal,Hugli,312,Hooghly,rename,Spelling
+West Bengal,North Twenty Four Parganas,303,North 24 Parganas,rename,Numeral
+West Bengal,South Twenty Four Parganas,304,South 24 Parganas,rename,Numeral
