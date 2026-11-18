@@ -132,4 +132,5 @@ Through the backend provider on 300 field validation photos, inference took a me
 - **PlantVillage grouping is conservative:** its largest chained group has 18,875 images.
 - **Licence:** weights are distributed under CC BY-SA 3.0 with attribution, by the project owner's decision.
 - **Pending human review:** Hindi and Telugu wording of the new messages.
-- **Satellite NDVI** is being processed separately and is not part of this phase's results.
+- **Satellite NDVI** was processed separately (run `44b6f843e847`: 299 months, 730 districts) and is not part of this phase's results.
+- **Indian field photos:** `scripts/download_india_vision.py` samples potato, chilli, tomato, soybean and wheat photos within a 5 GB limit. The download is incomplete because Mendeley Data became unreliable, and no model uses these photos yet.

@@ -4,7 +4,7 @@ Read this file at the start of every session, and update it at the end of every 
 
 **Status values:** `todo` · `in-progress` · `done` · `blocked-on-approval` · `blocked`
 
-**Last updated:** 2026-11-18. **Phase 9 is complete (awaiting review)** on `feat/sprint-11-phase9-vision`. MODIS NDVI is still processing in the background and is not yet used by any model. Next: Phase 10 (KrishiOS yield model and research).
+**Last updated:** 2026-11-18. **Phase 9 is merged to `main`.** Phase 10 (KrishiOS yield model and research) is in progress on `feat/sprint-11-phase10-yield-research`. MODIS NDVI is processed (run `44b6f843e847`) and not yet used by a model.
 
 ## Phases
 
@@ -17,10 +17,10 @@ Read this file at the start of every session, and update it at the end of every 
 | 4 Govt Connect: publishing (+F2, F4) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [04_govconnect_publishing.md](../ml/reports/04_govconnect_publishing.md) |
 | 5 Govt Connect: automated (+F1, F3, F5) | done (awaiting review) | `feat/sprint-11-phase4-govconnect` | [05_govconnect_automated.md](../ml/reports/05_govconnect_automated.md) |
 | 6 Yield label audit | done (**awaiting scope freeze**) | `feat/sprint-11-phase4-govconnect` | [06_yield_label_audit.md](../ml/reports/06_yield_label_audit.md) |
-| 7 Yield predictor pipeline | done (weather); **NDVI pending at NASA**; scope-freeze defaults need sign-off | `feat/sprint-11-phase4-govconnect` | [07_yield_predictor_pipeline.md](../ml/reports/07_yield_predictor_pipeline.md) |
+| 7 Yield predictor pipeline | done (weather and NDVI processing); scope-freeze defaults need sign-off | `feat/sprint-11-phase4-govconnect` | [07_yield_predictor_pipeline.md](../ml/reports/07_yield_predictor_pipeline.md) |
 | 8 Yield baselines & integration (+F15) | done (awaiting review) | `feat/sprint-11-phase8-yield-models` | [08_yield_baselines.md](../ml/reports/08_yield_baselines.md) |
-| 9 Real computer vision (+F8) | done (awaiting review) | `feat/sprint-11-phase9-vision` | [09_vision.md](../ml/reports/09_vision.md) |
-| 10 KrishiOS yield model & research | todo | — | — |
+| 9 Real computer vision (+F8) | done | `feat/sprint-11-phase9-vision` | [09_vision.md](../ml/reports/09_vision.md) |
+| 10 KrishiOS yield model & research | in-progress | `feat/sprint-11-phase10-yield-research` | — |
 | 10b Farmer toolkit (F9–F12, F14, F7 video) | todo | — | — |
 | 11 Golden journeys, docs, write-up | todo | — | — |
 
