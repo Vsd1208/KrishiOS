@@ -1,0 +1,76 @@
+{
+ "run_id": "f76cc300c31b",
+ "config": {
+  "sources": {
+   "plantvillage": "DScomp380__plant_village",
+   "plantdoc": "agyaatcoder__PlantDoc",
+   "agml_rice_india": "Project-AgML__rice_leaf_disease_classification_india"
+  },
+  "split": {
+   "val": 0.15,
+   "test": 0.15,
+   "seed": "krishios-vision-v1"
+  },
+  "dup_bits": 6,
+  "cache_px": 256,
+  "limit_per_class": 20
+ },
+ "metrics": {
+  "images": 466,
+  "by_source": {
+   "plantdoc": 386,
+   "agml_rice_india": 80
+  },
+  "by_source_split": {
+   "agml_rice_india:test": 15,
+   "agml_rice_india:train": 53,
+   "agml_rice_india:val": 12,
+   "plantdoc:test": 386
+  },
+  "crops": 14,
+  "catalog_crops": [
+   "grapes",
+   "maize",
+   "paddy",
+   "potato",
+   "soybean",
+   "tomato"
+  ],
+  "conditions": 31,
+  "near_duplicate_groups_multi": 0,
+  "test_dropped_as_duplicates": {},
+  "per_class_counts": {
+   "grapes|black_rot": 8,
+   "bell_pepper|healthy": 11,
+   "raspberry|healthy": 17,
+   "tomato|leaf_mold": 11,
+   "tomato|healthy": 20,
+   "maize|common_rust": 10,
+   "bell_pepper|bacterial_spot": 15,
+   "grapes|healthy": 15,
+   "cherry|healthy": 19,
+   "apple|healthy": 10,
+   "squash|powdery_mildew": 6,
+   "peach|healthy": 10,
+   "potato|early_blight": 17,
+   "tomato|bacterial_spot": 14,
+   "potato|late_blight": 10,
+   "blueberry|healthy": 20,
+   "maize|northern_leaf_blight": 12,
+   "tomato|mosaic_virus": 20,
+   "maize|gray_leaf_spot": 4,
+   "apple|cedar_apple_rust": 11,
+   "tomato|septoria_leaf_spot": 20,
+   "apple|scab": 13,
+   "soybean|healthy": 20,
+   "tomato|late_blight": 14,
+   "tomato|early_blight": 19,
+   "strawberry|healthy": 20,
+   "tomato|yellow_leaf_curl_virus": 20,
+   "paddy|brown_spot": 20,
+   "paddy|blast": 20,
+   "paddy|bacterial_leaf_blight": 20,
+   "paddy|tungro": 20
+  }
+ }
+}

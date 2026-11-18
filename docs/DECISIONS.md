@@ -233,3 +233,18 @@ Format: **ADR-NNN, title.** Each entry has a status (proposed / accepted / super
   - **Shortfalls:** a forecast at least 20% below normal *and* an upper bound below normal. It raises `agronomy.yield_shortfall_forecast` for farmers of that crop, and creates one `needs_review` advisory draft per district and season, labelled as a model estimate. Nothing is published without officer review.
   - **Bot:** yield questions are answered from the imported forecast with fixed localized templates, not by the LLM runtime.
   - **F15:** PMFBY guidance items carry their sources and are shown to farmers only after an officer verifies the PMFBY entry. The yield context is never presented as a YES-TECH or claim estimate.
+
+## ADR-028: Offline crop and disease vision, leakage-safe splits, officer-approved outbreak alerts
+- **Status:** proposed (Phase 9)
+- **Decision:**
+  - **Offline only:** no Gemini vision provider or Gemini comparison, because the project has no pay-as-you-go Gemini access and farmer photos must stay on the device. The served model is a local ONNX model; the zero-shot comparison is BioCLIP, run locally.
+  - **Model:** one compact timm backbone with a crop head and a crop|condition head. The condition is read only among the conditions of the predicted or farmer-confirmed crop.
+  - **Crop confirmation:** an unsupported crop, or a crop below the calibrated confidence threshold, is never accepted silently. The farmer picks it from chips, and the condition is re-read for that crop.
+  - **Data:** PlantVillage (lab), PlantDoc (web) and the India rice set. Weights are treated as CC BY-SA 3.0 because PlantVillage's paper extends share-alike to trained models.
+  - **Leakage:** near-duplicates are grouped across sources, all crops of one PlantDoc photo stay together, and the augmented rice set is split by original photo (same class and number, or pixel correlation >= 0.95 under flips and 90-degree rotations), stratified by disease. Test rows matching training copies are dropped and counted.
+  - **Field evidence:** there is no consented farmer-photo test set yet. PlantDoc and the India rice set are clearly labelled **field proxies**.
+  - **F8 privacy:** reports hold district, crop, condition, confidence, model version and a keyed reporter pseudonym; no image, GPS or user id. Healthy findings are not stored.
+  - **Outbreaks:** at least 3 distinct farmers in a week and at least 2x the previous 4-week mean creates an officer-review draft. No farmer is alerted until an officer publishes it.
+  - **Field calibration:** confidence is fitted on field validation photos, and the confirmation threshold is the lowest reaching 95% auto-accept accuracy on PlantDoc validation (0.93 for the served model). It ships with the model.
+  - **Auto-accept crops:** only crops with at least 30 field validation photos, at least 20 auto-accepted and at least 95% accuracy among them: paddy, tomato, maize and grapes. Every other crop is confirmed by the farmer.
+  - **Mock provider:** mock findings are never shown to farmers or counted as outbreak reports.

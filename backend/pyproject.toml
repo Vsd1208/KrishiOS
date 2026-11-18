@@ -44,6 +44,8 @@ local-ml = [
     "faster-whisper>=1.1.0,<2.0.0",
     "sacremoses>=0.1.1",
     "sentencepiece>=0.2.0",
+    # Phase 9: local crop/disease vision model (ONNX, CPU). Already pulled in by faster-whisper.
+    "onnxruntime>=1.20",
 ]
 # Local NVIDIA GPU (laptop RTX 2050, 4 GB): `uv sync --extra local-ml --extra gpu`, then
 # ML_DEVICE=auto|cuda. CUDA wheels come from PyTorch's cu130 index (ADR-015). Default (no extra)

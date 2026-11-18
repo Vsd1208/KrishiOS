@@ -4,7 +4,7 @@ Read this file at the start of every session, and update it at the end of every 
 
 **Status values:** `todo` · `in-progress` · `done` · `blocked-on-approval` · `blocked`
 
-**Last updated:** 2026-11-15. **Phase 8 is complete (awaiting review).** Phases 0-7 are merged to `main`; Phase 8 onward is on `feat/sprint-11-phase8-yield-models`. Next: Phase 9 (real computer vision).
+**Last updated:** 2026-11-18. **Phase 9 is complete (awaiting review)** on `feat/sprint-11-phase9-vision`. MODIS NDVI is still processing in the background and is not yet used by any model. Next: Phase 10 (KrishiOS yield model and research).
 
 ## Phases
 
@@ -19,7 +19,7 @@ Read this file at the start of every session, and update it at the end of every 
 | 6 Yield label audit | done (**awaiting scope freeze**) | `feat/sprint-11-phase4-govconnect` | [06_yield_label_audit.md](../ml/reports/06_yield_label_audit.md) |
 | 7 Yield predictor pipeline | done (weather); **NDVI pending at NASA**; scope-freeze defaults need sign-off | `feat/sprint-11-phase4-govconnect` | [07_yield_predictor_pipeline.md](../ml/reports/07_yield_predictor_pipeline.md) |
 | 8 Yield baselines & integration (+F15) | done (awaiting review) | `feat/sprint-11-phase8-yield-models` | [08_yield_baselines.md](../ml/reports/08_yield_baselines.md) |
-| 9 Real computer vision (+F8) | todo | — | — |
+| 9 Real computer vision (+F8) | done (awaiting review) | `feat/sprint-11-phase9-vision` | [09_vision.md](../ml/reports/09_vision.md) |
 | 10 KrishiOS yield model & research | todo | — | — |
 | 10b Farmer toolkit (F9–F12, F14, F7 video) | todo | — | — |
 | 11 Golden journeys, docs, write-up | todo | — | — |
@@ -35,7 +35,7 @@ Read this file at the start of every session, and update it at the end of every 
 | F5 | IVR / SMS / WhatsApp channels | 5 | done (sandbox) | SMS segmenting + keywords, IVR scripts, WhatsApp; sandbox adapters; real providers need cost approval (ADR-024) |
 | F6 | Extension-worker assisted mode | 3 | done | Assignment + recorded consent, act-as, review-before-share, batch registration (ADR-017) |
 | F7 | Video / how-to answers + video queries | 3, 10b | in-progress | Verified, licensed media matched to answers (ADR-018); no assets loaded yet; video queries in 10b |
-| F8 | Outbreak surveillance heatmaps | 9 | todo | |
+| F8 | Outbreak surveillance heatmaps | 9 | done | Pseudonymous photo reports, officer heatmap, officer-review outbreak drafts; not yet tested on a real outbreak |
 | F9 | SHC reader + fertilizer calculator | 10b | todo | |
 | F10 | Crop calendar + reminders | 10b | todo | Spray-window golden test fixed in Phase 1 |
 | F11 | Mandi price intelligence | 10b | todo | Needs data.gov.in key |

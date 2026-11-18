@@ -563,5 +563,27 @@
     "crop": "Crop",
     "cropPlaceholder": "e.g. paddy",
     "noYield": "No yield forecast for this crop and district yet."
+  },
+  "photo": {
+    "add": "Add a crop photo",
+    "sent": "📷 Photo",
+    "title": "Photo check",
+    "confirmed": "crop confirmed by you",
+    "noFindings": "No clear findings for this crop.",
+    "notDiagnosis": "Possibilities from a local image model, not a diagnosis. Follow the advice above and ask an officer if unsure.",
+    "model": "Model {{model}} {{version}} (runs on KrishiOS; the photo is not sent anywhere else)",
+    "bulletins": "Official warnings for your district"
+  },
+  "outbreak": {
+    "title": "Outbreak surveillance",
+    "intro": "Farmers' photo questions, counted per district and week. A possible outbreak becomes a review draft in Bulletins; farmers are only alerted after you approve it.",
+    "thisWeek": "Possible outbreaks this week",
+    "none": "None this week.",
+    "reporters": "{{n}} farmers (previous 4 weeks: {{base}} per week)",
+    "reviewDrafts": "Review outbreak drafts",
+    "noReports": "No photo reports yet.",
+    "gridLabel": "Reports per district and week",
+    "where": "Condition · crop · district",
+    "note": "Unverified model findings, not diagnoses."
   }
 }

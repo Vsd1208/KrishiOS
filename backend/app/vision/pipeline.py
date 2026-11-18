@@ -124,6 +124,10 @@ class VisionAnalysisPipeline:
             # 6. Save results
             findings = {
                 "crop_detected": vision_result.crop_detected,
+                "crop_candidates": [list(c) for c in vision_result.crop_candidates],
+                "crop_supported": vision_result.crop_supported,
+                "model": {"name": vision_result.model_name,
+                          "version": vision_result.model_version},
                 "observations": resolved_observations,
                 "candidate_conditions": resolved_candidates,
                 "inference_ms": vision_result.inference_ms,

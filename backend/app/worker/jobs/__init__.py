@@ -9,6 +9,7 @@ from app.worker.jobs.feeds import mandi_history, sachet_poll, weather_feed
 from app.worker.jobs.forecasting import forecast_import
 from app.worker.jobs.govconnect import govconnect_maintenance
 from app.worker.jobs.heartbeat import heartbeat
+from app.worker.jobs.surveillance import outbreak_scan
 
 
 def build_jobs() -> list[JobSpec]:
@@ -63,6 +64,15 @@ def build_jobs() -> list[JobSpec]:
             max_tries=2,
             description="Newest ml/ batch forecast -> yield_forecast; shortfalls -> events + "
                         "officer-review drafts.",
+        ),
+        JobSpec(
+            name="outbreak_scan",
+            func=outbreak_scan,
+            interval_seconds=settings.OUTBREAK_SCAN_INTERVAL_SECONDS,
+            timeout_seconds=600,
+            max_tries=2,
+            description="Crowd photo diagnoses -> possible outbreaks -> officer-review drafts "
+                        "(no farmer alert without approval).",
         ),
     ]
 

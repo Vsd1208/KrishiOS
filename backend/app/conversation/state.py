@@ -40,6 +40,9 @@ class DialogueState:
     state_name: str | None = None
     season: str | None = None
     pending: Pending | None = None
+    # Phase 9: the latest photo in this conversation (image path + local vision result),
+    # kept across the crop-confirmation chip so the condition can be re-read for that crop.
+    photo: dict[str, Any] | None = None
     history: list[dict[str, Any]] = field(default_factory=list)
     updated_at: float = field(default_factory=time.time)
 

@@ -1,0 +1,212 @@
+{
+ "run_id": "958fd1f67731",
+ "config": {
+  "sources": {
+   "plantvillage": "DScomp380__plant_village",
+   "plantdoc": "agyaatcoder__PlantDoc",
+   "agml_rice_india": "Project-AgML__rice_leaf_disease_classification_india"
+  },
+  "split": {
+   "val": 0.15,
+   "test": 0.15,
+   "seed": "krishios-vision-v1"
+  },
+  "dup_bits": 6,
+  "cache_px": 256,
+  "limit_per_class": 0
+ },
+ "metrics": {
+  "images": 70002,
+  "by_source": {
+   "plantvillage": 55425,
+   "plantdoc": 8645,
+   "agml_rice_india": 5932
+  },
+  "by_source_split": {
+   "agml_rice_india:test": 567,
+   "agml_rice_india:train": 4790,
+   "agml_rice_india:val": 575,
+   "plantdoc:test": 407,
+   "plantdoc:train": 7016,
+   "plantdoc:val": 1222,
+   "plantvillage:test": 5421,
+   "plantvillage:train": 44706,
+   "plantvillage:val": 5298
+  },
+  "crops": 16,
+  "catalog_crops": [
+   "citrus",
+   "grapes",
+   "maize",
+   "paddy",
+   "potato",
+   "soybean",
+   "tomato"
+  ],
+  "conditions": 43,
+  "near_duplicate_groups_multi": 6419,
+  "groups_by_source": {
+   "agml_rice_india": 242,
+   "plantdoc": 2486,
+   "plantvillage": 5023
+  },
+  "largest_group_by_source": {
+   "agml_rice_india": 1424,
+   "plantdoc": 36,
+   "plantvillage": 18875
+  },
+  "rice_original_groups_by_class": {
+   "Bacterialblight": 75,
+   "Blast": 79,
+   "Brownspot": 12,
+   "Tungro": 76
+  },
+  "test_rows_by_class_field": [
+   {
+    "source": "agml_rice_india",
+    "condition": "bacterial_leaf_blight",
+    "n": 246
+   },
+   {
+    "source": "agml_rice_india",
+    "condition": "blast",
+    "n": 216
+   },
+   {
+    "source": "agml_rice_india",
+    "condition": "brown_spot",
+    "n": 32
+   },
+   {
+    "source": "agml_rice_india",
+    "condition": "tungro",
+    "n": 73
+   },
+   {
+    "source": "plantdoc",
+    "condition": "bacterial_spot",
+    "n": 26
+   },
+   {
+    "source": "plantdoc",
+    "condition": "black_rot",
+    "n": 8
+   },
+   {
+    "source": "plantdoc",
+    "condition": "cedar_apple_rust",
+    "n": 11
+   },
+   {
+    "source": "plantdoc",
+    "condition": "common_rust",
+    "n": 10
+   },
+   {
+    "source": "plantdoc",
+    "condition": "early_blight",
+    "n": 31
+   },
+   {
+    "source": "plantdoc",
+    "condition": "gray_leaf_spot",
+    "n": 4
+   },
+   {
+    "source": "plantdoc",
+    "condition": "healthy",
+    "n": 167
+   },
+   {
+    "source": "plantdoc",
+    "condition": "late_blight",
+    "n": 20
+   },
+   {
+    "source": "plantdoc",
+    "condition": "leaf_mold",
+    "n": 11
+   },
+   {
+    "source": "plantdoc",
+    "condition": "mosaic_virus",
+    "n": 36
+   },
+   {
+    "source": "plantdoc",
+    "condition": "northern_leaf_blight",
+    "n": 11
+   },
+   {
+    "source": "plantdoc",
+    "condition": "powdery_mildew",
+    "n": 6
+   },
+   {
+    "source": "plantdoc",
+    "condition": "scab",
+    "n": 11
+   },
+   {
+    "source": "plantdoc",
+    "condition": "septoria_leaf_spot",
+    "n": 20
+   },
+   {
+    "source": "plantdoc",
+    "condition": "yellow_leaf_curl_virus",
+    "n": 35
+   }
+  ],
+  "test_dropped_as_duplicates": {
+   "plantdoc": 38,
+   "plantvillage": 22
+  },
+  "rice_test_dropped_as_colour_matches": 0,
+  "per_class_counts": {
+   "apple|scab": 798,
+   "apple|black_rot": 621,
+   "apple|cedar_apple_rust": 453,
+   "apple|healthy": 1892,
+   "no_plant|none": 1143,
+   "blueberry|healthy": 2346,
+   "cherry|powdery_mildew": 1052,
+   "cherry|healthy": 1094,
+   "maize|gray_leaf_spot": 589,
+   "maize|common_rust": 1315,
+   "maize|northern_leaf_blight": 1353,
+   "maize|healthy": 1162,
+   "grapes|black_rot": 1313,
+   "grapes|esca": 1383,
+   "grapes|leaf_blight": 1076,
+   "grapes|healthy": 643,
+   "citrus|huanglongbing": 5501,
+   "peach|bacterial_spot": 2296,
+   "peach|healthy": 957,
+   "bell_pepper|bacterial_spot": 1257,
+   "bell_pepper|healthy": 1800,
+   "potato|early_blight": 1320,
+   "potato|late_blight": 1246,
+   "potato|healthy": 163,
+   "raspberry|healthy": 927,
+   "soybean|healthy": 5346,
+   "squash|powdery_mildew": 2088,
+   "strawberry|leaf_scorch": 1109,
+   "strawberry|healthy": 945,
+   "tomato|bacterial_spot": 2386,
+   "tomato|early_blight": 1214,
+   "tomato|late_blight": 2127,
+   "tomato|leaf_mold": 1229,
+   "tomato|septoria_leaf_spot": 2196,
+   "tomato|spider_mites": 1678,
+   "tomato|target_spot": 1404,
+   "tomato|yellow_leaf_curl_virus": 6054,
+   "tomato|mosaic_virus": 614,
+   "tomato|healthy": 1980,
+   "paddy|brown_spot": 1600,
+   "paddy|blast": 1440,
+   "paddy|bacterial_leaf_blight": 1584,
+   "paddy|tungro": 1308
+  }
+ }
+}

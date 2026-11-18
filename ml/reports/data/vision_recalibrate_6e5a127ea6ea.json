@@ -1,0 +1,254 @@
+{
+ "run_id": "6e5a127ea6ea",
+ "config": {
+  "train_run": "560b033f785d",
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "fit_on": "field validation",
+  "target_accuracy": 0.95,
+  "threshold_on": "plantdoc validation",
+  "config_hash": "9f967ce09311"
+ },
+ "results": {
+  "seed0": {
+   "temperature_old": {
+    "crop": 0.7194884177832364,
+    "condition": 0.8097705718572318
+   },
+   "temperature_new": {
+    "crop": 0.8900871598782317,
+    "condition": 1.3622285998457235
+   },
+   "threshold_new": 0.92,
+   "scores": {
+    "field": {
+     "crop_top1": 0.9271047227926078,
+     "crop_ece_old": 0.037411291680052,
+     "crop_ece_new": 0.04605203564039735,
+     "condition_top1": 0.7772073921971252,
+     "condition_ece_old": 0.15424116506591223,
+     "condition_ece_new": 0.08140475781791263,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 974,
+      "share_auto": 0.8203285420944558,
+      "accuracy_when_auto": 0.9662077596996246,
+      "wrong_auto_share_of_all": 0.027720739219712527
+     },
+     "app_auto_new": {
+      "threshold": 0.92,
+      "n": 974,
+      "share_auto": 0.7032854209445585,
+      "accuracy_when_auto": 0.9912408759124087,
+      "wrong_auto_share_of_all": 0.006160164271047228
+     }
+    },
+    "source:plantdoc": {
+     "crop_top1": 0.8452088452088452,
+     "crop_ece_old": 0.09602234507075694,
+     "crop_ece_new": 0.04922821693104081,
+     "condition_top1": 0.7665847665847666,
+     "condition_ece_old": 0.13504870510511374,
+     "condition_ece_new": 0.05763425112356424,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 407,
+      "share_auto": 0.5798525798525799,
+      "accuracy_when_auto": 0.9110169491525424,
+      "wrong_auto_share_of_all": 0.051597051597051594
+     },
+     "app_auto_new": {
+      "threshold": 0.92,
+      "n": 407,
+      "share_auto": 0.4004914004914005,
+      "accuracy_when_auto": 0.9815950920245399,
+      "wrong_auto_share_of_all": 0.007371007371007371
+     }
+    },
+    "source:agml_rice_india": {
+     "crop_top1": 0.9858906525573192,
+     "crop_ece_old": 0.01137522267706596,
+     "crop_ece_new": 0.05342602035986682,
+     "condition_top1": 0.7848324514991182,
+     "condition_ece_old": 0.1680178093531775,
+     "condition_ece_new": 0.1338759643375558,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 567,
+      "share_auto": 0.9929453262786596,
+      "accuracy_when_auto": 0.9893428063943162,
+      "wrong_auto_share_of_all": 0.010582010582010581
+     },
+     "app_auto_new": {
+      "threshold": 0.92,
+      "n": 567,
+      "share_auto": 0.9206349206349206,
+      "accuracy_when_auto": 0.9942528735632183,
+      "wrong_auto_share_of_all": 0.005291005291005291
+     }
+    }
+   }
+  },
+  "seed1": {
+   "temperature_old": {
+    "crop": 0.7026776991470318,
+    "condition": 0.7908504267834419
+   },
+   "temperature_new": {
+    "crop": 0.8900871598782317,
+    "condition": 1.3304003714209311
+   },
+   "threshold_new": 0.91,
+   "scores": {
+    "field": {
+     "crop_top1": 0.9342915811088296,
+     "crop_ece_old": 0.036575493657123884,
+     "crop_ece_new": 0.03510998761629419,
+     "condition_top1": 0.8069815195071869,
+     "condition_ece_old": 0.12550399215314423,
+     "condition_ece_new": 0.05674906478892606,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 974,
+      "share_auto": 0.8141683778234087,
+      "accuracy_when_auto": 0.9709962168978562,
+      "wrong_auto_share_of_all": 0.023613963039014373
+     },
+     "app_auto_new": {
+      "threshold": 0.91,
+      "n": 974,
+      "share_auto": 0.7320328542094456,
+      "accuracy_when_auto": 0.9915848527349228,
+      "wrong_auto_share_of_all": 0.006160164271047228
+     }
+    },
+    "source:plantdoc": {
+     "crop_top1": 0.8697788697788698,
+     "crop_ece_old": 0.0815721748062668,
+     "crop_ece_new": 0.032258790892523675,
+     "condition_top1": 0.7862407862407862,
+     "condition_ece_old": 0.12343223711489462,
+     "condition_ece_new": 0.05816104246591759,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 407,
+      "share_auto": 0.5700245700245701,
+      "accuracy_when_auto": 0.9482758620689655,
+      "wrong_auto_share_of_all": 0.029484029484029485
+     },
+     "app_auto_new": {
+      "threshold": 0.91,
+      "n": 407,
+      "share_auto": 0.43243243243243246,
+      "accuracy_when_auto": 0.9659090909090909,
+      "wrong_auto_share_of_all": 0.014742014742014743
+     }
+    },
+    "source:agml_rice_india": {
+     "crop_top1": 0.9805996472663139,
+     "crop_ece_old": 0.03314773514998232,
+     "crop_ece_new": 0.06859400274471841,
+     "condition_top1": 0.8218694885361552,
+     "condition_ece_old": 0.12851849256158926,
+     "condition_ece_new": 0.07246286102703639,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 567,
+      "share_auto": 0.9894179894179894,
+      "accuracy_when_auto": 0.9803921568627451,
+      "wrong_auto_share_of_all": 0.019400352733686066
+     },
+     "app_auto_new": {
+      "threshold": 0.91,
+      "n": 567,
+      "share_auto": 0.9470899470899471,
+      "accuracy_when_auto": 1.0,
+      "wrong_auto_share_of_all": 0.0
+     }
+    }
+   }
+  },
+  "seed2": {
+   "temperature_old": {
+    "crop": 0.7026776991470318,
+    "condition": 0.8097705718572318
+   },
+   "temperature_new": {
+    "crop": 0.8692904320413712,
+    "condition": 1.4623553006909953
+   },
+   "threshold_new": 0.93,
+   "scores": {
+    "field": {
+     "crop_top1": 0.9435318275154004,
+     "crop_ece_old": 0.021406906616761198,
+     "crop_ece_new": 0.04787552518888661,
+     "condition_top1": 0.7987679671457906,
+     "condition_ece_old": 0.12153030928889831,
+     "condition_ece_new": 0.03893079233854948,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 974,
+      "share_auto": 0.8234086242299795,
+      "accuracy_when_auto": 0.9750623441396509,
+      "wrong_auto_share_of_all": 0.02053388090349076
+     },
+     "app_auto_new": {
+      "threshold": 0.93,
+      "n": 974,
+      "share_auto": 0.6981519507186859,
+      "accuracy_when_auto": 0.9970588235294118,
+      "wrong_auto_share_of_all": 0.002053388090349076
+     }
+    },
+    "source:plantdoc": {
+     "crop_top1": 0.8648648648648649,
+     "crop_ece_old": 0.07206412783711783,
+     "crop_ece_new": 0.06378758349055445,
+     "condition_top1": 0.7616707616707616,
+     "condition_ece_old": 0.1340046114945002,
+     "condition_ece_new": 0.03918956743704303,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 407,
+      "share_auto": 0.5823095823095823,
+      "accuracy_when_auto": 0.9156118143459916,
+      "wrong_auto_share_of_all": 0.04914004914004914
+     },
+     "app_auto_new": {
+      "threshold": 0.93,
+      "n": 407,
+      "share_auto": 0.3955773955773956,
+      "accuracy_when_auto": 0.9875776397515528,
+      "wrong_auto_share_of_all": 0.004914004914004914
+     }
+    },
+    "source:agml_rice_india": {
+     "crop_top1": 1.0,
+     "crop_ece_old": 0.01871218063213207,
+     "crop_ece_new": 0.05707414513963029,
+     "condition_top1": 0.8253968253968254,
+     "condition_ece_old": 0.11408107137764154,
+     "condition_ece_new": 0.05557579669372112,
+     "app_auto_old": {
+      "threshold": 0.6,
+      "n": 567,
+      "share_auto": 0.9964726631393298,
+      "accuracy_when_auto": 1.0,
+      "wrong_auto_share_of_all": 0.0
+     },
+     "app_auto_new": {
+      "threshold": 0.93,
+      "n": 567,
+      "share_auto": 0.9153439153439153,
+      "accuracy_when_auto": 1.0,
+      "wrong_auto_share_of_all": 0.0
+     }
+    }
+   }
+  }
+ }
+}

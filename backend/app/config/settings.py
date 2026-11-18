@@ -109,6 +109,15 @@ class Settings(BaseSettings):
     # Quality and confidence thresholds
     VISION_QUALITY_MIN_SCORE: float = 0.3
     VISION_CONFIDENCE_THRESHOLD: float = 0.5
+    # Phase 9: local ONNX crop + disease model (ML_ARTIFACTS_DIR/vision/<version>). Below this
+    # calibrated crop probability (or for an unsupported crop) the farmer confirms the crop.
+    VISION_MODEL_VERSION: str | None = None  # None = newest artifact
+    VISION_CROP_CONFIRM_THRESHOLD: float = 0.6
+    # F8 surveillance: reporters are HMAC pseudonyms (key below, else JWT_SECRET_KEY).
+    SURVEILLANCE_PSEUDONYM_KEY: str | None = None
+    OUTBREAK_MIN_REPORTERS: int = 3  # distinct farmers in a week
+    OUTBREAK_RATIO: float = 2.0  # vs the trailing 4-week weekly mean
+    OUTBREAK_SCAN_INTERVAL_SECONDS: int = 24 * 3600
 
     # Analysis caching
     VISION_CACHE_TTL_SECONDS: int = 3600

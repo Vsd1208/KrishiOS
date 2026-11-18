@@ -39,6 +39,7 @@ const PublishAdvisoryPage = React.lazy(() => import('@/pages/officer/PublishAdvi
 const ConnectAnalyticsPage = React.lazy(() => import('@/pages/officer/ConnectAnalyticsPage'));
 const GrievanceQueuePage = React.lazy(() => import('@/pages/officer/GrievanceQueuePage'));
 const YieldOutlookPage = React.lazy(() => import('@/pages/officer/YieldOutlookPage'));
+const OutbreakMapPage = React.lazy(() => import('@/pages/officer/OutbreakMapPage'));
 
 export const router = createBrowserRouter([
   {
@@ -257,6 +258,14 @@ export const router = createBrowserRouter([
                     element: (
                       <Suspense fallback={<LoadingState fullPage message="Loading Yield Outlook..." />}>
                         <YieldOutlookPage />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'outbreaks',
+                    element: (
+                      <Suspense fallback={<LoadingState fullPage message="Loading Outbreaks..." />}>
+                        <OutbreakMapPage />
                       </Suspense>
                     ),
                   },
