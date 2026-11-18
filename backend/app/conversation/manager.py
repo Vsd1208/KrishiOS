@@ -73,6 +73,8 @@ class TurnInput:
     # the agent runtime as context, and the turn is linked to the bulletin for analytics.
     context_en: str | None = None
     bulletin_uuid: str | None = None
+    # Phase 9 photo turn: {"path": str, "vision": {...}} from the local vision model.
+    photo: dict[str, Any] | None = None
 
 
 @dataclass(slots=True)
@@ -98,6 +100,8 @@ class TurnResult:
     symptoms: list[str] = field(default_factory=list)
     media: list[dict[str, Any]] = field(default_factory=list)
     yield_forecast: dict[str, Any] | None = None
+    vision: dict[str, Any] | None = None  # photo findings (possibilities, not a diagnosis)
+    bulletins: list[dict[str, Any]] = field(default_factory=list)  # active official warnings
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -116,6 +120,10 @@ class _Question:
 
 TurnSink = Callable[[DialogueState, TurnInput, TurnResult], Awaitable[None]]
 YieldLookup = Callable[[int, str, str | None], Awaitable[dict[str, Any] | None]]
+# (image path, confirmed crop) -> vision dict; (district, crop) -> active bulletin summaries
+PhotoReclassify = Callable[[str, str], Awaitable[dict[str, Any]]]
+BulletinLookup = Callable[[int, str | None, str], Awaitable[list[dict[str, Any]]]]
+PHOTO_INTENTS = {Intent.DISEASE, Intent.ADVISORY}
 UNIT_LABEL = {"Tonnes/Hectare": "t/ha", "bales_170kg/ha": "bales/ha",
               "bales_180kg/ha": "bales/ha", "nuts/ha": "nuts/ha"}
 NEAR_NORMAL = 0.05
@@ -130,29 +138,85 @@ async def default_yield_lookup(lgd: int, crop: str, season: str | None) -> dict[
     return f.to_dict() if f else None
 
 
+def vision_to_dict(r: Any) -> dict[str, Any]:
+    """Findings for the dialogue. A mock provider's canned conditions are dropped: they must
+    not reach a farmer as hints or count as outbreak reports."""
+    conditions = [] if str(r.model_name).startswith("mock") else r.candidate_conditions
+    return {"crop_detected": r.crop_detected, "crop_supported": r.crop_supported,
+            "crop_candidates": [list(c) for c in r.crop_candidates],
+            "candidate_conditions": [{"name": c.name, "confidence": c.confidence}
+                                     for c in conditions],
+            "model_name": r.model_name, "model_version": r.model_version}
+
+
+async def default_photo_reclassify(path: str, crop: str) -> dict[str, Any]:
+    from pathlib import Path  # noqa: PLC0415
+
+    from app.vision.providers.selection import get_vision_provider  # noqa: PLC0415
+
+    r = await get_vision_provider().analyze(Path(path), {"confirmed_crop": crop})
+    return vision_to_dict(r)
+
+
+async def default_bulletin_lookup(lgd: int, crop: str | None,
+                                  language: str = "en") -> list[dict[str, Any]]:
+    """Published, unexpired bulletins for the district that apply to this crop (or to all
+    crops). The title is in the farmer's language when a deliverable translation exists."""
+    from datetime import UTC, datetime  # noqa: PLC0415
+
+    from sqlalchemy import select  # noqa: PLC0415
+
+    from app.database.session import async_session_factory  # noqa: PLC0415
+    from app.models.govconnect import BulletinTranslation, GovtBulletin  # noqa: PLC0415
+
+    now = datetime.now(UTC)
+    async with async_session_factory() as session:
+        rows = [b for b in (await session.scalars(select(GovtBulletin).where(
+            GovtBulletin.status == "published", GovtBulletin.valid_to > now))).all()
+            if lgd in (b.district_codes or []) and (not b.crops or crop in b.crops)][:5]
+        titles = {} if language == "en" or not rows else dict((await session.execute(
+            select(BulletinTranslation.bulletin_id, BulletinTranslation.title).where(
+                BulletinTranslation.bulletin_id.in_([b.id for b in rows]),
+                BulletinTranslation.language == language,
+                BulletinTranslation.status.in_(("passthrough", "auto_approved", "approved")),
+            ))).all())
+    return [{"uuid": str(b.uuid), "title": titles.get(b.id, b.title), "authority": b.authority,
+             "severity": b.severity, "valid_to": b.valid_to.isoformat() if b.valid_to else None}
+            for b in rows]
+
+
 class ConversationManager:
     def __init__(  # noqa: PLR0913, PLR0917 - injectable collaborators (tests)
         self, store: StateStore | None = None, runner: AnswerRunner | None = None,
                  translator: TranslationService | None = None,
                  sink: TurnSink | None = None, tts: Any = None,
-                 yield_lookup: YieldLookup | None = None) -> None:
+                 yield_lookup: YieldLookup | None = None,
+                 photo_reclassify: PhotoReclassify | None = None,
+                 bulletin_lookup: BulletinLookup | None = None) -> None:
         self._store = store or InMemoryStateStore()
         self._runner = runner or RuntimeAnswerRunner()
         self._translator = translator or get_translation_service()
         self._sink = sink
         self._tts = tts
         self._yield_lookup = yield_lookup or default_yield_lookup
+        self._photo_reclassify = photo_reclassify or default_photo_reclassify
+        self._bulletin_lookup = bulletin_lookup or default_bulletin_lookup
         self._catalog = get_crop_catalog()
         self._lgd = get_lgd_directory()
 
     # ── public ──────────────────────────────────────────────────────────────
     async def handle(self, inp: TurnInput) -> TurnResult:
         state = await self._load_state(inp)
+        if inp.photo is not None:
+            state.photo = inp.photo  # a new photo replaces the previous one
         pending_before = state.pending
         resume = self._resume_pending(state, inp)
         text = resume.text if resume else inp.text.strip()
         nlu = await nlu_service.parse(text, language_hint=state.language)
-        q = resume or _Question(text=text, language=nlu.language, intent=nlu.intent)
+        intent = nlu.intent
+        if inp.photo is not None and resume is None and intent in _NOT_A_QUESTION:
+            intent = Intent.DISEASE  # the photo itself is the question
+        q = resume or _Question(text=text, language=nlu.language, intent=intent)
         state.remember("user", inp.text, nlu.language)
 
         if resume is None and pending_before is not None and nlu.intent in _NOT_A_QUESTION:
@@ -326,12 +390,25 @@ class ConversationManager:
             return
         if state.district_lgd_code is None and profile.district_lgd_code:
             self._set_slot(state, "district", profile.district_lgd_code)
-        if state.crop is None and len(profile.crops) == 1:
+        # With a photo, the photo (or the farmer's confirmation) decides the crop: a farmer
+        # who grows one crop may still photograph another.
+        if state.crop is None and len(profile.crops) == 1 and not state.photo:
             self._set_slot(state, "crop", profile.crops[0])
 
     def _ask_missing(self, state: DialogueState, profile: FarmerProfile | None,
                      q: _Question) -> dict[str, Any] | None:
         for slot in REQUIRED_SLOTS[q.intent]:
+            if (slot == "crop" and state.crop is None and state.photo
+                    and q.intent in PHOTO_INTENTS):
+                v = state.photo["vision"]
+                if v.get("crop_supported") and v.get("crop_detected"):
+                    self._set_slot(state, "crop", v["crop_detected"])
+                    continue
+                photo_crops = [k for k, _ in v.get("crop_candidates", []) if k in self._catalog]
+                mine = [c for c in (profile.crops if profile else []) if c in self._catalog]
+                choices = [self._crop_choice(c, state.language)
+                           for c in dict.fromkeys([*photo_crops, *mine])]
+                return self._clarify(state, "crop", "photo_confirm_crop", choices, q)
             if slot == "crop" and state.crop is None:
                 crops = [c for c in (profile.crops if profile else []) if c in self._catalog]
                 choices = [self._crop_choice(c, state.language) for c in crops]
@@ -368,6 +445,9 @@ class ConversationManager:
         if inp.context_en:
             goal_en = (f"{inp.context_en}\n\nThe farmer asks about this official bulletin: "
                        f"{goal_en}")
+        photo = await self._photo_context(state) if state.photo else None
+        if photo is not None and photo.get("summary_en"):
+            goal_en = f"{photo['summary_en']}\n\n{goal_en}"
         entry = self._catalog.get(state.crop) if state.crop else None
         answer = await self._runner.run(AnswerContext(
             goal_en=goal_en, session_id=state.conversation_id,
@@ -393,10 +473,52 @@ class ConversationManager:
             else:  # unverified translation: never show it; show English + notice, escalate
                 reply = f"{message('translation_unverified', state.language)}\n\n{answer.text_en}"
                 requires_review, reason = True, "translation_unverified"
-        return self._result(state, "answered", reply, q, nlu, reply_en=answer.text_en,
-                            citations=answer.citations, translation_status=reply_status.value,
-                            providers=providers, requires_review=requires_review,
-                            review_reason=reason, weather=answer.weather)
+        result = self._result(state, "answered", reply, q, nlu, reply_en=answer.text_en,
+                              citations=answer.citations,
+                              translation_status=reply_status.value, providers=providers,
+                              requires_review=requires_review, review_reason=reason,
+                              weather=answer.weather)
+        if photo is not None:
+            await self._attach_photo_cards(state, result, photo)
+        return result
+
+    async def _photo_context(self, state: DialogueState) -> dict[str, Any] | None:
+        """The photo's findings for the crop now in the state (re-read for a farmer-confirmed
+        crop). Never presented as a diagnosis."""
+        v = state.photo["vision"]
+        confirmed = bool(state.crop and state.crop != v.get("crop_detected"))
+        if confirmed:
+            try:
+                v = await self._photo_reclassify(state.photo["path"], state.crop)
+            except Exception as exc:
+                logger.warning("photo reclassify failed: {}", exc)
+                return None
+        conds = v.get("candidate_conditions", [])[:3]
+        entry = self._catalog.get(state.crop) if state.crop else None
+        name = entry.name_en if entry else (state.crop or "the crop")
+        summary = ""
+        if conds:
+            listed = ", ".join(f"{c['name']} ({c['confidence']:.0%})" for c in conds)
+            summary = (f"A photo of the {name} was checked by a local image model. Possible "
+                       f"findings (not a diagnosis): {listed}. Use them only as hints and "
+                       "give advice that is safe if they are wrong.")
+        return {**v, "crop": state.crop, "crop_confirmed_by_farmer": confirmed,
+                "summary_en": summary}
+
+    async def _attach_photo_cards(self, state: DialogueState, result: TurnResult,
+                                  photo: dict[str, Any]) -> None:
+        result.vision = {k: photo.get(k) for k in (
+            "crop", "crop_confirmed_by_farmer", "crop_candidates", "candidate_conditions",
+            "model_name", "model_version")}
+        result.vision["official"] = False
+        if state.district_lgd_code and state.crop:
+            try:
+                f = await self._yield_lookup(state.district_lgd_code, state.crop, state.season)
+                result.yield_forecast = {**f, "official": False} if f else None
+                result.bulletins = await self._bulletin_lookup(
+                    state.district_lgd_code, state.crop, state.language)
+            except Exception as exc:
+                logger.warning("photo cards failed: {}", exc)
 
     async def _speak(self, text: str, language: str, result: TurnResult) -> str | None:
         try:

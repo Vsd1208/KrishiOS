@@ -31,6 +31,21 @@ GOOD_RELIABILITY = (0, 1)
 PUBLICATION_LAG_DAYS = 15
 
 
+def use_bundled_proj() -> None:
+    """Point GDAL/PROJ at rasterio's own data. Another install on the machine (for example
+    PostGIS, via PROJ_LIB) has an incompatible database and breaks CRS lookups."""
+    import importlib.util
+    import os
+
+    spec = importlib.util.find_spec("rasterio")
+    if spec and spec.origin:
+        root = Path(spec.origin).parent
+        if (root / "proj_data").is_dir():
+            os.environ["PROJ_DATA"] = os.environ["PROJ_LIB"] = str(root / "proj_data")
+        if (root / "gdal_data").is_dir():
+            os.environ["GDAL_DATA"] = str(root / "gdal_data")
+
+
 def read_env(path: Path) -> dict[str, str]:
     env: dict[str, str] = {}
     if path.exists():
@@ -118,6 +133,9 @@ def download(token: str, task_id: str, file: dict, out_dir: Path) -> Path:
     with urllib.request.urlopen(req, timeout=600) as r, tmp.open("wb") as fh:
         while chunk := r.read(1 << 20):
             fh.write(chunk)
+    got = tmp.stat().st_size
+    if got != file["file_size"]:  # a dropped connection can end the stream without an error
+        raise OSError(f"incomplete download: {got} of {file['file_size']} bytes")
     tmp.replace(path)
     return path
 

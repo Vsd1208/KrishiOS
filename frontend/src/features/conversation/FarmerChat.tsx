@@ -26,6 +26,8 @@ import {
   type FeedbackReason,
 } from '@/services/api/conversation';
 import { YieldCard } from '@/features/forecasting/YieldCard';
+import { PhotoButton } from './PhotoButton';
+import { VisionCard } from './VisionCard';
 import { useConversation, type ChatMessage } from './useConversation';
 
 const LANGUAGES: { code: BotLanguage; label: string }[] = [
@@ -174,6 +176,13 @@ export const FarmerChat: React.FC<FarmerChatProps> = ({
 
       <form onSubmit={submit} className="flex items-center gap-2 px-4 py-3 border-t border-border">
         <VoiceButton disabled={chat.busy} onRecorded={(blob) => void chat.sendVoice(blob)} />
+        <PhotoButton
+          disabled={chat.busy}
+          onPicked={(photo) => {
+            void chat.sendPhoto(photo, draft, t('photo.sent'));
+            setDraft('');
+          }}
+        />
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
@@ -232,7 +241,20 @@ const BotMessage: React.FC<{
           ))}
         </ul>
       )}
+      {r?.vision && <VisionCard vision={r.vision} />}
       {r?.yield_forecast && <YieldCard forecast={r.yield_forecast} compact />}
+      {r?.bulletins && r.bulletins.length > 0 && (
+        <ul className="space-y-1" aria-label={t('photo.bulletins')}>
+          {r.bulletins.map((b) => (
+            <li key={b.uuid} className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-caption text-amber-900">
+              <span className="font-semibold">{b.title}</span>
+              <span className="block">
+                {b.authority} · {t(`govt.severity.${b.severity}`, { defaultValue: b.severity })}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
       {r && r.media.length > 0 && (
         <div className="space-y-1.5">
           {r.media.map((v) => (

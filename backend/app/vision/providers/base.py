@@ -30,6 +30,13 @@ class VisionResult:
     model_version: str
     inference_ms: float
     metadata: dict = field(default_factory=dict)
+    # Sprint 11, Phase 9: what crop is in the photo. ``crop_candidates`` are (crop key,
+    # calibrated probability), best first; the key is a catalog ``crop_canonical`` or, for a
+    # recognised crop outside the catalog, ``other:<label>``. ``crop_supported`` is true only
+    # when the top crop is a catalog crop the model supports and is confident enough; when
+    # false, the farmer is asked to confirm the crop (never a silent guess).
+    crop_candidates: list[tuple[str, float]] = field(default_factory=list)
+    crop_supported: bool = False
 
 
 class VisionModelProvider(Protocol):

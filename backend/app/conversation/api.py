@@ -7,6 +7,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import FileResponse
+from loguru import logger
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -72,7 +73,31 @@ async def text_turn(body: TurnIn, session: DbSession, auth: User) -> dict:
         context_en=context_en, bulletin_uuid=body.bulletin_uuid,
     ))
     await _attach_media(session, result)
+    await _record_diagnosis(session, auth, result)  # after a crop-confirmation chip
     return result.to_dict()
+
+
+async def _record_diagnosis(session: AsyncSession, auth: AuthContext, result) -> None:
+    """F8: an answered photo question with a known district becomes one surveillance report
+    (pseudonymous; healthy findings are not stored). A failure here never costs the farmer
+    the answer, and the savepoint leaves the rest of the turn's writes intact."""
+    from app.surveillance.service import record  # noqa: PLC0415
+
+    v = result.vision or {}
+    lgd, crop = result.slots.get("district_lgd_code"), result.slots.get("crop")
+    conds = v.get("candidate_conditions") or []
+    if result.status != "answered" or not (v and lgd and crop and conds):
+        return
+    try:
+        async with session.begin_nested():
+            await record(session, user_uuid=str(auth.user_uuid), lgd_district_code=int(lgd),
+                         crop=crop, condition=conds[0]["name"],
+                         confidence=float(conds[0]["confidence"]),
+                         confirmed=bool(v.get("crop_confirmed_by_farmer")),
+                         model_version=str(v.get("model_version") or "unknown"))
+        await session.commit()
+    except Exception as exc:  # no values logged: this is farmer-linked data
+        logger.warning("surveillance report not stored: {}", type(exc).__name__)
 
 
 async def _attach_media(session: AsyncSession, result) -> None:
@@ -141,3 +166,59 @@ async def get_audio(audio_uuid: str, auth: User) -> FileResponse:
     if not path.is_file():
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Audio not found")
     return FileResponse(path, media_type="audio/wav")
+
+
+def _retake(language: str, key: str, conversation_id: str | None, **extra: Any) -> dict:
+    from app.conversation.messages import message  # noqa: PLC0415
+
+    return {"conversation_id": conversation_id, "status": "retake", "language": language,
+            "reply_text": message(key, language), **extra}
+
+
+@router.post("/photo-turns", dependencies=[Depends(RequirePermission(Permission.VISION_ANALYZE))])
+async def photo_turn(  # noqa: PLR0913, PLR0917 - multipart form fields
+    session: DbSession, auth: User,
+    file: Annotated[UploadFile, File(description="Crop photo (jpeg/png/webp)")],
+    language: Annotated[str, Form(pattern=LANG)],
+    text: Annotated[str, Form(max_length=2000)] = "",
+    conversation_id: Annotated[str | None, Form(max_length=32)] = None,
+    district_lgd_code: Annotated[int | None, Form()] = None,
+    crops: Annotated[str, Form(max_length=400)] = "",
+) -> dict:
+    """Photo -> local crop/disease model -> the same dialogue turn. Low confidence or an
+    unsupported crop gives a crop-confirmation clarification; a blurry photo or no plant asks
+    for a retake. With a district, the diagnosis is recorded for outbreak surveillance (F8)."""
+    from app.config.settings import get_settings as _s  # noqa: PLC0415
+    from app.conversation.manager import vision_to_dict  # noqa: PLC0415
+    from app.conversation.messages import message  # noqa: PLC0415
+    from app.knowledge.storage.file_store import FileStore  # noqa: PLC0415
+    from app.vision.providers.selection import get_vision_provider  # noqa: PLC0415
+    from app.vision.services.quality import QualityAssessor  # noqa: PLC0415
+    from app.vision.services.validator import ImageValidator  # noqa: PLC0415
+
+    data = await file.read()
+    check = ImageValidator().validate(data, file.content_type)
+    if not check.valid:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, ", ".join(check.errors))
+    store = FileStore(base_dir=_s().IMAGE_STORAGE_PATH)
+    path = await store.save(data, FileStore.compute_hash(data), file.filename or "photo.jpg")
+    quality = QualityAssessor().assess(Path(path))
+    if not quality.usable:
+        return _retake(language, "photo_retake", conversation_id, quality_issues=quality.issues)
+    v = vision_to_dict(await get_vision_provider().analyze(Path(path), {}))
+    top = (v["crop_candidates"] or [["", 0.0]])[0]
+    if top[0] == "other:no_plant" and top[1] >= _s().VISION_CROP_CONFIRM_THRESHOLD:
+        return _retake(language, "photo_no_plant", conversation_id, vision=v)
+    profile = FarmerProfile(district_lgd_code=district_lgd_code,
+                            crops=[c for c in crops.split(",") if c])
+    manager = build_manager(sink=db_sink(session, channel="photo"))
+    result = await manager.handle(TurnInput(
+        user_uuid=str(auth.user_uuid), text=text.strip() or message("photo_default_question",
+                                                                    language),
+        language=language, conversation_id=conversation_id, profile=profile, auth=auth,
+        photo={"path": str(path), "vision": v},
+    ))
+    await _record_diagnosis(session, auth, result)
+    out = result.to_dict()
+    out["providers"]["vision"] = {"provider": v["model_name"], "version": v["model_version"]}
+    return out

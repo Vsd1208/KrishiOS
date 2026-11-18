@@ -25,6 +25,7 @@ import {
   Activity,
   LifeBuoy,
   Sprout,
+  Bug,
 } from 'lucide-react';
 import type { UserRole } from '@/types/auth';
 
@@ -117,6 +118,13 @@ const officerNavItems: OfficerNavItem[] = [
     path: '/officer/yield',
     icon: Sprout,
     isActive: (pathname) => pathname.startsWith('/officer/yield'),
+  },
+  {
+    id: 'outbreaks',
+    label: 'Outbreaks',
+    path: '/officer/outbreaks',
+    icon: Bug,
+    isActive: (pathname) => pathname.startsWith('/officer/outbreaks'),
   },
   {
     id: 'feedback',

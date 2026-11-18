@@ -48,7 +48,8 @@ export interface Citation {
 export interface TurnResult {
   conversation_id: string;
   turn_id: string;
-  status: 'answered' | 'clarification' | 'smalltalk' | 'refused';
+  /** `retake`: photo turns only (blurry photo or no plant in it). */
+  status: 'answered' | 'clarification' | 'smalltalk' | 'refused' | 'retake';
   language: BotLanguage;
   reply_text: string;
   reply_text_en: string | null;
@@ -67,7 +68,22 @@ export interface TurnResult {
   media: MediaCard[];
   /** Phase 8: structured yield forecast for yield questions (a model estimate). */
   yield_forecast?: YieldForecast | null;
+  /** Phase 9: local photo findings (possibilities, never a diagnosis). */
+  vision?: VisionCard | null;
+  /** Active official bulletins for the district and crop (photo answers). */
+  bulletins?: { uuid: string; title: string; authority: string; severity: string; valid_to: string | null }[];
+  quality_issues?: string[];
   transcript?: string;
+}
+
+export interface VisionCard {
+  crop: string | null;
+  crop_confirmed_by_farmer: boolean;
+  crop_candidates: [string, number][];
+  candidate_conditions: { name: string; confidence: number }[];
+  model_name: string;
+  model_version: string;
+  official: false;
 }
 
 export interface FarmerProfileHint {
@@ -120,6 +136,25 @@ export const conversationApi = {
     if (conversationId) form.append('conversation_id', conversationId);
     if (actAsFarmerId) form.append('act_as_farmer_id', String(actAsFarmerId));
     return apiClient.postForm<TurnResult>('/conversation/voice-turns', form, {
+      timeout: TURN_TIMEOUT_MS,
+    });
+  },
+
+  sendPhotoTurn(
+    photo: Blob,
+    language: BotLanguage,
+    conversationId?: string | null,
+    text = '',
+    profile?: FarmerProfileHint | null,
+  ): Promise<TurnResult> {
+    const form = new FormData();
+    form.append('file', photo, 'photo.jpg');
+    form.append('language', language);
+    if (text) form.append('text', text);
+    if (conversationId) form.append('conversation_id', conversationId);
+    if (profile?.district_lgd_code) form.append('district_lgd_code', String(profile.district_lgd_code));
+    if (profile?.crops?.length) form.append('crops', profile.crops.join(','));
+    return apiClient.postForm<TurnResult>('/conversation/photo-turns', form, {
       timeout: TURN_TIMEOUT_MS,
     });
   },

@@ -110,3 +110,8 @@ api_router.include_router(push_router)
 from app.forecasting.api.routes import router as forecasting_router  # noqa: E402
 
 api_router.include_router(forecasting_router)
+
+# ── Sprint 11, Phase 9: outbreak surveillance (F8) ──
+from app.surveillance.api import router as surveillance_router  # noqa: E402
+
+api_router.include_router(surveillance_router)

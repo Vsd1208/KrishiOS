@@ -90,6 +90,28 @@ MESSAGES: dict[str, dict[str, str]] = {
         "hi": "{district} में {crop} के लिए अभी कोई उपज अनुमान नहीं है।",
         "te": "{district}లో {crop}కు ఇంకా దిగుబడి అంచనా లేదు.",
     },
+    # Photo questions (Phase 9). The model's findings are possibilities, never a diagnosis.
+    "photo_default_question": {
+        "en": "What is wrong with my crop in this photo?",
+        "hi": "इस फोटो में मेरी फसल को क्या हुआ है?",
+        "te": "ఈ ఫోటోలో నా పంటకు ఏమైంది?",
+    },
+    "photo_confirm_crop": {
+        "en": "Which crop is in the photo? Please confirm so the advice is right.",
+        "hi": "फोटो में कौन सी फसल है? सही सलाह के लिए कृपया पुष्टि करें।",
+        "te": "ఫోటోలో ఏ పంట ఉంది? సరైన సలహా కోసం దయచేసి నిర్ధారించండి.",
+    },
+    "photo_retake": {
+        "en": "The photo is not clear enough. Please take it again in daylight, close to the "
+              "affected leaf.",
+        "hi": "फोटो पर्याप्त साफ नहीं है। कृपया दिन की रोशनी में, प्रभावित पत्ते के पास से फिर लें।",
+        "te": "ఫోటో తగినంత స్పష్టంగా లేదు. దయచేసి పగటి వెలుతురులో, ప్రభావిత ఆకుకు దగ్గరగా మళ్లీ తీయండి.",
+    },
+    "photo_no_plant": {
+        "en": "I could not see a crop in this photo. Please photograph the affected leaf.",
+        "hi": "इस फोटो में मुझे फसल नहीं दिखी। कृपया प्रभावित पत्ते की फोटो लें।",
+        "te": "ఈ ఫోటోలో పంట కనిపించలేదు. దయచేసి ప్రభావిత ఆకు ఫోటో తీయండి.",
+    },
 }
 
 

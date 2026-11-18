@@ -79,7 +79,7 @@ export function useConversation({
       if (userText) push({ id: userId, role: 'user', text: userText });
       try {
         const result = await call();
-        conversationId.current = result.conversation_id;
+        if (result.conversation_id) conversationId.current = result.conversation_id;
         if (result.transcript !== undefined) {
           push({ id: userId, role: 'user', text: result.transcript || '…' });
         }
@@ -167,6 +167,15 @@ export function useConversation({
     [actAsFarmerId, language, run, speak],
   );
 
+  /** Photo question: the local model reads the crop; the bot asks to confirm when unsure. */
+  const sendPhoto = useCallback(
+    (photo: Blob, text = '', label = '📷') =>
+      run(text.trim() || label, () =>
+        conversationApi.sendPhotoTurn(photo, language, conversationId.current, text.trim(), profile ?? null),
+      ),
+    [language, profile, run],
+  );
+
   const rate = useCallback(
     async (messageId: string, rating: 'up' | 'down', reason?: FeedbackReason) => {
       const msg = messages.find((m) => m.id === messageId);
@@ -193,6 +202,7 @@ export function useConversation({
     setSpeak,
     sendText,
     sendVoice,
+    sendPhoto,
     choose,
     rate,
     reset,

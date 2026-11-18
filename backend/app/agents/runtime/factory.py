@@ -189,6 +189,10 @@ def build_runtime_engine(
 
     tool_registry.register(YieldForecastTool())
 
+    from app.agents.tools.crop_identify import CropIdentifyTool
+
+    tool_registry.register(CropIdentifyTool())
+
     from app.agents.proactive_agent import ProactiveIntelligenceAgent
 
     guardrails = GuardrailEngine()

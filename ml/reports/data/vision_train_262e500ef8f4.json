@@ -1,0 +1,145 @@
+{
+ "run_id": "262e500ef8f4",
+ "config": {
+  "backbone": "efficientnet_b0.ra_in1k",
+  "epochs": 1,
+  "seeds": [
+   0
+  ],
+  "experiments": {
+   "E1_all": {
+    "train_sources": [
+     "plantvillage",
+     "plantdoc",
+     "agml_rice_india"
+    ],
+    "select_on": "field"
+   }
+  },
+  "dataset_rows": 466,
+  "crops": [
+   "apple",
+   "bell_pepper",
+   "blueberry",
+   "cherry",
+   "grapes",
+   "maize",
+   "paddy",
+   "peach",
+   "potato",
+   "raspberry",
+   "soybean",
+   "squash",
+   "strawberry",
+   "tomato"
+  ],
+  "n_conditions": 31,
+  "confirm_threshold": 0.6,
+  "config_hash": "852a7464da3f"
+ },
+ "results": {
+  "E1_all:seed0": {
+   "best_epoch": 0,
+   "seconds": 58.6,
+   "history": [
+    {
+     "epoch": 0,
+     "train_loss": 6.07114315032959,
+     "val_score": 0.2142857142857143,
+     "seconds": 58.5
+    }
+   ],
+   "temperature": {
+    "crop": 0.35399302965539037,
+    "condition": 0.3
+   },
+   "field": {
+    "crop": {
+     "n": 401,
+     "top1": 0.04987531172069826,
+     "top5": 0.30174563591022446,
+     "macro_f1": 0.04077712363158227,
+     "ece": 0.13003155886383724
+    },
+    "condition": {
+     "n": 401,
+     "top1": 0.05486284289276808,
+     "top5": 0.20199501246882792,
+     "macro_f1": 0.04733704118734115,
+     "ece": 0.07756269461198935
+    },
+    "condition_given_crop": {
+     "n": 401,
+     "top1": 0.486284289276808,
+     "top5": 0.8927680798004988,
+     "macro_f1": 0.46573135880327393,
+     "ece": 0.13960701138004103
+    },
+    "crop_auto_accept": {
+     "threshold": 0.6,
+     "share": 0.0,
+     "accuracy_when_auto": null,
+     "accuracy_when_confirm": 0.04987531172069826
+    }
+   },
+   "source:plantdoc": {
+    "crop": {
+     "n": 386,
+     "top1": 0.04145077720207254,
+     "top5": 0.29015544041450775,
+     "macro_f1": 0.03922598126087921,
+     "ece": 0.13860553408456588
+    },
+    "condition": {
+     "n": 386,
+     "top1": 0.038860103626943004,
+     "top5": 0.18134715025906736,
+     "macro_f1": 0.030963158346836092,
+     "ece": 0.08494100437880797
+    },
+    "condition_given_crop": {
+     "n": 386,
+     "top1": 0.4792746113989637,
+     "top5": 0.8886010362694301,
+     "macro_f1": 0.44028415270005516,
+     "ece": 0.14907612941116866
+    },
+    "crop_auto_accept": {
+     "threshold": 0.6,
+     "share": 0.0,
+     "accuracy_when_auto": null,
+     "accuracy_when_confirm": 0.04145077720207254
+    }
+   },
+   "source:agml_rice_india": {
+    "crop": {
+     "n": 15,
+     "top1": 0.26666666666666666,
+     "top5": 0.6,
+     "macro_f1": 0.42105263157894735,
+     "ece": 0.22084160149097443
+    },
+    "condition": {
+     "n": 15,
+     "top1": 0.4666666666666667,
+     "top5": 0.7333333333333333,
+     "macro_f1": 0.4484126984126984,
+     "ece": 0.2755226651827494
+    },
+    "condition_given_crop": {
+     "n": 15,
+     "top1": 0.6666666666666666,
+     "top5": 1.0,
+     "macro_f1": 0.6375,
+     "ece": 0.33800422747929887
+    },
+    "crop_auto_accept": {
+     "threshold": 0.6,
+     "share": 0.0,
+     "accuracy_when_auto": null,
+     "accuracy_when_confirm": 0.26666666666666666
+    }
+   }
+  }
+ }
+}

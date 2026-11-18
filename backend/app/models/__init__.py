@@ -24,6 +24,7 @@ from app.models.govconnect import (
     SchemeEntry,
 )
 from app.models.forecasting import ForecastImport, YieldForecastRecord
+from app.models.surveillance import DiagnosisReport
 from app.models.crop import Crop
 from app.models.district import District
 from app.models.document_chunk import DocumentChunk
@@ -116,6 +117,7 @@ __all__ = [
     "MandiPriceDaily",
     "ForecastImport",
     "YieldForecastRecord",
+    "DiagnosisReport",
     "PushSubscription",
     "SchemeEntry",
 ]
