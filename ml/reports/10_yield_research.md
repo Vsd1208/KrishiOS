@@ -20,7 +20,7 @@ All runs are logged in `ml/experiments/`, and full results are in `ml/reports/da
 | Global + regional climate drivers | `8d35785e0f9f` | `scripts/run_yield_climate.py` | `yield_climate_8d35785e0f9f.json` |
 | Permutation tests (20 placebos) | `14ead9935125` | `scripts/run_yield_climate_tests.py` | `yield_climate_tests_14ead9935125.json` |
 | River flow vs placebos (20) | `d98038796300` | `scripts/run_yield_river.py` | `yield_river_d98038796300.json` |
-| Nepal rainfall vs 99 placebos | running | `scripts/run_yield_climate_tests.py --nepal-only --placebos 99` | pending |
+| Nepal rainfall vs 99 placebos | `f7fcab8f1033` | `scripts/run_yield_climate_tests.py --nepal-only --placebos 99` | `yield_climate_tests_f7fcab8f1033.json` |
 
 `ef6f04b49792` is a one-epoch smoke run of B5 and is not evidence.
 
@@ -97,13 +97,29 @@ Permutation test with 20 placebos (run `14ead9935125`; ratio MAE on clean tier A
 | All India | 0.3106 | 0.3064 | 0.3080 | 0.095 | 0.3068 | 0.048 |
 
 **Reading.**
-- The best evidence is Nepal rainfall for Uttar Pradesh and Bihar: it beat all 20 placebos. With 20 placebos,
-  0.048 is the smallest p-value possible, and five regions were checked, so the pre-set bar is 0.01. Proving it
-  needs at least 99 placebos.
+- The best evidence was Nepal rainfall for Uttar Pradesh and Bihar: it beat all 20 placebos. With 20 placebos,
+  0.048 is the smallest p-value possible, and five regions were checked, so the pre-set bar is 0.01. The
+  99-placebo check below does not clear that bar.
 - The gain is not uniform: weak in 2010-12, and at lead 90 Nepal rain made 2013-15 and 2016-18 slightly worse.
 - In the latest period (2016-18) the regional model was worse than B3 at leads 60 and 90.
 - The north-east shows no gain. Tibetan heat is only a stand-in for melt, and flood data was not yet included.
 - Nothing from this section is served.
+
+**Nepal rainfall, 99 placebos** (run `f7fcab8f1033`; only the Nepal inputs move to wrong years, global
+indices stay real; ratio MAE):
+
+| Region | Global only | + Nepal rain | Placebo mean | Best placebo | p |
+|---|---|---|---|---|---|
+| Uttar Pradesh, Bihar | 0.2445 | 0.2426 | 0.2442 | 0.2417 | 0.05 |
+| North-west | 0.3742 | 0.3736 | 0.3731 | 0.3714 | 0.69 |
+| Western Himalaya | 0.2858 | 0.2855 | 0.2858 | 0.2849 | 0.37 |
+| North-east | 0.1791 | 0.1799 | 0.1800 | 0.1791 | 0.38 |
+| All India | 0.3074 | 0.3068 | 0.3072 | 0.3065 | 0.10 |
+
+Four of 99 wrong-year placebos did as well as real Nepal rainfall for Uttar Pradesh and Bihar, so p = 0.05.
+That misses the pre-set 0.01 bar (five regions, Bonferroni). The gain is about 0.8% of the error. The result
+is suggestive, not proven, and Nepal rainfall is not used in the served model. Nepal rainfall did not help any
+region it was not routed to, as expected.
 
 ## 4. River flow: no measurable skill
 
@@ -131,12 +147,11 @@ visible. River inputs are not used further.
 
 ## 5. Remaining Phase 10 work
 
-1. Finish the 99-placebo check for Nepal rainfall in Uttar Pradesh and Bihar (running).
-2. Experiment P1: self-supervised pretraining (masked reconstruction and cross-modal prediction, each ablated),
+1. Experiment P1: self-supervised pretraining (masked reconstruction and cross-modal prediction, each ablated),
    with label-efficiency curves.
-3. Experiment P2: modality dropout, scored per missing-input condition.
-4. Held-out states and held-out years (RQ4).
-5. Leave-one-crop-out and k-shot transfer (RQ5).
-6. Uncertainty with a calibration check per tier.
-7. Ablations with at least 3 seeds; then score the frozen best configuration on test once, and swap it in
+2. Experiment P2: modality dropout, scored per missing-input condition.
+3. Held-out states and held-out years (RQ4).
+4. Leave-one-crop-out and k-shot transfer (RQ5).
+5. Uncertainty with a calibration check per tier.
+6. Ablations with at least 3 seeds; then score the frozen best configuration on test once, and swap it in
    behind the yield provider only if it beats B3.

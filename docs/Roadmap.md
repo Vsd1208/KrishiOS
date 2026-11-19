@@ -46,7 +46,7 @@ RQ4 held-out states and years, RQ5 whether a shared multi-crop model helps low-d
 | Global and region-routed climate drivers | Done: partial support | Run `8d35785e0f9f` |
 | Permutation tests, including Nepal rainfall for Uttar Pradesh and Bihar | Done with 20 placebos: promising, not proven | Run `14ead9935125` |
 | River-flow drivers (GloFAS, 13 points) | Done: no measurable skill | Run `d98038796300` |
-| 99-placebo check for Nepal rainfall | Running | |
+| 99-placebo check for Nepal rainfall | Done: p = 0.05, misses the 0.01 bar; not used | Run `f7fcab8f1033` |
 | P1 pretraining with label-efficiency curves | To do | |
 | P2 modality dropout per missing-input condition | To do | |
 | Held-out states and years | To do | |
@@ -58,8 +58,9 @@ The full results are in [`ml/reports/10_yield_research.md`](../ml/reports/10_yie
 
 ## Parallel tracks
 
-- **Indian field photos for vision:** a resumable, size-limited sample (5 GB overall) of potato, chilli, tomato,
-  soybean and wheat field photos. When complete: an independent field test of the current model, then retraining.
+- **Indian field photos for vision:** 4,281 checked photos of potato, chilli, tomato, soybean and wheat (4.26 GB
+  of the 5 GB limit). The independent test (run `07389f462bb7`) found the current model mistakes wheat for
+  maize and chilli for tomato, so crop auto-accept is now off. Next: retrain with these photos.
 - **Heavier experiments:** full satellite-map models and many-seed runs may be prepared as Colab notebooks with
   public or project research data only.
 
