@@ -39,6 +39,19 @@ fills them.
 
 The backend only loads exported artifacts from `ml/artifacts/` (git-ignored); it never trains (ADR-001).
 
+**Everything is kept inside the project folder, so it can be moved as one folder.** Git-ignored
+parts that are not on GitHub:
+
+| Path | What it holds |
+|---|---|
+| `ml/data/` | Raw and processed data (yield labels, weather, MODIS, IMD, Indian field photos) |
+| `ml/artifacts/` | Trained models (vision ONNX, yield runs) |
+| `models_cache/huggingface/` | Downloaded open models (IndicTrans2, IndicConformer, MMS-TTS, Whisper, BioCLIP and others). Both `backend/app` and `krishios_ml` use it automatically when it exists |
+| `backups/` | Docker volume archives (Postgres, Neo4j, Qdrant, Redis, documents); restore steps in `backups/README.md` |
+
+After moving the folder, rebuild the environments: `uv sync` in `backend/` and `ml/`, and `npm ci`
+in `frontend/` (the `.venv` and `node_modules` folders are tied to the old paths).
+
 ## 4. What has been built
 
 | Phase | Delivered | Report |
