@@ -101,7 +101,10 @@ class Setup:
         self.t_tr = Tensors(tr, seq_index, self.vocab, num_stats, device)
         self.t_va = Tensors(va, seq_index, self.vocab, num_stats, device)
         self.va_meta = va[["lead_days", "crop_canonical", "tier", "yield", "yield_unit",
-                           "hist_mean", "eval_clean"]].copy()
+                           "hist_mean", "eval_clean", "lgd_state_code", "lgd_district_code",
+                           "crop_year"]].copy()
+        self.tr_meta = tr[["crop_canonical", "tier", "lgd_state_code", "lgd_district_code",
+                           "crop_year"]].copy()
         col_mask = torch.zeros(3, len(NUMERIC), dtype=torch.bool, device=device)
         for i, name in enumerate(("weather", "ndvi", "history")):
             col_mask[i, COLS[name]] = True
@@ -206,15 +209,20 @@ def pretrain(s: Setup, variant: str, seed: int, p: dict, epochs: int, batch: int
 
 
 def finetune(s: Setup, p: dict, seed: int, args, init: dict | None = None,
-             fraction: float = 1.0, modality_drop: float = 0.0):
+             fraction: float = 1.0, modality_drop: float = 0.0,
+             rows: torch.Tensor | None = None, es_mask: np.ndarray | None = None):
     """Train B5 as in run_yield_b5.py. ``fraction`` < 1 keeps that share of training
-    district-seasons; epochs and patience scale up so the number of optimizer steps matches."""
+    district-seasons; epochs and patience scale up so the number of optimizer steps matches.
+    ``rows`` limits training to those training rows, and ``es_mask`` limits early stopping to
+    those validation rows (for held-out states or crops)."""
     t = s.t_tr
-    rows = torch.arange(len(t), device=s.device)
+    if rows is None:
+        rows = torch.arange(len(t), device=s.device)
     if fraction < 1.0:
         keys = np.random.default_rng(10_000 + seed).permutation(s.train_keys)
         chosen = torch.tensor(keys[:math.ceil(fraction * len(keys))], device=s.device)
-        rows = rows[torch.isin(t.key, chosen)]
+        rows = rows[torch.isin(t.key[rows], chosen)]
+    es_meta = s.va_meta if es_mask is None else s.va_meta[es_mask].reset_index(drop=True)
     epochs = max(1, round(args.epochs / fraction))
     patience = max(1, round(args.patience / fraction))
     steps = max(1, len(rows) // args.batch)
@@ -247,7 +255,8 @@ def finetune(s: Setup, p: dict, seed: int, args, init: dict | None = None,
             scaler.step(opt)
             scaler.update()
             sched.step()
-        val, _ = evaluate(s.va_meta, predict(model, s))
+        pred = predict(model, s)
+        val, _ = evaluate(es_meta, pred if es_mask is None else pred[es_mask])
         if val < best - 1e-4:
             best, best_epoch, bad = val, epoch, 0
             state = {k: v.detach().clone() for k, v in model.state_dict().items()}

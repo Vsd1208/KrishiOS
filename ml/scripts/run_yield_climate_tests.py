@@ -5,6 +5,8 @@ Two questions, over the same forward-chaining periods and leads as ``run_yield_c
 1. Do the global and regional drivers beat the same inputs taken from the wrong years?
 2. Does Nepal rainfall add anything for Uttar Pradesh and Bihar beyond the global indices? Here
    only the Nepal inputs are moved to the wrong years, and the global indices stay real.
+3. ``--global-only``: do the global indices alone (ENSO, IOD, OLR, SOI, TNA) beat the same indices
+   taken from the wrong years? Only B3 and B3 + global indices are fitted.
 
 The statistic is the ratio error averaged over all period x lead combinations. The one-sided
 p-value is (1 + placebos at least as good as the real model) / (1 + placebos). Five regions are
@@ -56,6 +58,8 @@ def main() -> None:
     ap.add_argument("--placebos", type=int, default=20)
     ap.add_argument("--nepal-only", action="store_true",
                     help="only the Nepal question: global vs global+Nepal and Nepal placebos")
+    ap.add_argument("--global-only", action="store_true",
+                    help="only the global indices: base vs global and global placebos")
     args = ap.parse_args()
     labels, feats = pd.read_parquet(LABELS), pd.read_parquet(FEATURES)
     frozen = json.loads(SELECTION.read_text(encoding="utf-8"))
@@ -72,6 +76,7 @@ def main() -> None:
                      strict=True)) for k in range(args.placebos)]
     config = {"folds": FOLDS, "leads": list(LEADS), "seeds": list(SEEDS),
               "placebos": args.placebos, "nepal_only": args.nepal_only,
+              "global_only": args.global_only,
               "selection_run": frozen["run_id"],
               "statistic": "ratio MAE on clean tier A/B rows, mean over period x lead"}
     errors: dict[str, list[list[dict]]] = {}
@@ -99,13 +104,18 @@ def main() -> None:
                     add(name, run, region_errors(va, m.predict(va)))
 
                 models = (("global", glob), ("global_nepal", with_nepal))
-                if not args.nepal_only:
+                if args.global_only:
+                    models = (("base", base), ("global", glob))
+                elif not args.nepal_only:
                     models = (("base", base), *models, ("regional", regional))
                 for i, seed in enumerate(SEEDS):
                     for name, cols in models:
                         fit(name, i, real, cols, seed)
                 for k, year_map in enumerate(maps):
                     seed = SEEDS[k % len(SEEDS)]
+                    if args.global_only:  # every climate column moves; only global ones are used
+                        fit("placebo_global", k, with_climate(f, table, year_map), glob, seed)
+                        continue
                     if not args.nepal_only:
                         fit("placebo_all", k, with_climate(f, table, year_map), regional, seed)
                     fit("placebo_nepal", k, move_nepal(real, table, year_map), with_nepal, seed)
@@ -114,24 +124,24 @@ def main() -> None:
                      for n, runs in errors.items()}
         mean = {n: t.mean() for n, t in run_means.items()}
         out: dict = {"regions": {}}
+        tested = {"placebo_nepal": ("global_nepal", "nepal"), "placebo_all": ("regional", "all"),
+                  "placebo_global": ("global", "global")}
         for g in REGION_NAMES:
-            pn = run_means["placebo_nepal"][g].to_numpy()
             row = {n: float(mean[n][g]) for n in ("base", "global", "global_nepal", "regional")
                    if n in mean}
-            row.update(placebo_nepal_mean=float(pn.mean()), placebo_nepal_best=float(pn.min()),
-                       p_nepal_vs_placebo=p_value(mean["global_nepal"][g], pn))
-            if "placebo_all" in run_means:
-                pa = run_means["placebo_all"][g].to_numpy()
-                row.update(placebo_all_mean=float(pa.mean()), placebo_all_best=float(pa.min()),
-                           p_regional_vs_placebo=p_value(mean["regional"][g], pa))
+            for placebo, (model, tag) in tested.items():
+                if placebo in run_means:
+                    pv = run_means[placebo][g].to_numpy()
+                    row.update({f"placebo_{tag}_mean": float(pv.mean()),
+                                f"placebo_{tag}_best": float(pv.min()),
+                                f"p_{tag}_vs_placebo": p_value(mean[model][g], pv)})
             out["regions"][g] = row
-        by_fold = {}
-        for name in [n for n in ("base", "global", "global_nepal", "regional") if n in errors]:
-            rows = errors[name]
-            keys = [f"{lead}:{s}-{e}" for lead in LEADS for s, e in FOLDS]
-            by_fold[name] = {k: float(np.mean([r[j]["ganga_east"] for r in rows]))
-                             for j, k in enumerate(keys)}
-        out["ganga_east_by_period"] = by_fold
+        keys = [f"{lead}:{s}-{e}" for lead in LEADS for s, e in FOLDS]
+        names = [n for n in ("base", "global", "global_nepal", "regional") if n in errors]
+        for region in ("ganga_east", "all_india"):
+            out[f"{region}_by_period"] = {
+                name: {k: float(np.mean([r[j][region] for r in errors[name]]))
+                       for j, k in enumerate(keys)} for name in names}
         rec.metrics = out["regions"]
         path = REPORTS_DIR / "data" / f"yield_climate_tests_{rec.run_id}.json"
         path.write_text(json.dumps({"run_id": rec.run_id, "config": config, **out}, indent=1,
