@@ -53,7 +53,7 @@ The architecture separates the orchestration runtime, specialist agents, AI serv
 
 ## 🆕 Sprint 11: "KrishiOS Next Level" (status)
 
-Sprint 11 turns the buildathon platform into a multilingual, government-connected system with district yield intelligence. Every number below comes from a logged run (`ml/experiments/*.jsonl`) and its report in [`ml/reports/`](ml/reports).
+Sprint 11 turns the buildathon platform into a multilingual, government-connected system with district yield intelligence. Every number below comes from a logged run (`ml/experiments/*.jsonl`) and its report in [`ml/reports/`](ml/reports). **New to the project? Start with [`docs/HANDOVER.md`](docs/HANDOVER.md)**, then [`docs/Roadmap.md`](docs/Roadmap.md) and [`docs/PROGRESS.md`](docs/PROGRESS.md).
 
 | Phase | What it delivered | Status | Report |
 |---|---|---|---|
@@ -64,10 +64,10 @@ Sprint 11 turns the buildathon platform into a multilingual, government-connecte
 | 4 Govt Connect: publishing | Officer console, extraction with provenance, translation gates, targeted delivery, farmer inbox | ✅ done, in review | [04](ml/reports/04_govconnect_publishing.md) |
 | 5 Govt Connect: automated | NDMA SACHET feeds, weather cross-check, official mandi prices, SMS/IVR/WhatsApp sandboxes, offline PWA | ✅ done, in review | [05](ml/reports/05_govconnect_automated.md) |
 | 6 Yield label audit | APY + UPAg district yield labels, tiers, splits | ✅ done, awaiting scope freeze | [06](ml/reports/06_yield_label_audit.md) |
-| 7 Yield predictors | District weather (NASA POWER), polygon crosswalk, leak-safe lead-time features | ✅ done (NDVI pending) | [07](ml/reports/07_yield_predictor_pipeline.md) |
+| 7 Yield predictors | District weather (NASA POWER), polygon crosswalk, leak-safe lead-time features, MODIS NDVI | ✅ done | [07](ml/reports/07_yield_predictor_pipeline.md) |
 | 8 Yield baselines + integration | B1-B4 baselines, served forecasts, outlook page, bot yield card, shortfall drafts, insurance helper | ✅ done, in review | [08](ml/reports/08_yield_baselines.md) |
-| 9 Real computer vision | Crop ID + disease models, field-photo evaluation, outbreak heatmaps | ⏳ next | — |
-| 10 KrishiOS yield model | Shared multimodal model, self-supervised pretraining, modality dropout | ⏳ planned | — |
+| 9 Real computer vision | Offline crop ID + disease model (ONNX), crop confirmation, field-photo evaluation, BioCLIP comparison, outbreak heatmaps | ✅ done | [09](ml/reports/09_vision.md) |
+| 10 KrishiOS yield model | Shared neural model, NDVI, climate and river drivers, pretraining, modality dropout | 🔄 in progress | [10](ml/reports/10_yield_research.md) (interim) |
 | 10b Farmer toolkit | Soil Health Card reader, fertilizer calculator, crop calendar, mandi insights, community, livestock | ⏳ planned | — |
 | 11 Golden journeys + docs | End-to-end journeys, full docs, write-up | ⏳ planned | — |
 
