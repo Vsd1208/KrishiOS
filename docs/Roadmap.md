@@ -45,8 +45,8 @@ RQ4 held-out states and years, RQ5 whether a shared multi-crop model helps low-d
 | B5 shared neural model (dekad timeline, masks, crop, season, state and lead embeddings) | Done: does not beat B3 yet | Runs `58b91d618aaa`, `6df72643cd82` |
 | Global and region-routed climate drivers | Done: partial support | Run `8d35785e0f9f` |
 | Permutation tests, including Nepal rainfall for Uttar Pradesh and Bihar | Done with 20 placebos: promising, not proven | Run `14ead9935125` |
-| River-flow drivers (GloFAS, 13 points) | Running | `scripts/run_yield_river.py` |
-| 99+ placebo check for Nepal rainfall | Next | |
+| River-flow drivers (GloFAS, 13 points) | Done: no measurable skill | Run `d98038796300` |
+| 99-placebo check for Nepal rainfall | Running | |
 | P1 pretraining with label-efficiency curves | To do | |
 | P2 modality dropout per missing-input condition | To do | |
 | Held-out states and years | To do | |

@@ -54,6 +54,8 @@ def move_nepal(df: pd.DataFrame, table: pd.DataFrame, year_map: dict) -> pd.Data
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--placebos", type=int, default=20)
+    ap.add_argument("--nepal-only", action="store_true",
+                    help="only the Nepal question: global vs global+Nepal and Nepal placebos")
     args = ap.parse_args()
     labels, feats = pd.read_parquet(LABELS), pd.read_parquet(FEATURES)
     frozen = json.loads(SELECTION.read_text(encoding="utf-8"))
@@ -69,7 +71,8 @@ def main() -> None:
     maps = [dict(zip(years.tolist(), np.random.default_rng(5000 + k).permutation(years).tolist(),
                      strict=True)) for k in range(args.placebos)]
     config = {"folds": FOLDS, "leads": list(LEADS), "seeds": list(SEEDS),
-              "placebos": args.placebos, "selection_run": frozen["run_id"],
+              "placebos": args.placebos, "nepal_only": args.nepal_only,
+              "selection_run": frozen["run_id"],
               "statistic": "ratio MAE on clean tier A/B rows, mean over period x lead"}
     errors: dict[str, list[list[dict]]] = {}
 
@@ -95,13 +98,16 @@ def main() -> None:
                     m = LGBMModel(cols, params, seed=seed, name=name).fit(tr, va)
                     add(name, run, region_errors(va, m.predict(va)))
 
+                models = (("global", glob), ("global_nepal", with_nepal))
+                if not args.nepal_only:
+                    models = (("base", base), *models, ("regional", regional))
                 for i, seed in enumerate(SEEDS):
-                    for name, cols in (("base", base), ("global", glob),
-                                       ("global_nepal", with_nepal), ("regional", regional)):
+                    for name, cols in models:
                         fit(name, i, real, cols, seed)
                 for k, year_map in enumerate(maps):
                     seed = SEEDS[k % len(SEEDS)]
-                    fit("placebo_all", k, with_climate(f, table, year_map), regional, seed)
+                    if not args.nepal_only:
+                        fit("placebo_all", k, with_climate(f, table, year_map), regional, seed)
                     fit("placebo_nepal", k, move_nepal(real, table, year_map), with_nepal, seed)
                 print(f"lead {lead} {start}-{end} done", flush=True)
         run_means = {n: pd.DataFrame([pd.DataFrame(r).mean() for r in runs])
@@ -109,18 +115,18 @@ def main() -> None:
         mean = {n: t.mean() for n, t in run_means.items()}
         out: dict = {"regions": {}}
         for g in REGION_NAMES:
-            pa = run_means["placebo_all"][g].to_numpy()
             pn = run_means["placebo_nepal"][g].to_numpy()
-            out["regions"][g] = {
-                "base": mean["base"][g], "global": mean["global"][g],
-                "global_nepal": mean["global_nepal"][g], "regional": mean["regional"][g],
-                "placebo_all_mean": float(pa.mean()), "placebo_all_best": float(pa.min()),
-                "p_regional_vs_placebo": p_value(mean["regional"][g], pa),
-                "placebo_nepal_mean": float(pn.mean()),
-                "p_nepal_vs_placebo": p_value(mean["global_nepal"][g], pn),
-            }
+            row = {n: float(mean[n][g]) for n in ("base", "global", "global_nepal", "regional")
+                   if n in mean}
+            row.update(placebo_nepal_mean=float(pn.mean()), placebo_nepal_best=float(pn.min()),
+                       p_nepal_vs_placebo=p_value(mean["global_nepal"][g], pn))
+            if "placebo_all" in run_means:
+                pa = run_means["placebo_all"][g].to_numpy()
+                row.update(placebo_all_mean=float(pa.mean()), placebo_all_best=float(pa.min()),
+                           p_regional_vs_placebo=p_value(mean["regional"][g], pa))
+            out["regions"][g] = row
         by_fold = {}
-        for name in ("base", "global", "global_nepal", "regional"):
+        for name in [n for n in ("base", "global", "global_nepal", "regional") if n in errors]:
             rows = errors[name]
             keys = [f"{lead}:{s}-{e}" for lead in LEADS for s, e in FOLDS]
             by_fold[name] = {k: float(np.mean([r[j]["ganga_east"] for r in rows]))

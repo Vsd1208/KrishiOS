@@ -1,0 +1,85 @@
+{
+ "run_id": "d98038796300",
+ "config": {
+  "folds": [
+   [
+    2010,
+    2012
+   ],
+   [
+    2013,
+    2015
+   ],
+   [
+    2016,
+    2018
+   ]
+  ],
+  "leads": [
+   0,
+   30,
+   60,
+   90
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "placebos": 20,
+  "rivers": [
+   "ghaghara",
+   "rapti",
+   "gandak",
+   "kosi",
+   "ganga_varanasi",
+   "ganga_patna",
+   "brahmaputra_pasighat",
+   "brahmaputra_dibrugarh",
+   "brahmaputra_tezpur",
+   "brahmaputra_guwahati",
+   "jhelum",
+   "chenab",
+   "sutlej"
+  ],
+  "selection_run": "ab9ba29db405",
+  "source": "GloFAS via Open-Meteo Flood API"
+ },
+ "regions": {
+  "all_india": {
+   "global": 0.30741401360273496,
+   "global_rivers": 0.30722627409252784,
+   "placebo_mean": 0.3071535182925838,
+   "placebo_best": 0.3057966310797036,
+   "p_rivers_vs_placebo": 0.5238095238095238
+  },
+  "northwest": {
+   "global": 0.37420833485551425,
+   "global_rivers": 0.373820032159339,
+   "placebo_mean": 0.3730660444324474,
+   "placebo_best": 0.366239834283476,
+   "p_rivers_vs_placebo": 0.6190476190476191
+  },
+  "west_himalaya": {
+   "global": 0.28582510221873086,
+   "global_rivers": 0.2863099056437712,
+   "placebo_mean": 0.28703243643814674,
+   "placebo_best": 0.2845074209501122,
+   "p_rivers_vs_placebo": 0.3333333333333333
+  },
+  "ganga_east": {
+   "global": 0.24454382653382142,
+   "global_rivers": 0.24377820909442227,
+   "placebo_mean": 0.24395392686557074,
+   "placebo_best": 0.24131159987455278,
+   "p_rivers_vs_placebo": 0.47619047619047616
+  },
+  "northeast": {
+   "global": 0.17913036188397316,
+   "global_rivers": 0.1803347151556501,
+   "placebo_mean": 0.18037222568540137,
+   "placebo_best": 0.17958653727124477,
+   "p_rivers_vs_placebo": 0.47619047619047616
+  }
+ }
+}

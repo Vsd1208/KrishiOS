@@ -19,7 +19,8 @@ All runs are logged in `ml/experiments/`, and full results are in `ml/reports/da
 | B5, tuned (grid + 3 seeds) | `6df72643cd82` | `scripts/run_yield_b5.py --grid` | `yield_b5_val_6df72643cd82.json` |
 | Global + regional climate drivers | `8d35785e0f9f` | `scripts/run_yield_climate.py` | `yield_climate_8d35785e0f9f.json` |
 | Permutation tests (20 placebos) | `14ead9935125` | `scripts/run_yield_climate_tests.py` | `yield_climate_tests_14ead9935125.json` |
-| River flow vs placebos | running | `scripts/run_yield_river.py` | pending |
+| River flow vs placebos (20) | `d98038796300` | `scripts/run_yield_river.py` | `yield_river_d98038796300.json` |
+| Nepal rainfall vs 99 placebos | running | `scripts/run_yield_climate_tests.py --nepal-only --placebos 99` | pending |
 
 `ef6f04b49792` is a one-epoch smoke run of B5 and is not evidence.
 
@@ -104,7 +105,7 @@ Permutation test with 20 placebos (run `14ead9935125`; ratio MAE on clean tier A
 - The north-east shows no gain. Tibetan heat is only a stand-in for melt, and flood data was not yet included.
 - Nothing from this section is served.
 
-## 4. River flow (running)
+## 4. River flow: no measurable skill
 
 Modelled daily discharge from Copernicus GloFAS (through the Open-Meteo Flood API, non-commercial use) at 13
 main-channel points for 1990-2024: Ghaghara, Rapti, Gandak, Kosi, the Ganga at Varanasi and Patna, the
@@ -114,9 +115,23 @@ mean flow. Monthly mean and highest-day flow are used as anomalies, a month only
 to the regions each river affects. The test compares real flow with 20 wrong-year placebos while keeping the
 global indices real. These are model estimates, and dams and barrages may not be fully represented.
 
+Result (run `d98038796300`, ratio MAE; global indices real in every model):
+
+| Region | Global only | + rivers | Placebo mean | p (rivers) |
+|---|---|---|---|---|
+| Uttar Pradesh, Bihar | 0.2445 | 0.2438 | 0.2440 | 0.48 |
+| North-west | 0.3742 | 0.3738 | 0.3731 | 0.62 |
+| Western Himalaya | 0.2858 | 0.2863 | 0.2870 | 0.33 |
+| North-east | 0.1791 | 0.1803 | 0.1804 | 0.48 |
+| All India | 0.3074 | 0.3072 | 0.3072 | 0.52 |
+
+Real river flow did no better than flow taken from the wrong years in any region. A likely reason is the
+30-day publication lag: at the season-start forecast, the flood months of the same season are not yet
+visible. River inputs are not used further.
+
 ## 5. Remaining Phase 10 work
 
-1. Finish the river test, and run 99+ placebos for Nepal rainfall in Uttar Pradesh and Bihar.
+1. Finish the 99-placebo check for Nepal rainfall in Uttar Pradesh and Bihar (running).
 2. Experiment P1: self-supervised pretraining (masked reconstruction and cross-modal prediction, each ablated),
    with label-efficiency curves.
 3. Experiment P2: modality dropout, scored per missing-input condition.
