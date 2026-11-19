@@ -23,6 +23,8 @@ All runs are logged in `ml/experiments/`, and full results are in `ml/reports/da
 | Nepal rainfall vs 99 placebos | `f7fcab8f1033` | `scripts/run_yield_climate_tests.py --nepal-only --placebos 99` | `yield_climate_tests_f7fcab8f1033.json` |
 | P1 self-supervised pretraining (5 seeds, Colab T4) | `20f973a599b6` | `scripts/run_yield_p1p2.py --experiment both` | `yield_p1_val_20f973a599b6.json` |
 | P2 modality dropout (5 seeds, Colab T4) | `8a577ddc2da2` | `scripts/run_yield_p1p2.py --experiment both` | `yield_p2_val_8a577ddc2da2.json` |
+| B5 held-out states (5 groups, 3 seeds) | `34354360f130` | `scripts/run_yield_generalisation.py --model b5 --study states` | `yield_gen_b5_states_34354360f130.json` |
+| B3 interval calibration, out of time (3 seeds) | `af450e064e14` | `scripts/run_yield_uncertainty.py` | `yield_uncertainty_af450e064e14.json` |
 
 `ef6f04b49792` is a one-epoch smoke run of B5 and is not evidence.
 
@@ -192,11 +194,45 @@ training, and the models were scored with inputs missing (run `8a577ddc2da2`):
 - **B5 still does not replace B3.** Its median (0.2359) is close to B3's (0.2371), but B3 remains
   better on the worst decile and tier B. Nothing from this section is served.
 
-## 6. Remaining Phase 10 work
+## 6. Held-out states (RQ4, partial)
 
-1. Held-out states and held-out years (RQ4).
-2. Leave-one-crop-out and k-shot transfer (RQ5).
-3. Uncertainty with a calibration check per tier.
+States were split into 5 groups balanced by rows. For each group B5 was trained without those
+states and scored on their 2016-18 rows; the comparison model saw them. Both stopped early on the
+other states' rows only (run `34354360f130`, mean over leads, 3 seeds):
+
+| | State seen | State never seen | Change |
+|---|---|---|---|
+| Tier A median nMAE | 0.2410 | 0.2421 | +0.0011 |
+| Tier A worst decile | 0.362 | 0.375 | +0.013 |
+| Tier B median nMAE | 0.276 | 0.325 | +0.049 |
+
+For tier-A crops B5 transfers to unseen states almost without loss; tier-B crops, with little data,
+lose about 18%. Still to run: B3 on the same groups, the year-gap study, and unseen crops (RQ5).
+
+## 7. Forecast ranges: calibration per tier
+
+Widths were fitted on 2013-15 forecasts (model trained up to 2010) and checked on 2016-18 forecasts
+(model trained up to 2013), so the checked years never set the widths (run `af450e064e14`, B3,
+3 seeds; "crops close" = share of crops within 10 points of the target):
+
+| Target | Tier A coverage | Tier A crops close | Tier B coverage | Tier B crops close |
+|---|---|---|---|---|
+| 50% | 51% | 71% | 47% | 40% |
+| 80% | 80% | 90% | 73% | 42% |
+| 90% | 90% | 89% | 84% | 67% |
+
+- **Tier A is well calibrated** with the per-tier widths served since Phase 8.
+- **Tier B ranges are too narrow** and uneven across crops. Per-crop widths and widths scaled by
+  district variability do not fix it (the scaled version mostly widens every range).
+- The ranges are wide: a tier-A 80% range spans about +/-48% of the district's usual yield.
+- Planned change, to be chosen on validation and checked once on test: widen tier-B ranges until
+  they reach the target on these years.
+
+## 8. Remaining Phase 10 work
+
+1. Held-out states for B3, and the year-gap study (RQ4).
+2. Leave-one-crop-out and k-shot transfer for B3 and B5 (RQ5).
+3. Widen tier-B forecast ranges (section 7).
 4. A permutation test of the global climate indices on their own (the largest climate gains, not yet
    tested against wrong-year placebos).
 5. Score the frozen best configuration on test once, and swap it in behind the yield provider only
