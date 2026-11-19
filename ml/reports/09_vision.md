@@ -133,4 +133,39 @@ Through the backend provider on 300 field validation photos, inference took a me
 - **Licence:** weights are distributed under CC BY-SA 3.0 with attribution, by the project owner's decision.
 - **Pending human review:** Hindi and Telugu wording of the new messages.
 - **Satellite NDVI** was processed separately (run `44b6f843e847`: 299 months, 730 districts) and is not part of this phase's results.
-- **Indian field photos:** `scripts/download_india_vision.py` samples potato, chilli, tomato, soybean and wheat photos within a 5 GB limit. The download is incomplete because Mendeley Data became unreliable, and no model uses these photos yet.
+- **Indian field photos:** see section 8. No model is trained on them yet.
+
+## 8. Independent test on Indian field photos (added 2026-11-19)
+
+**Data.** `scripts/download_india_vision.py` sampled five Mendeley Data sets within the 5 GB limit (4.26 GB transferred): potato (Uttar Pradesh), chilli (Krishna), tomato (BSKKV), soybean (Maharashtra) and wheat leaf rust (IARI). `scripts/check_india_vision.py` then removed repeats:
+
+- **Exact copies:** 12 rows. Five chilli files appear under both bacterial spot and Cercospora leaf spot, and are dropped.
+- **Near copies:** a 64-bit hash grouped 2,020 extra photos, but on inspection it was matching layouts (a single wheat leaf on black, wide black borders on potato photos). A 256-bit hash of the photo with dark borders trimmed finds 295 real repeats (bursts of the same leaf), and one photo per group is kept.
+- **Overlap with training data:** 333 photos matched a training image on the 64-bit hash; none matched when rechecked against the cached training photo.
+- **Kept:** 4,281 photos.
+
+Possible shortcuts for later training: chilli photos are all 1000x1000; most potato early blight photos are 8160x3672 with black borders while most healthy ones are 3468x4624; wheat photos are single leaves on a black background, not field scenes.
+
+**Result** (run `07389f462bb7`, served artifact, backend preprocessing, threshold 0.93; 95% intervals in `reports/data/vision_india_07389f462bb7.json`):
+
+| Photos | n | Crop recognised | Auto-accepted as a supported crop | Wrong and auto-accepted |
+|---|---|---|---|---|
+| Tomato | 105 | 98.1% | 70.5% | 0 |
+| Potato | 1,310 | 52.2% | 3.6% (as tomato) | 47 |
+| Soybean | 420 | 23.3% | 2.9% (as tomato) | 12 |
+| Chilli (not a model crop) | 1,627 | n/a | 9.5% (as tomato) | 155 |
+| Wheat (not a model crop) | 819 | n/a | **50.2% (as maize)** | 411 |
+
+Disease with the crop confirmed by the farmer:
+
+| Photos | n | Correct | Main error |
+|---|---|---|---|
+| Potato early blight | 449 | 95.8% | |
+| Potato late blight | 447 | 28.6% | 318 called early blight |
+| Potato healthy | 414 | 31.4% | 191 called early blight |
+| Tomato Alternaria (early blight) | 20 | 5% | 9 called late blight |
+
+**Reading.**
+- The confirmation threshold was tuned on crops the model knows. It does not protect against crops it has never seen: a wheat leaf looks like maize with high confidence. Raising the threshold does not fix this (at 0.97, 75 wrong auto-accepts remain and only 27% of tomato is still accepted; at 0.99 nothing is accepted).
+- Potato disease reading leans heavily towards early blight on these photos, and tomato early blight is rarely recognised. The validation figures in section 4 were optimistic for Indian field conditions.
+- Next: retrain with these photos (chilli and wheat as new crops, more potato and soybean field photos), split by near-copy group, with border trimming to remove the size and border shortcut.

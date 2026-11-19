@@ -11,6 +11,7 @@ Usage (from ml/)::
 
     python -I scripts/download_india_vision.py inspect
     python -I scripts/download_india_vision.py download
+    python -I scripts/download_india_vision.py unpack     # photos inside downloaded .7z files
 """
 
 from __future__ import annotations
@@ -19,7 +20,9 @@ import hashlib
 import http.client
 import io
 import json
+import shutil
 import struct
+import subprocess
 import sys
 import threading
 import time
@@ -61,7 +64,7 @@ SETS: dict[str, dict] = {
         "id": "ymt8k9bjkn", "version": 3, "per_class": None,
         "archives": {"Chili Leaf Disease Original Dataset.zip": ("chilli", None)}},
     "tomato_bskkv": {
-        "id": "rv3kxfv47y", "version": 1, "per_class": None, "archives": {},
+        "id": "rv3kxfv47y", "version": 1, "per_class": None, "archives": {}, "crop": "tomato",
         "whole": ["Real world data.7z"]},
     "soybean_mh": {
         "id": "hkbgh5s3b7", "version": 1, "per_class": 70,
@@ -288,6 +291,58 @@ def download_whole(file: dict, folder: Path, budget: Budget) -> None:
     part.replace(path)
 
 
+def unpack() -> None:
+    """Add the photos inside downloaded .7z archives to the manifest (no network).
+
+    Uses the libarchive ``tar`` shipped with Windows 10+ (and most Linux and macOS systems), which
+    reads .7z and refuses absolute or ``..`` member paths. Extraction goes to a fresh scratch folder
+    that is removed afterwards; only regular JPEG/PNG files inside it are kept, under their hash.
+    """
+    done = set()
+    if MANIFEST.exists():
+        for line in MANIFEST.read_text(encoding="utf-8").splitlines():
+            r = json.loads(line)
+            done.add((r["set"], r["archive"], r["member"]))
+    added: Counter = Counter()
+    with MANIFEST.open("a", encoding="utf-8") as out:
+        for name, spec in SETS.items():
+            folder = ROOT / name
+            archive = folder / "archive.7z"
+            if not spec.get("whole") or not archive.exists():
+                continue
+            scratch = folder / "_unpack"
+            if scratch.exists():
+                shutil.rmtree(scratch)
+            scratch.mkdir()
+            try:
+                subprocess.run(["tar", "-xf", str(archive), "-C", str(scratch)], check=True)
+                base = scratch.resolve()
+                for p in sorted(scratch.rglob("*")):
+                    if p.is_symlink() or not p.is_file() or base not in p.resolve().parents:
+                        continue
+                    suffix = PHOTO_TYPES.get(p.suffix.lower())
+                    member = p.relative_to(scratch).as_posix()
+                    key = (name, spec["whole"][0], member)
+                    if suffix is None or key in done or p.stat().st_size > MAX_PHOTO_BYTES:
+                        continue
+                    saved = save_photo(p.read_bytes(), suffix, folder)
+                    if saved is None:
+                        continue
+                    digest, size = saved
+                    raw_class = p.parent.name
+                    out.write(json.dumps({
+                        "set": name, "archive": spec["whole"][0], "member": member,
+                        "crop": spec["crop"], "raw_class": raw_class, "sha256": digest,
+                        "file": f"{name}/{digest}{suffix}", "width": size[0],
+                        "height": size[1]}) + "\n")
+                    done.add(key)
+                    added[(name, raw_class)] += 1
+            finally:
+                shutil.rmtree(scratch, ignore_errors=True)
+    print(json.dumps({f"{s}|{c}": n for (s, c), n in sorted(added.items())}, indent=1))
+    print(f"added {sum(added.values())} photos")
+
+
 def photos(zf: zipfile.ZipFile) -> list[zipfile.ZipInfo]:
     return [i for i in zf.infolist() if not i.is_dir()
             and PurePosixPath(i.filename).suffix.lower() in PHOTO_TYPES
@@ -427,8 +482,11 @@ def download(budget: Budget) -> None:
 
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else ""
-    if mode not in {"inspect", "download"}:
-        raise SystemExit("usage: download_india_vision.py inspect|download")
+    if mode not in {"inspect", "download", "unpack"}:
+        raise SystemExit("usage: download_india_vision.py inspect|download|unpack")
+    if mode == "unpack":
+        unpack()
+        raise SystemExit(0)
     b = Budget()
     if mode == "inspect":
         inspect(b)
