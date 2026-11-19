@@ -134,6 +134,27 @@ DRIVERS = (
 )
 DRIVER_STATS = ("last", "mean3")
 DRIVER_FEATURES = [f"drv_{d.name}_{s}" for d in DRIVERS for s in DRIVER_STATS]
+# River points (modelled GloFAS discharge): name -> (lat, lon, states it may affect). Coordinates
+# are the grid cells on each main channel near the named place, chosen from 2015 mean flow.
+RIVER_POINTS = {
+    "ghaghara": (26.83, 82.18, GANGA_EAST),
+    "rapti": (26.53, 83.38, GANGA_EAST),
+    "gandak": (27.23, 83.88, GANGA_EAST),
+    "kosi": (26.53, 86.88, GANGA_EAST),
+    "ganga_varanasi": (25.33, 83.03, GANGA_EAST),
+    "ganga_patna": (25.62, 85.12, GANGA_EAST),
+    "brahmaputra_pasighat": (28.08, 95.33, NORTHEAST),
+    "brahmaputra_dibrugarh": (27.48, 94.78, NORTHEAST),
+    "brahmaputra_tezpur": (26.62, 92.83, NORTHEAST),
+    "brahmaputra_guwahati": (26.18, 91.68, NORTHEAST),
+    "jhelum": (34.27, 74.58, WEST_HIMALAYA),
+    "chenab": (32.83, 74.53, WESTERLY),
+    "sutlej": (31.28, 76.58, WESTERLY),
+}
+RIVER_DRIVERS = tuple(
+    Driver(f"{kind}_{name}", "open-meteo-glofas", kind, None, (lat, lat), (lon, lon), states)
+    for name, (lat, lon, states) in RIVER_POINTS.items() for kind in ("flow", "peak"))
+RIVER_FEATURES = [f"drv_{d.name}_{s}" for d in RIVER_DRIVERS for s in DRIVER_STATS]
 BASELINE_YEARS = (1982, 2009)  # ends before the first evaluation period
 
 
@@ -188,14 +209,26 @@ def standardize(series: pd.DataFrame) -> pd.DataFrame:
     return d.drop(columns=["month", "mean", "std"])
 
 
-def driver_features(series: pd.DataFrame, cutoffs: pd.Series) -> pd.DataFrame:
+def river_monthly(daily: pd.DataFrame) -> pd.DataFrame:
+    """Monthly ``flow`` (log mean) and ``peak`` (log highest day) per river, as driver series."""
+    d = daily.dropna(subset=["discharge"]).assign(
+        month_start=lambda x: pd.to_datetime(x["date"]).dt.to_period("M").dt.to_timestamp())
+    g = d.groupby(["river", "month_start"])["discharge"].agg(["mean", "max", "size"]).reset_index()
+    g = g[g["size"] >= 25]
+    parts = [g.assign(driver="flow_" + g["river"], value=np.log1p(g["mean"])),
+             g.assign(driver="peak_" + g["river"], value=np.log1p(g["max"]))]
+    return pd.concat(parts, ignore_index=True)[["driver", "month_start", "value"]]
+
+
+def driver_features(series: pd.DataFrame, cutoffs: pd.Series,
+                    drivers: tuple[Driver, ...] = DRIVERS) -> pd.DataFrame:
     """Latest and 3-month mean anomaly of each driver, from published months only."""
     m = series.assign(end=pd.to_datetime(series["month_start"]) + pd.offsets.MonthEnd(0))
     groups = {k: g.sort_values("end") for k, g in m.groupby("driver")}
     rows = []
     for cutoff in pd.to_datetime(pd.Series(cutoffs).drop_duplicates()):
         row: dict = {"cutoff": cutoff}
-        for d in DRIVERS:
+        for d in drivers:
             g = groups.get(d.name)
             v = np.array([], dtype=float)
             if g is not None:
@@ -208,11 +241,11 @@ def driver_features(series: pd.DataFrame, cutoffs: pd.Series) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def route_drivers(df: pd.DataFrame) -> pd.DataFrame:
+def route_drivers(df: pd.DataFrame, drivers: tuple[Driver, ...] = DRIVERS) -> pd.DataFrame:
     """Blank each regional driver outside the states it is expected to influence."""
     out = df.copy()
     state = out["lgd_state_code"].astype(int)
-    for d in DRIVERS:
+    for d in drivers:
         if d.states is not None:
             outside = ~state.isin(d.states)
             for s in DRIVER_STATS:

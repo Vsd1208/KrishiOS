@@ -82,6 +82,31 @@ def test_regional_drivers_are_blank_outside_their_states() -> None:
     assert out["drv_sst_arabian_sea_last"].notna().all()
 
 
+def test_river_months_summarise_flow_and_peak_and_skip_thin_months() -> None:
+    days = pd.date_range("2015-01-01", "2015-02-10")
+    daily = pd.DataFrame({"river": "kosi", "date": days, "discharge": 1.0})
+    daily.loc[daily["date"] == "2015-01-15", "discharge"] = 32.0
+    out = climate.river_monthly(daily).set_index("driver")
+    assert len(out) == 2  # February has too few days
+    assert out.loc["peak_kosi", "value"] == pytest.approx(np.log1p(32.0))
+    assert out.loc["flow_kosi", "value"] == pytest.approx(np.log1p(62.0 / 31))
+
+
+def test_permutation_p_value_counts_placebos_at_least_as_good() -> None:
+    import importlib.util
+    import sys
+    from pathlib import Path
+
+    scripts = Path(__file__).resolve().parents[1] / "scripts"
+    sys.path.insert(0, str(scripts))
+    spec = importlib.util.spec_from_file_location("climate_tests",
+                                                  scripts / "run_yield_climate_tests.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert module.p_value(0.2, np.array([0.3, 0.4, 0.5])) == pytest.approx(0.25)
+    assert module.p_value(0.35, np.array([0.3, 0.4, 0.5])) == pytest.approx(0.5)
+
+
 def table(values, start="2015-01-01"):
     months = pd.date_range(start, periods=len(values), freq="MS")
     return pd.DataFrame({"index": "dmi", "month_start": months, "value": values})
