@@ -168,4 +168,8 @@ Disease with the crop confirmed by the farmer:
 **Reading.**
 - The confirmation threshold was tuned on crops the model knows. It does not protect against crops it has never seen: a wheat leaf looks like maize with high confidence. Raising the threshold does not fix this (at 0.97, 75 wrong auto-accepts remain and only 27% of tomato is still accepted; at 0.99 nothing is accepted).
 - Potato disease reading leans heavily towards early blight on these photos, and tomato early blight is rarely recognised. The validation figures in section 4 were optimistic for Indian field conditions.
+- **Serving change (project owner's decision):** auto-accept is now off by default
+  (`VISION_AUTO_ACCEPT_CROP=false`). The farmer confirms the crop on every photo; the model's top
+  crops are still offered first as chips. It should be switched back on only for a model that
+  passes this test.
 - Next: retrain with these photos (chilli and wheat as new crops, more potato and soybean field photos), split by near-copy group, with border trimming to remove the size and border shortcut.

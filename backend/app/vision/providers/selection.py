@@ -34,7 +34,7 @@ def _onnx() -> VisionModelProvider:
     if art is None:
         raise ProviderConfigurationError(
             "onnx-crop-classifier: no exported model under ML_ARTIFACTS_DIR/vision")
-    return OnnxCropClassifier(art, s.VISION_CROP_CONFIRM_THRESHOLD)
+    return OnnxCropClassifier(art, s.VISION_CROP_CONFIRM_THRESHOLD, s.VISION_AUTO_ACCEPT_CROP)
 
 
 vision_selector.register(

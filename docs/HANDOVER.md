@@ -73,6 +73,7 @@ The backend only loads exported artifacts from `ml/artifacts/` (git-ignored); it
 | Branch | `feat/sprint-11-phase10-yield-research` (from `main` after the Phase 9 merge) |
 | Serving yield model | Phase 8 B3 (unchanged) |
 | Vision provider | `VISION_PROVIDER` defaults to `mock-v1`; set `onnx-crop-classifier` and `ML_ARTIFACTS_DIR` to use the real model |
+| Vision crop auto-accept | `VISION_AUTO_ACCEPT_CROP` defaults to `false`: the farmer confirms the crop on every photo, because the current model mistook wheat for maize and chilli for tomato on Indian field photos ([report](../ml/reports/09_vision.md), section 8) |
 | Running experiment | River-flow permutation test (`scripts/run_yield_river.py`) |
 | Indian field photo download | Partial: 653 photos, about 1.0 GB of a 5 GB limit (`scripts/download_india_vision.py`, resumable) |
 | Tests | ml 55 passed; backend 322 passed + 11 database tests; frontend 33 files passed (Phase 9 run) |

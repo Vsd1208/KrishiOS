@@ -1,6 +1,7 @@
 """ONNX crop classifier decision logic (fake ONNX session; no model file needed)."""
 
 import numpy as np
+from app.config.settings import Settings
 from app.vision.providers.onnx_crop_classifier import OnnxCropClassifier, resolve_threshold
 from PIL import Image
 
@@ -73,6 +74,17 @@ def test_artifact_threshold_wins_and_null_means_always_ask(tmp_path) -> None:
     never = resolve_threshold({"confirm_threshold": None}, 0.6)
     r = model([50.0, 0.0, 0.0], [3.0, 0.0, 0.0, 0.0], threshold=never).classify(photo(tmp_path))
     assert r.crop_detected is None and not r.crop_supported
+
+
+def test_auto_accept_off_always_asks_even_when_sure(tmp_path) -> None:
+    never = resolve_threshold({"confirm_threshold": 0.83}, 0.6, auto_accept=False)
+    r = model([50.0, 0.0, 0.0], [3.0, 0.0, 0.0, 0.0], threshold=never).classify(photo(tmp_path))
+    assert r.crop_detected is None and not r.crop_supported
+    assert r.crop_candidates[0][0] == "tomato"  # still offered first as a chip
+
+
+def test_auto_accept_is_off_by_default() -> None:
+    assert Settings.model_fields["VISION_AUTO_ACCEPT_CROP"].default is False
 
 
 def test_phone_rotation_is_applied_before_inference(tmp_path) -> None:
