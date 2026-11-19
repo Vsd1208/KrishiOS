@@ -47,8 +47,8 @@ RQ4 held-out states and years, RQ5 whether a shared multi-crop model helps low-d
 | Permutation tests, including Nepal rainfall for Uttar Pradesh and Bihar | Done with 20 placebos: promising, not proven | Run `14ead9935125` |
 | River-flow drivers (GloFAS, 13 points) | Done: no measurable skill | Run `d98038796300` |
 | 99-placebo check for Nepal rainfall | Done: p = 0.05, misses the 0.01 bar; not used | Run `f7fcab8f1033` |
-| P1 pretraining with label-efficiency curves | To do | |
-| P2 modality dropout per missing-input condition | To do | |
+| P1 pretraining with label-efficiency curves | Done: no gain at any label share (5 seeds) | Run `20f973a599b6` |
+| P2 modality dropout per missing-input condition | Done: helps when inputs are missing, costs 0.003 with all inputs | Run `8a577ddc2da2` |
 | Held-out states and years | To do | |
 | Leave-one-crop-out and k-shot transfer | To do | |
 | Uncertainty and calibration per tier | To do | |
