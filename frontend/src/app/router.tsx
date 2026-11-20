@@ -6,7 +6,7 @@
  */
 
 import React, { Suspense } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import { RoleRoute } from '@/features/auth/RoleRoute';
@@ -14,6 +14,7 @@ import { FarmerShell } from '@/components/layout/FarmerShell';
 import { OfficerShell } from '@/components/layout/OfficerShell';
 import { LoadingState } from '@/components/feedback/LoadingState';
 import { ErrorState } from '@/components/feedback/ErrorState';
+import { RouteError } from '@/components/feedback/RouteError';
 
 // Lazy-loaded farmer views
 const FarmerDashboard = React.lazy(() => import('@/pages/farmer/FarmerDashboard'));
@@ -41,7 +42,19 @@ const GrievanceQueuePage = React.lazy(() => import('@/pages/officer/GrievanceQue
 const YieldOutlookPage = React.lazy(() => import('@/pages/officer/YieldOutlookPage'));
 const OutbreakMapPage = React.lazy(() => import('@/pages/officer/OutbreakMapPage'));
 
-export const router = createBrowserRouter([
+/**
+ * Give every route a crash screen. Page routes get one inside the shell (the menu stays usable);
+ * top-level routes get a full-page one as the last line of defence, so the app never goes blank.
+ */
+function withErrorScreens(routes: RouteObject[], depth = 0): RouteObject[] {
+  return routes.map((r) => {
+    const children = r.children ? withErrorScreens(r.children, depth + 1) : undefined;
+    const errorElement = r.errorElement ?? <RouteError fullPage={depth === 0} />;
+    return { ...r, errorElement, ...(children ? { children } : {}) } as RouteObject;
+  });
+}
+
+export const router = createBrowserRouter(withErrorScreens([
   {
     path: '/login',
     element: <LoginPage />,
@@ -295,8 +308,6 @@ export const router = createBrowserRouter([
     element: (
       <ErrorState
         statusCode={404}
-        title="404 — Page Not Found"
-        message="The page or view you requested does not exist or has been moved."
         fullPage
         onRetry={() => {
           window.location.assign('/login');
@@ -304,6 +315,6 @@ export const router = createBrowserRouter([
       />
     ),
   },
-]);
+]));
 
 export default router;

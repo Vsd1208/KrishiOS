@@ -706,5 +706,44 @@
   "weatherCard": {
     "title": "Weather at your village",
     "none": "No weather reading is available right now. The district weather card above has the latest forecast."
+  },
+  "errorState": {
+    "offline": {
+      "title": "No connection",
+      "message": "KrishiOS could not be reached. Check your internet connection and try again."
+    },
+    "session": {
+      "title": "Session expired",
+      "message": "Please sign in again to continue."
+    },
+    "denied": {
+      "title": "Not allowed",
+      "message": "Your account does not have access to this page."
+    },
+    "missing": {
+      "title": "Page not found",
+      "message": "This page does not exist or has moved."
+    },
+    "server": {
+      "title": "KrishiOS is having trouble",
+      "message": "Please try again in a few minutes."
+    },
+    "generic": {
+      "title": "Something went wrong",
+      "message": "Please try again."
+    },
+    "crash": {
+      "title": "This page could not be shown",
+      "message": "Something went wrong on this page. Reload to try again, or use the menu to open another page."
+    },
+    "update": {
+      "title": "KrishiOS was updated",
+      "message": "Reload the page to get the latest version."
+    },
+    "reload": "Reload",
+    "loadFailed": {
+      "title": "Some information could not be loaded",
+      "message": "Parts of this page may be missing. Please try again shortly."
+    }
   }
 }
