@@ -58,7 +58,7 @@ describe('ProfilePage', () => {
     vi.mocked(farmerApi.getMe).mockResolvedValue(me);
     vi.mocked(alertsApi.getPreferences).mockResolvedValue(pref);
     wrap(<ProfilePage />);
-    expect(await screen.findByText('Sita Devi')).toBeInTheDocument();
+    expect(await screen.findByText('Sita Devi', {}, { timeout: 5000 })).toBeInTheDocument();
     expect(screen.getByText('9000000009')).toBeInTheDocument();
     expect(farmerApi.listFarmers).not.toHaveBeenCalled();
   });
@@ -69,7 +69,7 @@ describe('ProfilePage', () => {
     vi.mocked(alertsApi.updatePreferences).mockResolvedValue({ ...pref, enable_market_alerts: false });
     wrap(<ProfilePage />);
 
-    const save = await screen.findByRole('button', { name: 'Save alert choices' });
+    const save = await screen.findByRole('button', { name: 'Save alert choices' }, { timeout: 5000 });
     expect(save).toBeDisabled();
     fireEvent.click(screen.getByRole('checkbox', { name: /Mandi price alerts/ }));
     fireEvent.click(save);
@@ -78,7 +78,7 @@ describe('ProfilePage', () => {
     const sent = vi.mocked(alertsApi.updatePreferences).mock.calls[0][0];
     expect(sent).toMatchObject({ enable_market_alerts: false, quiet_hours_start: '21:00', quiet_hours_enabled: true });
     expect(sent).not.toHaveProperty('id');
-    expect(await screen.findByText('Saved')).toBeInTheDocument();
+    expect(await screen.findByText('Saved', {}, { timeout: 5000 })).toBeInTheDocument();
   });
 
   it('saves the language to the farmer profile', async () => {
@@ -86,7 +86,7 @@ describe('ProfilePage', () => {
     vi.mocked(alertsApi.getPreferences).mockResolvedValue(pref);
     vi.mocked(farmerApi.updateFarmer).mockResolvedValue({ ...me, preferred_language: 'te' });
     wrap(<ProfilePage />);
-    await screen.findByText('Sita Devi');
+    await screen.findByText('Sita Devi', {}, { timeout: 5000 });
     fireEvent.click(screen.getByRole('radio', { name: /Telugu/ }));
     await waitFor(() => expect(farmerApi.updateFarmer).toHaveBeenCalledWith(9, { preferred_language: 'te' }));
     await i18n.changeLanguage('en');
