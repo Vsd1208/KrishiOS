@@ -75,7 +75,7 @@ describe('ProfilePage', () => {
     fireEvent.click(save);
 
     await waitFor(() => expect(alertsApi.updatePreferences).toHaveBeenCalledTimes(1));
-    const sent = vi.mocked(alertsApi.updatePreferences).mock.calls[0][0];
+    const sent = vi.mocked(alertsApi.updatePreferences).mock.calls[0]?.[0];
     expect(sent).toMatchObject({ enable_market_alerts: false, quiet_hours_start: '21:00', quiet_hours_enabled: true });
     expect(sent).not.toHaveProperty('id');
     expect(await screen.findByText('Saved', {}, { timeout: 5000 })).toBeInTheDocument();

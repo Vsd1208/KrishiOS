@@ -55,7 +55,7 @@ export const OfficerDashboard: React.FC = () => {
             <div className="flex items-center gap-2 text-caption text-text-muted font-medium">
               <MapPin className="w-3.5 h-3.5 text-primary-600" aria-hidden="true" />
               <span>
-                {officer?.designation || 'Agricultural Officer'} • District #{officer?.district_id || '12 (Warangal / Khammam)'}
+                {officer?.designation || 'Agricultural Officer'} • District #{officer?.district_id ?? '—'}
               </span>
             </div>
             <h1 className="text-display font-extrabold text-text tracking-tight">
@@ -127,7 +127,7 @@ export const OfficerDashboard: React.FC = () => {
               </div>
             </div>
             <CardTitle as="h3" className="text-heading font-extrabold text-text mt-1">
-              {severeAlerts.length || 2}
+              {severeAlerts.length}
             </CardTitle>
             <CardDescription>Severe weather &amp; pest outbreaks</CardDescription>
           </CardHeader>
@@ -154,9 +154,9 @@ export const OfficerDashboard: React.FC = () => {
               </div>
             </div>
             <CardTitle as="h3" className="text-heading font-extrabold text-text mt-1">
-              {farmers.length || 1}
+              {farmers.length}
             </CardTitle>
-            <CardDescription>{fields.length || 2} active registered plots</CardDescription>
+            <CardDescription>{fields.length} registered plots</CardDescription>
           </CardHeader>
           <CardContent className="pt-2 border-t border-border flex items-center justify-between text-caption">
             <span className="text-success-700 font-semibold">Jurisdiction Directory</span>

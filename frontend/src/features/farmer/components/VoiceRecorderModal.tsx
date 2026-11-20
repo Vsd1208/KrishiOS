@@ -281,9 +281,9 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
                     <CitationCard
                       key={idx}
                       citation={{
-                        source_title: c.source_title || 'ICAR / State Agricultural Advisory',
-                        authority: c.authority || 'ICAR Research Institute',
-                        document_type: c.document_type || 'Crop Advisory Guideline',
+                        source_title: c.source_title || '—',
+                        authority: c.authority || undefined,
+                        document_type: c.document_type || undefined,
                         snippet: c.snippet,
                       }}
                     />

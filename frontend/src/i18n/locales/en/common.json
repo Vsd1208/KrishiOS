@@ -95,16 +95,16 @@
       "greetingNoName": "Namaste",
       "myCrop": "My crop",
       "noCrop": "No crop recorded yet",
-      "addCrop": "Add your crop in \"Fields\"",
       "daysSinceSowing_one": "{{count}} day since sowing",
       "daysSinceSowing_other": "{{count}} days since sowing",
-      "noSowingDate": "Add the sowing date in \"Fields\" to track crop age.",
+      "noSowingDate": "No sowing date recorded.",
       "status": {
         "Growing": "Growing",
         "Sown": "Sown",
         "Planned": "Planned",
         "Harvested": "Harvested"
-      }
+      },
+      "cropHelp": "Once your crop is registered, it appears here."
     }
   },
   "officer": {
@@ -680,5 +680,31 @@
     "saved": "Saved",
     "saveFailed": "Could not save. Please try again.",
     "prefsFailed": "Could not load your alert choices. Please try again later."
+  },
+  "fieldsPage": {
+    "title": "My fields",
+    "subtitle": "Your registered fields, crops and soil tests",
+    "totalLand": "Total land:",
+    "acres": "{{n}} acres",
+    "none": "No fields are registered for you yet",
+    "noneHelp": "Fields can't be added from the app yet. Once a field is registered for you, it appears here with its crops and soil tests.",
+    "area": "Area",
+    "soilType": "Soil type",
+    "irrigation": "Irrigation",
+    "soilTest": "Latest soil test",
+    "tested": "Tested on {{date}}",
+    "noSoil": "No soil test recorded for this field.",
+    "soilFailed": "Could not load soil tests."
+  },
+  "farmSummary": {
+    "title": "My farm",
+    "land": "Land",
+    "acres": "acres",
+    "fields": "Fields",
+    "standing": "Standing crops"
+  },
+  "weatherCard": {
+    "title": "Weather at your village",
+    "none": "No weather reading is available right now. The district weather card above has the latest forecast."
   }
 }

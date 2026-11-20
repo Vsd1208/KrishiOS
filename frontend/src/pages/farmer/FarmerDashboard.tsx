@@ -28,7 +28,6 @@ import { MandiTrendCard } from '@/features/govconnect/MandiTrendCard';
 import { feedApi } from '@/services/api/govconnect';
 import { useQuery } from '@tanstack/react-query';
 import { VoiceRecorderModal } from '@/features/farmer/components/VoiceRecorderModal';
-import { CropVisionModal } from '@/features/farmer/components/CropVisionModal';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Sprout, Calendar } from 'lucide-react';
 
@@ -47,7 +46,6 @@ export const FarmerDashboard: React.FC = () => {
 
   // Modals for Hero Launcher
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
-  const [isVisionOpen, setIsVisionOpen] = useState(false);
 
   // Live queries
   const { data: farmer, isLoading: isFarmerLoading } = useFarmerProfile();
@@ -77,7 +75,8 @@ export const FarmerDashboard: React.FC = () => {
     if (action === 'voice') {
       setIsVoiceOpen(true);
     } else if (action === 'vision') {
-      setIsVisionOpen(true);
+      // Photo checks run in the Ask chat, which asks the farmer to confirm the crop first (Phase 9).
+      void navigate('/farmer/ask');
     } else {
       navigate('/farmer/ask');
     }
@@ -178,13 +177,7 @@ export const FarmerDashboard: React.FC = () => {
           </CardHeader>
           <CardContent className="pt-2 border-t border-border text-caption">
             {!primaryFieldCrop ? (
-              <button
-                type="button"
-                onClick={() => navigate('/farmer/fields')}
-                className="font-semibold text-primary-700 hover:underline cursor-pointer"
-              >
-                {t('farmer.dash.addCrop')}
-              </button>
+              <span className="text-text-muted">{t('farmer.dash.cropHelp')}</span>
             ) : sownDays !== null ? (
               <span className="text-text">{t('farmer.dash.daysSinceSowing', { count: sownDays })}</span>
             ) : (
@@ -199,11 +192,6 @@ export const FarmerDashboard: React.FC = () => {
         isOpen={isVoiceOpen}
         onClose={() => setIsVoiceOpen(false)}
         defaultLanguage="te"
-      />
-      <CropVisionModal
-        isOpen={isVisionOpen}
-        onClose={() => setIsVisionOpen(false)}
-        defaultCrop={primaryCrop}
       />
     </div>
   );
