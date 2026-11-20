@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 
 import _bootstrap  # noqa: F401
 import numpy as np
@@ -31,7 +32,7 @@ import pandas as pd
 from run_yield_baselines import FEATURES, LABELS, LEADS, SELECTION, score
 
 from krishios_ml.common.experiment_log import track_experiment
-from krishios_ml.common.paths import REPORTS_DIR
+from krishios_ml.common.paths import DATA_DIR, REPORTS_DIR
 from krishios_ml.yield_.baselines import LGBMModel, per_crop
 from krishios_ml.yield_.data import add_anomalies, build_frame, feature_sets, weather_normals
 
@@ -84,6 +85,37 @@ def stats(values: list[float]) -> dict:
     return {"mean": float(np.nanmean(a)), "sd": float(np.nanstd(a, ddof=1)) if len(a) > 1 else 0.0}
 
 
+# ---------------------------------------------------------------- resumable progress
+
+class Cache:
+    """Finished units (a seed, a lead, a crop) saved as they complete, so an interrupted study
+    resumes. Saved units are reused only when the study's config is the same."""
+
+    def __init__(self, path: Path | None, config: dict) -> None:
+        self.path, self.config, self.units = path, json.loads(json.dumps(config)), {}
+        if path and path.exists():
+            saved = json.loads(path.read_text(encoding="utf-8"))
+            if saved.get("config") == self.config:
+                self.units = saved["units"]
+                print(f"resuming: {len(self.units)} units already done", flush=True)
+
+    def get(self, key: str):
+        return self.units.get(key)
+
+    def put(self, key: str, value):
+        self.units[key] = value
+        if self.path:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            tmp = self.path.with_suffix(".part")
+            tmp.write_text(json.dumps({"config": self.config, "units": self.units}),
+                           encoding="utf-8")
+            tmp.replace(self.path)
+        return value
+
+
+CACHE = Cache(None, {})
+
+
 # ---------------------------------------------------------------- B3 (LightGBM, per lead)
 
 def b3_frames(frame: pd.DataFrame, lead: int, normals_until: int | None = None):
@@ -101,6 +133,10 @@ def b3_states(frame: pd.DataFrame, sel: dict) -> dict:
     folds = state_folds(frame["lgd_state_code"])
     out: dict = {"seen": [], "unseen": [], "fold_of_state": folds}
     for seed in SEEDS:
+        if (unit := CACHE.get(f"states|{seed}")) is not None:
+            for name in ("seen", "unseen"):
+                out[name].append(unit[name])
+            continue
         preds = {"seen": [], "unseen": []}
         rows = []
         for lead in LEADS:
@@ -119,11 +155,14 @@ def b3_states(frame: pd.DataFrame, sel: dict) -> dict:
                 rows.append(ev)
             print(f"B3 states seed {seed} lead {lead} done", flush=True)
         ev_all = pd.concat(rows, ignore_index=True)
+        unit = {}
         for name in ("seen", "unseen"):
             p = np.concatenate(preds[name])
             per_lead = [summary(ev_all[ev_all["lead_days"] == lead],
                                 p[(ev_all["lead_days"] == lead).to_numpy()]) for lead in LEADS]
-            out[name].append({k: float(np.mean([r[k] for r in per_lead])) for k in per_lead[0]})
+            unit[name] = {k: float(np.mean([r[k] for r in per_lead])) for k in per_lead[0]}
+            out[name].append(unit[name])
+        CACHE.put(f"states|{seed}", unit)
     return out
 
 
@@ -131,24 +170,35 @@ def b3_years(frame: pd.DataFrame, sel: dict) -> dict:
     out: dict = {}
     for seed in SEEDS:
         for lead in LEADS:
-            dev = frame[frame["split"].isin(["train", "val"])]
-            frozen_f = b3_frames(dev, lead, normals_until=FROZEN_END - 2)
-            frozen = b3_fit(frozen_f[frozen_f["crop_year"] <= FROZEN_END - 2],
-                            frozen_f[frozen_f["crop_year"].between(FROZEN_END - 1, FROZEN_END)],
-                            lead, seed, sel)
-            for start, end in GAP_PERIODS:
-                fresh_f = b3_frames(dev, lead, normals_until=start - 3)
-                fresh = b3_fit(fresh_f[fresh_f["crop_year"] <= start - 3],
-                               fresh_f[fresh_f["crop_year"].between(start - 2, start - 1)],
-                               lead, seed, sel)
-                ev_frozen = frozen_f[frozen_f["crop_year"].between(start, end)]
-                ev_fresh = fresh_f[fresh_f["crop_year"].between(start, end)]
-                key = f"{start}-{end}"
+            if (unit := CACHE.get(f"years|{seed}|{lead}")) is None:
+                unit = CACHE.put(f"years|{seed}|{lead}", b3_years_unit(frame, sel, seed, lead))
+            for key, v in unit.items():
                 out.setdefault(key, {"frozen": [], "fresh": []})
-                out[key]["frozen"].append(summary(ev_frozen, frozen.predict(ev_frozen)))
-                out[key]["fresh"].append(summary(ev_fresh, fresh.predict(ev_fresh)))
+                out[key]["frozen"].append(v["frozen"])
+                out[key]["fresh"].append(v["fresh"])
             print(f"B3 years seed {seed} lead {lead} done", flush=True)
     return out
+
+
+def b3_years_unit(frame: pd.DataFrame, sel: dict, seed: int, lead: int) -> dict:
+    """One seed and lead: the model frozen at FROZEN_END against models retrained before each
+    period, both scored on that period."""
+    unit: dict = {}
+    dev = frame[frame["split"].isin(["train", "val"])]
+    frozen_f = b3_frames(dev, lead, normals_until=FROZEN_END - 2)
+    frozen = b3_fit(frozen_f[frozen_f["crop_year"] <= FROZEN_END - 2],
+                    frozen_f[frozen_f["crop_year"].between(FROZEN_END - 1, FROZEN_END)],
+                    lead, seed, sel)
+    for start, end in GAP_PERIODS:
+        fresh_f = b3_frames(dev, lead, normals_until=start - 3)
+        fresh = b3_fit(fresh_f[fresh_f["crop_year"] <= start - 3],
+                       fresh_f[fresh_f["crop_year"].between(start - 2, start - 1)],
+                       lead, seed, sel)
+        ev_frozen = frozen_f[frozen_f["crop_year"].between(start, end)]
+        ev_fresh = fresh_f[fresh_f["crop_year"].between(start, end)]
+        unit[f"{start}-{end}"] = {"frozen": summary(ev_frozen, frozen.predict(ev_frozen)),
+                                  "fresh": summary(ev_fresh, fresh.predict(ev_fresh))}
+    return unit
 
 
 def b3_crops(frame: pd.DataFrame, sel: dict) -> dict:
@@ -158,16 +208,22 @@ def b3_crops(frame: pd.DataFrame, sel: dict) -> dict:
         tr = f[f["split"] == "train"].reset_index(drop=True)
         va = f[f["split"] == "val"].reset_index(drop=True)
         for crop in crop_list(tr, b5=False):
-            is_c = (va["crop_canonical"] == crop).to_numpy()
-            ev, es = va[is_c].reset_index(drop=True), va[~is_c]
-            hist = crop_nmae(ev, np.ones(len(ev)))
-            res = out.setdefault(crop, {"hist_mean": hist, "seen": [], **{f"k{k}": []
-                                                                          for k in K_SHOTS}})
-            for seed in SEEDS:
-                res["seen"].append(crop_nmae(ev, b3_fit(tr, es, lead, seed, sel).predict(ev)))
-                for k in K_SHOTS:
-                    m = b3_fit(tr[k_shot_mask(tr, crop, k, seed)], es, lead, seed, sel)
-                    res[f"k{k}"].append(crop_nmae(ev, m.predict(ev)))
+            if (unit := CACHE.get(f"crops|{lead}|{crop}")) is None:
+                is_c = (va["crop_canonical"] == crop).to_numpy()
+                ev, es = va[is_c].reset_index(drop=True), va[~is_c]
+                unit = {"hist_mean": crop_nmae(ev, np.ones(len(ev))), "seen": [],
+                        **{f"k{k}": [] for k in K_SHOTS}}
+                for seed in SEEDS:
+                    unit["seen"].append(
+                        crop_nmae(ev, b3_fit(tr, es, lead, seed, sel).predict(ev)))
+                    for k in K_SHOTS:
+                        m = b3_fit(tr[k_shot_mask(tr, crop, k, seed)], es, lead, seed, sel)
+                        unit[f"k{k}"].append(crop_nmae(ev, m.predict(ev)))
+                CACHE.put(f"crops|{lead}|{crop}", unit)
+            res = out.setdefault(crop, {"hist_mean": unit["hist_mean"], "seen": [],
+                                        **{f"k{k}": [] for k in K_SHOTS}})
+            for k in ("seen", *(f"k{k}" for k in K_SHOTS)):
+                res[k].extend(unit[k])
             print(f"B3 crops lead {lead} {crop} done", flush=True)
     return out
 
@@ -261,6 +317,8 @@ def main() -> None:
               "leads": list(CROP_LEADS if args.study == "crops" and args.model == "b3"
                             else LEADS),
               "metric": "tier-A median nMAE (states, years); the crop's own nMAE (crops)"}
+    global CACHE
+    CACHE = Cache(DATA_DIR / "interim" / f"gen_{args.model}_{args.study}_progress.json", config)
     with track_experiment("yield_generalisation", config, seed=None, split_id=SPLIT_ID) as rec:
         if args.model == "b5":
             raw = b5_run(args.study)
