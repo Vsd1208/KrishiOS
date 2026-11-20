@@ -53,7 +53,7 @@ import { documentsApi } from '@/services/api/documents';
 import type { BotLanguage } from '@/services/api/conversation';
 import { FarmerChat } from '@/features/conversation/FarmerChat';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 /* ============================================================
    COMPONENT
@@ -160,7 +160,7 @@ const AnalystWorkspace: React.FC = () => {
 
   const [viewMode, setViewMode] = useState<WorkspaceViewMode>('split');
   const [latestImage, setLatestImage] = useState<ImageAttachment | undefined>(undefined);
-  const [escalationNotice, setEscalationNotice] = useState<string | null>(null);
+  const navigate = useNavigate();
   const [uploadingDocument, setUploadingDocument] = useState(false);
   const [documentUploadStatus, setDocumentUploadStatus] = useState<string | null>(null);
   const [showUploadPanel, setShowUploadPanel] = useState(false);
@@ -199,13 +199,9 @@ const AnalystWorkspace: React.FC = () => {
     void sendMessage(content);
   };
 
+  // Officer questions go through Help, which creates a real grievance ticket.
   const handleEscalate = (): void => {
-    setEscalationNotice(
-      'Your inquiry has been submitted to the Mandal Agricultural Officer review queue.',
-    );
-    window.setTimeout(() => {
-      setEscalationNotice(null);
-    }, 5000);
+    void navigate('/farmer/help');
   };
 
   const handleDocumentUpload = async (): Promise<void> => {
@@ -318,22 +314,6 @@ const AnalystWorkspace: React.FC = () => {
         </div>
       </header>
 
-      {/* Escalation Notice */}
-      {escalationNotice && (
-        <div className="bg-primary-50 border-b border-primary-200 px-4 py-2.5 text-caption text-primary-900 flex items-center justify-between animate-fadeIn">
-          <div className="flex items-center gap-2 font-medium">
-            <ShieldCheck className="w-4 h-4 text-primary-700 shrink-0" />
-            <span>{escalationNotice}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setEscalationNotice(null)}
-            className="text-primary-700 font-bold hover:underline cursor-pointer ml-2"
-          >
-            Dismiss
-          </button>
-        </div>
-      )}
 
       {/* Main Dual-Pane Workspace Container */}
       <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-12 bg-surface">

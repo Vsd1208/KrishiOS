@@ -47,7 +47,9 @@
     "citations": "Citations",
     "graphPaths": "Knowledge Graph Paths",
     "activeRules": "Active Rules",
-    "telemetry": "Live Telemetry"
+    "telemetry": "Live Telemetry",
+    "print": "Print",
+    "askOfficer": "Ask an officer"
   },
   "risk": {
     "low": "Low Risk",
@@ -87,7 +89,23 @@
   },
   "farmer": {
     "welcome": "Welcome to KrishiOS",
-    "dashboardSubtitle": "Your agricultural intelligence dashboard"
+    "dashboardSubtitle": "Your agricultural intelligence dashboard",
+    "dash": {
+      "greeting": "Namaste, {{name}}",
+      "greetingNoName": "Namaste",
+      "myCrop": "My crop",
+      "noCrop": "No crop recorded yet",
+      "addCrop": "Add your crop in \"Fields\"",
+      "daysSinceSowing_one": "{{count}} day since sowing",
+      "daysSinceSowing_other": "{{count}} days since sowing",
+      "noSowingDate": "Add the sowing date in \"Fields\" to track crop age.",
+      "status": {
+        "Growing": "Growing",
+        "Sown": "Sown",
+        "Planned": "Planned",
+        "Harvested": "Harvested"
+      }
+    }
   },
   "officer": {
     "welcome": "Officer Console",
@@ -109,7 +127,59 @@
     "policyViolations": "Policy warnings"
   },
   "canvas": {
-    "contextNotSet": "Not set"
+    "contextNotSet": "Not set",
+    "title": "Answer details",
+    "context": "Context:",
+    "tabs": {
+      "graph": "Knowledge graph",
+      "weather": "Weather",
+      "vision": "Photo",
+      "sources": "Sources"
+    },
+    "sources": {
+      "title": "Sources for this answer",
+      "subtitle": "Documents the answer was drawn from",
+      "checks": "Answer checks",
+      "grounding": "Grounded in sources",
+      "coherence": "Consistency",
+      "hallucination": "Made-up facts check",
+      "policy": "Safety check",
+      "passed": "Passed",
+      "flagged": "Flagged",
+      "page": "page {{page}}",
+      "match": "{{pct}}% match",
+      "none": "No sources were found for this answer.",
+      "noneHelp": "Treat it as unverified and check with your agriculture officer before acting on it."
+    },
+    "graph": {
+      "title": "Knowledge-graph links",
+      "subtitle": "Facts from the crop knowledge graph that this answer used",
+      "none": "This answer did not use the knowledge graph.",
+      "chain": "Link {{n}}",
+      "confidence": "{{pct}}% confidence"
+    },
+    "weather": {
+      "title": "Weather used in this answer",
+      "district": "District: {{district}}",
+      "temp": "Air temperature",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "rain": "Rainfall",
+      "none": "No weather readings were attached to this answer.",
+      "noneHelp": "See the weather card on your home screen for the latest forecast.",
+      "sprayOk": "Spray window: suitable",
+      "sprayNo": "Spray window: not suitable, postpone spraying"
+    },
+    "vision": {
+      "title": "Your photo",
+      "subtitle": "The crop photo attached to this question",
+      "alt": "Crop photo attached to the question",
+      "none": "No photo is attached to this question.",
+      "possible": "Possible finding",
+      "confidence": "{{pct}}% confidence",
+      "howto": "To check this photo for crop and disease, open \"{{chat}}\" and use its photo button. You will be asked to confirm the crop.",
+      "caution": "Photo findings are possibilities, not a diagnosis. Check with your agriculture officer before using strong chemicals."
+    }
   },
   "chat": {
     "title": "Ask KrishiOS",
@@ -585,5 +655,30 @@
     "gridLabel": "Reports per district and week",
     "where": "Condition · crop · district",
     "note": "Unverified model findings, not diagnoses."
+  },
+  "profile": {
+    "title": "My profile",
+    "subtitle": "Your details, language and alert choices",
+    "noProfile": "No farmer profile is linked to this login",
+    "village": "Village",
+    "language": "Language",
+    "languageSaved": "Language saved. KrishiOS will reply in this language.",
+    "languageLocalOnly": "The language changes on this device only, because no farmer profile is linked.",
+    "alertsTitle": "Alerts I want",
+    "alerts": {
+      "weather": "Weather and spray alerts",
+      "weatherHelp": "Rain, heat and wind warnings for your crop",
+      "disease": "Pest and disease alerts",
+      "diseaseHelp": "When pest or disease risk rises in your area",
+      "market": "Mandi price alerts",
+      "marketHelp": "Large price changes for your crop at nearby mandis",
+      "scheme": "Scheme alerts",
+      "schemeHelp": "Deadlines and updates for government schemes"
+    },
+    "save": "Save alert choices",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "saveFailed": "Could not save. Please try again.",
+    "prefsFailed": "Could not load your alert choices. Please try again later."
   }
 }

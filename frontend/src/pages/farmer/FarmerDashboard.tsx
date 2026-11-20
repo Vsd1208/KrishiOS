@@ -8,12 +8,12 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 import {
   useFarmerProfile,
   useFarmerFields,
   useFarmerCrops,
-  usePrimaryCropName,
+  usePrimaryFieldCrop,
   useCurrentWeather,
   useWeatherForecast,
   useFarmerAlerts,
@@ -32,8 +32,17 @@ import { CropVisionModal } from '@/features/farmer/components/CropVisionModal';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Sprout, Calendar } from 'lucide-react';
 
+/** Whole days from an ISO date to today, or null for a missing or future date. */
+function daysSince(iso: string | null | undefined): number | null {
+  if (!iso) return null;
+  const start = new Date(iso).getTime();
+  if (Number.isNaN(start)) return null;
+  const days = Math.floor((Date.now() - start) / 86_400_000);
+  return days >= 0 ? days : null;
+}
+
 export const FarmerDashboard: React.FC = () => {
-  const { user } = useAuth();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   // Modals for Hero Launcher
@@ -44,7 +53,8 @@ export const FarmerDashboard: React.FC = () => {
   const { data: farmer, isLoading: isFarmerLoading } = useFarmerProfile();
   const { data: fields = [], isLoading: isFieldsLoading } = useFarmerFields(farmer?.id);
   const { fieldCrops } = useFarmerCrops();
-  const primaryCrop = usePrimaryCropName();
+  const { fieldCrop: primaryFieldCrop, cropName: primaryCrop } = usePrimaryFieldCrop();
+  const sownDays = daysSince(primaryFieldCrop?.sowing_date);
   // The farmer's LGD district name (from the weather feed), not the village.
   const { data: feeds } = useQuery({ queryKey: ['govconnect', 'weather-feed'], queryFn: feedApi.weatherFeed });
   const feedDistrict = feeds?.[0]?.district_name ?? null;
@@ -56,7 +66,7 @@ export const FarmerDashboard: React.FC = () => {
   );
   const { alerts, acknowledgeAlert, isAcknowledging } = useFarmerAlerts(farmer?.id);
 
-  const currentDate = new Date().toLocaleDateString('en-IN', {
+  const currentDate = new Date().toLocaleDateString(i18n.language, {
     weekday: 'long',
     day: 'numeric',
     month: 'short',
@@ -85,23 +95,25 @@ export const FarmerDashboard: React.FC = () => {
               <span>{currentDate}</span>
             </div>
             <h1 className="text-display font-black tracking-tight text-white drop-shadow-sm">
-              Namaste, {farmer?.full_name || 'Farmer'}
+              {farmer?.full_name ? t('farmer.dash.greeting', { name: farmer.full_name }) : t('farmer.dash.greetingNoName')}
             </h1>
-            <p className="text-body text-primary-100/90 font-medium">
-              KrishiOS Agricultural Decision Support • {farmer?.village ? `${farmer.village}, Telangana` : 'Telangana Region'}
-            </p>
+            {(farmer?.village || feedDistrict) && (
+              <p className="text-body text-primary-100/90 font-medium">
+                {[farmer?.village, feedDistrict].filter(Boolean).join(', ')}
+              </p>
+            )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
-            <div className="inline-flex items-center gap-2 bg-primary-950/70 backdrop-blur-md border border-primary-400/40 px-3.5 py-1.5 rounded-full text-caption font-semibold text-primary-100 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-success-400 animate-pulse" aria-hidden="true" />
-              <span>Active Kharif Season • {user?.role || 'Farmer'}</span>
+          {primaryFieldCrop && (
+            <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
+              <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/25 px-3 py-1.5 rounded-full text-caption font-medium text-white shadow-sm">
+                <Sprout className="w-3.5 h-3.5 text-primary-200" aria-hidden="true" />
+                <span>
+                  {[primaryCrop, primaryFieldCrop.season, primaryFieldCrop.year].filter(Boolean).join(' · ')}
+                </span>
+              </div>
             </div>
-            <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/25 px-3 py-1.5 rounded-full text-caption font-medium text-white shadow-sm">
-              <Sprout className="w-3.5 h-3.5 text-primary-200" aria-hidden="true" />
-              <span>{fieldCrops?.[0] ? 'Standing Crop' : 'Active Landholding'}</span>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -144,27 +156,40 @@ export const FarmerDashboard: React.FC = () => {
         {/* Official mandi price + 30-day trend (AGMARKNET) */}
         <MandiTrendCard crop={primaryCrop} district={feedDistrict} />
 
-        {/* Crop Stage Snapshot */}
-        <Card variant="raised" padding="md" className="space-y-2">
+        {/* The farmer's recorded crop: only what is in their field records */}
+        <Card variant="raised" padding="md" className="space-y-2" data-testid="my-crop-card">
           <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
-              <span className="text-caption font-bold text-text-secondary uppercase">
-                Crop Growth Phase
-              </span>
+              <span className="text-caption font-bold text-text-secondary uppercase">{t('farmer.dash.myCrop')}</span>
               <div className="w-8 h-8 rounded-lg bg-success-50 text-success-600 flex items-center justify-center">
                 <Sprout className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
             <CardTitle as="h3" className="text-heading font-extrabold text-text">
-              Tillering Stage
+              {primaryCrop ?? t('farmer.dash.noCrop')}
             </CardTitle>
-            <p className="text-caption text-text-secondary">Paddy • Day 42 of 120 (Optimal Health)</p>
+            {primaryFieldCrop && (
+              <p className="text-caption text-text-secondary">
+                {[primaryFieldCrop.season, primaryFieldCrop.year, t(`farmer.dash.status.${primaryFieldCrop.status}`, { defaultValue: primaryFieldCrop.status })]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </p>
+            )}
           </CardHeader>
-          <CardContent className="pt-2 border-t border-border">
-            <div className="flex items-center justify-between text-caption">
-              <span className="text-primary-700 font-semibold">Nitrogen top-dressing recommended</span>
-              <span className="text-text-muted">Next: Panicle Initiation</span>
-            </div>
+          <CardContent className="pt-2 border-t border-border text-caption">
+            {!primaryFieldCrop ? (
+              <button
+                type="button"
+                onClick={() => navigate('/farmer/fields')}
+                className="font-semibold text-primary-700 hover:underline cursor-pointer"
+              >
+                {t('farmer.dash.addCrop')}
+              </button>
+            ) : sownDays !== null ? (
+              <span className="text-text">{t('farmer.dash.daysSinceSowing', { count: sownDays })}</span>
+            ) : (
+              <span className="text-text-muted">{t('farmer.dash.noSowingDate')}</span>
+            )}
           </CardContent>
         </Card>
       </div>

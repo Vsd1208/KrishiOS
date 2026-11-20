@@ -1,32 +1,41 @@
-import { describe, it, expect } from 'vitest';
+// Shows only what the answer carries; never sample or default data (UI polish).
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
+
+import i18n from '@/i18n';
 import { ProvenanceExplorer } from '../components/canvas/ProvenanceExplorer';
 
+beforeEach(async () => {
+  await i18n.changeLanguage('en');
+});
+
 describe('ProvenanceExplorer', () => {
-  it('renders ICAR citations and AI grounding evaluation metrics', () => {
+  it('shows real citations and only the checks the backend reported', () => {
     render(
       <ProvenanceExplorer
         citations={[
           {
-            citation_id: 'cit-pop-1',
-            source_title: 'ICAR Standard Package of Practices for Rice',
-            authority: 'ICAR National Rice Research Institute',
-            snippet: 'Cartap Hydrochloride 50 SP @ 2g/L is recommended.',
+            citation_id: 'cit-1',
+            source_title: 'Package of Practices for Rice',
+            authority: 'State Agricultural University',
+            page: 12,
             relevance_score: 0.95,
           },
         ]}
-        evaluation={{
-          grounding_ratio: 0.96,
-          coherence_score: 0.94,
-          hallucination_detected: false,
-        }}
-      />
+        evaluation={{ groundingRatio: 0.82, hallucinationDetected: true }}
+      />,
     );
+    expect(screen.getByText('Package of Practices for Rice')).toBeInTheDocument();
+    expect(screen.getByText(/State Agricultural University · page 12/)).toBeInTheDocument();
+    expect(screen.getByText('95% match')).toBeInTheDocument();
+    expect(screen.getByText('82%')).toBeInTheDocument();
+    expect(screen.getByText('Flagged')).toBeInTheDocument();
+    expect(screen.queryByText('Consistency')).not.toBeInTheDocument();
+  });
 
-    expect(screen.getByText(/Scientific Provenance & Citations/i)).toBeInTheDocument();
-    expect(screen.getByText('ICAR Standard Package of Practices for Rice')).toBeInTheDocument();
-    expect(screen.getByText(/ICAR National Rice Research Institute/i)).toBeInTheDocument();
-    expect(screen.getByText('96%')).toBeInTheDocument();
-    expect(screen.getByText(/Passed/i)).toBeInTheDocument();
+  it('says there are no sources instead of inventing them', () => {
+    render(<ProvenanceExplorer />);
+    expect(screen.getByTestId('no-sources')).toHaveTextContent('No sources were found for this answer.');
+    expect(document.body.textContent).not.toMatch(/ICAR|ANGRAU|Cartap|%/);
   });
 });

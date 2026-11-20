@@ -1023,8 +1023,7 @@ export function useAIConversation(
     citations,
     evidence,
     evaluation: {
-      policyCompliant:
-        validationPassed ?? true,
+      policyCompliant: validationPassed,
     },
   },
 };
