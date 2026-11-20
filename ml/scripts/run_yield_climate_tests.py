@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 
 import _bootstrap  # noqa: F401
 import numpy as np
@@ -60,6 +61,8 @@ def main() -> None:
                     help="only the Nepal question: global vs global+Nepal and Nepal placebos")
     ap.add_argument("--global-only", action="store_true",
                     help="only the global indices: base vs global and global placebos")
+    ap.add_argument("--progress", type=Path, default=None,
+                    help="save finished blocks here and resume from them after an interruption")
     args = ap.parse_args()
     labels, feats = pd.read_parquet(LABELS), pd.read_parquet(FEATURES)
     frozen = json.loads(SELECTION.read_text(encoding="utf-8"))
@@ -80,6 +83,12 @@ def main() -> None:
               "selection_run": frozen["run_id"],
               "statistic": "ratio MAE on clean tier A/B rows, mean over period x lead"}
     errors: dict[str, list[list[dict]]] = {}
+    done: list[str] = []
+    if args.progress and args.progress.exists():
+        saved = json.loads(args.progress.read_text(encoding="utf-8"))
+        if saved["config"] == json.loads(json.dumps(config)):  # only resume the same test
+            errors, done = saved["errors"], saved["done"]
+            print(f"resuming: {len(done)} blocks already done", flush=True)
 
     def add(name: str, run: int, value: dict) -> None:
         store = errors.setdefault(name, [])
@@ -92,6 +101,9 @@ def main() -> None:
         for lead in LEADS:
             params = frozen["selection"][str(lead)]["B3_lgbm"]
             for start, end in FOLDS:
+                block = f"{lead}:{start}-{end}"
+                if block in done:
+                    continue
                 f = frame[(frame["lead_days"] == lead) & (frame["crop_year"] <= end)]
                 f = add_anomalies(f, weather_normals(f[f["crop_year"] < start]))
                 real = with_climate(f, table)
@@ -119,6 +131,12 @@ def main() -> None:
                     if not args.nepal_only:
                         fit("placebo_all", k, with_climate(f, table, year_map), regional, seed)
                     fit("placebo_nepal", k, move_nepal(real, table, year_map), with_nepal, seed)
+                done.append(block)
+                if args.progress:
+                    tmp = args.progress.with_suffix(".part")
+                    tmp.write_text(json.dumps({"config": config, "done": done, "errors": errors}),
+                                   encoding="utf-8")
+                    tmp.replace(args.progress)
                 print(f"lead {lead} {start}-{end} done", flush=True)
         run_means = {n: pd.DataFrame([pd.DataFrame(r).mean() for r in runs])
                      for n, runs in errors.items()}
