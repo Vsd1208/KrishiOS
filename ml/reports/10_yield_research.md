@@ -225,15 +225,18 @@ Widths were fitted on 2013-15 forecasts (model trained up to 2010) and checked o
 - **Tier B ranges are too narrow** and uneven across crops. Per-crop widths and widths scaled by
   district variability do not fix it (the scaled version mostly widens every range).
 - The ranges are wide: a tier-A 80% range spans about +/-48% of the district's usual yield.
-- Planned change, to be chosen on validation and checked once on test: widen tier-B ranges until
-  they reach the target on these years.
+- **No change to the widths.** Phase 8 already scored the served ranges once on the test years
+  (run `37dc01be91cf`): tier-B 80% ranges covered about 87% in 2019-22 (85-86% on the spatial test),
+  so there they were too wide, not too narrow. Tier B misses in opposite directions in different
+  periods (73% in 2016-18, 87% in 2019-22): its calibration is unstable rather than biased one way.
+  Widening it now would be tuned against a result already known from the test years. Tier-B ranges
+  stay as served and are described as approximate; tier A (81-82% on test) is reliable.
 
 ## 8. Remaining Phase 10 work
 
 1. Held-out states for B3, and the year-gap study (RQ4).
 2. Leave-one-crop-out and k-shot transfer for B3 and B5 (RQ5).
-3. Widen tier-B forecast ranges (section 7).
-4. A permutation test of the global climate indices on their own (the largest climate gains, not yet
+3. A permutation test of the global climate indices on their own (the largest climate gains, not yet
    tested against wrong-year placebos).
-5. Score the frozen best configuration on test once, and swap it in behind the yield provider only
+4. Score the frozen best configuration on test once, and swap it in behind the yield provider only
    if it beats B3.
