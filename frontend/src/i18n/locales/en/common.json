@@ -745,5 +745,31 @@
       "title": "Some information could not be loaded",
       "message": "Parts of this page may be missing. Please try again shortly."
     }
+  },
+  "shell": {
+    "tagline": "Farming advice in your language",
+    "checkingSession": "Checking your sign-in...",
+    "checkingAccess": "Checking access...",
+    "roleDenied": "Your account ({{role}}) cannot open this page.",
+    "backHome": "Back to my home page"
+  },
+  "login": {
+    "subtitle": "Enter your registered phone number or email",
+    "identifier": "Phone number or email",
+    "identifierHint": "e.g. 9876543210",
+    "needIdentifier": "Please enter your phone number or email.",
+    "needPassword": "Please enter your password.",
+    "failed": "Sign-in failed. Please try again.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "hero": {
+    "title": "Ask KrishiOS",
+    "voice": "Speak your question",
+    "voiceHelp": "In Telugu, Hindi or English",
+    "text": "Type your question",
+    "textHelp": "Pests, fertilizer, weather or prices",
+    "photo": "Check a crop photo",
+    "photoHelp": "Possible pests or diseases; you confirm the crop"
   }
 }
