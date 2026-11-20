@@ -10,7 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { DistrictPicker } from '@/features/govconnect/DistrictPicker';
-import { cropName, unitLabel } from '@/features/forecasting/format';
+import { cropName, modalityList, reviewReasons, unitLabel } from '@/features/forecasting/format';
+import { YieldRangeBar } from '@/features/forecasting/YieldRangeBar';
 import { forecastingApi, type Season, type YieldForecast } from '@/services/api/forecasting';
 
 const SEASONS: Season[] = ['Kharif', 'Rabi', 'Zaid', 'Whole Year'];
@@ -57,6 +58,7 @@ export const YieldOutlookPage: React.FC = () => {
         ) : (
           <p className="text-text-muted">{t('yieldx.noImport')}</p>
         )}
+        <p className="text-text-muted">{t('yieldx.rangeMeaning')}</p>
         <p className="text-text-muted">{t('yieldx.notOfficial')}</p>
         <button
           type="button"
@@ -151,6 +153,21 @@ export const YieldOutlookPage: React.FC = () => {
                           </td>
                           <td className="p-2 text-right tabular-nums">
                             {n2(f.interval_low)}–{n2(f.interval_high)}
+                            {f.predicted_yield !== null &&
+                              f.interval_low !== null &&
+                              f.interval_high !== null &&
+                              f.normal_yield !== null && (
+                                <div className="mt-1 min-w-24">
+                                  <YieldRangeBar
+                                    low={f.interval_low}
+                                    high={f.interval_high}
+                                    forecast={f.predicted_yield}
+                                    normal={f.normal_yield}
+                                    shortfall={f.likely_shortfall}
+                                    legend={false}
+                                  />
+                                </div>
+                              )}
                           </td>
                           <td className="p-2 text-right tabular-nums">{n2(f.normal_yield)}</td>
                           <td className={`p-2 text-right tabular-nums ${f.likely_shortfall ? 'font-bold text-red-700' : ''}`}>
@@ -160,7 +177,16 @@ export const YieldOutlookPage: React.FC = () => {
                       )}
                       <td className="p-2">
                         {f.crop_tier}
-                        {f.requires_human_review && <span className="block text-amber-800">{t('yieldx.needsReview')}</span>}
+                        {f.requires_human_review && (
+                          <span className="block text-amber-800">
+                            {t('yieldx.needsReview')}
+                            {reviewReasons(f).map((r) => (
+                              <span key={r} className="block text-text-secondary">
+                                {t(`yieldx.whyShort.${r}`, { list: modalityList(f.missing_modalities, t) })}
+                              </span>
+                            ))}
+                          </span>
+                        )}
                       </td>
                     </tr>
                   ))}
