@@ -25,6 +25,7 @@ All runs are logged in `ml/experiments/`, and full results are in `ml/reports/da
 | P2 modality dropout (5 seeds, Colab T4) | `8a577ddc2da2` | `scripts/run_yield_p1p2.py --experiment both` | `yield_p2_val_8a577ddc2da2.json` |
 | B5 held-out states (5 groups, 3 seeds) | `34354360f130` | `scripts/run_yield_generalisation.py --model b5 --study states` | `yield_gen_b5_states_34354360f130.json` |
 | B3 interval calibration, out of time (3 seeds) | `af450e064e14` | `scripts/run_yield_uncertainty.py` | `yield_uncertainty_af450e064e14.json` |
+| B5 unseen crops and 5-shot (10 crops, 3 seeds) | `f5ee494e6440` | `scripts/run_yield_generalisation.py --model b5 --study crops` | `yield_gen_b5_crops_f5ee494e6440.json` |
 
 `ef6f04b49792` is a one-epoch smoke run of B5 and is not evidence.
 
@@ -207,7 +208,27 @@ other states' rows only (run `34354360f130`, mean over leads, 3 seeds):
 | Tier B median nMAE | 0.276 | 0.325 | +0.049 |
 
 For tier-A crops B5 transfers to unseen states almost without loss; tier-B crops, with little data,
-lose about 18%. Still to run: B3 on the same groups, the year-gap study, and unseen crops (RQ5).
+lose about 18%. Still to run: B3 on the same groups and the year-gap study.
+
+**Unseen crops (RQ5, B5).** Ten tier-A crops, fixed before any result (every third crop ordered by
+districts), each removed from training (k = 0) or kept for only 5 random districts (k = 5), and
+scored on its own 2016-18 rows. All models stopped early on the other crops' rows (run
+`f5ee494e6440`, 3 seeds; each crop's own nMAE):
+
+| | Median over the 10 crops | Crops better than the district historical mean |
+|---|---|---|
+| District historical mean | 0.283 | n/a |
+| B5, crop seen in training | 0.245 | 10 of 10 |
+| B5, crop never seen | 0.249 | 9 of 10 |
+| B5, crop seen in 5 districts | 0.251 | 9 of 10 |
+
+- **The shared model transfers to crops it never saw**, losing about 2%, and still beats the
+  historical mean for 9 of 10 crops (for example sesame 0.505 against 0.790, chilli 0.322 against
+  0.405, sugarcane 0.216 against 0.282). The exception is soybean (0.231 against 0.228).
+- **Five districts of data add nothing** over none: forecasting the ratio to each district's own
+  history already carries most of what is crop-specific.
+- RQ5 answer for B5: yes, a shared multi-crop model helps crops with little or no data. B3 on all
+  30 crops is still to run.
 
 ## 7. Forecast ranges: calibration per tier
 
