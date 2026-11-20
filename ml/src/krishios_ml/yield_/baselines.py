@@ -14,12 +14,17 @@ Every model predicts the ratio ``r = yield / hist_mean`` (see ``data.py``).
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
 
 from krishios_ml.yield_.data import CATEGORICAL, TARGET_CLIP
+
+# 0 = all cores. KRISHIOS_LGBM_THREADS limits it, e.g. to keep a laptop from overheating on
+# long runs (thread count can change results in the last decimal places).
+LGBM_THREADS = int(os.environ.get("KRISHIOS_LGBM_THREADS", "0"))
 
 
 def _target(df: pd.DataFrame) -> np.ndarray:
@@ -90,7 +95,7 @@ class LGBMModel:
         return {"objective": "huber", "alpha": 0.5, "learning_rate": 0.05, "num_leaves": 63,
                 "min_child_samples": 100, "feature_fraction": 0.8, "bagging_fraction": 0.8,
                 "bagging_freq": 1, "lambda_l2": 1.0, "verbose": -1, "seed": self.seed,
-                "num_threads": 0, **self.params}
+                "num_threads": LGBM_THREADS, **self.params}
 
     def _x(self, df):
         x = df[self.features].replace([np.inf, -np.inf], np.nan).copy()
