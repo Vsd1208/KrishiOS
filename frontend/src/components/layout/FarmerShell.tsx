@@ -92,7 +92,7 @@ export const FarmerShell: React.FC = () => {
 
       {/* Mobile-first Bottom Navigation Bar */}
       <nav
-        aria-label="Farmer Navigation"
+        aria-label={t('shell.farmerNav')}
         className="fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-border shadow-lg"
       >
         <div className="max-w-md mx-auto flex items-center justify-around h-16 px-1">

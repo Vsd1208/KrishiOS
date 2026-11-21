@@ -7,6 +7,7 @@
 
 import React, { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/layout/Header';
 import {
@@ -147,7 +148,11 @@ export const OfficerShell: React.FC = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const { t } = useTranslation();
+  // Start collapsed on phones so the menu does not take most of the screen width.
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(
+    () => typeof window !== 'undefined' && window.innerWidth < 768,
+  );
 
   return (
     <div className="min-h-screen bg-surface-raised flex flex-col">
@@ -157,7 +162,7 @@ export const OfficerShell: React.FC = () => {
       <div className="flex-1 flex flex-row">
         {/* Collapsible Sidebar */}
         <aside
-          aria-label="Officer Navigation"
+          aria-label={t('shell.officerNav')}
           className={`bg-surface border-r border-border flex flex-col transition-all duration-200 shrink-0 ${
             isCollapsed ? 'w-16' : 'w-60'
           }`}
@@ -168,7 +173,7 @@ export const OfficerShell: React.FC = () => {
               <div className="flex items-center gap-2 px-1">
                 <ShieldCheck className="w-4 h-4 text-primary-600" aria-hidden="true" />
                 <span className="text-caption font-semibold text-text-secondary uppercase tracking-wider">
-                  Officer Console
+                  {t('shell.officerConsole')}
                 </span>
               </div>
             )}
@@ -178,8 +183,9 @@ export const OfficerShell: React.FC = () => {
               className={`p-1.5 rounded-md text-text-muted hover:text-text hover:bg-surface-raised transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-primary-500 ${
                 isCollapsed ? 'mx-auto' : ''
               }`}
-              aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              aria-label={isCollapsed ? t('shell.expandMenu') : t('shell.collapseMenu')}
+              aria-expanded={!isCollapsed}
+              title={isCollapsed ? t('shell.expandMenu') : t('shell.collapseMenu')}
             >
               {isCollapsed ? (
                 <ChevronRight className="w-4 h-4" aria-hidden="true" />
@@ -196,13 +202,15 @@ export const OfficerShell: React.FC = () => {
               .map((item) => {
               const active = item.isActive(location.pathname);
               const Icon = item.icon;
+              const label = t(`nav.officer.${item.id}`, { defaultValue: item.label });
 
               return (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => navigate(item.path)}
-                  title={isCollapsed ? item.label : undefined}
+                  title={isCollapsed ? label : undefined}
+                  aria-label={isCollapsed ? label : undefined}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-small transition-colors select-none text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
                     active
                       ? 'bg-primary-50 text-primary-800 font-semibold border-l-2 border-primary-600'
@@ -214,7 +222,7 @@ export const OfficerShell: React.FC = () => {
                     className={`w-5 h-5 shrink-0 ${active ? 'text-primary-600' : 'text-text-muted'}`}
                     aria-hidden="true"
                   />
-                  {!isCollapsed && <span className="truncate">{item.label}</span>}
+                  {!isCollapsed && <span className="truncate">{label}</span>}
                 </button>
               );
             })}

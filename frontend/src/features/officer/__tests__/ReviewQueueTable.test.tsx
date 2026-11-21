@@ -31,11 +31,11 @@ describe('ReviewQueueTable', () => {
       />
     );
 
-    expect(screen.getByText(/Pending Advisory Queue \(1\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Waiting for review \(1\)/i)).toBeInTheDocument();
     expect(screen.getByText('Severe BPH Outbreak Warning')).toBeInTheDocument();
     expect(screen.getByText('Farmer #42')).toBeInTheDocument();
     expect(screen.getByText(/Critical/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Inspect & Verify/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Review$/i })).toBeInTheDocument();
   });
 
   it('renders empty queue message when no reviews are pending', () => {
@@ -46,6 +46,6 @@ describe('ReviewQueueTable', () => {
       />
     );
 
-    expect(screen.getByText('Review Queue Clear')).toBeInTheDocument();
+    expect(screen.getByText('Nothing to review')).toBeInTheDocument();
   });
 });

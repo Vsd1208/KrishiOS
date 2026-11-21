@@ -10,10 +10,12 @@ import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/ui/Spinner';
+import { useTranslation } from 'react-i18next';
 
 export const ProtectedRoute: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
@@ -22,10 +24,8 @@ export const ProtectedRoute: React.FC = () => {
         role="status"
         aria-live="polite"
       >
-        <Spinner size="lg" variant="primary" label="Verifying authentication..." />
-        <p className="mt-4 text-small text-text-secondary font-medium">
-          Verifying session...
-        </p>
+        <Spinner size="lg" variant="primary" label={t('shell.checkingSession')} />
+        <p className="mt-4 text-small text-text-secondary font-medium">{t('shell.checkingSession')}</p>
       </div>
     );
   }

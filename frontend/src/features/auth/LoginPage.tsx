@@ -7,6 +7,7 @@
 
 import React, { useState, useEffect, type FormEvent } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -35,6 +36,8 @@ function getRoleRedirectPath(role: UserRole): string {
 }
 
 export const LoginPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const lang = (i18n.language || 'en').slice(0, 2);
   const { loginFn, user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,12 +63,12 @@ export const LoginPage: React.FC = () => {
 
     const trimmedIdentifier = identifier.trim();
     if (!trimmedIdentifier) {
-      setError('Please enter your phone number or email address.');
+      setError(t('login.needIdentifier'));
       return;
     }
 
     if (!password) {
-      setError('Please enter your password.');
+      setError(t('login.needPassword'));
       return;
     }
 
@@ -101,16 +104,14 @@ export const LoginPage: React.FC = () => {
     } catch (err) {
       if (err instanceof ApiError) {
         if (err.status === 401) {
-          setError('Invalid phone number/email or password. Please try again.');
+          setError(t('auth.invalidCredentials'));
         } else if (err.status === 0) {
-          setError('Network error. Please check your internet connection.');
+          setError(t('errors.networkError'));
         } else {
-          setError(err.message || 'Login failed. Please try again.');
+          setError(t('login.failed'));
         }
-      } else if (err instanceof Error) {
-        setError(err.message);
       } else {
-        setError('An unexpected error occurred. Please try again.');
+        setError(t('errors.unknownError'));
       }
     } finally {
       setIsSubmitting(false);
@@ -128,20 +129,32 @@ export const LoginPage: React.FC = () => {
             <Sprout className="w-8 h-8" aria-hidden="true" />
           </div>
           <h1 className="text-display font-bold text-text tracking-tight">KrishiOS</h1>
-          <p className="text-small text-text-secondary max-w-sm mx-auto">
-            AI Decision Intelligence Platform for Indian Agriculture
-          </p>
+          <p className="text-small text-text-secondary max-w-sm mx-auto">{t('shell.tagline')}</p>
+          <div className="flex justify-center gap-1.5 pt-1" role="radiogroup" aria-label={t('common.language')}>
+            {([['te', 'తెలుగు'], ['hi', 'हिंदी'], ['en', 'English']] as const).map(([code, label]) => (
+              <button
+                key={code}
+                type="button"
+                role="radio"
+                aria-checked={lang === code}
+                onClick={() => void i18n.changeLanguage(code)}
+                className={`px-3 py-1 rounded-full border text-caption font-semibold cursor-pointer ${
+                  lang === code ? 'bg-primary-600 text-white border-primary-600' : 'bg-surface text-text border-border'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </header>
 
         {/* Login Card */}
         <Card variant="raised" className="bg-surface shadow-lg border-border/80 rounded-xl p-6 sm:p-8">
           <CardHeader className="text-center mb-6">
             <CardTitle as="h2" className="text-heading font-semibold text-text">
-              Sign In
+              {t('auth.loginButton')}
             </CardTitle>
-            <CardDescription className="text-small text-text-secondary">
-              Enter your registered phone or email to continue
-            </CardDescription>
+            <CardDescription className="text-small text-text-secondary">{t('login.subtitle')}</CardDescription>
           </CardHeader>
 
           <CardContent className="p-0">
@@ -160,8 +173,8 @@ export const LoginPage: React.FC = () => {
                 <Input
                   id="login-identifier"
                   type={isEmailInput ? 'email' : 'text'}
-                  label="Phone Number or Email"
-                  placeholder="e.g. 9876543210 or user@krishios.in"
+                  label={t('login.identifier')}
+                  placeholder={t('login.identifierHint')}
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                   disabled={isSubmitting || isAuthLoading}
@@ -181,7 +194,7 @@ export const LoginPage: React.FC = () => {
                 <Input
                   id="login-password"
                   type={showPassword ? 'text' : 'password'}
-                  label="Password"
+                  label={t('auth.password')}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -194,7 +207,7 @@ export const LoginPage: React.FC = () => {
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="p-1 text-text-muted hover:text-text focus:outline-none focus-visible:ring-1 focus-visible:ring-primary-500 rounded"
-                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      aria-label={showPassword ? t('login.hidePassword') : t('login.showPassword')}
                       tabIndex={0}
                     >
                       {showPassword ? (
@@ -215,7 +228,7 @@ export const LoginPage: React.FC = () => {
                   fullWidth
                   isLoading={isSubmitting || isAuthLoading}
                 >
-                  Sign In
+                  {t('auth.loginButton')}
                 </Button>
               </div>
             </form>

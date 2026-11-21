@@ -97,17 +97,17 @@ describe('EvaluationPage (AI Trust & Observability Center)', () => {
 
     renderComponent();
 
-    expect(screen.getByText(/AI Trust & Evaluation Center/i)).toBeInTheDocument();
-    expect(screen.getByText(/Blue \/ Green Immutable Knowledge Index Health/i)).toBeInTheDocument();
+    expect(screen.getByText(/AI trust and evaluation/i)).toBeInTheDocument();
+    expect(screen.getByText(/Knowledge index versions/i)).toBeInTheDocument();
     expect(await screen.findByText('Yellow Stem Borer Outbreak')).toBeInTheDocument();
 
     // Select decision to view trace
     const decisionCard = screen.getByText('Yellow Stem Borer Outbreak');
     fireEvent.click(decisionCard);
 
-    expect(screen.getByText(/Decision Trace #101/i)).toBeInTheDocument();
+    expect(screen.getByText(/Decision #101/i)).toBeInTheDocument();
     expect(screen.getByText('ICAR Rice Advisory Bulletin 2024')).toBeInTheDocument();
     expect(screen.getByText(/Paddy -> HAS_PEST -> Yellow Stem Borer/i)).toBeInTheDocument();
-    expect(screen.getByText(/Telemetry & Instrumentation Notice:/i)).toBeInTheDocument();
+    expect(screen.getByText(/About these numbers:/i)).toBeInTheDocument();
   });
 });

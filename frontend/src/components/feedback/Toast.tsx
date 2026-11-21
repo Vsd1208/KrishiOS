@@ -4,6 +4,7 @@
  * Provides accessible, auto-dismissing notifications stacked in a fixed container.
  */
 
+import i18n from '@/i18n';
 import React, {
   createContext,
   useContext,
@@ -97,7 +98,7 @@ const ToastMessage: React.FC<ToastMessageProps> = ({ toast, onDismiss }) => {
         type="button"
         onClick={() => onDismiss(toast.id)}
         className="shrink-0 text-text-muted hover:text-text p-1 rounded transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-primary-500"
-        aria-label="Dismiss notification"
+        aria-label={i18n.t('ui.dismiss')}
       >
         <X className="w-4 h-4" aria-hidden="true" />
       </button>
@@ -154,7 +155,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
       <div
         className="fixed z-50 pointer-events-none bottom-4 left-4 right-4 sm:left-auto sm:right-4 flex flex-col gap-2.5 max-w-sm w-full"
         aria-live="polite"
-        aria-label="Notifications"
+        aria-label={i18n.t('ui.notifications')}
       >
         {toasts.map((toast) => (
           <ToastMessage key={toast.id} toast={toast} onDismiss={dismissToast} />

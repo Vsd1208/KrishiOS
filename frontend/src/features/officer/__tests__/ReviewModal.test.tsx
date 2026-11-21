@@ -34,14 +34,14 @@ describe('ReviewModal', () => {
       />
     );
 
-    expect(screen.getByText('Verify Agricultural Advisory')).toBeInTheDocument();
+    expect(screen.getByText('Review advisory')).toBeInTheDocument();
     expect(screen.getByText('Severe BPH Outbreak Warning')).toBeInTheDocument();
     expect(screen.getByText('Farmer #42')).toBeInTheDocument();
 
-    const noteInput = screen.getByPlaceholderText(/Verified field observation/i);
+    const noteInput = screen.getByPlaceholderText(/Checked in the field/i);
     fireEvent.change(noteInput, { target: { value: 'Dosage verified with agronomist.' } });
 
-    const approveButton = screen.getByRole('button', { name: /Approve & Send/i });
+    const approveButton = screen.getByRole('button', { name: /Approve and send/i });
     fireEvent.click(approveButton);
 
     expect(handleAction).toHaveBeenCalledWith(
@@ -66,7 +66,7 @@ describe('ReviewModal', () => {
       />
     );
 
-    const rejectButton = screen.getByRole('button', { name: /Reject Advisory/i });
+    const rejectButton = screen.getByRole('button', { name: /^Reject$/i });
     fireEvent.click(rejectButton);
 
     expect(handleAction).toHaveBeenCalledWith(
@@ -75,5 +75,25 @@ describe('ReviewModal', () => {
         action: 'REJECT',
       })
     );
+  });
+
+  it('stays open and says so when saving the review fails', async () => {
+    const handleAction = vi.fn().mockRejectedValue(new Error('network'));
+    const handleClose = vi.fn();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <ReviewModal
+        alert={mockAlert}
+        isOpen={true}
+        onClose={handleClose}
+        onTakeAction={handleAction}
+      />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /Approve and send/i }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/could not be saved/i);
+    expect(handleClose).not.toHaveBeenCalled();
   });
 });

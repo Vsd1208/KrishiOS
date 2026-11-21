@@ -8,13 +8,14 @@ from typing import Annotated
 from uuid import UUID
 
 import jwt
+from app.auth.security import decode_access_token
+from app.models.user import User, UserRole
+from app.schemas.auth import TokenResponse
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from loguru import logger
-
-from app.auth.security import decode_access_token
-from app.models.user import UserRole
-from app.schemas.auth import TokenResponse
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 # Standard OAuth2 Bearer token extraction
 oauth2_scheme = HTTPBearer(auto_error=False)
@@ -112,3 +113,12 @@ def get_client_ip(request: Request) -> str | None:
 def get_user_agent(request: Request) -> str | None:
     """Extract user agent for token tracking."""
     return request.headers.get("user-agent")
+
+
+async def linked_farmer_id(session: AsyncSession, auth: AuthContext) -> int | None:
+    """The farmer profile linked to this login, looked up in the database.
+
+    The access token carries only the user's UUID, role and permissions, so the farmer id is
+    read from ``user.farmer_profile_id``. Returns None when no farmer profile is linked.
+    """
+    return await session.scalar(select(User.farmer_profile_id).where(User.uuid == auth.user_uuid))

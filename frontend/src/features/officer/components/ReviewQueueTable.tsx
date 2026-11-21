@@ -6,6 +6,7 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { RiskBadge } from '@/components/ai/RiskBadge';
@@ -33,6 +34,7 @@ export const ReviewQueueTable: React.FC<ReviewQueueTableProps> = ({
   onTakeAction,
   isActionPending,
 }) => {
+  const { t } = useTranslation();
   const [selectedAlert, setSelectedAlert] = useState<AlertNotification | null>(null);
 
   if (isLoading) {
@@ -53,9 +55,9 @@ export const ReviewQueueTable: React.FC<ReviewQueueTableProps> = ({
           <CheckCircle2 className="w-7 h-7" aria-hidden="true" />
         </div>
         <div>
-          <h3 className="text-subheading font-bold text-text">Review Queue Clear</h3>
+          <h3 className="text-subheading font-bold text-text">{t('officer.queue.empty')}</h3>
           <p className="text-small text-text-secondary mt-1">
-            All AI-generated advisories have been verified and processed.
+            {t('officer.queue.emptyHint')}
           </p>
         </div>
       </Card>
@@ -69,10 +71,10 @@ export const ReviewQueueTable: React.FC<ReviewQueueTableProps> = ({
           <div className="flex items-center gap-2">
             <ClipboardCheck className="w-5 h-5 text-primary-600" aria-hidden="true" />
             <span className="text-small font-bold text-text uppercase tracking-wider">
-              Pending Advisory Queue ({reviews.length})
+              {t('officer.queue.count', { count: reviews.length })}
             </span>
           </div>
-          <span className="text-caption text-text-muted">Requires Officer Verification</span>
+          <span className="text-caption text-text-muted">{t('officer.queue.needsOfficer')}</span>
         </div>
 
         <div className="divide-y divide-border">
@@ -96,10 +98,10 @@ export const ReviewQueueTable: React.FC<ReviewQueueTableProps> = ({
                     <RiskBadge severity={severity} size="sm" />
                     <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-text-secondary bg-surface px-2 py-0.5 rounded border border-border">
                       <User className="w-3 h-3 text-primary-600" aria-hidden="true" />
-                      Farmer #{alert.farmer_id}
+                      {t('officer.farmerNo', { id: alert.farmer_id })}
                     </span>
                     <span className="text-caption text-text-muted">
-                      via {alert.channel}
+                      {t('officer.review.via', { channel: alert.channel })}
                     </span>
                   </div>
 
@@ -116,7 +118,7 @@ export const ReviewQueueTable: React.FC<ReviewQueueTableProps> = ({
                     onClick={() => setSelectedAlert(alert)}
                     className="cursor-pointer"
                   >
-                    <span>Inspect &amp; Verify</span>
+                    <span>{t('officer.queue.open')}</span>
                     <ArrowRight className="w-3.5 h-3.5 ml-1" aria-hidden="true" />
                   </Button>
                 </div>

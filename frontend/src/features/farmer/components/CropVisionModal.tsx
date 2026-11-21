@@ -273,7 +273,9 @@ export const CropVisionModal: React.FC<CropVisionModalProps> = ({
                   {analysis.crop_detected || cropHint} Diagnostic Findings
                 </span>
               </div>
-              <ConfidenceBadge confidence={analysis.confidence_score ?? 0.85} showLabel />
+              {typeof analysis.confidence_score === 'number' && (
+                <ConfidenceBadge confidence={analysis.confidence_score} showLabel />
+              )}
             </div>
 
             {/* Quality Assessment if any */}

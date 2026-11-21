@@ -9,7 +9,12 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.dependencies.auth import AuthContext, RequirePermission, get_current_auth_context
+from app.api.dependencies.auth import (
+    AuthContext,
+    RequirePermission,
+    get_current_auth_context,
+    linked_farmer_id,
+)
 from app.auth.permissions import Permission
 from app.database.session import get_db_session
 from app.events.contracts import EventEnvelope
@@ -92,9 +97,10 @@ async def list_decisions(
 
     # Farmer scope ownership check
     if auth.role == UserRole.FARMER:
-        if not auth.farmer_profile_id:
+        own = await linked_farmer_id(session, auth)
+        if not own:
             return []
-        stmt = stmt.where(ProactiveDecisionRecord.farmer_id == auth.farmer_profile_id)
+        stmt = stmt.where(ProactiveDecisionRecord.farmer_id == own)
     elif farmer_id:
         stmt = stmt.where(ProactiveDecisionRecord.farmer_id == farmer_id)
 
@@ -142,9 +148,10 @@ async def list_alerts(
     stmt = select(AlertNotificationRecord).order_by(AlertNotificationRecord.created_at.desc())
 
     if auth.role == UserRole.FARMER:
-        if not auth.farmer_profile_id:
+        own = await linked_farmer_id(session, auth)
+        if not own:
             return []
-        stmt = stmt.where(AlertNotificationRecord.farmer_id == auth.farmer_profile_id)
+        stmt = stmt.where(AlertNotificationRecord.farmer_id == own)
     elif farmer_id:
         stmt = stmt.where(AlertNotificationRecord.farmer_id == farmer_id)
 
@@ -195,7 +202,7 @@ async def acknowledge_alert(
         raise HTTPException(status_code=404, detail="Alert notification not found")
 
     # Ownership check
-    if auth.role == UserRole.FARMER and alert.farmer_id != auth.farmer_profile_id:
+    if auth.role == UserRole.FARMER and alert.farmer_id != await linked_farmer_id(session, auth):
         raise HTTPException(status_code=403, detail="Not authorized to acknowledge another farmer's alert")
 
     from datetime import UTC, datetime
@@ -324,7 +331,8 @@ async def get_preferences(
     auth: AuthContext = Depends(get_current_auth_context),
 ) -> NotificationPreferenceResponse:
     """Retrieve notification preferences, quiet hours, and channel configuration."""
-    target_farmer_id = auth.farmer_profile_id if auth.role == UserRole.FARMER else (farmer_id or auth.farmer_profile_id)
+    own = await linked_farmer_id(session, auth)
+    target_farmer_id = own if auth.role == UserRole.FARMER else (farmer_id or own)
     if not target_farmer_id:
         raise HTTPException(status_code=400, detail="Farmer profile ID required")
 
@@ -376,7 +384,8 @@ async def update_preferences(
     auth: AuthContext = Depends(get_current_auth_context),
 ) -> NotificationPreferenceResponse:
     """Update notification preferences, quiet hours, and active categories."""
-    target_farmer_id = auth.farmer_profile_id if auth.role == UserRole.FARMER else (farmer_id or auth.farmer_profile_id)
+    own = await linked_farmer_id(session, auth)
+    target_farmer_id = own if auth.role == UserRole.FARMER else (farmer_id or own)
     if not target_farmer_id:
         raise HTTPException(status_code=400, detail="Farmer profile ID required")
 

@@ -12,12 +12,22 @@
  */
 
 import { apiClient } from '@/services/api/client';
-import type { Farmer, Field, Crop, FieldCrop, SoilSample } from '@/types/domain';
+import type { Farmer, FarmerUpdate, Field, Crop, FieldCrop, SoilSample } from '@/types/domain';
 
 export const farmerApi = {
   /** List all farmers (or lookup for current context). */
   async listFarmers(): Promise<Farmer[]> {
     return apiClient.get<Farmer[]>('/farmers');
+  },
+
+  /** The farmer profile linked to the signed-in user. */
+  async getMe(): Promise<Farmer> {
+    return apiClient.get<Farmer>('/farmers/me');
+  },
+
+  /** Update a farmer profile (partial). */
+  async updateFarmer(id: number, patch: FarmerUpdate): Promise<Farmer> {
+    return apiClient.patch<Farmer>(`/farmers/${id}`, patch);
   },
 
   /** Get a farmer profile by ID. */

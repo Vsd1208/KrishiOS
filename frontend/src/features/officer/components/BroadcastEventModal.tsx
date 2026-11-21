@@ -7,6 +7,7 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { Radio, Send, CheckCircle2 } from 'lucide-react';
@@ -20,35 +21,35 @@ interface BroadcastEventModalProps {
 
 interface EventTemplate {
   type: string;
-  label: string;
+  label: string; // i18n key
   defaultCrop: string;
   defaultSeverity: string;
-  defaultNotes: string;
+  defaultNotes: string; // i18n key
 }
 
 const DEFAULT_EVENT_TEMPLATE: EventTemplate = {
   type: 'disease.outbreak.detected',
-  label: 'Pest / Disease Outbreak Warning',
+  label: 'officer.broadcast.tplPest',
   defaultCrop: 'Paddy',
   defaultSeverity: 'HIGH',
-  defaultNotes: 'Brown Plant Hopper (BPH) or Stem Borer threshold exceeded in region.',
+  defaultNotes: 'officer.broadcast.notesPest',
 };
 
 const EVENT_TEMPLATES: EventTemplate[] = [
   DEFAULT_EVENT_TEMPLATE,
   {
     type: 'weather.alert.heavy_rainfall',
-    label: 'Unseasonal Heavy Rainfall Warning',
+    label: 'officer.broadcast.tplRain',
     defaultCrop: 'Cotton',
     defaultSeverity: 'CRITICAL',
-    defaultNotes: '[Expected rainfall and timing from the official forecast]. Postpone spraying and harvest.',
+    defaultNotes: 'officer.broadcast.notesRain',
   },
   {
     type: 'market.price.shift',
-    label: 'Mandi Price Shock / Advisory',
+    label: 'officer.broadcast.tplPrice',
     defaultCrop: 'Chilli',
     defaultSeverity: 'MEDIUM',
-    defaultNotes: 'Significant upward shift in modal market prices.',
+    defaultNotes: 'officer.broadcast.notesPrice',
   },
 ];
 
@@ -57,10 +58,11 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
   onClose,
   onEmitEvent,
 }) => {
+  const { t } = useTranslation();
   const [selectedTemplateIndex, setSelectedTemplateIndex] = useState(0);
   const [crop, setCrop] = useState(DEFAULT_EVENT_TEMPLATE.defaultCrop);
   const [district, setDistrict] = useState('Khammam');
-  const [notes, setNotes] = useState(DEFAULT_EVENT_TEMPLATE.defaultNotes);
+  const [notes, setNotes] = useState(() => t(DEFAULT_EVENT_TEMPLATE.defaultNotes));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [response, setResponse] = useState<EventIngestResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -69,7 +71,7 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
     setSelectedTemplateIndex(idx);
     const tmpl = EVENT_TEMPLATES[idx] ?? DEFAULT_EVENT_TEMPLATE;
     setCrop(tmpl.defaultCrop);
-    setNotes(tmpl.defaultNotes);
+    setNotes(t(tmpl.defaultNotes));
     setResponse(null);
     setError(null);
   };
@@ -98,7 +100,7 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
       setResponse(res);
     } catch (err) {
       console.error('Failed to emit event:', err);
-      setError(err instanceof Error ? err.message : 'Failed to ingest event into proactive pipeline.');
+      setError(t('officer.broadcast.failed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -114,8 +116,8 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={handleReset}
-      title="Broadcast Regional Advisory Event"
-      description="Trigger proactive risk intelligence across all registered farmers in district"
+      title={t('officer.broadcast.title')}
+      description={t('officer.broadcast.description')}
       size="lg"
     >
       {response ? (
@@ -124,20 +126,20 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
             <CheckCircle2 className="w-8 h-8" aria-hidden="true" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-subheading font-bold text-text">Event Successfully Processed</h3>
+            <h3 className="text-subheading font-bold text-text">{t('officer.broadcast.sent')}</h3>
             <p className="text-small text-text-secondary">{response.message}</p>
           </div>
           <div className="p-3 bg-surface-raised rounded-lg border border-border text-caption text-text-secondary text-left">
             <div>
-              <strong>Decisions Generated:</strong> {response.decisions_count}
+              <strong>{t('officer.broadcast.decisions')}</strong> {response.decisions_count}
             </div>
             <div>
-              <strong>Event ID:</strong> {response.event_id}
+              <strong>{t('officer.broadcast.eventId')}</strong> {response.event_id}
             </div>
           </div>
           <div className="flex justify-end pt-2">
             <Button variant="primary" onClick={handleReset}>
-              Done
+              {t('officer.broadcast.done')}
             </Button>
           </div>
         </div>
@@ -146,7 +148,7 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
           {/* Template Selector */}
           <div className="space-y-2">
             <label className="text-caption font-bold text-text uppercase block">
-              Event Category:
+              {t('officer.broadcast.category')}
             </label>
             <div className="grid grid-cols-1 gap-2">
               {EVENT_TEMPLATES.map((tmpl, idx) => (
@@ -162,9 +164,9 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <Radio className="w-4 h-4 text-primary-600" aria-hidden="true" />
-                    <span>{tmpl.label}</span>
+                    <span>{t(tmpl.label)}</span>
                   </div>
-                  <span className="text-caption text-text-muted">{tmpl.defaultSeverity}</span>
+                  <span className="text-caption text-text-muted">{t(`risk.${tmpl.defaultSeverity.toLowerCase()}`)}</span>
                 </button>
               ))}
             </div>
@@ -174,7 +176,7 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-caption font-bold text-text uppercase block mb-1">
-                Target Crop:
+                {t('officer.broadcast.crop')}
               </label>
               <input
                 type="text"
@@ -187,7 +189,7 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
 
             <div>
               <label className="text-caption font-bold text-text uppercase block mb-1">
-                Target District:
+                {t('officer.broadcast.district')}
               </label>
               <input
                 type="text"
@@ -202,7 +204,7 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
           {/* Advisory Notes */}
           <div>
             <label className="text-caption font-bold text-text uppercase block mb-1">
-              Advisory Instruction / Notes:
+              {t('officer.broadcast.notes')}
             </label>
             <textarea
               value={notes}
@@ -223,11 +225,11 @@ export const BroadcastEventModal: React.FC<BroadcastEventModalProps> = ({
           {/* Action Buttons */}
           <div className="flex justify-end gap-2 pt-2 border-t border-border">
             <Button variant="outline" type="button" onClick={onClose} disabled={isSubmitting}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button variant="primary" type="submit" disabled={isSubmitting}>
               <Send className="w-4 h-4 mr-1.5" aria-hidden="true" />
-              {isSubmitting ? 'Emitting...' : 'Broadcast Event'}
+              {isSubmitting ? t('officer.broadcast.sending') : t('officer.broadcast.submit')}
             </Button>
           </div>
         </form>

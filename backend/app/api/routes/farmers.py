@@ -2,9 +2,10 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.dependencies.auth import AuthContext, get_current_auth_context, linked_farmer_id
 from app.database.session import get_db_session
 from app.schemas.farmer import FarmerCreate, FarmerResponse, FarmerUpdate
 from app.services.farmer import FarmerService
@@ -32,6 +33,18 @@ async def list_farmers(
     limit: Annotated[int, Query(ge=1, le=500)] = 100,
 ) -> list[FarmerResponse]:
     return list(await service.list_farmers(offset=offset, limit=limit))
+
+
+@router.get("/me", response_model=FarmerResponse)
+async def my_farmer_profile(
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    auth: Annotated[AuthContext, Depends(get_current_auth_context)],
+) -> FarmerResponse:
+    """The farmer profile linked to the signed-in user (404 when none is linked)."""
+    farmer_id = await linked_farmer_id(session, auth)
+    if farmer_id is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "No farmer profile is linked to this user")
+    return await FarmerService(session).get_farmer(farmer_id)
 
 
 @router.get("/{farmer_id}", response_model=FarmerResponse)

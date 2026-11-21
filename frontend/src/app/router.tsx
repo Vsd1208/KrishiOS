@@ -6,7 +6,7 @@
  */
 
 import React, { Suspense } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import { RoleRoute } from '@/features/auth/RoleRoute';
@@ -14,6 +14,7 @@ import { FarmerShell } from '@/components/layout/FarmerShell';
 import { OfficerShell } from '@/components/layout/OfficerShell';
 import { LoadingState } from '@/components/feedback/LoadingState';
 import { ErrorState } from '@/components/feedback/ErrorState';
+import { RouteError } from '@/components/feedback/RouteError';
 
 // Lazy-loaded farmer views
 const FarmerDashboard = React.lazy(() => import('@/pages/farmer/FarmerDashboard'));
@@ -41,7 +42,19 @@ const GrievanceQueuePage = React.lazy(() => import('@/pages/officer/GrievanceQue
 const YieldOutlookPage = React.lazy(() => import('@/pages/officer/YieldOutlookPage'));
 const OutbreakMapPage = React.lazy(() => import('@/pages/officer/OutbreakMapPage'));
 
-export const router = createBrowserRouter([
+/**
+ * Give every route a crash screen. Page routes get one inside the shell (the menu stays usable);
+ * top-level routes get a full-page one as the last line of defence, so the app never goes blank.
+ */
+function withErrorScreens(routes: RouteObject[], depth = 0): RouteObject[] {
+  return routes.map((r) => {
+    const children = r.children ? withErrorScreens(r.children, depth + 1) : undefined;
+    const errorElement = r.errorElement ?? <RouteError fullPage={depth === 0} />;
+    return { ...r, errorElement, ...(children ? { children } : {}) } as RouteObject;
+  });
+}
+
+export const router = createBrowserRouter(withErrorScreens([
   {
     path: '/login',
     element: <LoginPage />,
@@ -64,7 +77,7 @@ export const router = createBrowserRouter([
                 index: true,
                 element: (
                   <Suspense
-                    fallback={<LoadingState fullPage message="Loading Farmer Dashboard..." />}
+                    fallback={<LoadingState />}
                   >
                     <FarmerDashboard />
                   </Suspense>
@@ -74,7 +87,7 @@ export const router = createBrowserRouter([
                 path: 'ask',
                 element: (
                   <Suspense
-                    fallback={<LoadingState fullPage message="Loading Ask KrishiOS..." />}
+                    fallback={<LoadingState />}
                   >
                     <AskPage />
                   </Suspense>
@@ -84,7 +97,7 @@ export const router = createBrowserRouter([
                 path: 'fields',
                 element: (
                   <Suspense
-                    fallback={<LoadingState fullPage message="Loading Plots & Fields..." />}
+                    fallback={<LoadingState />}
                   >
                     <FieldsPage />
                   </Suspense>
@@ -94,7 +107,7 @@ export const router = createBrowserRouter([
                 path: 'alerts',
                 element: (
                   <Suspense
-                    fallback={<LoadingState fullPage message="Loading Advisories & Alerts..." />}
+                    fallback={<LoadingState />}
                   >
                     <AlertsPage />
                   </Suspense>
@@ -103,7 +116,7 @@ export const router = createBrowserRouter([
               {
                 path: 'updates',
                 element: (
-                  <Suspense fallback={<LoadingState fullPage message="Loading Govt Updates..." />}>
+                  <Suspense fallback={<LoadingState />}>
                     <GovtUpdatesPage />
                   </Suspense>
                 ),
@@ -111,7 +124,7 @@ export const router = createBrowserRouter([
               {
                 path: 'help',
                 element: (
-                  <Suspense fallback={<LoadingState fullPage message="Loading Help..." />}>
+                  <Suspense fallback={<LoadingState />}>
                     <GrievancePage />
                   </Suspense>
                 ),
@@ -119,7 +132,7 @@ export const router = createBrowserRouter([
               {
                 path: 'insurance',
                 element: (
-                  <Suspense fallback={<LoadingState fullPage message="Loading Insurance Helper..." />}>
+                  <Suspense fallback={<LoadingState />}>
                     <InsurancePage />
                   </Suspense>
                 ),
@@ -128,7 +141,7 @@ export const router = createBrowserRouter([
                 path: 'profile',
                 element: (
                   <Suspense
-                    fallback={<LoadingState fullPage message="Loading Farmer Profile..." />}
+                    fallback={<LoadingState />}
                   >
                     <ProfilePage />
                   </Suspense>
@@ -157,7 +170,7 @@ export const router = createBrowserRouter([
                     index: true,
                     element: (
                       <Suspense
-                        fallback={<LoadingState fullPage message="Loading Officer Dashboard..." />}
+                        fallback={<LoadingState />}
                       >
                         <OfficerDashboard />
                       </Suspense>
@@ -167,7 +180,7 @@ export const router = createBrowserRouter([
                     path: 'reviews',
                     element: (
                       <Suspense
-                        fallback={<LoadingState fullPage message="Loading Review Queue..." />}
+                        fallback={<LoadingState />}
                       >
                         <ReviewQueuePage />
                       </Suspense>
@@ -177,7 +190,7 @@ export const router = createBrowserRouter([
                     path: 'farmers',
                     element: (
                       <Suspense
-                        fallback={<LoadingState fullPage message="Loading Farmer Directory..." />}
+                        fallback={<LoadingState />}
                       >
                         <FarmersDirectoryPage />
                       </Suspense>
@@ -187,7 +200,7 @@ export const router = createBrowserRouter([
                     path: 'knowledge',
                     element: (
                       <Suspense
-                        fallback={<LoadingState fullPage message="Loading Knowledge Base & Graph..." />}
+                        fallback={<LoadingState />}
                       >
                         <KnowledgeGraphPage />
                       </Suspense>
@@ -197,7 +210,7 @@ export const router = createBrowserRouter([
                     path: 'analytics',
                     element: (
                       <Suspense
-                        fallback={<LoadingState fullPage message="Loading Regional Analytics..." />}
+                        fallback={<LoadingState />}
                       >
                         <AnalyticsPage />
                       </Suspense>
@@ -207,7 +220,7 @@ export const router = createBrowserRouter([
                     path: 'evaluation',
                     element: (
                       <Suspense
-                        fallback={<LoadingState fullPage message="Loading AI Trust & Evaluation Center..." />}
+                        fallback={<LoadingState />}
                       >
                         <EvaluationPage />
                       </Suspense>
@@ -216,7 +229,7 @@ export const router = createBrowserRouter([
                   {
                     path: 'feedback',
                     element: (
-                      <Suspense fallback={<LoadingState fullPage message="Loading Farmer Feedback..." />}>
+                      <Suspense fallback={<LoadingState />}>
                         <FeedbackDashboardPage />
                       </Suspense>
                     ),
@@ -224,7 +237,7 @@ export const router = createBrowserRouter([
                   {
                     path: 'bulletins',
                     element: (
-                      <Suspense fallback={<LoadingState fullPage message="Loading Bulletins..." />}>
+                      <Suspense fallback={<LoadingState />}>
                         <BulletinsPage />
                       </Suspense>
                     ),
@@ -232,7 +245,7 @@ export const router = createBrowserRouter([
                   {
                     path: 'publish',
                     element: (
-                      <Suspense fallback={<LoadingState fullPage message="Loading Publish Advisory..." />}>
+                      <Suspense fallback={<LoadingState />}>
                         <PublishAdvisoryPage />
                       </Suspense>
                     ),
@@ -240,7 +253,7 @@ export const router = createBrowserRouter([
                   {
                     path: 'connect',
                     element: (
-                      <Suspense fallback={<LoadingState fullPage message="Loading Connect Analytics..." />}>
+                      <Suspense fallback={<LoadingState />}>
                         <ConnectAnalyticsPage />
                       </Suspense>
                     ),
@@ -248,7 +261,7 @@ export const router = createBrowserRouter([
                   {
                     path: 'grievances',
                     element: (
-                      <Suspense fallback={<LoadingState fullPage message="Loading Grievances..." />}>
+                      <Suspense fallback={<LoadingState />}>
                         <GrievanceQueuePage />
                       </Suspense>
                     ),
@@ -256,7 +269,7 @@ export const router = createBrowserRouter([
                   {
                     path: 'yield',
                     element: (
-                      <Suspense fallback={<LoadingState fullPage message="Loading Yield Outlook..." />}>
+                      <Suspense fallback={<LoadingState />}>
                         <YieldOutlookPage />
                       </Suspense>
                     ),
@@ -264,7 +277,7 @@ export const router = createBrowserRouter([
                   {
                     path: 'outbreaks',
                     element: (
-                      <Suspense fallback={<LoadingState fullPage message="Loading Outbreaks..." />}>
+                      <Suspense fallback={<LoadingState />}>
                         <OutbreakMapPage />
                       </Suspense>
                     ),
@@ -277,7 +290,7 @@ export const router = createBrowserRouter([
                   {
                     path: 'extension',
                     element: (
-                      <Suspense fallback={<LoadingState fullPage message="Loading Assisted Mode..." />}>
+                      <Suspense fallback={<LoadingState />}>
                         <ExtensionPage />
                       </Suspense>
                     ),
@@ -295,8 +308,6 @@ export const router = createBrowserRouter([
     element: (
       <ErrorState
         statusCode={404}
-        title="404 — Page Not Found"
-        message="The page or view you requested does not exist or has been moved."
         fullPage
         onRetry={() => {
           window.location.assign('/login');
@@ -304,6 +315,6 @@ export const router = createBrowserRouter([
       />
     ),
   },
-]);
+]));
 
 export default router;

@@ -11,12 +11,12 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ConfidenceBadge } from '@/components/ai/ConfidenceBadge';
 import { RiskBadge } from '@/components/ai/RiskBadge';
-import { FreshnessIndicator } from '@/components/ai/FreshnessIndicator';
 import { CitationCard } from '@/components/ai/CitationCard';
 import { retrievalApi } from '@/services/api/retrieval';
 import { alertsApi } from '@/services/api/alerts';
@@ -37,6 +37,7 @@ import {
 import type { ProactiveDecision } from '@/types/proactive';
 
 export const EvaluationPage: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedDecision, setSelectedDecision] = useState<ProactiveDecision | null>(null);
 
   // Live Query: Blue/Green Index Status
@@ -76,19 +77,19 @@ export const EvaluationPage: React.FC = () => {
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-caption text-text-muted font-medium">
               <ShieldCheck className="w-4 h-4 text-primary-600" aria-hidden="true" />
-              <span>Responsible AI Governance • Enterprise Observability</span>
+              <span>{t('officer.eval.kicker')}</span>
             </div>
             <h1 className="text-display font-extrabold text-text tracking-tight">
-              AI Trust &amp; Evaluation Center
+              {t('officer.eval.title')}
             </h1>
             <p className="text-body text-text-secondary">
-              Inspect groundedness, scientific provenance, Blue/Green index state, and human-in-the-loop decisions
+              {t('officer.eval.subtitle')}
             </p>
           </div>
 
           <div className="inline-flex items-center gap-2 bg-success-50 border border-success-200 px-3 py-1.5 rounded-lg text-caption text-success-800 self-start sm:self-auto font-semibold">
             <CheckCircle2 className="w-4 h-4 text-success-600" aria-hidden="true" />
-            <span>Audited Against Real Backend APIs</span>
+            <span>{t('officer.eval.live')}</span>
           </div>
         </div>
       </section>
@@ -100,7 +101,7 @@ export const EvaluationPage: React.FC = () => {
           <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
               <span className="text-caption font-bold text-text-secondary uppercase">
-                Evidence Grounding
+                {t('officer.eval.evidence')}
               </span>
               <div className="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center">
                 <FileText className="w-5 h-5" aria-hidden="true" />
@@ -111,7 +112,7 @@ export const EvaluationPage: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2 border-t border-border text-caption text-text-muted">
-            <span>Decisions with verified Evidence Packages</span>
+            <span>{t('officer.eval.evidenceHint')}</span>
           </CardContent>
         </Card>
 
@@ -120,18 +121,18 @@ export const EvaluationPage: React.FC = () => {
           <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
               <span className="text-caption font-bold text-text-secondary uppercase">
-                Active Knowledge Index
+                {t('officer.eval.index')}
               </span>
               <div className="w-8 h-8 rounded-lg bg-info-50 text-info-600 flex items-center justify-center">
                 <Layers className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
             <CardTitle as="h3" className="text-heading font-extrabold text-text mt-1">
-              {isIndexLoading ? <Skeleton width={100} height={32} /> : (activeIndex?.alias_name || 'krishios-live')}
+              {isIndexLoading ? <Skeleton width={100} height={32} /> : (activeIndex?.alias_name || '—')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2 border-t border-border text-caption text-text-muted">
-            <span>Version {activeIndex?.version_number ?? 1} • {activeIndex?.chunk_count ?? 250} Chunks</span>
+            <span>{t('officer.eval.versionChunks', { version: activeIndex?.version_number ?? '—', chunks: activeIndex?.chunk_count ?? '—' })}</span>
           </CardContent>
         </Card>
 
@@ -140,7 +141,7 @@ export const EvaluationPage: React.FC = () => {
           <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
               <span className="text-caption font-bold text-text-secondary uppercase">
-                Human Review Oversight
+                {t('officer.eval.waiting')}
               </span>
               <div className="w-8 h-8 rounded-lg bg-warning-50 text-warning-600 flex items-center justify-center">
                 <Clock className="w-5 h-5" aria-hidden="true" />
@@ -151,7 +152,7 @@ export const EvaluationPage: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2 border-t border-border text-caption text-text-muted">
-            <span>High-impact alerts awaiting officer sign-off</span>
+            <span>{t('officer.eval.waitingHint')}</span>
           </CardContent>
         </Card>
 
@@ -160,18 +161,18 @@ export const EvaluationPage: React.FC = () => {
           <CardHeader className="pb-1">
             <div className="flex items-center justify-between">
               <span className="text-caption font-bold text-text-secondary uppercase">
-                Embedding Pipeline
+                {t('officer.eval.embedding')}
               </span>
               <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
                 <Cpu className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
-            <CardTitle as="h3" className="text-small font-bold text-text mt-1 truncate" title={activeIndex?.embedding_model || 'text-embedding-3-small'}>
-              {isIndexLoading ? <Skeleton width={120} height={24} /> : (activeIndex?.embedding_model || 'text-embedding-3-small')}
+            <CardTitle as="h3" className="text-small font-bold text-text mt-1 truncate" title={activeIndex?.embedding_model || '—'}>
+              {isIndexLoading ? <Skeleton width={120} height={24} /> : (activeIndex?.embedding_model || '—')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2 border-t border-border text-caption text-text-muted">
-            <span>Vector Dimension: {activeIndex?.vector_size ?? 384}</span>
+            <span>{t('officer.eval.vectorSize', { n: activeIndex?.vector_size ?? '—' })}</span>
           </CardContent>
         </Card>
       </div>
@@ -183,15 +184,15 @@ export const EvaluationPage: React.FC = () => {
             <Database className="w-5 h-5 text-primary-600" aria-hidden="true" />
             <div>
               <h2 className="text-subheading font-bold text-text">
-                Blue / Green Immutable Knowledge Index Health
+                {t('officer.eval.versionsTitle')}
               </h2>
               <p className="text-caption text-text-muted">
-                Enterprise versioning: Zero-downtime alias promotion &amp; automatic rollback
+                {t('officer.eval.versionsHint')}
               </p>
             </div>
           </div>
           <span className="px-3 py-1 rounded-full text-caption font-bold bg-primary-50 text-primary-800 border border-primary-200">
-            Alias: {indexStatus?.alias_name || 'krishios-live'}
+            {t('officer.eval.alias', { name: indexStatus?.alias_name || '—' })}
           </span>
         </div>
 
@@ -200,17 +201,17 @@ export const EvaluationPage: React.FC = () => {
           <div className="p-4 rounded-xl bg-success-50/40 border border-success-200 space-y-2">
             <div className="flex items-center justify-between">
               <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-success-600 text-white uppercase">
-                Active Production (Blue)
+                {t('officer.eval.liveVersion')}
               </span>
               <span className="text-caption text-success-800 font-semibold">
-                Status: {activeIndex?.status || 'ACTIVE'}
+                {t('officer.eval.status', { status: activeIndex?.status || '—' })}
               </span>
             </div>
             <div className="space-y-1 text-small text-text">
-              <p>Collection: <code className="font-mono text-caption">{activeIndex?.collection_name || 'krishios_kb_v1'}</code></p>
-              <p>Indexed Documents: <strong>{activeIndex?.document_count ?? 12}</strong></p>
-              <p>Total Chunks: <strong>{activeIndex?.chunk_count ?? 250}</strong></p>
-              <p>Build Mode: <strong>{activeIndex?.build_mode || 'BLUE_GREEN'}</strong></p>
+              <p>{t('officer.eval.collection')} <code className="font-mono text-caption">{activeIndex?.collection_name || '—'}</code></p>
+              <p>{t('officer.eval.documents')} <strong>{activeIndex?.document_count ?? '—'}</strong></p>
+              <p>{t('officer.eval.chunks')} <strong>{activeIndex?.chunk_count ?? '—'}</strong></p>
+              <p>{t('officer.eval.buildMode')} <strong>{activeIndex?.build_mode || '—'}</strong></p>
             </div>
           </div>
 
@@ -218,17 +219,17 @@ export const EvaluationPage: React.FC = () => {
           <div className="p-4 rounded-xl bg-surface-raised border border-border space-y-2">
             <div className="flex items-center justify-between">
               <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-surface border border-border text-text-muted uppercase">
-                Previous / Rollback Candidate
+                {t('officer.eval.previousVersion')}
               </span>
               <span className="text-caption text-text-muted">
-                Status: {previousIndex?.status || 'ARCHIVED / READY'}
+                {t('officer.eval.status', { status: previousIndex?.status || '—' })}
               </span>
             </div>
             <div className="space-y-1 text-small text-text-secondary">
-              <p>Collection: <code className="font-mono text-caption">{previousIndex?.collection_name || 'krishios_kb_v0'}</code></p>
-              <p>Indexed Documents: <strong>{previousIndex?.document_count ?? 10}</strong></p>
-              <p>Total Chunks: <strong>{previousIndex?.chunk_count ?? 210}</strong></p>
-              <p className="text-caption text-text-muted">Available for instant 1-click zero-downtime rollback.</p>
+              <p>{t('officer.eval.collection')} <code className="font-mono text-caption">{previousIndex?.collection_name || '—'}</code></p>
+              <p>{t('officer.eval.documents')} <strong>{previousIndex?.document_count ?? '—'}</strong></p>
+              <p>{t('officer.eval.chunks')} <strong>{previousIndex?.chunk_count ?? '—'}</strong></p>
+              <p className="text-caption text-text-muted">{t('officer.eval.rollbackHint')}</p>
             </div>
           </div>
         </div>
@@ -239,14 +240,14 @@ export const EvaluationPage: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-subheading font-bold text-text">
-              AI Decision Trace &amp; Evidence Provenance
+              {t('officer.eval.decisionsTitle')}
             </h2>
             <p className="text-caption text-text-secondary">
-              Select any real decision to inspect the exact citations, GraphRAG reasoning paths, and telemetry used
+              {t('officer.eval.decisionsHint')}
             </p>
           </div>
           <span className="text-caption text-text-muted">
-            {decisions.length} Decisions Logged
+            {t('officer.eval.decisionsCount', { count: decisions.length })}
           </span>
         </div>
 
@@ -262,7 +263,7 @@ export const EvaluationPage: React.FC = () => {
             ) : decisions.length === 0 ? (
               <Card variant="default" padding="lg" className="text-center py-8 text-text-muted">
                 <Info className="w-6 h-6 mx-auto mb-1 opacity-50" />
-                <p className="text-small">No decision records found.</p>
+                <p className="text-small">{t('officer.eval.noDecisions')}</p>
               </Card>
             ) : (
               decisions.map((d) => {
@@ -291,9 +292,9 @@ export const EvaluationPage: React.FC = () => {
                     </p>
 
                     <div className="flex items-center justify-between text-[11px] text-text-muted pt-1">
-                      <span>Farmer #{d.farmer_id || 'Broadcast'}</span>
+                      <span>{d.farmer_id ? t('officer.farmerNo', { id: d.farmer_id }) : t('officer.broadcastTarget')}</span>
                       <span className="flex items-center gap-1 font-semibold text-primary-700">
-                        Inspect Trace <ArrowRight className="w-3 h-3" />
+                        {t('officer.eval.inspect')} <ArrowRight className="w-3 h-3" />
                       </span>
                     </div>
                   </div>
@@ -309,7 +310,7 @@ export const EvaluationPage: React.FC = () => {
                 <div className="pb-3 border-b border-border flex items-center justify-between">
                   <div>
                     <span className="text-caption font-bold text-text-muted uppercase">
-                      Decision Trace #{selectedDecision.decision_id}
+                      {t('officer.eval.traceNo', { id: selectedDecision.decision_id })}
                     </span>
                     <h3 className="text-subheading font-bold text-text">
                       {selectedDecision.risk_type}
@@ -317,14 +318,13 @@ export const EvaluationPage: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <ConfidenceBadge confidence={selectedDecision.confidence} size="sm" showLabel />
-                    <FreshnessIndicator freshnessSeconds={1800} size="sm" />
                   </div>
                 </div>
 
                 {/* Advisory Text */}
                 <div className="p-3.5 rounded-xl bg-primary-50/30 border border-primary-200/80 space-y-1">
                   <span className="text-caption font-bold text-primary-800 uppercase block">
-                    Grounded AI Recommendation:
+                    {t('officer.eval.advice')}
                   </span>
                   <p className="text-small text-text leading-relaxed whitespace-pre-line">
                     {selectedDecision.advisory_text}
@@ -336,7 +336,7 @@ export const EvaluationPage: React.FC = () => {
                   <div className="space-y-2">
                     <span className="text-caption font-bold text-text uppercase flex items-center gap-1.5">
                       <Search className="w-3.5 h-3.5 text-primary-600" />
-                      Verified ICAR Sources ({selectedDecision.evidence_package.citations.length}):
+                      {t('officer.eval.sources', { count: selectedDecision.evidence_package.citations.length })}
                     </span>
                     <div className="space-y-2 max-h-56 overflow-y-auto">
                       {selectedDecision.evidence_package.citations.map((c, idx) => (
@@ -346,7 +346,7 @@ export const EvaluationPage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="p-3 rounded-lg bg-surface-raised border border-border text-caption text-text-muted">
-                    No scientific literature citations attached to this decision record.
+                    {t('officer.eval.noSources')}
                   </div>
                 )}
 
@@ -355,7 +355,7 @@ export const EvaluationPage: React.FC = () => {
                   <div className="space-y-1.5">
                     <span className="text-caption font-bold text-text uppercase flex items-center gap-1.5">
                       <GitFork className="w-3.5 h-3.5 text-purple-600" />
-                      Knowledge Graph Reasoning Path:
+                      {t('officer.eval.graphPath')}
                     </span>
                     {selectedDecision.evidence_package.graph_paths.map((gp, idx) => (
                       <div key={idx} className="p-2.5 rounded-lg bg-surface border border-border text-caption font-mono text-text">
@@ -368,10 +368,7 @@ export const EvaluationPage: React.FC = () => {
                 {/* Human Review Status */}
                 <div className="p-3 rounded-xl bg-surface-raised border border-border flex items-center justify-between text-caption">
                   <span className="text-text-secondary">
-                    Review Requirement: <strong>{selectedDecision.requires_review ? 'Escalated to Officer Queue' : 'Direct Dispatch'}</strong>
-                  </span>
-                  <span className="px-2 py-0.5 rounded font-bold bg-success-50 text-success-700 border border-success-200">
-                    Validated
+                    {t('officer.eval.review')} <strong>{selectedDecision.requires_review ? t('officer.eval.toOfficer') : t('officer.eval.direct')}</strong>
                   </span>
                 </div>
               </Card>
@@ -379,10 +376,10 @@ export const EvaluationPage: React.FC = () => {
               <Card variant="default" padding="lg" className="text-center py-16 text-text-muted space-y-2">
                 <Search className="w-8 h-8 mx-auto opacity-40" />
                 <p className="text-small font-medium text-text-secondary">
-                  Select a decision on the left to inspect its complete evidence provenance.
+                  {t('officer.eval.choose')}
                 </p>
                 <p className="text-caption text-text-muted max-w-sm mx-auto">
-                  Demonstrates verified RAG citations, GraphRAG reasoning chains, and live micro-climate sensor telemetry.
+                  {t('officer.eval.chooseHint')}
                 </p>
               </Card>
             )}
@@ -394,10 +391,10 @@ export const EvaluationPage: React.FC = () => {
       <section className="p-4 rounded-xl bg-surface border border-border text-caption text-text-secondary space-y-1.5">
         <div className="flex items-center gap-2 font-bold text-text">
           <Info className="w-4 h-4 text-info-600" />
-          <span>Telemetry &amp; Instrumentation Notice:</span>
+          <span>{t('officer.eval.noticeTitle')}</span>
         </div>
         <p className="leading-relaxed">
-          KrishiOS strictly renders metrics supported by active FastAPI backend APIs. Statistical benchmarks such as historical token costs, token counts, or synthesized precision/recall metrics are omitted until backend evaluation instrumentation is exposed.
+          {t('officer.eval.notice')}
         </p>
       </section>
     </div>

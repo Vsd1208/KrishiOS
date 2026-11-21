@@ -1,15 +1,12 @@
 /**
- * VisionDiagnosticLab Component.
- *
- * Computer Vision inspection canvas tab:
- * - Leaf image review
- * - Candidate pathogen condition confidence ratings
- * - Visual observations and bounding checks
- * - Model diagnostic provenance
+ * VisionDiagnosticLab: the photo attached in this chat. Chat answers do not yet carry the photo
+ * check's findings, so this tab shows the photo and points to "Add a crop photo", which runs the
+ * offline crop and disease models and asks the farmer to confirm the crop. No findings are invented.
  */
 
 import React from 'react';
-import { Eye, ShieldAlert, Cpu, CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Eye, ShieldAlert } from 'lucide-react';
 import type { ImageAttachment } from '@/features/ai/types/conversation';
 
 interface VisionDiagnosticLabProps {
@@ -17,134 +14,60 @@ interface VisionDiagnosticLabProps {
   crop?: string;
 }
 
-export const VisionDiagnosticLab: React.FC<VisionDiagnosticLabProps> = ({
-  image,
-  crop,
-}) => {
-  const candidateConditions = [
-    {
-      name: 'Yellow Stem Borer (Scirpophaga incertulas)',
-      confidence: 0.88,
-      type: 'Insect Pest',
-      severity: 'HIGH',
-      symptoms: 'Dead heart in vegetative stage, white earhead at heading.',
-    },
-    {
-      name: 'Bacterial Leaf Blight (Xanthomonas oryzae)',
-      confidence: 0.24,
-      type: 'Bacterial Pathogen',
-      severity: 'MEDIUM',
-      symptoms: 'Water-soaked lesions on leaf margins turning yellow-white.',
-    },
-    {
-      name: 'Nitrogen Deficiency',
-      confidence: 0.18,
-      type: 'Nutrient Deficiency',
-      severity: 'LOW',
-      symptoms: 'General pale yellowing starting from older leaves.',
-    },
-  ];
+export const VisionDiagnosticLab: React.FC<VisionDiagnosticLabProps> = ({ image }) => {
+  const { t } = useTranslation();
+  const finding = image?.diagnosisCondition;
+  const conf = image?.diagnosisConfidence;
 
   return (
     <div className="space-y-4 animate-fadeIn">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-emerald-100 text-emerald-700">
-            <Eye className="w-4 h-4" aria-hidden="true" />
-          </div>
-          <div>
-            <h4 className="text-small font-bold text-text">Vision Intelligence Diagnostic Lab</h4>
-            <p className="text-caption text-text-muted">
-              Deep leaf symptom segmentation and pathogen pattern analysis
-            </p>
-          </div>
+      <div className="flex items-center gap-2">
+        <div className="p-1.5 rounded-lg bg-emerald-100 text-emerald-700">
+          <Eye className="w-4 h-4" aria-hidden="true" />
         </div>
-        <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-          <Cpu className="w-3 h-3" />
-          CropNet-v4.2 Vision
-        </span>
+        <div>
+          <h4 className="text-small font-bold text-text">{t('canvas.vision.title')}</h4>
+          <p className="text-caption text-text-muted">{t('canvas.vision.subtitle')}</p>
+        </div>
       </div>
 
-      {/* Image Preview / Inspection */}
       {image ? (
-        <div className="rounded-xl overflow-hidden border border-border bg-black/10 relative">
-          <img
-            src={image.previewUrl}
-            alt="Analyzed crop specimen"
-            className="w-full max-h-56 object-cover"
-          />
-          <div className="p-2 bg-surface/90 backdrop-blur-sm border-t border-border flex items-center justify-between text-caption">
-            <span className="font-semibold text-text truncate max-w-[200px]">
-              {image.file.name}
-            </span>
-            <span className="text-success-700 font-bold flex items-center gap-1">
-              <CheckCircle className="w-3.5 h-3.5" /> Quality Verified (98/100)
-            </span>
-          </div>
+        <div className="rounded-xl overflow-hidden border border-border bg-surface-raised">
+          <img src={image.previewUrl} alt={t('canvas.vision.alt')} className="w-full max-h-56 object-cover" />
+          <p className="p-2 border-t border-border text-caption font-semibold text-text truncate">{image.file.name}</p>
         </div>
       ) : (
-        <div className="p-6 rounded-xl border border-dashed border-border bg-surface-raised text-center space-y-2">
-          <Eye className="w-8 h-8 text-text-muted mx-auto opacity-60" />
-          <p className="text-small text-text-secondary font-medium">
-            No crop leaf image attached to current session.
-          </p>
-          <p className="text-caption text-text-muted max-w-sm mx-auto">
-            Attach leaf photos via the camera icon in the composer below for real-time symptom detection.
-          </p>
+        <div
+          className="p-6 rounded-xl border border-dashed border-border bg-surface-raised text-center space-y-2"
+          data-testid="no-photo"
+        >
+          <Eye className="w-8 h-8 text-text-muted mx-auto opacity-60" aria-hidden="true" />
+          <p className="text-small text-text-secondary font-medium">{t('canvas.vision.none')}</p>
         </div>
       )}
 
-      {/* Candidate Pathogen Conditions */}
-      <div className="space-y-2.5">
-        <span className="text-caption font-bold text-text-secondary uppercase block">
-          Candidate Conditions for {crop}:
-        </span>
-
-        {candidateConditions.map((cond, idx) => (
-          <div
-            key={idx}
-            className="p-3 rounded-xl bg-surface border border-border space-y-2 shadow-xs"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-small font-bold text-text block">{cond.name}</span>
-                <span className="text-caption text-text-muted">{cond.type}</span>
-              </div>
-              <div className="text-right">
-                <span className="text-small font-extrabold text-text tabular-nums">
-                  {(cond.confidence * 100).toFixed(0)}%
-                </span>
-                <span className="text-[11px] text-text-secondary block">AI Confidence</span>
-              </div>
-            </div>
-
-            {/* Confidence Bar */}
-            <div className="h-1.5 w-full bg-surface-raised rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full ${
-                  cond.confidence >= 0.7
-                    ? 'bg-success-600'
-                    : cond.confidence >= 0.3
-                      ? 'bg-warning-500'
-                      : 'bg-text-muted/40'
-                }`}
-                style={{ width: `${cond.confidence * 100}%` }}
-              />
-            </div>
-
-            <p className="text-caption text-text-secondary leading-normal">
-              <strong>Observed Symptoms:</strong> {cond.symptoms}
-            </p>
-          </div>
-        ))}
-      </div>
+      {finding ? (
+        <div className="p-3 rounded-xl bg-surface border border-border">
+          <span className="text-caption text-text-muted block">{t('canvas.vision.possible')}</span>
+          <span className="text-small font-bold text-text">{finding}</span>
+          {typeof conf === 'number' && (
+            <span className="text-caption text-text-secondary">
+              {' · '}
+              {t('canvas.vision.confidence', { pct: Math.round(conf * 100) })}
+            </span>
+          )}
+        </div>
+      ) : (
+        image && (
+          <p className="text-caption text-text-secondary" data-testid="vision-howto">
+            {t('canvas.vision.howto', { chat: t('chat.simpleChat') })}
+          </p>
+        )
+      )}
 
       <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-caption text-amber-900 flex items-start gap-2">
-        <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-        <span>
-          Visual AI findings indicate high statistical similarity. Always cross-verify with field extension officers before applying heavy synthetic agrochemicals.
-        </span>
+        <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" aria-hidden="true" />
+        <span>{t('canvas.vision.caution')}</span>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ describe('AudioPlayerControls', () => {
       />
     );
 
-    const playBtn = screen.getByRole('button', { name: /Listen to advisory in voice/i });
+    const playBtn = screen.getByRole('button', { name: 'Listen' });
     expect(playBtn).toBeInTheDocument();
 
     const speedBtn125 = screen.getByRole('button', { name: '1.25x' });

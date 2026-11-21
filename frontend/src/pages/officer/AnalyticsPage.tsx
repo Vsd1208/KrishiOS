@@ -6,6 +6,7 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -24,6 +25,7 @@ import {
 } from 'lucide-react';
 
 export const AnalyticsPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [isBroadcastOpen, setIsBroadcastOpen] = useState(false);
 
   const { data: decisions = [], isLoading: isDecisionsLoading } = useProactiveDecisions();
@@ -38,10 +40,10 @@ export const AnalyticsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-display font-extrabold text-text tracking-tight">
-            Regional Risk Radar &amp; Analytics
+            {t('officer.analytics.title')}
           </h1>
           <p className="text-body text-text-secondary">
-            Monitor district outbreak clusters, severe weather events, and proactive decision volume
+            {t('officer.analytics.subtitle')}
           </p>
         </div>
 
@@ -51,7 +53,7 @@ export const AnalyticsPage: React.FC = () => {
           className="cursor-pointer self-start sm:self-auto"
         >
           <Radio className="w-4 h-4 mr-1.5" aria-hidden="true" />
-          <span>Issue Emergency Broadcast</span>
+          <span>{t('officer.broadcastButton')}</span>
         </Button>
       </div>
 
@@ -60,14 +62,16 @@ export const AnalyticsPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <CloudRain className="w-5 h-5 text-info-600" aria-hidden="true" />
           <h2 className="text-subheading font-bold text-text">
-            Active Meteorological Warnings ({weatherAlerts.length})
+            {t('officer.analytics.warnings', { count: weatherAlerts.length })}
           </h2>
         </div>
 
-        {weatherAlerts.length === 0 ? (
+        {isWeatherLoading ? (
+          <Skeleton height={56} />
+        ) : weatherAlerts.length === 0 ? (
           <Card variant="raised" padding="md" className="flex items-center gap-3 bg-surface">
             <CheckCircle2 className="w-5 h-5 text-success-600 flex-shrink-0" aria-hidden="true" />
-            <span className="text-small text-text">No active severe weather warnings in this district.</span>
+            <span className="text-small text-text">{t('officer.analytics.noWarnings')}</span>
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -83,7 +87,7 @@ export const AnalyticsPage: React.FC = () => {
                     {alert.severity} • {alert.event_type}
                   </span>
                   <span className="text-caption text-text-muted">
-                    Until {new Date(alert.effective_until).toLocaleDateString()}
+                    {t('officer.analytics.until', { date: new Date(alert.effective_until).toLocaleDateString(i18n.language) })}
                   </span>
                 </div>
                 <h3 className="text-body font-bold text-text">{alert.headline}</h3>
@@ -99,7 +103,7 @@ export const AnalyticsPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <Activity className="w-5 h-5 text-primary-600" aria-hidden="true" />
           <h2 className="text-subheading font-bold text-text">
-            Recent Proactive Decision Intelligence ({decisions.length})
+            {t('officer.analytics.decisions', { count: decisions.length })}
           </h2>
         </div>
 
@@ -113,7 +117,7 @@ export const AnalyticsPage: React.FC = () => {
             </div>
           ) : decisions.length === 0 ? (
             <Card variant="default" padding="lg" className="text-center py-10 text-text-muted">
-              <p className="text-small">No recent automated decision records generated.</p>
+              <p className="text-small">{t('officer.analytics.noDecisions')}</p>
             </Card>
           ) : (
             decisions.slice(0, 10).map((d) => (
@@ -123,11 +127,11 @@ export const AnalyticsPage: React.FC = () => {
                     <RiskBadge severity={d.risk_severity} size="sm" />
                     <span className="text-small font-bold text-text">{d.risk_type}</span>
                     <span className="text-caption text-text-muted">
-                      • Farmer #{d.farmer_id || 'Broadcast'}
+                      • {d.farmer_id ? t('officer.farmerNo', { id: d.farmer_id }) : t('officer.broadcastTarget')}
                     </span>
                   </div>
                   <span className="text-caption text-text-muted">
-                    Confidence: {Math.round(d.confidence * 100)}%
+                    {t('officer.analytics.confidence', { pct: Math.round(d.confidence * 100) })}
                   </span>
                 </div>
                 <p className="text-small text-text whitespace-pre-line leading-relaxed">

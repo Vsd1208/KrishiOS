@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Spinner } from '@/components/ui/Spinner';
 
 export interface LoadingStateProps {
@@ -15,11 +16,13 @@ export interface LoadingStateProps {
 }
 
 export const LoadingState: React.FC<LoadingStateProps> = ({
-  message = 'Loading...',
+  message: messageProp,
   fullPage = false,
   size = 'lg',
   className = '',
 }) => {
+  const { t } = useTranslation();
+  const message = messageProp ?? t('common.loading');
   const content = (
     <div
       className={`flex flex-col items-center justify-center gap-3 p-6 text-center ${className}`}

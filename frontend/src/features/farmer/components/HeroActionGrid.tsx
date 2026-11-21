@@ -8,6 +8,7 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Mic, MessageSquare, Camera } from 'lucide-react';
 
 interface HeroActionGridProps {
@@ -15,13 +16,13 @@ interface HeroActionGridProps {
 }
 
 export const HeroActionGrid: React.FC<HeroActionGridProps> = ({ onSelectAction }) => {
+  const { t } = useTranslation();
   return (
-    <section aria-label="Quick Actions" className="space-y-2">
+    <section aria-label={t('hero.title')} className="space-y-2">
       <div className="flex items-center justify-between">
         <h2 className="text-small font-bold uppercase tracking-wider text-text-secondary">
-          Ask KrishiOS Intelligence
+          {t('hero.title')}
         </h2>
-        <span className="text-caption text-primary-600 font-medium">Multilingual AI</span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -36,13 +37,10 @@ export const HeroActionGrid: React.FC<HeroActionGridProps> = ({ onSelectAction }
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-1.5">
-              <span className="text-body font-bold">Speak Question</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] bg-primary-900/60 text-primary-200 border border-primary-500/40">
-                Voice
-              </span>
+              <span className="text-body font-bold">{t('hero.voice')}</span>
             </div>
             <p className="text-caption text-primary-100/90 mt-0.5">
-              Telugu, Hindi, or English voice query
+              {t('hero.voiceHelp')}
             </p>
           </div>
         </button>
@@ -58,10 +56,10 @@ export const HeroActionGrid: React.FC<HeroActionGridProps> = ({ onSelectAction }
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-1.5">
-              <span className="text-body font-bold text-text">Ask AI Assistant</span>
+              <span className="text-body font-bold text-text">{t('hero.text')}</span>
             </div>
             <p className="text-caption text-text-secondary mt-0.5">
-              Pest, fertilizer, weather, or market query
+              {t('hero.textHelp')}
             </p>
           </div>
         </button>
@@ -77,13 +75,10 @@ export const HeroActionGrid: React.FC<HeroActionGridProps> = ({ onSelectAction }
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-1.5">
-              <span className="text-body font-bold text-text">Analyze Crop</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] bg-accent-100 text-accent-800">
-                Photo
-              </span>
+              <span className="text-body font-bold text-text">{t('hero.photo')}</span>
             </div>
             <p className="text-caption text-text-secondary mt-0.5">
-              Identify pests, diseases, or deficiencies
+              {t('hero.photoHelp')}
             </p>
           </div>
         </button>
