@@ -11,9 +11,13 @@ Three questions:
    crop? That is the harmful case, because the farmer would not be asked.
 3. Disease reading with the crop confirmed, where the photo's label maps to a model class.
 
+``--split test`` scores only the held-out test photos of ``prepare_india_vision.py`` (the
+photos a retrained model is tested on), so the served model and a retrained one are compared on
+the same photos.
+
 Usage (from ml/)::
 
-    uv run --no-sync python scripts/eval_vision_india.py
+    uv run --no-sync python scripts/eval_vision_india.py [--split test]
 """
 
 from __future__ import annotations
@@ -81,7 +85,13 @@ def rate(k: int, n: int) -> dict:
 
 
 def main() -> None:
+    import argparse
+
     import onnxruntime as ort
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--split", choices=["all", "test"], default="all")
+    args = ap.parse_args()
 
     labels = json.loads((ARTIFACT / "labels.json").read_text(encoding="utf-8"))
     crops, conds = labels["crops"], labels["conditions"]
@@ -95,7 +105,13 @@ def main() -> None:
     files = pd.read_parquet(ROOT / "quality_files.parquet")
     quality = json.loads((ROOT / "quality.json").read_text(encoding="utf-8"))
     conflicted = {h for h in quality["exact_label_conflicts"]}
-    files = files[~files["near_train"] & ~files["group"].duplicated(keep="first")]
+    if args.split == "test":  # exactly the retraining run's Indian test rows
+        held = pd.read_parquet(DATA_DIR / "processed" / "vision" / "india_v1" / "images.parquet")
+        test = set(held.loc[held["split"] == "test", "member"])
+        files = files.drop_duplicates("sha256")
+        files = files[files["file"].isin(test)]
+    else:
+        files = files[~files["near_train"] & ~files["group"].duplicated(keep="first")]
     files = files[~files["sha256"].str[:12].isin(conflicted)].reset_index(drop=True)
     files["crop"] = files["label"].str.split("/").str[0]
 
@@ -103,7 +119,7 @@ def main() -> None:
                                    providers=["CPUExecutionProvider"])
     config = {"artifact": labels["model_version"], "photos": len(files),
               "threshold": threshold, "dedup": "fine dhash <= 20/256, one per group",
-              "condition_map": CONDITION_MAP}
+              "condition_map": CONDITION_MAP, "split": args.split}
     with track_experiment("vision_india_field_test", config, seed=None,
                           split_id="india-mendeley-v1") as rec:
         with ThreadPoolExecutor(6) as pool:
