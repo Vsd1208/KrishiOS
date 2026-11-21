@@ -5,6 +5,13 @@ from datetime import UTC, datetime
 
 from app.retrieval.interfaces.types import RankingSignals, RetrievalFilters, RetrievalHit
 
+_SYNONYMS = {"rice": "paddy", "corn": "maize", "chili": "chilli", "chillies": "chilli"}
+
+
+def _canonical(value: str) -> str:
+    v = value.strip().casefold()
+    return _SYNONYMS.get(v, v)
+
 
 @dataclass(frozen=True, slots=True)
 class RankingWeights:
@@ -55,7 +62,9 @@ class RankingEngine:
     def _match_score(expected: str | None, actual: object) -> float:
         if expected is None:
             return 0.5
-        return 1.0 if str(actual or "").casefold() == expected.casefold() else 0.0
+        # A document may list several values ("paddy,cotton,maize"); some names are synonyms.
+        values = {_canonical(v) for v in str(actual or "").split(",") if v.strip()}
+        return 1.0 if _canonical(expected) in values else 0.0
 
     @staticmethod
     def _authority_score(authority: object) -> float:

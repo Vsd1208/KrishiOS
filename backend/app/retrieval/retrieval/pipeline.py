@@ -76,13 +76,16 @@ class EnterpriseRetrievalPipeline:
         """Execute the enterprise retrieval pipeline."""
         started = perf_counter()
 
+        # Words found in the query (a crop, state, season...) only boost ranking. Used as hard
+        # filters they silently returned nothing whenever a document's field differed ("rice" vs
+        # "paddy", or a guide covering several crops). Only explicit caller filters exclude.
         merged_filters = self._metadata_extractor.merge(query, filters)
 
         query_vector = await self._embedding_provider.embed_query(query)
 
         raw_hits = await self._retrieve(
             query_vector,
-            merged_filters,
+            filters,
             top_k,
             score_threshold,
             include_delta,
