@@ -7,6 +7,7 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { ConfidenceBadge } from '@/components/ai/ConfidenceBadge';
@@ -24,6 +25,7 @@ export const GraphCandidateCard: React.FC<GraphCandidateCardProps> = ({
   onReview,
   isProcessing,
 }) => {
+  const { t } = useTranslation();
   const [note, setNote] = useState('');
   const isPending = candidate.review_status === 'PENDING';
   const isApproved = candidate.review_status === 'APPROVED';
@@ -59,12 +61,12 @@ export const GraphCandidateCard: React.FC<GraphCandidateCardProps> = ({
           </div>
 
           {/* Node Labels and Provenance */}
-          <div className="flex items-center gap-3 text-caption text-text-secondary">
-            <span>Subject: <strong className="text-text">{candidate.subject_label}</strong></span>
+          <div className="flex items-center gap-x-3 gap-y-1 flex-wrap text-caption text-text-secondary">
+            <span>{t('officer.cand.subject')} <strong className="text-text">{candidate.subject_label}</strong></span>
             <span>•</span>
-            <span>Object: <strong className="text-text">{candidate.object_label}</strong></span>
+            <span>{t('officer.cand.object')} <strong className="text-text">{candidate.object_label}</strong></span>
             <span>•</span>
-            <span>Doc ID: <code className="text-[11px] text-text-muted">{candidate.document_uuid.slice(0, 8)}...</code></span>
+            <span>{t('officer.cand.doc')} <code className="text-[11px] text-text-muted">{candidate.document_uuid.slice(0, 8)}...</code></span>
           </div>
 
           {/* Optional Note input */}
@@ -74,7 +76,7 @@ export const GraphCandidateCard: React.FC<GraphCandidateCardProps> = ({
                 type="text"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="Optional verification note or literature citation..."
+                placeholder={t('officer.cand.notePlaceholder')}
                 className="w-full px-3 py-1.5 rounded-lg bg-surface border border-border text-small text-text focus:outline-none focus:ring-1 focus:ring-primary-500"
               />
             </div>
@@ -93,7 +95,7 @@ export const GraphCandidateCard: React.FC<GraphCandidateCardProps> = ({
                 className="text-danger-600 hover:bg-danger-50 border-danger-200"
               >
                 <X className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
-                Reject
+                {t('officer.cand.reject')}
               </Button>
               <Button
                 variant="primary"
@@ -102,7 +104,7 @@ export const GraphCandidateCard: React.FC<GraphCandidateCardProps> = ({
                 disabled={isProcessing}
               >
                 <Check className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
-                Approve to Graph
+                {t('officer.cand.approve')}
               </Button>
             </>
           ) : (
@@ -113,7 +115,7 @@ export const GraphCandidateCard: React.FC<GraphCandidateCardProps> = ({
                   : 'bg-gray-100 text-gray-700 border border-gray-200'
               }`}
             >
-              {candidate.review_status}
+              {t(`officer.status.${candidate.review_status}`)}
             </span>
           )}
         </div>

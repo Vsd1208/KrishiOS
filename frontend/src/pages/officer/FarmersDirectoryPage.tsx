@@ -6,6 +6,7 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useDistrictFarmers } from '@/features/officer/hooks/useOfficerData';
@@ -19,6 +20,7 @@ import {
 import type { Farmer } from '@/types/domain';
 
 export const FarmersDirectoryPage: React.FC = () => {
+  const { t } = useTranslation();
   const { farmers, fields, isLoading } = useDistrictFarmers();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFarmer, setSelectedFarmer] = useState<Farmer | null>(null);
@@ -44,10 +46,10 @@ export const FarmersDirectoryPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-display font-extrabold text-text tracking-tight">
-            Farmer Directory
+            {t('officer.dir.title')}
           </h1>
           <p className="text-body text-text-secondary">
-            Manage farmers, verified landholdings, and soil health profiles in your district
+            {t('officer.dir.subtitle')}
           </p>
         </div>
 
@@ -58,7 +60,7 @@ export const FarmersDirectoryPage: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by name, phone, village..."
+              placeholder={t('officer.dir.search')}
               className="w-full pl-9 pr-3 py-2 rounded-xl bg-surface border border-border text-small text-text placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-primary-500 shadow-sm"
             />
           </div>
@@ -83,9 +85,9 @@ export const FarmersDirectoryPage: React.FC = () => {
           ) : filteredFarmers.length === 0 ? (
             <Card variant="raised" padding="lg" className="text-center py-12">
               <Users className="w-8 h-8 text-text-muted mx-auto mb-2" aria-hidden="true" />
-              <h3 className="text-subheading font-bold text-text">No farmers found</h3>
+              <h3 className="text-subheading font-bold text-text">{t('officer.dir.none')}</h3>
               <p className="text-small text-text-secondary mt-1">
-                Try searching with a different name or phone number.
+                {t('officer.dir.noneHint')}
               </p>
             </Card>
           ) : (
@@ -108,7 +110,7 @@ export const FarmersDirectoryPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <span className="text-body font-bold text-text">{f.full_name}</span>
                         <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-raised border border-border text-text-muted">
-                          ID #{f.id}
+                          {t('officer.dir.id', { id: f.id })}
                         </span>
                       </div>
 
@@ -123,9 +125,9 @@ export const FarmersDirectoryPage: React.FC = () => {
                           {f.village}
                         </span>
                         <span>•</span>
-                        <span>{f.landholding_acres} Acres</span>
+                        <span>{t('officer.dir.acres', { n: f.landholding_acres })}</span>
                         <span>•</span>
-                        <span>{plotsCount} Plot(s)</span>
+                        <span>{t('officer.dir.plots', { count: plotsCount })}</span>
                       </div>
                     </div>
 
@@ -143,26 +145,26 @@ export const FarmersDirectoryPage: React.FC = () => {
             <Card variant="raised" padding="md" className="space-y-4 sticky top-6">
               <div className="pb-3 border-b border-border space-y-1">
                 <span className="text-caption font-bold text-text-muted uppercase">
-                  Farmer Details
+                  {t('officer.dir.details')}
                 </span>
                 <h2 className="text-subheading font-bold text-text">{selectedFarmer.full_name}</h2>
                 <p className="text-caption text-text-secondary">
-                  {selectedFarmer.village}, District #{selectedFarmer.district_id}
+                  {selectedFarmer.village}, {t('officer.district', { id: selectedFarmer.district_id })}
                 </p>
               </div>
 
               <div className="space-y-3">
                 <div className="p-3 rounded-lg bg-surface-raised border border-border text-small space-y-1">
                   <div className="flex justify-between">
-                    <span className="text-text-muted">Total Landholding:</span>
-                    <strong className="text-text">{selectedFarmer.landholding_acres} Acres</strong>
+                    <span className="text-text-muted">{t('officer.dir.land')}</span>
+                    <strong className="text-text">{t('officer.dir.acres', { n: selectedFarmer.landholding_acres })}</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-text-muted">Preferred Language:</span>
+                    <span className="text-text-muted">{t('officer.dir.language')}</span>
                     <strong className="text-text uppercase">{selectedFarmer.preferred_language}</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-text-muted">Contact:</span>
+                    <span className="text-text-muted">{t('officer.dir.contact')}</span>
                     <strong className="text-text">{selectedFarmer.phone}</strong>
                   </div>
                 </div>
@@ -170,7 +172,7 @@ export const FarmersDirectoryPage: React.FC = () => {
                 {/* Plot Breakdown */}
                 <div className="space-y-2">
                   <span className="text-caption font-bold text-text uppercase block">
-                    Registered Plots ({farmerFields.length})
+                    {t('officer.dir.fields', { count: farmerFields.length })}
                   </span>
 
                   {farmerFields.length > 0 ? (
@@ -181,17 +183,17 @@ export const FarmersDirectoryPage: React.FC = () => {
                       >
                         <div className="flex justify-between font-bold text-text">
                           <span>{field.field_name}</span>
-                          <span>{field.area_acres} Ac</span>
+                          <span>{t('officer.dir.acres', { n: field.area_acres })}</span>
                         </div>
                         <div className="text-text-secondary flex justify-between">
-                          <span>Soil: {field.soil_type || '—'}</span>
-                          <span>Irrigation: {field.irrigation_type || '—'}</span>
+                          <span>{t('officer.dir.soil', { v: field.soil_type || '—' })}</span>
+                          <span>{t('officer.dir.irrigation', { v: field.irrigation_type || '—' })}</span>
                         </div>
                       </div>
                     ))
                   ) : (
                     <p className="p-2.5 rounded-lg bg-surface border border-border text-caption text-text-muted">
-                      No fields are registered for this farmer.
+                      {t('officer.dir.noFields')}
                     </p>
                   )}
                 </div>
@@ -200,7 +202,7 @@ export const FarmersDirectoryPage: React.FC = () => {
           ) : (
             <Card variant="default" padding="md" className="text-center py-12 text-text-muted">
               <MapPin className="w-8 h-8 mx-auto mb-2 opacity-50" aria-hidden="true" />
-              <p className="text-small">Select a farmer to inspect plot boundaries, soil health, and advisory history.</p>
+              <p className="text-small">{t('officer.dir.choose')}</p>
             </Card>
           )}
         </div>
