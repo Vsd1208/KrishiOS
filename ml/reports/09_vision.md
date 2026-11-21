@@ -133,4 +133,94 @@ Through the backend provider on 300 field validation photos, inference took a me
 - **Licence:** weights are distributed under CC BY-SA 3.0 with attribution, by the project owner's decision.
 - **Pending human review:** Hindi and Telugu wording of the new messages.
 - **Satellite NDVI** was processed separately (run `44b6f843e847`: 299 months, 730 districts) and is not part of this phase's results.
-- **Indian field photos:** `scripts/download_india_vision.py` samples potato, chilli, tomato, soybean and wheat photos within a 5 GB limit. The download is incomplete because Mendeley Data became unreliable, and no model uses these photos yet.
+- **Indian field photos:** see section 8. No model is trained on them yet.
+
+## 8. Independent test on Indian field photos (added 2026-11-19)
+
+**Data.** `scripts/download_india_vision.py` sampled five Mendeley Data sets within the 5 GB limit (4.26 GB transferred): potato (Uttar Pradesh), chilli (Krishna), tomato (BSKKV), soybean (Maharashtra) and wheat leaf rust (IARI). `scripts/check_india_vision.py` then removed repeats:
+
+- **Exact copies:** 12 rows. Five chilli files appear under both bacterial spot and Cercospora leaf spot, and are dropped.
+- **Near copies:** a 64-bit hash grouped 2,020 extra photos, but on inspection it was matching layouts (a single wheat leaf on black, wide black borders on potato photos). A 256-bit hash of the photo with dark borders trimmed finds 295 real repeats (bursts of the same leaf), and one photo per group is kept.
+- **Overlap with training data:** 333 photos matched a training image on the 64-bit hash; none matched when rechecked against the cached training photo.
+- **Kept:** 4,281 photos.
+
+Possible shortcuts for later training: chilli photos are all 1000x1000; most potato early blight photos are 8160x3672 with black borders while most healthy ones are 3468x4624; wheat photos are single leaves on a black background, not field scenes.
+
+**Result** (run `07389f462bb7`, served artifact, backend preprocessing, threshold 0.93; 95% intervals in `reports/data/vision_india_07389f462bb7.json`):
+
+| Photos | n | Crop recognised | Auto-accepted as a supported crop | Wrong and auto-accepted |
+|---|---|---|---|---|
+| Tomato | 105 | 98.1% | 70.5% | 0 |
+| Potato | 1,310 | 52.2% | 3.6% (as tomato) | 47 |
+| Soybean | 420 | 23.3% | 2.9% (as tomato) | 12 |
+| Chilli (not a model crop) | 1,627 | n/a | 9.5% (as tomato) | 155 |
+| Wheat (not a model crop) | 819 | n/a | **50.2% (as maize)** | 411 |
+
+Disease with the crop confirmed by the farmer:
+
+| Photos | n | Correct | Main error |
+|---|---|---|---|
+| Potato early blight | 449 | 95.8% | |
+| Potato late blight | 447 | 28.6% | 318 called early blight |
+| Potato healthy | 414 | 31.4% | 191 called early blight |
+| Tomato Alternaria (early blight) | 20 | 5% | 9 called late blight |
+
+**Reading.**
+- The confirmation threshold was tuned on crops the model knows. It does not protect against crops it has never seen: a wheat leaf looks like maize with high confidence. Raising the threshold does not fix this (at 0.97, 75 wrong auto-accepts remain and only 27% of tomato is still accepted; at 0.99 nothing is accepted).
+- Potato disease reading leans heavily towards early blight on these photos, and tomato early blight is rarely recognised. The validation figures in section 4 were optimistic for Indian field conditions.
+- **Serving change (project owner's decision):** auto-accept is now off by default
+  (`VISION_AUTO_ACCEPT_CROP=false`). The farmer confirms the crop on every photo; the model's top
+  crops are still offered first as chips. It should be switched back on only for a model that
+  passes this test.
+- Next: retrain with these photos (chilli and wheat as new crops, more potato and soybean field photos), split by near-copy group, with border trimming to remove the size and border shortcut.
+
+## 9. Retraining with the Indian field photos (added 2026-11-21)
+
+**Training** (run `a87c979112a1`, experiment `E3_india`; Colab Tesla T4, 3.6 hours, from a code bundle checked identical to commit `9b0fa2c`). The Phase 9 data plus 4,553 Indian photos (`scripts/prepare_india_vision.py`, run `73ce1378a499`): chilli and wheat are new crops; potato, soybean and tomato get field photos. Whole near-copy groups were split 70/15/15 by label. Before training, Colab rebuilt the Phase 9 split, and it matched the laptop's exactly (0 differing rows). There were three seeds, and each checkpoint was chosen on field validation.
+
+**Test photos, mean of 3 seeds** (Phase 9 run `560b033f785d` vs `a87c979112a1`, the same test rows; temperatures from the training run):
+
+| Test photos | Phase 9 | With Indian photos |
+|---|---|---|
+| All field photos (1,667): crop correct | 93.5% | 95.7% |
+| All field photos: disease with crop confirmed (macro F1) | 0.771 | 0.806 |
+| All field photos: crop calibration error (ECE) | 0.032 | 0.014 |
+| PlantDoc (407): crop correct / disease F1 | 86.0% / 0.768 | 86.7% / 0.759 |
+| India rice (567): crop correct / disease F1 | 98.9% / 0.793 | 97.6% / 0.823 |
+| PlantVillage lab (5,421): crop correct | 99.9% | 99.9% |
+| Indian field photos (693): crop correct | n/a | 99.5% |
+
+**Calibration** (run `7cc27e2425d7`, the Phase 9 rule set before seeing any test result: temperatures fitted on field validation; threshold = the lowest at which auto-accepted crops reach 95% on PlantDoc validation). The thresholds were 0.94 for seed 0 and 0.95 for seed 1. For seed 2, no threshold reached 95%, so it never auto-accepts. On the field test photos, the refitted temperatures had a *higher* crop calibration error than the training ones (seed 2: 0.008 to 0.032), while PlantDoc improved (0.064 to 0.044). The rule was kept as decided, without choosing between them on test results.
+
+**Exported model:** `vision-a87c979112a1-202611211255`. This is seed 2, the best validation score (0.835 vs 0.834 and 0.827), with the calibration above. ONNX parity is 5.5e-6. It has no confirmation threshold, so the farmer always confirms the crop. Its licence adds the five Mendeley Data sets (each CC BY 4.0) to the Phase 9 licence.
+
+**Same 693 Indian test photos, served model vs retrained** (runs `ef7dfa341360` and `ac0689811e70`; backend preprocessing; the served model's numbers reproduce run `51c828f4f74a` exactly):
+
+| Photos | n | Crop correct: served | Crop correct: retrained |
+|---|---|---|---|
+| Chilli | 281 | not a model crop (9.3% auto-accepted, mostly as tomato) | 100% |
+| Wheat | 129 | not a model crop (48.1% auto-accepted as maize) | 100% |
+| Potato | 204 | 52.5% | 99.0% |
+| Soybean | 66 | 19.7% | 98.5% |
+| Tomato | 13 | 92.3% | 100% |
+
+Disease with the crop confirmed (balanced accuracy over the labels the model has a class for):
+
+| Crop | Served | Retrained | Notes |
+|---|---|---|---|
+| Potato (3 labels, 68 each) | 53.4% | 96.1% | Late blight is 91% (was 32%). Healthy is 99% (was 31%). |
+| Chilli (6 labels, 23-69 each) | n/a | 100% | Every chilli label is 100%. |
+| Wheat (2 labels) | n/a | 95.5% | "Diseased" is 91%. The 74 "control" photos are read as healthy, and that mapping still needs the dataset authors' confirmation. |
+| Soybean (6 labels, 11 each) | healthy only | 57.6% | The five diseases are each 45-64%, with wide intervals. |
+| Tomato (Alternaria 3, leaf miner 10) | 0 of 3 | 1 of 3; leaf miner 8 of 10 | Too few photos to judge. |
+
+**Shortcut check** (from the predictions of run `ac0689811e70`). Within each potato label, accuracy on photos whose size is not the usual one for that label stays high: early blight 93% (n = 14), healthy 100% (n = 38), late blight 86% (n = 37). The test photos mix sizes across labels; for example, 30 of the 68 healthy photos have the size that is usual for early blight. Photo size is therefore not what drives the potato result.
+
+The same check is impossible for chilli and wheat. Each comes from one data set with a single photo size (1000x1000 and 3024x2016). The test photos share the farms, cameras and sessions of the training photos. Near-copies were kept within one split, but photos of the same plants on the same day were not. The border trimming planned in section 8 was not applied.
+
+**Reading.**
+- The retrained model is better than the served one on every comparable test: field crop accuracy, field disease, calibration error, and above all the Indian photos. It is not worse on the lab or PlantDoc photos. India rice crop accuracy dips by about one point, while rice disease improves.
+- The Indian-photo scores (99-100%) are **within-data-set** results and are optimistic. The perfect chilli scores especially point to same-session photos rather than proof that the model generalises to new farms. These figures do not show how the model does on photos from other places, phones or seasons.
+- Soybean disease (about 58%) and tomato early blight remain weak.
+- Auto-accept stays off (`VISION_AUTO_ACCEPT_CROP=false`), and this model has no threshold anyway. Every photo still asks the farmer to confirm the crop, now with chilli and wheat among the offered crops.
+- **Before claiming field accuracy,** test on Indian photos from a different source: other states, and photos taken by farmers or extension staff. Add border trimming at preparation time.

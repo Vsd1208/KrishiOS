@@ -817,7 +817,28 @@
     "changeCol": "vs normal",
     "tier": "Tier",
     "lead": "lead {{lead}} d",
-    "needsReview": "needs review"
+    "needsReview": "needs review",
+    "rangeMeaning": "The range is set to hold the actual yield in about 8 of 10 seasons.",
+    "rangeBar": "Forecast {{forecast}}, likely range {{low}} to {{high}}, normal {{normal}}",
+    "legendForecast": "forecast",
+    "legendNormal": "normal",
+    "why": {
+      "tierB": "Tier B crop: fewer past records, so the range is rougher than stated.",
+      "missing": "Missing input: {{list}}. The estimate leans more on past yields.",
+      "ood": "This crop or district is new to the model: treat it as a rough guide."
+    },
+    "whyShort": {
+      "tierB": "fewer records",
+      "missing": "missing {{list}}",
+      "ood": "new to model"
+    },
+    "modality": {
+      "weather": "weather",
+      "yield_history": "past yields",
+      "ndvi": "satellite greenness",
+      "satellite": "satellite data",
+      "soil": "soil data"
+    }
   },
   "insurance": {
     "title": "Crop insurance helper (PMFBY)",

@@ -101,11 +101,33 @@ def build_frame(labels: pd.DataFrame, features: pd.DataFrame) -> pd.DataFrame:
 
 
 WEATHER_Z = [f"{c}_z" for c in WEATHER]
+NDVI = ["ndvi_last", "ndvi_mean", "ndvi_max", "ndvi_months", "ndvi_good_share"]
+NDVI_ANOMALY = ["ndvi_last", "ndvi_mean"]
+NDVI_Z = [f"{c}_z" for c in NDVI_ANOMALY]
+
+
+def add_ndvi(frame: pd.DataFrame, ndvi: pd.DataFrame, train: pd.DataFrame | None = None
+             ) -> pd.DataFrame:
+    """Join season NDVI features and add anomalies. District x season x lead normals come from
+    the training rows of ``frame`` only (or ``train``, which must already hold NDVI)."""
+    cols = [*KEYS, "lead_days", *NDVI]
+    out = frame.merge(ndvi[cols], on=[*KEYS, "lead_days"], how="left")
+    source = out[out["split"] == "train"] if train is None else train
+    group = ["lgd_district_code", "season", "lead_days"]
+    g = source.drop_duplicates([*KEYS, "lead_days"]).groupby(group)[NDVI_ANOMALY]
+    normals = g.mean().add_suffix("_mu").join(g.std().add_suffix("_sd")).reset_index()
+    out = out.merge(normals, on=group, how="left")
+    for c in NDVI_ANOMALY:
+        sd = out[f"{c}_sd"].where(out[f"{c}_sd"] > 0)
+        out[f"{c}_z"] = (out[c] - out[f"{c}_mu"]) / sd
+    return out.drop(columns=[f"{c}_{s}" for c in NDVI_ANOMALY for s in ("mu", "sd")])
 
 
 def feature_sets() -> dict[str, list[str]]:
     return {
         "full": [*HISTORY, *WEATHER, *WEATHER_Z, *CATEGORICAL],
+        "full_ndvi": [*HISTORY, *WEATHER, *WEATHER_Z, *NDVI, *NDVI_Z, *CATEGORICAL],
         "weather_only": [*WEATHER, *WEATHER_Z, *CATEGORICAL],
+        "ndvi_only": [*NDVI, *NDVI_Z, *CATEGORICAL],
         "history_only": [*HISTORY, *CATEGORICAL],
     }

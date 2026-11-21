@@ -1,0 +1,229 @@
+{
+ "run_id": "07389f462bb7",
+ "config": {
+  "artifact": "vision-560b033f785d-202611180856",
+  "photos": 4281,
+  "threshold": 0.93,
+  "dedup": "fine dhash <= 20/256, one per group",
+  "condition_map": {
+   "potato/early_blight": "potato|early_blight",
+   "potato/late_blight": "potato|late_blight",
+   "potato/healthy": "potato|healthy",
+   "tomato/Alternaria": "tomato|early_blight"
+  }
+ },
+ "photos_by_label": {
+  "potato/early_blight": 449,
+  "potato/healthy": 414,
+  "potato/late_blight": 447,
+  "chilli/Bacterial Spot": 121,
+  "chilli/Cercospora Leaf Spot": 172,
+  "chilli/Curl Virus": 367,
+  "chilli/Healthy Leaf": 378,
+  "chilli/Nutrition Deficiency": 410,
+  "chilli/White spot": 179,
+  "soybean/pest_damage": 70,
+  "soybean/healthy": 70,
+  "soybean/frogeye_leaf_spot": 70,
+  "soybean/mosaic": 70,
+  "soybean/rust": 70,
+  "soybean/septoria_brown_spot": 70,
+  "wheat/control": 462,
+  "wheat/diseased": 357,
+  "tomato/Alternaria": 20,
+  "tomato/Alternaria+Leafminer": 16,
+  "tomato/Insect attack": 3,
+  "tomato/Leaf miner": 65,
+  "tomato/Physiological disorder": 1
+ },
+ "crop_recognition": {
+  "potato": {
+   "n": 1310,
+   "k": 684,
+   "rate": 0.5221,
+   "ci95": [
+    0.4951,
+    0.5491
+   ],
+   "predicted": {
+    "potato": 684,
+    "tomato": 257,
+    "blueberry": 178,
+    "soybean": 146
+   },
+   "auto_accepted": {
+    "n": 1310,
+    "k": 47,
+    "rate": 0.0359,
+    "ci95": [
+     0.0271,
+     0.0474
+    ]
+   },
+   "wrong_and_auto_accepted": 47
+  },
+  "soybean": {
+   "n": 420,
+   "k": 98,
+   "rate": 0.2333,
+   "ci95": [
+    0.1954,
+    0.2761
+   ],
+   "predicted": {
+    "tomato": 120,
+    "soybean": 98,
+    "blueberry": 62,
+    "maize": 56
+   },
+   "auto_accepted": {
+    "n": 420,
+    "k": 12,
+    "rate": 0.0286,
+    "ci95": [
+     0.0164,
+     0.0493
+    ]
+   },
+   "wrong_and_auto_accepted": 12
+  },
+  "tomato": {
+   "n": 105,
+   "k": 103,
+   "rate": 0.981,
+   "ci95": [
+    0.9332,
+    0.9948
+   ],
+   "predicted": {
+    "tomato": 103,
+    "potato": 1,
+    "no_plant": 1
+   },
+   "auto_accepted": {
+    "n": 105,
+    "k": 74,
+    "rate": 0.7048,
+    "ci95": [
+     0.6115,
+     0.7835
+    ]
+   },
+   "wrong_and_auto_accepted": 0
+  }
+ },
+ "unknown_crops": {
+  "chilli": {
+   "auto_accepted_as_supported": {
+    "n": 1627,
+    "k": 155,
+    "rate": 0.0953,
+    "ci95": [
+     0.0819,
+     0.1105
+    ]
+   },
+   "predicted": {
+    "tomato": 1019,
+    "blueberry": 186,
+    "bell_pepper": 136,
+    "squash": 120,
+    "soybean": 48
+   },
+   "median_top_conf": 0.7689
+  },
+  "wheat": {
+   "auto_accepted_as_supported": {
+    "n": 819,
+    "k": 411,
+    "rate": 0.5018,
+    "ci95": [
+     0.4677,
+     0.536
+    ]
+   },
+   "predicted": {
+    "maize": 766,
+    "paddy": 48,
+    "peach": 4,
+    "no_plant": 1
+   },
+   "median_top_conf": 0.9313
+  }
+ },
+ "disease_with_confirmed_crop": {
+  "potato/early_blight": {
+   "n": 449,
+   "k": 430,
+   "rate": 0.9577,
+   "ci95": [
+    0.9349,
+    0.9727
+   ],
+   "predicted": {
+    "potato|early_blight": 430,
+    "potato|late_blight": 13,
+    "potato|healthy": 6
+   },
+   "mean_conf": 0.8343
+  },
+  "potato/late_blight": {
+   "n": 447,
+   "k": 128,
+   "rate": 0.2864,
+   "ci95": [
+    0.2464,
+    0.3299
+   ],
+   "predicted": {
+    "potato|early_blight": 318,
+    "potato|late_blight": 128,
+    "potato|healthy": 1
+   },
+   "mean_conf": 0.742
+  },
+  "potato/healthy": {
+   "n": 414,
+   "k": 130,
+   "rate": 0.314,
+   "ci95": [
+    0.2712,
+    0.3603
+   ],
+   "predicted": {
+    "potato|early_blight": 191,
+    "potato|healthy": 130,
+    "potato|late_blight": 93
+   },
+   "mean_conf": 0.5003
+  },
+  "tomato/Alternaria": {
+   "n": 20,
+   "k": 1,
+   "rate": 0.05,
+   "ci95": [
+    0.0089,
+    0.2361
+   ],
+   "predicted": {
+    "tomato|late_blight": 9,
+    "tomato|bacterial_spot": 3,
+    "tomato|healthy": 3,
+    "tomato|spider_mites": 2
+   },
+   "mean_conf": 0.546
+  },
+  "potato_balanced_accuracy": 0.5194
+ },
+ "tomato_unmodelled_problems": {
+  "n": 85,
+  "predicted": {
+   "tomato|late_blight": 40,
+   "tomato|septoria_leaf_spot": 15,
+   "tomato|bacterial_spot": 12,
+   "tomato|healthy": 9,
+   "tomato|leaf_mold": 7
+  },
+  "mean_conf": 0.5502
+ }
+}

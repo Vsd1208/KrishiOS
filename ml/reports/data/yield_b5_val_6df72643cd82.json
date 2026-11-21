@@ -1,0 +1,2225 @@
+{
+ "run_id": "6df72643cd82",
+ "config": {
+  "phase": "val",
+  "name": "b5_grid",
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "hidden": 96,
+  "dropout": 0.1,
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "batch": 2048,
+  "epochs": 20,
+  "patience": 5,
+  "grid": true,
+  "leads": [
+   0,
+   30,
+   60,
+   90
+  ],
+  "numeric": [
+   "hist_trend_ratio",
+   "hist_last_ratio",
+   "hist_cv",
+   "hist_n",
+   "log_hist_mean",
+   "rain_sum_z",
+   "rain_days_z",
+   "max_dry_spell_z",
+   "tmax_mean_z",
+   "tmin_mean_z",
+   "heat_days_z",
+   "gdd_z",
+   "rh_mean_z",
+   "srad_mean_z",
+   "ndvi_last_z",
+   "ndvi_mean_z",
+   "ndvi_good_share"
+  ],
+  "loss": "huber(0.5) on clipped ratio",
+  "metric": "mean over leads of tier-A median nMAE"
+ },
+ "selected": {
+  "hidden": 64,
+  "dropout": 0.3,
+  "lr": 0.0003,
+  "weight_decay": 0.001
+ },
+ "search": [
+  {
+   "hidden": 32,
+   "dropout": 0.1,
+   "lr": 0.0003,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 5,
+   "val": 0.23998343282457127,
+   "seconds": 44.8
+  },
+  {
+   "hidden": 32,
+   "dropout": 0.1,
+   "lr": 0.0003,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 5,
+   "val": 0.2399773697727966,
+   "seconds": 40.7
+  },
+  {
+   "hidden": 32,
+   "dropout": 0.1,
+   "lr": 0.001,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 3,
+   "val": 0.23936728343993174,
+   "seconds": 42.7
+  },
+  {
+   "hidden": 32,
+   "dropout": 0.1,
+   "lr": 0.001,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 3,
+   "val": 0.23935983983918388,
+   "seconds": 30.5
+  },
+  {
+   "hidden": 32,
+   "dropout": 0.3,
+   "lr": 0.0003,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 8,
+   "val": 0.23714040268728775,
+   "seconds": 31.6
+  },
+  {
+   "hidden": 32,
+   "dropout": 0.3,
+   "lr": 0.0003,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 8,
+   "val": 0.23715016681922618,
+   "seconds": 30.5
+  },
+  {
+   "hidden": 32,
+   "dropout": 0.3,
+   "lr": 0.001,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 4,
+   "val": 0.23834573219466648,
+   "seconds": 21.4
+  },
+  {
+   "hidden": 32,
+   "dropout": 0.3,
+   "lr": 0.001,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 4,
+   "val": 0.2383285657782137,
+   "seconds": 21.3
+  },
+  {
+   "hidden": 64,
+   "dropout": 0.1,
+   "lr": 0.0003,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 3,
+   "val": 0.24306177038795668,
+   "seconds": 21.9
+  },
+  {
+   "hidden": 64,
+   "dropout": 0.1,
+   "lr": 0.0003,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 3,
+   "val": 0.24306479798834318,
+   "seconds": 21.9
+  },
+  {
+   "hidden": 64,
+   "dropout": 0.1,
+   "lr": 0.001,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 1,
+   "val": 0.2416337693888867,
+   "seconds": 18.1
+  },
+  {
+   "hidden": 64,
+   "dropout": 0.1,
+   "lr": 0.001,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 1,
+   "val": 0.24163080285595928,
+   "seconds": 20.7
+  },
+  {
+   "hidden": 64,
+   "dropout": 0.3,
+   "lr": 0.0003,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 4,
+   "val": 0.23560527946130064,
+   "seconds": 25.9
+  },
+  {
+   "hidden": 64,
+   "dropout": 0.3,
+   "lr": 0.0003,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 4,
+   "val": 0.23560810820939881,
+   "seconds": 24.1
+  },
+  {
+   "hidden": 64,
+   "dropout": 0.3,
+   "lr": 0.001,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 3,
+   "val": 0.23668737124306236,
+   "seconds": 22.3
+  },
+  {
+   "hidden": 64,
+   "dropout": 0.3,
+   "lr": 0.001,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 3,
+   "val": 0.2366651485634384,
+   "seconds": 22.0
+  },
+  {
+   "hidden": 96,
+   "dropout": 0.1,
+   "lr": 0.0003,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 1,
+   "val": 0.24310882988066723,
+   "seconds": 31.9
+  },
+  {
+   "hidden": 96,
+   "dropout": 0.1,
+   "lr": 0.0003,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 1,
+   "val": 0.24310909779675827,
+   "seconds": 47.9
+  },
+  {
+   "hidden": 96,
+   "dropout": 0.1,
+   "lr": 0.001,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 0,
+   "val": 0.24334093993420453,
+   "seconds": 33.0
+  },
+  {
+   "hidden": 96,
+   "dropout": 0.1,
+   "lr": 0.001,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 0,
+   "val": 0.24334145400492194,
+   "seconds": 17.3
+  },
+  {
+   "hidden": 96,
+   "dropout": 0.3,
+   "lr": 0.0003,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 4,
+   "val": 0.24231037302684716,
+   "seconds": 29.0
+  },
+  {
+   "hidden": 96,
+   "dropout": 0.3,
+   "lr": 0.0003,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 4,
+   "val": 0.2423061891293833,
+   "seconds": 28.8
+  },
+  {
+   "hidden": 96,
+   "dropout": 0.3,
+   "lr": 0.001,
+   "weight_decay": 0.001,
+   "seed": 0,
+   "best_epoch": 1,
+   "val": 0.24366993219476935,
+   "seconds": 26.6
+  },
+  {
+   "hidden": 96,
+   "dropout": 0.3,
+   "lr": 0.001,
+   "weight_decay": 0.01,
+   "seed": 0,
+   "best_epoch": 1,
+   "val": 0.24367250353611836,
+   "seconds": 21.5
+  }
+ ],
+ "seeds": [
+  {
+   "seed": 0,
+   "best_epoch": 4,
+   "val": 0.23560527946130064,
+   "seconds": 29.8
+  },
+  {
+   "seed": 1,
+   "best_epoch": 4,
+   "val": 0.23842406653527454,
+   "seconds": 46.5
+  },
+  {
+   "seed": 2,
+   "best_epoch": 10,
+   "val": 0.24102879622204054,
+   "seconds": 45.4
+  }
+ ],
+ "results": {
+  "0": {
+   "A": {
+    "crops": {
+     "mean": 30.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.24016081407763668,
+     "std": 0.002379183576021404
+    },
+    "nmae_worst_decile": {
+     "mean": 0.35795173448195755,
+     "std": 0.006141589693428746
+    },
+    "r2_median": {
+     "mean": 0.5109695481415404,
+     "std": 0.012257774295168633
+    }
+   },
+   "B": {
+    "crops": {
+     "mean": 8.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.28425836074099636,
+     "std": 0.001095507428286925
+    },
+    "nmae_worst_decile": {
+     "mean": 0.5890023898615504,
+     "std": 0.007178911758658346
+    },
+    "r2_median": {
+     "mean": 0.4385094629486153,
+     "std": 0.004902162314928429
+    }
+   },
+   "A_all": {
+    "crops": {
+     "mean": 30.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.25316284738308703,
+     "std": 0.002873173540483863
+    },
+    "nmae_worst_decile": {
+     "mean": 0.4056639349486648,
+     "std": 0.0026685347213610384
+    },
+    "r2_median": {
+     "mean": 0.36623147980350906,
+     "std": 0.0020155508353371207
+    }
+   },
+   "seeds": 3,
+   "per_crop_seed0": [
+    {
+     "crop": "arecanut",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 163,
+     "mean_yield": 4.45071,
+     "mae": 0.90669,
+     "rmse": 1.43401,
+     "r2": 0.88869,
+     "nmae": 0.20372
+    },
+    {
+     "crop": "banana",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 97,
+     "mean_yield": 48.82548,
+     "mae": 5.69802,
+     "rmse": 7.29645,
+     "r2": -0.76642,
+     "nmae": 0.1167
+    },
+    {
+     "crop": "barley",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 591,
+     "mean_yield": 2.4378,
+     "mae": 0.42245,
+     "rmse": 0.54711,
+     "r2": 0.72628,
+     "nmae": 0.17329
+    },
+    {
+     "crop": "black_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1792,
+     "mean_yield": 0.63202,
+     "mae": 0.13743,
+     "rmse": 0.19682,
+     "r2": 0.42025,
+     "nmae": 0.21745
+    },
+    {
+     "crop": "cashew",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 181,
+     "mean_yield": 0.44022,
+     "mae": 0.25141,
+     "rmse": 0.34209,
+     "r2": 0.5154,
+     "nmae": 0.57111
+    },
+    {
+     "crop": "chickpea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1202,
+     "mean_yield": 1.08742,
+     "mae": 0.23488,
+     "rmse": 0.31886,
+     "r2": 0.29464,
+     "nmae": 0.216
+    },
+    {
+     "crop": "chilli",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 964,
+     "mean_yield": 1.98024,
+     "mae": 0.62048,
+     "rmse": 1.36444,
+     "r2": 0.56275,
+     "nmae": 0.31333
+    },
+    {
+     "crop": "coconut",
+     "tier": "A",
+     "unit": "nuts/ha",
+     "n": 371,
+     "mean_yield": 9399.65004,
+     "mae": 2177.3465,
+     "rmse": 3304.69243,
+     "r2": 0.4688,
+     "nmae": 0.23164
+    },
+    {
+     "crop": "coriander",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 614,
+     "mean_yield": 0.84593,
+     "mae": 0.25067,
+     "rmse": 0.56468,
+     "r2": 0.52987,
+     "nmae": 0.29633
+    },
+    {
+     "crop": "cotton",
+     "tier": "A",
+     "unit": "bales_170kg/ha",
+     "n": 745,
+     "mean_yield": 2.00882,
+     "mae": 0.7914,
+     "rmse": 1.17165,
+     "r2": 0.24511,
+     "nmae": 0.39396
+    },
+    {
+     "crop": "field_pea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 872,
+     "mean_yield": 1.28109,
+     "mae": 0.32874,
+     "rmse": 0.85356,
+     "r2": 0.46291,
+     "nmae": 0.25661
+    },
+    {
+     "crop": "finger_millet",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 629,
+     "mean_yield": 1.50733,
+     "mae": 0.34432,
+     "rmse": 0.49843,
+     "r2": 0.77442,
+     "nmae": 0.22843
+    },
+    {
+     "crop": "garlic",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 217,
+     "mean_yield": 5.1673,
+     "mae": 0.5093,
+     "rmse": 0.57395,
+     "r2": 0.92769,
+     "nmae": 0.09856
+    },
+    {
+     "crop": "ginger",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 436,
+     "mean_yield": 10.28099,
+     "mae": 3.12146,
+     "rmse": 5.23843,
+     "r2": 0.55635,
+     "nmae": 0.30361
+    },
+    {
+     "crop": "green_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1889,
+     "mean_yield": 0.58013,
+     "mae": 0.14341,
+     "rmse": 0.20552,
+     "r2": 0.43469,
+     "nmae": 0.2472
+    },
+    {
+     "crop": "groundnut",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1500,
+     "mean_yield": 1.58926,
+     "mae": 0.3588,
+     "rmse": 0.54386,
+     "r2": 0.61013,
+     "nmae": 0.22577
+    },
+    {
+     "crop": "horse_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 649,
+     "mean_yield": 0.53181,
+     "mae": 0.14719,
+     "rmse": 0.20129,
+     "r2": 0.46099,
+     "nmae": 0.27677
+    },
+    {
+     "crop": "jute",
+     "tier": "A",
+     "unit": "bales_180kg/ha",
+     "n": 193,
+     "mean_yield": 10.36778,
+     "mae": 2.13351,
+     "rmse": 3.68686,
+     "r2": 0.55929,
+     "nmae": 0.20578
+    },
+    {
+     "crop": "lentil",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 856,
+     "mean_yield": 0.84759,
+     "mae": 0.17626,
+     "rmse": 0.24383,
+     "r2": 0.31988,
+     "nmae": 0.20795
+    },
+    {
+     "crop": "linseed",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 574,
+     "mean_yield": 0.63772,
+     "mae": 0.15116,
+     "rmse": 0.23941,
+     "r2": 0.58609,
+     "nmae": 0.23704
+    },
+    {
+     "crop": "maize",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 2525,
+     "mean_yield": 2.82999,
+     "mae": 0.73344,
+     "rmse": 1.2076,
+     "r2": 0.53456,
+     "nmae": 0.25917
+    },
+    {
+     "crop": "onion",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1292,
+     "mean_yield": 14.11166,
+     "mae": 3.61953,
+     "rmse": 5.60082,
+     "r2": 0.5116,
+     "nmae": 0.25649
+    },
+    {
+     "crop": "paddy",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 2035,
+     "mean_yield": 2.47413,
+     "mae": 0.377,
+     "rmse": 0.55756,
+     "r2": 0.63278,
+     "nmae": 0.15238
+    },
+    {
+     "crop": "pearl_millet",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 890,
+     "mean_yield": 1.52664,
+     "mae": 0.36404,
+     "rmse": 0.56471,
+     "r2": 0.54396,
+     "nmae": 0.23846
+    },
+    {
+     "crop": "pigeonpea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1272,
+     "mean_yield": 0.96703,
+     "mae": 0.47358,
+     "rmse": 5.03665,
+     "r2": -106.36302,
+     "nmae": 0.48973
+    },
+    {
+     "crop": "potato",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1232,
+     "mean_yield": 15.02694,
+     "mae": 3.34594,
+     "rmse": 5.02331,
+     "r2": 0.71284,
+     "nmae": 0.22266
+    },
+    {
+     "crop": "rapeseed_mustard",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1373,
+     "mean_yield": 0.95702,
+     "mae": 0.20027,
+     "rmse": 0.30407,
+     "r2": 0.68948,
+     "nmae": 0.20926
+    },
+    {
+     "crop": "safflower",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 155,
+     "mean_yield": 0.53352,
+     "mae": 0.21093,
+     "rmse": 0.29371,
+     "r2": 0.12553,
+     "nmae": 0.39535
+    },
+    {
+     "crop": "sesame",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1487,
+     "mean_yield": 0.45246,
+     "mae": 0.20324,
+     "rmse": 1.3889,
+     "r2": -27.50952,
+     "nmae": 0.4492
+    },
+    {
+     "crop": "small_millets",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 603,
+     "mean_yield": 0.74829,
+     "mae": 0.19635,
+     "rmse": 0.289,
+     "r2": 0.46479,
+     "nmae": 0.26241
+    },
+    {
+     "crop": "sorghum",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 963,
+     "mean_yield": 1.1528,
+     "mae": 0.37955,
+     "rmse": 0.5623,
+     "r2": 0.34819,
+     "nmae": 0.32924
+    },
+    {
+     "crop": "soybean",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 606,
+     "mean_yield": 1.10446,
+     "mae": 0.24739,
+     "rmse": 0.35911,
+     "r2": 0.4428,
+     "nmae": 0.22399
+    },
+    {
+     "crop": "sugarcane",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1282,
+     "mean_yield": 57.69293,
+     "mae": 12.45887,
+     "rmse": 18.27499,
+     "r2": 0.63491,
+     "nmae": 0.21595
+    },
+    {
+     "crop": "sunflower",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 624,
+     "mean_yield": 0.96121,
+     "mae": 0.34496,
+     "rmse": 0.45865,
+     "r2": 0.31562,
+     "nmae": 0.35888
+    },
+    {
+     "crop": "sweet_potato",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 274,
+     "mean_yield": 10.28447,
+     "mae": 1.26286,
+     "rmse": 1.61394,
+     "r2": 0.65424,
+     "nmae": 0.12279
+    },
+    {
+     "crop": "tobacco",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 121,
+     "mean_yield": 2.96488,
+     "mae": 1.07949,
+     "rmse": 1.46469,
+     "r2": -0.00529,
+     "nmae": 0.36409
+    },
+    {
+     "crop": "turmeric",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 160,
+     "mean_yield": 3.60181,
+     "mae": 2.22875,
+     "rmse": 3.64476,
+     "r2": 0.3656,
+     "nmae": 0.61878
+    },
+    {
+     "crop": "wheat",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1320,
+     "mean_yield": 2.75208,
+     "mae": 0.39821,
+     "rmse": 0.51399,
+     "r2": 0.81656,
+     "nmae": 0.14469
+    }
+   ]
+  },
+  "30": {
+   "A": {
+    "crops": {
+     "mean": 30.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.23795847112119647,
+     "std": 0.0037913946125428333
+    },
+    "nmae_worst_decile": {
+     "mean": 0.3584898284951663,
+     "std": 0.005440420184143283
+    },
+    "r2_median": {
+     "mean": 0.5125291682372848,
+     "std": 0.014499421152799627
+    }
+   },
+   "B": {
+    "crops": {
+     "mean": 8.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.2852036049225955,
+     "std": 0.004834155714161522
+    },
+    "nmae_worst_decile": {
+     "mean": 0.5873732253624201,
+     "std": 0.0025946515455677714
+    },
+    "r2_median": {
+     "mean": 0.4437658547166709,
+     "std": 0.0010081592204219392
+    }
+   },
+   "A_all": {
+    "crops": {
+     "mean": 30.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.2504770422528018,
+     "std": 0.0028032189088948297
+    },
+    "nmae_worst_decile": {
+     "mean": 0.4008289136760859,
+     "std": 0.0019266656716144378
+    },
+    "r2_median": {
+     "mean": 0.36819177403515174,
+     "std": 0.0034624513176242087
+    }
+   },
+   "seeds": 3,
+   "per_crop_seed0": [
+    {
+     "crop": "arecanut",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 163,
+     "mean_yield": 4.45071,
+     "mae": 0.87643,
+     "rmse": 1.41272,
+     "r2": 0.89197,
+     "nmae": 0.19692
+    },
+    {
+     "crop": "banana",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 97,
+     "mean_yield": 48.82548,
+     "mae": 5.85497,
+     "rmse": 7.23101,
+     "r2": -0.73487,
+     "nmae": 0.11992
+    },
+    {
+     "crop": "barley",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 591,
+     "mean_yield": 2.4378,
+     "mae": 0.4161,
+     "rmse": 0.53844,
+     "r2": 0.73489,
+     "nmae": 0.17069
+    },
+    {
+     "crop": "black_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1792,
+     "mean_yield": 0.63202,
+     "mae": 0.13749,
+     "rmse": 0.19656,
+     "r2": 0.42176,
+     "nmae": 0.21754
+    },
+    {
+     "crop": "cashew",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 181,
+     "mean_yield": 0.44022,
+     "mae": 0.25186,
+     "rmse": 0.34044,
+     "r2": 0.52006,
+     "nmae": 0.57213
+    },
+    {
+     "crop": "chickpea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1202,
+     "mean_yield": 1.08742,
+     "mae": 0.23511,
+     "rmse": 0.31896,
+     "r2": 0.29421,
+     "nmae": 0.21621
+    },
+    {
+     "crop": "chilli",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 964,
+     "mean_yield": 1.98024,
+     "mae": 0.61862,
+     "rmse": 1.35728,
+     "r2": 0.56732,
+     "nmae": 0.3124
+    },
+    {
+     "crop": "coconut",
+     "tier": "A",
+     "unit": "nuts/ha",
+     "n": 371,
+     "mean_yield": 9399.65004,
+     "mae": 2182.36975,
+     "rmse": 3300.18394,
+     "r2": 0.47025,
+     "nmae": 0.23218
+    },
+    {
+     "crop": "coriander",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 614,
+     "mean_yield": 0.84593,
+     "mae": 0.24706,
+     "rmse": 0.5604,
+     "r2": 0.53696,
+     "nmae": 0.29206
+    },
+    {
+     "crop": "cotton",
+     "tier": "A",
+     "unit": "bales_170kg/ha",
+     "n": 745,
+     "mean_yield": 2.00882,
+     "mae": 0.78262,
+     "rmse": 1.16185,
+     "r2": 0.25769,
+     "nmae": 0.38959
+    },
+    {
+     "crop": "field_pea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 872,
+     "mean_yield": 1.28109,
+     "mae": 0.32877,
+     "rmse": 0.8558,
+     "r2": 0.46009,
+     "nmae": 0.25663
+    },
+    {
+     "crop": "finger_millet",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 629,
+     "mean_yield": 1.50733,
+     "mae": 0.3424,
+     "rmse": 0.49727,
+     "r2": 0.77548,
+     "nmae": 0.22716
+    },
+    {
+     "crop": "garlic",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 217,
+     "mean_yield": 5.1673,
+     "mae": 0.51865,
+     "rmse": 0.58237,
+     "r2": 0.92555,
+     "nmae": 0.10037
+    },
+    {
+     "crop": "ginger",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 436,
+     "mean_yield": 10.28099,
+     "mae": 3.08461,
+     "rmse": 5.20072,
+     "r2": 0.56271,
+     "nmae": 0.30003
+    },
+    {
+     "crop": "green_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1889,
+     "mean_yield": 0.58013,
+     "mae": 0.14327,
+     "rmse": 0.20545,
+     "r2": 0.43504,
+     "nmae": 0.24697
+    },
+    {
+     "crop": "groundnut",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1500,
+     "mean_yield": 1.58926,
+     "mae": 0.35833,
+     "rmse": 0.54415,
+     "r2": 0.60972,
+     "nmae": 0.22547
+    },
+    {
+     "crop": "horse_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 649,
+     "mean_yield": 0.53181,
+     "mae": 0.14785,
+     "rmse": 0.20213,
+     "r2": 0.45649,
+     "nmae": 0.27802
+    },
+    {
+     "crop": "jute",
+     "tier": "A",
+     "unit": "bales_180kg/ha",
+     "n": 193,
+     "mean_yield": 10.36778,
+     "mae": 2.13413,
+     "rmse": 3.71189,
+     "r2": 0.55328,
+     "nmae": 0.20584
+    },
+    {
+     "crop": "lentil",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 856,
+     "mean_yield": 0.84759,
+     "mae": 0.17548,
+     "rmse": 0.24452,
+     "r2": 0.31602,
+     "nmae": 0.20704
+    },
+    {
+     "crop": "linseed",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 574,
+     "mean_yield": 0.63772,
+     "mae": 0.14875,
+     "rmse": 0.23823,
+     "r2": 0.59017,
+     "nmae": 0.23326
+    },
+    {
+     "crop": "maize",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 2525,
+     "mean_yield": 2.82999,
+     "mae": 0.72475,
+     "rmse": 1.18712,
+     "r2": 0.55021,
+     "nmae": 0.2561
+    },
+    {
+     "crop": "onion",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1292,
+     "mean_yield": 14.11166,
+     "mae": 3.61024,
+     "rmse": 5.60367,
+     "r2": 0.51111,
+     "nmae": 0.25583
+    },
+    {
+     "crop": "paddy",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 2035,
+     "mean_yield": 2.47413,
+     "mae": 0.37792,
+     "rmse": 0.55715,
+     "r2": 0.63332,
+     "nmae": 0.15275
+    },
+    {
+     "crop": "pearl_millet",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 890,
+     "mean_yield": 1.52664,
+     "mae": 0.36202,
+     "rmse": 0.55612,
+     "r2": 0.55772,
+     "nmae": 0.23714
+    },
+    {
+     "crop": "pigeonpea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1272,
+     "mean_yield": 0.96703,
+     "mae": 0.47648,
+     "rmse": 5.09897,
+     "r2": -109.03631,
+     "nmae": 0.49273
+    },
+    {
+     "crop": "potato",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1232,
+     "mean_yield": 15.02694,
+     "mae": 3.28945,
+     "rmse": 4.95925,
+     "r2": 0.72012,
+     "nmae": 0.2189
+    },
+    {
+     "crop": "rapeseed_mustard",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1373,
+     "mean_yield": 0.95702,
+     "mae": 0.19848,
+     "rmse": 0.30127,
+     "r2": 0.69519,
+     "nmae": 0.20739
+    },
+    {
+     "crop": "safflower",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 155,
+     "mean_yield": 0.53352,
+     "mae": 0.20871,
+     "rmse": 0.29133,
+     "r2": 0.13967,
+     "nmae": 0.3912
+    },
+    {
+     "crop": "sesame",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1487,
+     "mean_yield": 0.45246,
+     "mae": 0.20749,
+     "rmse": 1.4329,
+     "r2": -29.34449,
+     "nmae": 0.45859
+    },
+    {
+     "crop": "small_millets",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 603,
+     "mean_yield": 0.74829,
+     "mae": 0.19934,
+     "rmse": 0.28976,
+     "r2": 0.46199,
+     "nmae": 0.2664
+    },
+    {
+     "crop": "sorghum",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 963,
+     "mean_yield": 1.1528,
+     "mae": 0.3743,
+     "rmse": 0.55175,
+     "r2": 0.37242,
+     "nmae": 0.32469
+    },
+    {
+     "crop": "soybean",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 606,
+     "mean_yield": 1.10446,
+     "mae": 0.24801,
+     "rmse": 0.35956,
+     "r2": 0.44142,
+     "nmae": 0.22455
+    },
+    {
+     "crop": "sugarcane",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1282,
+     "mean_yield": 57.69293,
+     "mae": 12.10675,
+     "rmse": 17.84524,
+     "r2": 0.65188,
+     "nmae": 0.20985
+    },
+    {
+     "crop": "sunflower",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 624,
+     "mean_yield": 0.96121,
+     "mae": 0.34689,
+     "rmse": 0.46161,
+     "r2": 0.30675,
+     "nmae": 0.36089
+    },
+    {
+     "crop": "sweet_potato",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 274,
+     "mean_yield": 10.28447,
+     "mae": 1.39361,
+     "rmse": 1.72181,
+     "r2": 0.60648,
+     "nmae": 0.13551
+    },
+    {
+     "crop": "tobacco",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 121,
+     "mean_yield": 2.96488,
+     "mae": 1.08951,
+     "rmse": 1.46876,
+     "r2": -0.01089,
+     "nmae": 0.36747
+    },
+    {
+     "crop": "turmeric",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 160,
+     "mean_yield": 3.60181,
+     "mae": 2.22518,
+     "rmse": 3.63688,
+     "r2": 0.36834,
+     "nmae": 0.61779
+    },
+    {
+     "crop": "wheat",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1320,
+     "mean_yield": 2.75208,
+     "mae": 0.39614,
+     "rmse": 0.51338,
+     "r2": 0.81699,
+     "nmae": 0.14394
+    }
+   ]
+  },
+  "60": {
+   "A": {
+    "crops": {
+     "mean": 30.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.23799044538062097,
+     "std": 0.0023412347312523956
+    },
+    "nmae_worst_decile": {
+     "mean": 0.35846444407599093,
+     "std": 0.004331721808377667
+    },
+    "r2_median": {
+     "mean": 0.5108796747603208,
+     "std": 0.017242689457457386
+    }
+   },
+   "B": {
+    "crops": {
+     "mean": 8.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.278684644029869,
+     "std": 0.0025538065411294126
+    },
+    "nmae_worst_decile": {
+     "mean": 0.5862284465312309,
+     "std": 0.003307455081556228
+    },
+    "r2_median": {
+     "mean": 0.44478539781578524,
+     "std": 0.0022608907896780007
+    }
+   },
+   "A_all": {
+    "crops": {
+     "mean": 30.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.25193297254778174,
+     "std": 0.0036352620744282598
+    },
+    "nmae_worst_decile": {
+     "mean": 0.3988685650153583,
+     "std": 0.001825230207815549
+    },
+    "r2_median": {
+     "mean": 0.3673271556427582,
+     "std": 0.001593903911666178
+    }
+   },
+   "seeds": 3,
+   "per_crop_seed0": [
+    {
+     "crop": "arecanut",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 163,
+     "mean_yield": 4.45071,
+     "mae": 0.88725,
+     "rmse": 1.44008,
+     "r2": 0.88775,
+     "nmae": 0.19935
+    },
+    {
+     "crop": "banana",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 97,
+     "mean_yield": 48.82548,
+     "mae": 5.65353,
+     "rmse": 7.17012,
+     "r2": -0.70578,
+     "nmae": 0.11579
+    },
+    {
+     "crop": "barley",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 591,
+     "mean_yield": 2.4378,
+     "mae": 0.42291,
+     "rmse": 0.54418,
+     "r2": 0.7292,
+     "nmae": 0.17348
+    },
+    {
+     "crop": "black_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1792,
+     "mean_yield": 0.63202,
+     "mae": 0.13722,
+     "rmse": 0.19603,
+     "r2": 0.4249,
+     "nmae": 0.21711
+    },
+    {
+     "crop": "cashew",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 181,
+     "mean_yield": 0.44022,
+     "mae": 0.25141,
+     "rmse": 0.33936,
+     "r2": 0.52309,
+     "nmae": 0.5711
+    },
+    {
+     "crop": "chickpea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1202,
+     "mean_yield": 1.08742,
+     "mae": 0.23677,
+     "rmse": 0.32016,
+     "r2": 0.28891,
+     "nmae": 0.21773
+    },
+    {
+     "crop": "chilli",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 964,
+     "mean_yield": 1.98024,
+     "mae": 0.62046,
+     "rmse": 1.3603,
+     "r2": 0.56539,
+     "nmae": 0.31333
+    },
+    {
+     "crop": "coconut",
+     "tier": "A",
+     "unit": "nuts/ha",
+     "n": 371,
+     "mean_yield": 9399.65004,
+     "mae": 2196.71231,
+     "rmse": 3291.11762,
+     "r2": 0.47316,
+     "nmae": 0.2337
+    },
+    {
+     "crop": "coriander",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 614,
+     "mean_yield": 0.84593,
+     "mae": 0.24856,
+     "rmse": 0.55944,
+     "r2": 0.53856,
+     "nmae": 0.29383
+    },
+    {
+     "crop": "cotton",
+     "tier": "A",
+     "unit": "bales_170kg/ha",
+     "n": 745,
+     "mean_yield": 2.00882,
+     "mae": 0.77769,
+     "rmse": 1.15528,
+     "r2": 0.26606,
+     "nmae": 0.38714
+    },
+    {
+     "crop": "field_pea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 872,
+     "mean_yield": 1.28109,
+     "mae": 0.33203,
+     "rmse": 0.85927,
+     "r2": 0.4557,
+     "nmae": 0.25918
+    },
+    {
+     "crop": "finger_millet",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 629,
+     "mean_yield": 1.50733,
+     "mae": 0.34664,
+     "rmse": 0.50406,
+     "r2": 0.7693,
+     "nmae": 0.22997
+    },
+    {
+     "crop": "garlic",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 217,
+     "mean_yield": 5.1673,
+     "mae": 0.53821,
+     "rmse": 0.60793,
+     "r2": 0.91887,
+     "nmae": 0.10416
+    },
+    {
+     "crop": "ginger",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 436,
+     "mean_yield": 10.28099,
+     "mae": 3.0534,
+     "rmse": 5.15498,
+     "r2": 0.57037,
+     "nmae": 0.29699
+    },
+    {
+     "crop": "green_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1889,
+     "mean_yield": 0.58013,
+     "mae": 0.14216,
+     "rmse": 0.20465,
+     "r2": 0.43943,
+     "nmae": 0.24505
+    },
+    {
+     "crop": "groundnut",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1500,
+     "mean_yield": 1.58926,
+     "mae": 0.35716,
+     "rmse": 0.54249,
+     "r2": 0.6121,
+     "nmae": 0.22473
+    },
+    {
+     "crop": "horse_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 649,
+     "mean_yield": 0.53181,
+     "mae": 0.14763,
+     "rmse": 0.20049,
+     "r2": 0.46527,
+     "nmae": 0.2776
+    },
+    {
+     "crop": "jute",
+     "tier": "A",
+     "unit": "bales_180kg/ha",
+     "n": 193,
+     "mean_yield": 10.36778,
+     "mae": 2.08061,
+     "rmse": 3.68141,
+     "r2": 0.56059,
+     "nmae": 0.20068
+    },
+    {
+     "crop": "lentil",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 856,
+     "mean_yield": 0.84759,
+     "mae": 0.17735,
+     "rmse": 0.24625,
+     "r2": 0.30631,
+     "nmae": 0.20924
+    },
+    {
+     "crop": "linseed",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 574,
+     "mean_yield": 0.63772,
+     "mae": 0.15087,
+     "rmse": 0.23982,
+     "r2": 0.58469,
+     "nmae": 0.23658
+    },
+    {
+     "crop": "maize",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 2525,
+     "mean_yield": 2.82999,
+     "mae": 0.72058,
+     "rmse": 1.17586,
+     "r2": 0.5587,
+     "nmae": 0.25462
+    },
+    {
+     "crop": "onion",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1292,
+     "mean_yield": 14.11166,
+     "mae": 3.57935,
+     "rmse": 5.61346,
+     "r2": 0.50939,
+     "nmae": 0.25365
+    },
+    {
+     "crop": "paddy",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 2035,
+     "mean_yield": 2.47413,
+     "mae": 0.37448,
+     "rmse": 0.55284,
+     "r2": 0.63897,
+     "nmae": 0.15136
+    },
+    {
+     "crop": "pearl_millet",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 890,
+     "mean_yield": 1.52664,
+     "mae": 0.35805,
+     "rmse": 0.54383,
+     "r2": 0.57706,
+     "nmae": 0.23454
+    },
+    {
+     "crop": "pigeonpea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1272,
+     "mean_yield": 0.96703,
+     "mae": 0.4805,
+     "rmse": 5.22709,
+     "r2": -114.63542,
+     "nmae": 0.49689
+    },
+    {
+     "crop": "potato",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1232,
+     "mean_yield": 15.02694,
+     "mae": 3.30923,
+     "rmse": 4.97306,
+     "r2": 0.71856,
+     "nmae": 0.22022
+    },
+    {
+     "crop": "rapeseed_mustard",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1373,
+     "mean_yield": 0.95702,
+     "mae": 0.20099,
+     "rmse": 0.30346,
+     "r2": 0.69074,
+     "nmae": 0.21002
+    },
+    {
+     "crop": "safflower",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 155,
+     "mean_yield": 0.53352,
+     "mae": 0.20896,
+     "rmse": 0.29075,
+     "r2": 0.14307,
+     "nmae": 0.39167
+    },
+    {
+     "crop": "sesame",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1487,
+     "mean_yield": 0.45246,
+     "mae": 0.20499,
+     "rmse": 1.39876,
+     "r2": -27.9154,
+     "nmae": 0.45307
+    },
+    {
+     "crop": "small_millets",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 603,
+     "mean_yield": 0.74829,
+     "mae": 0.20176,
+     "rmse": 0.29112,
+     "r2": 0.45692,
+     "nmae": 0.26963
+    },
+    {
+     "crop": "sorghum",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 963,
+     "mean_yield": 1.1528,
+     "mae": 0.37413,
+     "rmse": 0.5458,
+     "r2": 0.38587,
+     "nmae": 0.32454
+    },
+    {
+     "crop": "soybean",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 606,
+     "mean_yield": 1.10446,
+     "mae": 0.24718,
+     "rmse": 0.35978,
+     "r2": 0.44071,
+     "nmae": 0.2238
+    },
+    {
+     "crop": "sugarcane",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1282,
+     "mean_yield": 57.69293,
+     "mae": 12.19702,
+     "rmse": 17.80765,
+     "r2": 0.65334,
+     "nmae": 0.21141
+    },
+    {
+     "crop": "sunflower",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 624,
+     "mean_yield": 0.96121,
+     "mae": 0.34642,
+     "rmse": 0.46261,
+     "r2": 0.30374,
+     "nmae": 0.3604
+    },
+    {
+     "crop": "sweet_potato",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 274,
+     "mean_yield": 10.28447,
+     "mae": 1.32637,
+     "rmse": 1.6686,
+     "r2": 0.63043,
+     "nmae": 0.12897
+    },
+    {
+     "crop": "tobacco",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 121,
+     "mean_yield": 2.96488,
+     "mae": 1.04993,
+     "rmse": 1.43258,
+     "r2": 0.03829,
+     "nmae": 0.35412
+    },
+    {
+     "crop": "turmeric",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 160,
+     "mean_yield": 3.60181,
+     "mae": 2.21633,
+     "rmse": 3.63911,
+     "r2": 0.36756,
+     "nmae": 0.61534
+    },
+    {
+     "crop": "wheat",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1320,
+     "mean_yield": 2.75208,
+     "mae": 0.40585,
+     "rmse": 0.52377,
+     "r2": 0.80951,
+     "nmae": 0.14747
+    }
+   ]
+  },
+  "90": {
+   "A": {
+    "crops": {
+     "mean": 30.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.23730112571203343,
+     "std": 0.0029308356996482912
+    },
+    "nmae_worst_decile": {
+     "mean": 0.355988062738721,
+     "std": 0.0031211646254191085
+    },
+    "r2_median": {
+     "mean": 0.5151349375271478,
+     "std": 0.01087930773922148
+    }
+   },
+   "B": {
+    "crops": {
+     "mean": 8.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.27722375457108805,
+     "std": 0.0003807833209953222
+    },
+    "nmae_worst_decile": {
+     "mean": 0.5877837767372595,
+     "std": 0.0033252948043768263
+    },
+    "r2_median": {
+     "mean": 0.4431223251909194,
+     "std": 0.0037046902732289833
+    }
+   },
+   "A_all": {
+    "crops": {
+     "mean": 30.0,
+     "std": 0.0
+    },
+    "nmae_median": {
+     "mean": 0.2513340804168405,
+     "std": 0.0032186862944359462
+    },
+    "nmae_worst_decile": {
+     "mean": 0.3944988699426923,
+     "std": 0.001968851848722655
+    },
+    "r2_median": {
+     "mean": 0.3732227124399799,
+     "std": 0.0009302993349199542
+    }
+   },
+   "seeds": 3,
+   "per_crop_seed0": [
+    {
+     "crop": "arecanut",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 163,
+     "mean_yield": 4.45071,
+     "mae": 0.88431,
+     "rmse": 1.43477,
+     "r2": 0.88857,
+     "nmae": 0.19869
+    },
+    {
+     "crop": "banana",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 97,
+     "mean_yield": 48.82548,
+     "mae": 5.94296,
+     "rmse": 7.46316,
+     "r2": -0.84806,
+     "nmae": 0.12172
+    },
+    {
+     "crop": "barley",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 591,
+     "mean_yield": 2.4378,
+     "mae": 0.43372,
+     "rmse": 0.55525,
+     "r2": 0.71808,
+     "nmae": 0.17791
+    },
+    {
+     "crop": "black_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1792,
+     "mean_yield": 0.63202,
+     "mae": 0.13688,
+     "rmse": 0.19515,
+     "r2": 0.43005,
+     "nmae": 0.21658
+    },
+    {
+     "crop": "cashew",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 181,
+     "mean_yield": 0.44022,
+     "mae": 0.25219,
+     "rmse": 0.3405,
+     "r2": 0.51989,
+     "nmae": 0.57288
+    },
+    {
+     "crop": "chickpea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1202,
+     "mean_yield": 1.08742,
+     "mae": 0.24027,
+     "rmse": 0.32443,
+     "r2": 0.26979,
+     "nmae": 0.22096
+    },
+    {
+     "crop": "chilli",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 964,
+     "mean_yield": 1.98024,
+     "mae": 0.6203,
+     "rmse": 1.36306,
+     "r2": 0.56363,
+     "nmae": 0.31325
+    },
+    {
+     "crop": "coconut",
+     "tier": "A",
+     "unit": "nuts/ha",
+     "n": 371,
+     "mean_yield": 9399.65004,
+     "mae": 2178.17845,
+     "rmse": 3243.45832,
+     "r2": 0.48831,
+     "nmae": 0.23173
+    },
+    {
+     "crop": "coriander",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 614,
+     "mean_yield": 0.84593,
+     "mae": 0.24975,
+     "rmse": 0.56068,
+     "r2": 0.53651,
+     "nmae": 0.29524
+    },
+    {
+     "crop": "cotton",
+     "tier": "A",
+     "unit": "bales_170kg/ha",
+     "n": 745,
+     "mean_yield": 2.00882,
+     "mae": 0.76872,
+     "rmse": 1.13222,
+     "r2": 0.29507,
+     "nmae": 0.38267
+    },
+    {
+     "crop": "field_pea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 872,
+     "mean_yield": 1.28109,
+     "mae": 0.33241,
+     "rmse": 0.86354,
+     "r2": 0.45028,
+     "nmae": 0.25947
+    },
+    {
+     "crop": "finger_millet",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 629,
+     "mean_yield": 1.50733,
+     "mae": 0.34595,
+     "rmse": 0.50099,
+     "r2": 0.7721,
+     "nmae": 0.22951
+    },
+    {
+     "crop": "garlic",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 217,
+     "mean_yield": 5.1673,
+     "mae": 0.53452,
+     "rmse": 0.60686,
+     "r2": 0.91915,
+     "nmae": 0.10344
+    },
+    {
+     "crop": "ginger",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 436,
+     "mean_yield": 10.28099,
+     "mae": 3.06531,
+     "rmse": 5.15574,
+     "r2": 0.57025,
+     "nmae": 0.29815
+    },
+    {
+     "crop": "green_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1889,
+     "mean_yield": 0.58013,
+     "mae": 0.14196,
+     "rmse": 0.2049,
+     "r2": 0.43809,
+     "nmae": 0.2447
+    },
+    {
+     "crop": "groundnut",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1500,
+     "mean_yield": 1.58926,
+     "mae": 0.35591,
+     "rmse": 0.54355,
+     "r2": 0.61057,
+     "nmae": 0.22395
+    },
+    {
+     "crop": "horse_gram",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 649,
+     "mean_yield": 0.53181,
+     "mae": 0.14509,
+     "rmse": 0.19633,
+     "r2": 0.48725,
+     "nmae": 0.27283
+    },
+    {
+     "crop": "jute",
+     "tier": "A",
+     "unit": "bales_180kg/ha",
+     "n": 193,
+     "mean_yield": 10.36778,
+     "mae": 2.13589,
+     "rmse": 3.76217,
+     "r2": 0.5411,
+     "nmae": 0.20601
+    },
+    {
+     "crop": "lentil",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 856,
+     "mean_yield": 0.84759,
+     "mae": 0.17712,
+     "rmse": 0.24635,
+     "r2": 0.30575,
+     "nmae": 0.20897
+    },
+    {
+     "crop": "linseed",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 574,
+     "mean_yield": 0.63772,
+     "mae": 0.14973,
+     "rmse": 0.2401,
+     "r2": 0.58372,
+     "nmae": 0.23479
+    },
+    {
+     "crop": "maize",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 2525,
+     "mean_yield": 2.82999,
+     "mae": 0.72102,
+     "rmse": 1.17315,
+     "r2": 0.56074,
+     "nmae": 0.25478
+    },
+    {
+     "crop": "onion",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1292,
+     "mean_yield": 14.11166,
+     "mae": 3.54261,
+     "rmse": 5.59074,
+     "r2": 0.51336,
+     "nmae": 0.25104
+    },
+    {
+     "crop": "paddy",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 2035,
+     "mean_yield": 2.47413,
+     "mae": 0.3697,
+     "rmse": 0.53796,
+     "r2": 0.65815,
+     "nmae": 0.14943
+    },
+    {
+     "crop": "pearl_millet",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 890,
+     "mean_yield": 1.52664,
+     "mae": 0.35579,
+     "rmse": 0.53811,
+     "r2": 0.58591,
+     "nmae": 0.23305
+    },
+    {
+     "crop": "pigeonpea",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1272,
+     "mean_yield": 0.96703,
+     "mae": 0.47924,
+     "rmse": 5.2655,
+     "r2": -116.34121,
+     "nmae": 0.49558
+    },
+    {
+     "crop": "potato",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1232,
+     "mean_yield": 15.02694,
+     "mae": 3.33671,
+     "rmse": 4.9918,
+     "r2": 0.71643,
+     "nmae": 0.22205
+    },
+    {
+     "crop": "rapeseed_mustard",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1373,
+     "mean_yield": 0.95702,
+     "mae": 0.20241,
+     "rmse": 0.30551,
+     "r2": 0.68654,
+     "nmae": 0.2115
+    },
+    {
+     "crop": "safflower",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 155,
+     "mean_yield": 0.53352,
+     "mae": 0.20869,
+     "rmse": 0.28969,
+     "r2": 0.14933,
+     "nmae": 0.39115
+    },
+    {
+     "crop": "sesame",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1487,
+     "mean_yield": 0.45246,
+     "mae": 0.20109,
+     "rmse": 1.35156,
+     "r2": -25.9971,
+     "nmae": 0.44443
+    },
+    {
+     "crop": "small_millets",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 603,
+     "mean_yield": 0.74829,
+     "mae": 0.1992,
+     "rmse": 0.28598,
+     "r2": 0.47593,
+     "nmae": 0.26622
+    },
+    {
+     "crop": "sorghum",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 963,
+     "mean_yield": 1.1528,
+     "mae": 0.37115,
+     "rmse": 0.53745,
+     "r2": 0.40453,
+     "nmae": 0.32195
+    },
+    {
+     "crop": "soybean",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 606,
+     "mean_yield": 1.10446,
+     "mae": 0.24727,
+     "rmse": 0.35957,
+     "r2": 0.44137,
+     "nmae": 0.22389
+    },
+    {
+     "crop": "sugarcane",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1282,
+     "mean_yield": 57.69293,
+     "mae": 12.09397,
+     "rmse": 17.47685,
+     "r2": 0.6661,
+     "nmae": 0.20963
+    },
+    {
+     "crop": "sunflower",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 624,
+     "mean_yield": 0.96121,
+     "mae": 0.34297,
+     "rmse": 0.45924,
+     "r2": 0.31386,
+     "nmae": 0.35681
+    },
+    {
+     "crop": "sweet_potato",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 274,
+     "mean_yield": 10.28447,
+     "mae": 1.32956,
+     "rmse": 1.68212,
+     "r2": 0.62441,
+     "nmae": 0.12928
+    },
+    {
+     "crop": "tobacco",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 121,
+     "mean_yield": 2.96488,
+     "mae": 1.05634,
+     "rmse": 1.4425,
+     "r2": 0.02493,
+     "nmae": 0.35628
+    },
+    {
+     "crop": "turmeric",
+     "tier": "B",
+     "unit": "Tonnes/Hectare",
+     "n": 160,
+     "mean_yield": 3.60181,
+     "mae": 2.22146,
+     "rmse": 3.65579,
+     "r2": 0.36175,
+     "nmae": 0.61676
+    },
+    {
+     "crop": "wheat",
+     "tier": "A",
+     "unit": "Tonnes/Hectare",
+     "n": 1320,
+     "mean_yield": 2.75208,
+     "mae": 0.42026,
+     "rmse": 0.53799,
+     "r2": 0.79902,
+     "nmae": 0.15271
+    }
+   ]
+  }
+ }
+}

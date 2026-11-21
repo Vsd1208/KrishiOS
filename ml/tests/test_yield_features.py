@@ -4,6 +4,7 @@ from datetime import date, timedelta
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from krishios_ml.yield_features.features import build, summarise, window
 from krishios_ml.yield_features.zonal import aggregate
@@ -145,6 +146,24 @@ def test_ndvi_uses_only_months_published_before_the_cutoff() -> None:
     poisoned = monthly.copy()
     poisoned.loc[poisoned["month_start"] >= "2015-06-01", "ndvi"] = 9.9
     assert a.equals(ndvi_features(poisoned, keys))
+    assert a.loc[0, "ndvi_mean"] == pytest.approx(monthly["ndvi"].iloc[3:5].mean())
+    scored = ndvi_features(monthly.assign(good_share=0.5), keys)
+    assert scored.loc[0, "ndvi_good_share"] == pytest.approx(0.5)
+
+
+def test_ndvi_anomaly_normals_come_from_training_rows_only() -> None:
+    from krishios_ml.yield_.data import NDVI, add_ndvi
+
+    frame = pd.DataFrame({"lgd_district_code": 509, "crop_year": [2010, 2011, 2017],
+                          "season": "Kharif", "lead_days": 0,
+                          "split": ["train", "train", "val"]})
+    ndvi = frame.drop(columns="split").assign(**{c: 0.0 for c in NDVI})
+    ndvi["ndvi_last"] = [0.4, 0.6, 0.9]
+    z = add_ndvi(frame, ndvi)["ndvi_last_z"].to_numpy()
+    sd = np.std([0.4, 0.6], ddof=1)
+    assert z[2] == pytest.approx((0.9 - 0.5) / sd)
+    changed = ndvi.assign(ndvi_last=[0.4, 0.6, 50.0])
+    assert add_ndvi(frame, changed)["ndvi_last_z"].iloc[0] == pytest.approx(z[0])
 
 
 def test_ndvi_district_mean_masks_bad_pixels_and_scales() -> None:
