@@ -5,7 +5,6 @@
  */
 
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, BookOpen } from 'lucide-react';
 
@@ -18,14 +17,7 @@ import {
   useCropAdvisories,
   usePrimaryCropName,
 } from '@/features/farmer/hooks/useFarmerData';
-import { getProviders } from '@/services/api/providers';
-
-/** True only when the advisory capability is served by a live source (fails closed). */
-function useLiveAdvisorySource(): boolean {
-  const providers = useQuery({ queryKey: ['providers'], queryFn: getProviders, staleTime: 10 * 60 * 1000 });
-  const advisory = providers.data?.providers.find((p) => p.capability === 'advisory');
-  return advisory?.kind === 'live';
-}
+import { useLiveProvider } from '@/features/farmer/hooks/useLiveProvider';
 
 export const AlertsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -33,7 +25,7 @@ export const AlertsPage: React.FC = () => {
 
   const { data: farmer } = useFarmerProfile();
   const { alerts, isLoading, acknowledgeAlert, isAcknowledging } = useFarmerAlerts(farmer?.id);
-  const liveAdvisories = useLiveAdvisorySource();
+  const liveAdvisories = useLiveProvider('advisory').isLive;
   const crop = usePrimaryCropName() ?? '';
   const { data: advisories = [] } = useCropAdvisories(liveAdvisories ? crop : '', farmer?.village || undefined);
 

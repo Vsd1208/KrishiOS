@@ -58,8 +58,24 @@ describe('FieldsPage', () => {
     expect(await screen.findByText('River plot', {}, { timeout: 5000 })).toBeInTheDocument();
     expect(screen.queryByText('Someone else')).not.toBeInTheDocument();
     expect(screen.getAllByText('—')).toHaveLength(2);
-    expect(await screen.findByText('No soil test recorded for this field.')).toBeInTheDocument();
+    expect(await screen.findByText('No soil sample recorded for this field.')).toBeInTheDocument();
     expect(document.body.textContent).not.toMatch(/Black Soil|Borewell/);
+  });
+
+  it('shows the soil sample date and lab status, and survives a bad date', async () => {
+    vi.mocked(farmerApi.listFields).mockResolvedValue([field(1, 9, 'River plot'), field(2, 9, 'Hill plot')]);
+    const sample = (fieldId: number, date: string) => ({
+      sample_id: fieldId, sample_uuid: `u${fieldId}`, farmer_id: 9, field_id: fieldId, collector_id: null,
+      collection_date: date, latitude: null, longitude: null, status: 'Testing' as const,
+      created_at: '', updated_at: '',
+    });
+    vi.mocked(farmerApi.listSoilSamples).mockResolvedValue([sample(1, '2026-07-23'), sample(2, 'not-a-date')]);
+    wrap(<FieldsPage />);
+    expect(await screen.findByText('River plot', {}, { timeout: 5000 })).toBeInTheDocument();
+    const text = (await screen.findAllByText(/being tested/)).map((el) => el.textContent).join(' | ');
+    expect(text).toMatch(/Collected on .*2026/);
+    expect(text).toMatch(/Collected on —/);
+    expect(document.body.textContent).not.toMatch(/pH|kg\/ha/);
   });
 });
 

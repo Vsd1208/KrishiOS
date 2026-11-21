@@ -449,7 +449,8 @@
       "created": "registered",
       "duplicate_phone": "already registered",
       "error": "could not register"
-    }
+    },
+    "officerNote": "Asking on a farmer’s behalf and the review queue are for extension workers. As an officer you can register farmers here."
   },
   "feedbackOps": {
     "title": "Farmer feedback",
@@ -909,10 +910,18 @@
     "area": "Area",
     "soilType": "Soil type",
     "irrigation": "Irrigation",
-    "soilTest": "Latest soil test",
-    "tested": "Tested on {{date}}",
-    "noSoil": "No soil test recorded for this field.",
-    "soilFailed": "Could not load soil tests."
+    "soilTest": "Latest soil sample",
+    "noSoil": "No soil sample recorded for this field.",
+    "soilFailed": "Could not load soil tests.",
+    "collected": "Collected on {{date}}",
+    "noResults": "Test results are not shown in the app yet; ask your officer or the soil testing lab.",
+    "soilStatus": {
+      "COLLECTED": "collected",
+      "IN_TRANSIT": "on the way to the lab",
+      "TESTING": "being tested",
+      "COMPLETED": "test completed",
+      "DELIVERED": "report delivered"
+    }
   },
   "farmSummary": {
     "title": "My farm",
@@ -923,7 +932,7 @@
   },
   "weatherCard": {
     "title": "Weather at your village",
-    "none": "No weather reading is available right now. The district weather card above has the latest forecast."
+    "none": "No weather reading is available right now."
   },
   "errorState": {
     "offline": {

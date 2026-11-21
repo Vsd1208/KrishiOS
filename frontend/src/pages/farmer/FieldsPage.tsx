@@ -27,7 +27,7 @@ function latestByField(samples: SoilSample[]): Map<number, SoilSample> {
   const out = new Map<number, SoilSample>();
   for (const s of samples) {
     const prev = out.get(s.field_id);
-    if (!prev || s.collected_at > prev.collected_at) out.set(s.field_id, s);
+    if (!prev || s.collection_date > prev.collection_date) out.set(s.field_id, s);
   }
   return out;
 }
@@ -44,8 +44,12 @@ export const FieldsPage: React.FC = () => {
     staleTime: 10 * 60 * 1000,
   });
   const latest = latestByField(soil.data ?? []);
-  const fmtDate = (iso: string) =>
-    new Intl.DateTimeFormat(i18n.language, { dateStyle: 'medium' }).format(new Date(iso));
+  const fmtDate = (iso: string | null | undefined) => {
+    const d = iso ? new Date(iso) : null;
+    return d && !Number.isNaN(d.getTime())
+      ? new Intl.DateTimeFormat(i18n.language, { dateStyle: 'medium' }).format(d)
+      : '—'; // a missing or malformed date must not crash the page
+  };
 
   const isLoading = isFarmerLoading || (farmer && isFieldsLoading);
   const totalAcres = farmer?.landholding_acres;
@@ -134,14 +138,12 @@ export const FieldsPage: React.FC = () => {
                     </span>
                     {sample ? (
                       <>
-                        <p className="text-text-muted">{t('fieldsPage.tested', { date: fmtDate(sample.collected_at) })}</p>
-                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-x-3 gap-y-0.5 text-text">
-                          <span>pH {dash(sample.ph)}</span>
-                          <span>N {dash(sample.nitrogen_kg_ha)} kg/ha</span>
-                          <span>P {dash(sample.phosphorus_kg_ha)} kg/ha</span>
-                          <span>K {dash(sample.potassium_kg_ha)} kg/ha</span>
-                          <span>OC {dash(sample.organic_carbon_pct)}%</span>
-                        </div>
+                        <p className="text-text">
+                          {t('fieldsPage.collected', { date: fmtDate(sample.collection_date) })}
+                          {' · '}
+                          {t(`fieldsPage.soilStatus.${String(sample.status).toUpperCase().replace(/ /g, '_')}`, { defaultValue: sample.status })}
+                        </p>
+                        <p className="text-text-muted">{t('fieldsPage.noResults')}</p>
                       </>
                     ) : (
                       <p className="text-text-muted">{soil.isError ? t('fieldsPage.soilFailed') : t('fieldsPage.noSoil')}</p>

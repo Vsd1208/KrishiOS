@@ -110,15 +110,20 @@ export interface FieldCrop {
 
 // ── Soil Sample ──────────────────────────────────────────────────────────────
 
+// Matches the backend SoilSampleResponse: when and where a sample was taken and where it is in
+// the lab process. Test values (pH, N, P, K) are not stored by the backend yet.
+export type SoilSampleStatus = 'Collected' | 'In Transit' | 'Testing' | 'Completed' | 'Delivered';
+
 export interface SoilSample {
-  id: number;
+  sample_id: number;
+  sample_uuid: string;
+  farmer_id: number;
   field_id: number;
-  collected_at: string;
-  ph: number | null;
-  nitrogen_kg_ha: number | null;
-  phosphorus_kg_ha: number | null;
-  potassium_kg_ha: number | null;
-  organic_carbon_pct: number | null;
+  collector_id: number | null;
+  collection_date: string;
+  latitude: number | null;
+  longitude: number | null;
+  status: SoilSampleStatus;
   created_at: string;
   updated_at: string;
 }

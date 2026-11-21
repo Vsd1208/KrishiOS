@@ -20,6 +20,7 @@ import {
 } from '@/features/farmer/hooks/useFarmerData';
 import { FarmSummaryCard } from '@/features/farmer/components/FarmSummaryCard';
 import { WeatherWidget } from '@/features/farmer/components/WeatherWidget';
+import { useLiveProvider } from '@/features/farmer/hooks/useLiveProvider';
 import { HeroActionGrid } from '@/features/farmer/components/HeroActionGrid';
 import { AlertBanner } from '@/features/farmer/components/AlertBanner';
 import { ActiveWarningsCard } from '@/features/govconnect/ActiveWarningsCard';
@@ -53,6 +54,7 @@ export const FarmerDashboard: React.FC = () => {
   const { fieldCrops } = useFarmerCrops();
   const { fieldCrop: primaryFieldCrop, cropName: primaryCrop } = usePrimaryFieldCrop();
   const sownDays = daysSince(primaryFieldCrop?.sowing_date);
+  const { isLive: liveWeather, isLoading: isWeatherSourceLoading } = useLiveProvider('weather');
   // The farmer's LGD district name (from the weather feed), not the village.
   const { data: feeds } = useQuery({ queryKey: ['govconnect', 'weather-feed'], queryFn: feedApi.weatherFeed });
   const feedDistrict = feeds?.[0]?.district_name ?? null;
@@ -143,10 +145,11 @@ export const FarmerDashboard: React.FC = () => {
         />
 
         {/* Live Weather & Spray Advisory */}
+        {/* A mock weather source is never shown as a reading or spray advice (fails closed). */}
         <WeatherWidget
-          weather={weather}
-          forecast={forecast}
-          isLoading={isWeatherLoading || isForecastLoading}
+          weather={liveWeather ? weather : null}
+          forecast={liveWeather ? forecast : null}
+          isLoading={isWeatherSourceLoading || (liveWeather && (isWeatherLoading || isForecastLoading))}
         />
       </div>
 
