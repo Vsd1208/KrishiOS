@@ -3,6 +3,12 @@
 - **E1 all:** train on every source's train split (PlantVillage lab + PlantDoc + India rice).
 - **E2 lab_only:** train on PlantVillage only. Scored on the same field tests, this measures
   how lab-only training transfers to field photos (reported honestly).
+- **E3_india:** E1 plus the checked Indian field photos (``prepare_india_vision.py``; adds
+  chilli and wheat). Needs ``--with-india``. Its test split is scored once, like the others.
+
+``--progress-dir`` keeps each finished experiment x seed (results and weights) and skips it when
+the same configuration is run again, so an interrupted run (for example a Colab disconnect)
+loses only the seed in progress.
 
 Model selection uses each experiment's own validation data (E1: field validation; E2: lab
 validation, so no field information leaks into the lab-only model). Temperatures are fitted
@@ -19,6 +25,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from pathlib import Path
 
 import _bootstrap  # noqa: F401
 import numpy as np
@@ -36,7 +43,10 @@ EXPERIMENTS = {
     "E1_all": {"train_sources": ("plantvillage", "plantdoc", "agml_rice_india"),
                "select_on": "field"},
     "E2_lab_only": {"train_sources": ("plantvillage",), "select_on": "lab"},
+    "E3_india": {"train_sources": ("plantvillage", "plantdoc", "agml_rice_india", "india_field"),
+                 "select_on": "field"},
 }
+INDIA = DATA_DIR / "processed" / "vision" / "india_v1" / "images.parquet"
 CONFIRM_THRESHOLD = 0.6
 
 
@@ -87,13 +97,24 @@ def main() -> None:
     ap.add_argument("--backbone", default="efficientnet_b0.ra_in1k")
     ap.add_argument("--experiments", nargs="*", default=list(EXPERIMENTS))
     ap.add_argument("--seeds", nargs="*", type=int, default=list(SEEDS))
+    ap.add_argument("--with-india", action="store_true",
+                    help="add the Indian field photos (needed by E3_india)")
+    ap.add_argument("--progress-dir", type=Path, default=None,
+                    help="keep finished experiment x seed results here and resume from them")
     args = ap.parse_args()
     df = pd.read_parquet(DATA / "images.parquet")
+    df["cache"] = df["cache"].str.replace("\\", "/", regex=False)
+    if args.with_india:
+        df = pd.concat([df, pd.read_parquet(INDIA)], ignore_index=True)
+    elif "E3_india" in args.experiments:
+        raise SystemExit("E3_india needs --with-india")
     df, crops, conds, crop_of_cond = encode(df)
     config = {"backbone": args.backbone, "epochs": args.epochs, "seeds": args.seeds,
               "experiments": {k: EXPERIMENTS[k] for k in args.experiments},
               "dataset_rows": len(df), "crops": crops, "n_conditions": len(conds),
               "confirm_threshold": CONFIRM_THRESHOLD}
+    if args.with_india:
+        config["with_india"] = True
     config["config_hash"] = hashlib.sha256(json.dumps(config, sort_keys=True,
                                                       default=str).encode()).hexdigest()[:12]
     log_path = EXPERIMENTS_DIR / "vision_train.jsonl"
@@ -112,11 +133,21 @@ def main() -> None:
 
         results: dict = {}
         out_dir = RUNS / rec.run_id
+        progress = (args.progress_dir / config["config_hash"]) if args.progress_dir else None
+        if progress:
+            progress.mkdir(parents=True, exist_ok=True)
+            for f in sorted(progress.glob("*_seed*.json")):  # file E1_all_seed0 = key E1_all:seed0
+                exp_name, seed_no = f.stem.rsplit("_seed", 1)
+                results[f"{exp_name}:seed{seed_no}"] = json.loads(f.read_text(encoding="utf-8"))
+            if results:
+                print(f"resuming: {sorted(results)} already done", flush=True)
         out_dir.mkdir(parents=True, exist_ok=True)
         for exp in args.experiments:
             spec = EXPERIMENTS[exp]
             val_exp = val[val["source"].isin(spec["train_sources"])].reset_index(drop=True)
             for seed in args.seeds:
+                if f"{exp}:seed{seed}" in results:
+                    continue
                 cfg = TrainConfig(backbone=args.backbone, epochs=args.epochs, seed=seed,
                                   train_sources=spec["train_sources"])
                 fitted = fit(cfg, train, val_exp, DATA / "cache", len(crops), len(conds),
@@ -151,12 +182,21 @@ def main() -> None:
                             "crops": crops, "conditions": conds, "data_config": dc,
                             "temperature": {"crop": t_crop, "condition": t_cond},
                             "val_score": max(h["val_score"] for h in fitted.history)},
-                           out_dir / f"{exp}_seed{seed}.pt")
+                           (progress or out_dir) / f"{exp}_seed{seed}.pt")
+                if progress:  # written last, so a partial seed is never taken as done
+                    tmp = progress / f"{exp}_seed{seed}.part"
+                    tmp.write_text(json.dumps(res, default=str), encoding="utf-8")
+                    tmp.replace(progress / f"{exp}_seed{seed}.json")
                 print(exp, seed, "field crop top1",
                       round(res.get("field", {}).get("crop", {}).get("top1", float("nan")), 4),
                       flush=True)
                 del fitted
                 torch.cuda.empty_cache()
+        if progress:  # the run folder gets every seed's weights, resumed ones included
+            import shutil
+
+            for pt in progress.glob("*.pt"):
+                shutil.copy2(pt, out_dir / pt.name)
         rec.metrics = {k: {s: {"crop_top1": v[s]["crop"]["top1"],
                                "cond_given_crop_f1": v[s]["condition_given_crop"]["macro_f1"]}
                            for s in ("field", "lab") if s in v} for k, v in results.items()}
