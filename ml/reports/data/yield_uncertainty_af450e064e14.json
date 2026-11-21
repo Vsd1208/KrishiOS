@@ -1,0 +1,2539 @@
+{
+ "run_id": "af450e064e14",
+ "config": {
+  "phase": "val",
+  "model": "B3",
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "levels": [
+   0.5,
+   0.8,
+   0.9
+  ],
+  "calibration_years": [
+   2013,
+   2015
+  ],
+  "evaluation_years": [
+   2016,
+   2018
+  ],
+  "min_crop_rows": 50,
+  "rows": "clean tier A/B rows"
+ },
+ "table": {
+  "0.5": {
+   "tier": {
+    "A": {
+     "coverage": {
+      "mean": 0.5112671456564336,
+      "sd": 0.004197843545672831
+     },
+     "width": {
+      "mean": 0.3927071464283601,
+      "sd": 0.0038168216306772806
+     },
+     "crops_within_10pts": {
+      "mean": 0.7055555555555556,
+      "sd": 0.01924500897298752
+     },
+     "worst_crop": {
+      "mean": 0.3307873090481786,
+      "sd": 0.007914516159381033
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.47370218579234974,
+      "sd": 0.0066683410225463575
+     },
+     "width": {
+      "mean": 0.3301564060229864,
+      "sd": 0.007116277789983933
+     },
+     "crops_within_10pts": {
+      "mean": 0.3968253968253969,
+      "sd": 0.07414275658681173
+     },
+     "worst_crop": {
+      "mean": 0.146349043715847,
+      "sd": 0.017705637804245673
+     }
+    }
+   },
+   "crop": {
+    "A": {
+     "coverage": {
+      "mean": 0.5095053112860531,
+      "sd": 0.003312564081583523
+     },
+     "width": {
+      "mean": 0.4018264534964731,
+      "sd": 0.003802881256209727
+     },
+     "crops_within_10pts": {
+      "mean": 0.7694444444444445,
+      "sd": 0.03612082231502776
+     },
+     "worst_crop": {
+      "mean": 0.31609870740305523,
+      "sd": 0.013037173029060233
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.4234061930783242,
+      "sd": 0.00879913574549692
+     },
+     "width": {
+      "mean": 0.37754301462492373,
+      "sd": 0.004327588599340547
+     },
+     "crops_within_10pts": {
+      "mean": 0.48412698412698413,
+      "sd": 0.0341781220269178
+     },
+     "worst_crop": {
+      "mean": 0.06542228409894928,
+      "sd": 0.026877913244745373
+     }
+    }
+   },
+   "scaled": {
+    "A": {
+     "coverage": {
+      "mean": 0.5269804164231612,
+      "sd": 0.00457087857083152
+     },
+     "width": {
+      "mean": 0.5303538584534266,
+      "sd": 0.004300028743989922
+     },
+     "crops_within_10pts": {
+      "mean": 0.8972222222222225,
+      "sd": 0.036120822315027716
+     },
+     "worst_crop": {
+      "mean": 0.3438112025068547,
+      "sd": 0.012420392332084083
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.4123861566484517,
+      "sd": 0.0126293541721291
+     },
+     "width": {
+      "mean": 0.4384364727182292,
+      "sd": 0.00937222652259266
+     },
+     "crops_within_10pts": {
+      "mean": 0.45634920634920634,
+      "sd": 0.03776006957613139
+     },
+     "worst_crop": {
+      "mean": 0.11154894712418793,
+      "sd": 0.020707914351325938
+     }
+    }
+   }
+  },
+  "0.8": {
+   "tier": {
+    "A": {
+     "coverage": {
+      "mean": 0.8035196580608935,
+      "sd": 0.001981256995994701
+     },
+     "width": {
+      "mean": 0.9599536379581594,
+      "sd": 0.005274335452245995
+     },
+     "crops_within_10pts": {
+      "mean": 0.9,
+      "sd": 0.0
+     },
+     "worst_crop": {
+      "mean": 0.6422642762284198,
+      "sd": 0.008385412434871486
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.7325819672131147,
+      "sd": 0.0047782261700465
+     },
+     "width": {
+      "mean": 0.8039041013656388,
+      "sd": 0.01674654994085707
+     },
+     "crops_within_10pts": {
+      "mean": 0.4246031746031746,
+      "sd": 0.03776006957613138
+     },
+     "worst_crop": {
+      "mean": 0.3315625,
+      "sd": 0.01231828140684332
+     }
+    }
+   },
+   "crop": {
+    "A": {
+     "coverage": {
+      "mean": 0.7986094399944995,
+      "sd": 0.0024322585007409848
+     },
+     "width": {
+      "mean": 0.9493323430804144,
+      "sd": 0.007378352527221606
+     },
+     "crops_within_10pts": {
+      "mean": 0.9166666666666669,
+      "sd": 0.030151134457776355
+     },
+     "worst_crop": {
+      "mean": 0.6524161871901349,
+      "sd": 0.008598897298998135
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.7066484517304189,
+      "sd": 0.009916690410795029
+     },
+     "width": {
+      "mean": 0.8768675403855694,
+      "sd": 0.010424338022804099
+     },
+     "crops_within_10pts": {
+      "mean": 0.5238095238095238,
+      "sd": 0.0
+     },
+     "worst_crop": {
+      "mean": 0.1461851583935942,
+      "sd": 0.05832886080249193
+     }
+    }
+   },
+   "scaled": {
+    "A": {
+     "coverage": {
+      "mean": 0.8291307137864256,
+      "sd": 0.0023870636522887348
+     },
+     "width": {
+      "mean": 1.1817183532883877,
+      "sd": 0.00805420990041964
+     },
+     "crops_within_10pts": {
+      "mean": 0.9416666666666668,
+      "sd": 0.035176323534072414
+     },
+     "worst_crop": {
+      "mean": 0.6769588313413014,
+      "sd": 0.005084620485630675
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.7336293260473589,
+      "sd": 0.008226851670477825
+     },
+     "width": {
+      "mean": 1.0299989491496642,
+      "sd": 0.018458228439960974
+     },
+     "crops_within_10pts": {
+      "mean": 0.5912698412698413,
+      "sd": 0.03776006957613139
+     },
+     "worst_crop": {
+      "mean": 0.34568126520681264,
+      "sd": 0.05287695990586767
+     }
+    }
+   }
+  },
+  "0.9": {
+   "tier": {
+    "A": {
+     "coverage": {
+      "mean": 0.8963812208509517,
+      "sd": 0.0011300213240949385
+     },
+     "width": {
+      "mean": 1.421034934458736,
+      "sd": 0.012538861891013497
+     },
+     "crops_within_10pts": {
+      "mean": 0.8916666666666667,
+      "sd": 0.015075567228888179
+     },
+     "worst_crop": {
+      "mean": 0.7704259105709141,
+      "sd": 0.00368901677711979
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.8417122040072861,
+      "sd": 0.005547473755352267
+     },
+     "width": {
+      "mean": 1.1432889332610816,
+      "sd": 0.01951797704872776
+     },
+     "crops_within_10pts": {
+      "mean": 0.6666666666666666,
+      "sd": 0.03516899742266649
+     },
+     "worst_crop": {
+      "mean": 0.5025,
+      "sd": 0.026671401094873835
+     }
+    }
+   },
+   "crop": {
+    "A": {
+     "coverage": {
+      "mean": 0.8945620910538921,
+      "sd": 0.0007036785190152369
+     },
+     "width": {
+      "mean": 1.411643522062943,
+      "sd": 0.00969531952339298
+     },
+     "crops_within_10pts": {
+      "mean": 0.9111111111111113,
+      "sd": 0.01641219879724436
+     },
+     "worst_crop": {
+      "mean": 0.7683117900509205,
+      "sd": 0.006737958613164457
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.8081511839708561,
+      "sd": 0.010941270597911786
+     },
+     "width": {
+      "mean": 1.2531756528832425,
+      "sd": 0.011851454321622634
+     },
+     "crops_within_10pts": {
+      "mean": 0.6626984126984128,
+      "sd": 0.024520411930687477
+     },
+     "worst_crop": {
+      "mean": 0.1967134472119798,
+      "sd": 0.0671960716942581
+     }
+    }
+   },
+   "scaled": {
+    "A": {
+     "coverage": {
+      "mean": 0.919285067665899,
+      "sd": 0.0011415261687547386
+     },
+     "width": {
+      "mean": 1.7538091843965555,
+      "sd": 0.01207188355550527
+     },
+     "crops_within_10pts": {
+      "mean": 1.0,
+      "sd": 0.0
+     },
+     "worst_crop": {
+      "mean": 0.8320053120849934,
+      "sd": 0.005526576312083345
+     }
+    },
+    "B": {
+     "coverage": {
+      "mean": 0.8805555555555555,
+      "sd": 0.008062178903026782
+     },
+     "width": {
+      "mean": 1.7048395912625203,
+      "sd": 0.0332899195872655
+     },
+     "crops_within_10pts": {
+      "mean": 0.7698412698412698,
+      "sd": 0.034178122026917786
+     },
+     "worst_crop": {
+      "mean": 0.6235743801652892,
+      "sd": 0.02221507741693453
+     }
+    }
+   }
+  }
+ },
+ "runs": [
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5106053834782908,
+    "width": 0.387935680672641,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.3290246768507638,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4721311475409836,
+    "width": 0.32194698479459405,
+    "crops_within_10pts": 0.23809523809523808,
+    "worst_crop": 0.14,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5085083708618378,
+    "width": 0.397622424896383,
+    "crops_within_10pts": 0.7666666666666667,
+    "worst_crop": 0.3125734430082256,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.43333333333333335,
+    "width": 0.3736943253781083,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.10309278350515463,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5233249682010382,
+    "width": 0.5242568868988158,
+    "crops_within_10pts": 0.8333333333333334,
+    "worst_crop": 0.33607520564042304,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.40792349726775956,
+    "width": 0.4335907671239752,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.11313868613138686,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8009900649730138,
+    "width": 0.9563159308654932,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6394422310756972,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7270491803278688,
+    "width": 0.7943144175045646,
+    "crops_within_10pts": 0.38095238095238093,
+    "worst_crop": 0.33,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7978273574203307,
+    "width": 0.9456103695072867,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.647410358565737,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7204918032786886,
+    "width": 0.8713660338652202,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.16494845360824742,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8275980611227611,
+    "width": 1.172783939720766,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6752988047808764,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7439890710382514,
+    "width": 1.0273470781931011,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.4,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.895527518993434,
+    "width": 1.4149487356373947,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7689243027888446,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8382513661202186,
+    "width": 1.128608314643749,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.51,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8949431056413077,
+    "width": 1.411479411684268,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.7685076380728555,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.8060109289617486,
+    "width": 1.2420755292508008,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.21649484536082475,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9192134483825501,
+    "width": 1.7514519061426663,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8286852589641435,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8825136612021858,
+    "width": 1.6771356068448597,
+    "crops_within_10pts": 0.8095238095238095,
+    "worst_crop": 0.62,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5044174773969542,
+    "width": 0.39007539918596773,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.3254994124559342,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4778688524590164,
+    "width": 0.33468075189547936,
+    "crops_within_10pts": 0.38095238095238093,
+    "worst_crop": 0.14375,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5074426759256077,
+    "width": 0.40184321552298957,
+    "crops_within_10pts": 0.7666666666666667,
+    "worst_crop": 0.29494712103407755,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.42513661202185793,
+    "width": 0.3774966838997227,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.06934306569343066,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5240468905771941,
+    "width": 0.5298858135633444,
+    "crops_within_10pts": 0.8666666666666667,
+    "worst_crop": 0.3301997649823737,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.42349726775956287,
+    "width": 0.45294024564887825,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.10948905109489052,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8020901371652515,
+    "width": 0.9608210567456905,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6394422310756972,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7352459016393442,
+    "width": 0.8236424480077478,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.32,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7968304169961153,
+    "width": 0.952026897849424,
+    "crops_within_10pts": 0.8666666666666667,
+    "worst_crop": 0.6486486486486487,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.7079234972677596,
+    "width": 0.8852436119791788,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.11313868613138686,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8277699474027983,
+    "width": 1.1852867352525513,
+    "crops_within_10pts": 0.8666666666666667,
+    "worst_crop": 0.6693227091633466,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7295081967213115,
+    "width": 1.0397581042761552,
+    "crops_within_10pts": 0.5714285714285714,
+    "worst_crop": 0.31386861313868614,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8967307229536938,
+    "width": 1.430347422576703,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7709163346613546,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8439890710382514,
+    "width": 1.1551809882582058,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.48,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8942555605211592,
+    "width": 1.420110074698036,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.763807285546416,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.7931693989071038,
+    "width": 1.2652185361967796,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.16494845360824742,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9183540169823645,
+    "width": 1.754621650293795,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8346613545816733,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8696721311475409,
+    "width": 1.6757025864566508,
+    "crops_within_10pts": 0.7619047619047619,
+    "worst_crop": 0.61,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5077176939736671,
+    "width": 0.3897292080810305,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.3290246768507638,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.48114754098360657,
+    "width": 0.33185657373337923,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.16875,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5078895802537041,
+    "width": 0.4000604916422892,
+    "crops_within_10pts": 0.7666666666666667,
+    "worst_crop": 0.31492361927144535,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.43278688524590164,
+    "width": 0.37309524525313587,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.08029197080291971,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5261095259376397,
+    "width": 0.5296872729534333,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.33607520564042304,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4385245901639344,
+    "width": 0.45722713524676095,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.13125,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8020901371652515,
+    "width": 0.9568256902444376,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6334661354581673,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7306010928961748,
+    "width": 0.7982652259382838,
+    "crops_within_10pts": 0.38095238095238093,
+    "worst_crop": 0.35625,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7972773213242119,
+    "width": 0.945057700535056,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6498237367802585,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.7144808743169399,
+    "width": 0.8759675293066584,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.14233576642335766,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8285262470349617,
+    "width": 1.181864445050587,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6772908366533864,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7379781420765027,
+    "width": 1.0136093591006474,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.36496350364963503,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.895768159785486,
+    "width": 1.4171470465567426,
+    "crops_within_10pts": 0.8666666666666667,
+    "worst_crop": 0.7741116751269036,
+    "worst_crop_name": "coriander"
+   },
+   "B": {
+    "coverage": 0.846448087431694,
+    "width": 1.1566843617047247,
+    "crops_within_10pts": 0.7142857142857143,
+    "worst_crop": 0.49,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8941524287531369,
+    "width": 1.41031471421161,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7685076380728555,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.8158469945355191,
+    "width": 1.2682636593151313,
+    "crops_within_10pts": 0.7142857142857143,
+    "worst_crop": 0.26804123711340205,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9192478256385576,
+    "width": 1.7562949370016825,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8346613545816733,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8677595628415301,
+    "width": 1.7166745105207981,
+    "crops_within_10pts": 0.7142857142857143,
+    "worst_crop": 0.62,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5135962047509368,
+    "width": 0.3916609966981568,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.33607520564042304,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4704918032786885,
+    "width": 0.3210533297725827,
+    "crops_within_10pts": 0.3333333333333333,
+    "worst_crop": 0.15,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5102616109182165,
+    "width": 0.3996954371598117,
+    "crops_within_10pts": 0.7333333333333333,
+    "worst_crop": 0.3384253819036428,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4306010928961749,
+    "width": 0.3788905398385793,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.06569343065693431,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5316442641548351,
+    "width": 0.5297594922745416,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.3525264394829612,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.40409836065573773,
+    "width": 0.4331267725205949,
+    "crops_within_10pts": 0.38095238095238093,
+    "worst_crop": 0.12773722627737227,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8058028808140534,
+    "width": 0.956398727840556,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6613545816733067,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7281420765027322,
+    "width": 0.7851499693526629,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.33,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7992712021726426,
+    "width": 0.9410099565629336,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.6592244418331374,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.7153005464480874,
+    "width": 0.864668929873712,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.18556701030927836,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8307263914194369,
+    "width": 1.1738320779989344,
+    "crops_within_10pts": 0.9666666666666667,
+    "worst_crop": 0.6832669322709163,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7237704918032787,
+    "width": 1.0027072589598842,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.37,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.894564955825226,
+    "width": 1.4012061008894434,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7729083665338645,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8308743169398907,
+    "width": 1.1101806008699757,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.49,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8941524287531369,
+    "width": 1.398003644971098,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7673325499412456,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.803551912568306,
+    "width": 1.2384422338140524,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.21649484536082475,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 0,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.918800921310461,
+    "width": 1.7344831332145614,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8366533864541833,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8874316939890711,
+    "width": 1.6951819834065742,
+    "crops_within_10pts": 0.7619047619047619,
+    "worst_crop": 0.62,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5108116470143353,
+    "width": 0.38950595214786876,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.3254994124559342,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4672131147540984,
+    "width": 0.32350644980824367,
+    "crops_within_10pts": 0.38095238095238093,
+    "worst_crop": 0.14375,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5085771253738527,
+    "width": 0.39809484138967166,
+    "crops_within_10pts": 0.7666666666666667,
+    "worst_crop": 0.30669800235017625,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.41475409836065574,
+    "width": 0.37579425965695784,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.030927835051546393,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5273814844099144,
+    "width": 0.5243057194115821,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.34312573443008226,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.40710382513661203,
+    "width": 0.4322225224127235,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.06934306569343066,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8022620234452886,
+    "width": 0.9541213856390953,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6334661354581673,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7292349726775956,
+    "width": 0.7939094260882931,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.31875,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7988586751005535,
+    "width": 0.9476335035862812,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.6521739130434783,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.7016393442622951,
+    "width": 0.8697213576692139,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.07216494845360824,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8288700195950359,
+    "width": 1.1740384277384066,
+    "crops_within_10pts": 0.9666666666666667,
+    "worst_crop": 0.6733067729083665,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7297814207650273,
+    "width": 1.0127966817002667,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.3248175182481752,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.896661968441679,
+    "width": 1.4230548771198592,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7629482071713147,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8341530054644809,
+    "width": 1.1125617462730961,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.49,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8943930695451889,
+    "width": 1.4103342222411959,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.7696827262044653,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.7849726775956284,
+    "width": 1.2482084331505912,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.11313868613138686,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9184915260063942,
+    "width": 1.7397626572391836,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8326693227091634,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8743169398907104,
+    "width": 1.6796912139917382,
+    "crops_within_10pts": 0.7619047619047619,
+    "worst_crop": 0.61,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5133899412148922,
+    "width": 0.3987896542801809,
+    "crops_within_10pts": 0.7333333333333333,
+    "worst_crop": 0.33490011750881316,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.48415300546448087,
+    "width": 0.34067209279295196,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.1625,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5114991921344838,
+    "width": 0.4082523232798056,
+    "crops_within_10pts": 0.8,
+    "worst_crop": 0.31139835487661577,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.43169398907103823,
+    "width": 0.38521997484753856,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.08394160583941605,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5303035511705456,
+    "width": 0.5387966333663817,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.3607520564042303,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4191256830601093,
+    "width": 0.43908154724344445,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.11313868613138686,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8044965450857713,
+    "width": 0.9670995891412806,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6434262948207171,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7377049180327869,
+    "width": 0.8177089057104894,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.32,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8029151913094297,
+    "width": 0.9643270659500914,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6573705179282868,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7065573770491803,
+    "width": 0.8933952010667373,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.19708029197080293,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8282168517308949,
+    "width": 1.1869372015167508,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.6752988047808764,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.740983606557377,
+    "width": 1.051589468185857,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.36,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.898037058681976,
+    "width": 1.436788320338444,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7715736040609137,
+    "worst_crop_name": "coriander"
+   },
+   "B": {
+    "coverage": 0.8437158469945355,
+    "width": 1.1589783229436734,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.46,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8951837464333597,
+    "width": 1.4249949819990755,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7579318448883666,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.8183060109289617,
+    "width": 1.2620552087824046,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.28865979381443296,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.919763484478669,
+    "width": 1.7611446180583232,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8247011952191236,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.892896174863388,
+    "width": 1.7407877519036972,
+    "crops_within_10pts": 0.8095238095238095,
+    "worst_crop": 0.6,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5062738492213551,
+    "width": 0.3902197350265197,
+    "crops_within_10pts": 0.7333333333333333,
+    "worst_crop": 0.31492361927144535,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.47978142076502733,
+    "width": 0.34022736533802805,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.15625,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5045893636769913,
+    "width": 0.39992993351476036,
+    "crops_within_10pts": 0.8,
+    "worst_crop": 0.29612220916568743,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4095628415300546,
+    "width": 0.37193587012622153,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.06569343065693431,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5191653202241397,
+    "width": 0.5272407213456549,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.3254994124559342,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.39726775956284155,
+    "width": 0.42858203441109716,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.13125,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8016088555811475,
+    "width": 0.9575076332980571,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6454183266932271,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7349726775956285,
+    "width": 0.8091112363155871,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.3375,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7970710577881673,
+    "width": 0.9482274642767934,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.649402390438247,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.6953551912568307,
+    "width": 0.8779187094202959,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.16058394160583941,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8264636116745161,
+    "width": 1.182987061143902,
+    "crops_within_10pts": 0.9666666666666667,
+    "worst_crop": 0.6792828685258964,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7385245901639345,
+    "width": 1.047941676366623,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.4,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8967651002097012,
+    "width": 1.4203422220411641,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7729083665338645,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8467213114754099,
+    "width": 1.1653466568539965,
+    "crops_within_10pts": 0.7142857142857143,
+    "worst_crop": 0.51,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8947024648492558,
+    "width": 1.4151226497662455,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7626321974148061,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.816120218579235,
+    "width": 1.2579997283595585,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.17525773195876287,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9187321667984462,
+    "width": 1.764311606433461,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8326693227091634,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8825136612021858,
+    "width": 1.7346307696214651,
+    "crops_within_10pts": 0.7619047619047619,
+    "worst_crop": 0.65,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5158994809034343,
+    "width": 0.39777077521422477,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.345475910693302,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.47185792349726774,
+    "width": 0.33309691826846727,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.13934426229508196,
+    "worst_crop_name": "sunflower"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5145931451751521,
+    "width": 0.40766696591834645,
+    "crops_within_10pts": 0.8,
+    "worst_crop": 0.3207990599294947,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4191256830601093,
+    "width": 0.3809313424223734,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.03686635944700461,
+    "worst_crop_name": "garlic"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5337068995152807,
+    "width": 0.5358278118570658,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.3689776733254994,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.40382513661202185,
+    "width": 0.43392595333765577,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.10583941605839416,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8042902815497267,
+    "width": 0.9586295484915296,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6454183266932271,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7379781420765027,
+    "width": 0.817506984018568,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.34,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7997524837567466,
+    "width": 0.9516109919551299,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.6553784860557769,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.6898907103825137,
+    "width": 0.8809438712009543,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.06451612903225806,
+    "worst_crop_name": "garlic"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8323077451957784,
+    "width": 1.187296874218318,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.6872509960159362,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7289617486338797,
+    "width": 1.0458016417681544,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.22627737226277372,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8954931417374266,
+    "width": 1.4122599701527563,
+    "crops_within_10pts": 0.8666666666666667,
+    "worst_crop": 0.7741116751269036,
+    "worst_crop_name": "coriander"
+   },
+   "B": {
+    "coverage": 0.844535519125683,
+    "width": 1.1536460864196323,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.55,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8939805424730998,
+    "width": 1.4003785445675068,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7661574618096357,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.8172131147540984,
+    "width": 1.2489945132717153,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.18556701030927836,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 1,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.919935370758706,
+    "width": 1.7585185336297726,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8426294820717132,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8838797814207651,
+    "width": 1.7301967853907014,
+    "crops_within_10pts": 0.8095238095238095,
+    "worst_crop": 0.64,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.517652720959813,
+    "width": 0.39771781550235236,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.3254994124559342,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4781420765027322,
+    "width": 0.33752414814695003,
+    "crops_within_10pts": 0.38095238095238093,
+    "worst_crop": 0.1625,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5155213310873527,
+    "width": 0.4072741029056708,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.32432432432432434,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4163934426229508,
+    "width": 0.3822328068391608,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.010309278350515464,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5318505276908797,
+    "width": 0.5340437967584631,
+    "crops_within_10pts": 0.8333333333333334,
+    "worst_crop": 0.34430082256169214,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.41065573770491803,
+    "width": 0.43963548775807737,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.08247422680412371,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8058716353260683,
+    "width": 0.9696156824800463,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6314741035856574,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7401639344262295,
+    "width": 0.8325646964621888,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.35,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.800199388084843,
+    "width": 0.9568920612778045,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.649402390438247,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.6986338797814208,
+    "width": 0.8806876482036889,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.061855670103092786,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8340266079961497,
+    "width": 1.201196330850666,
+    "crops_within_10pts": 0.9666666666666667,
+    "worst_crop": 0.6752988047808764,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7297814207650273,
+    "width": 1.0535499677796867,
+    "crops_within_10pts": 0.5714285714285714,
+    "worst_crop": 0.27007299270072993,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8975213998418646,
+    "width": 1.434713293727995,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7709163346613546,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8478142076502733,
+    "width": 1.162006298145769,
+    "crops_within_10pts": 0.7142857142857143,
+    "worst_crop": 0.5,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8954587644814191,
+    "width": 1.4214181794881315,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.7849588719153937,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.8049180327868852,
+    "width": 1.2644332782735284,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.061855670103092786,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 0,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9218948743511293,
+    "width": 1.7799877869045053,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8266932270916335,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8890710382513661,
+    "width": 1.7588831489287795,
+    "crops_within_10pts": 0.7619047619047619,
+    "worst_crop": 0.65,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5164495169995531,
+    "width": 0.3960830129282352,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.3290246768507638,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.46475409836065573,
+    "width": 0.32722487524003,
+    "crops_within_10pts": 0.3333333333333333,
+    "worst_crop": 0.15,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5113273058544467,
+    "width": 0.40227259077940203,
+    "crops_within_10pts": 0.7333333333333333,
+    "worst_crop": 0.3219741480611046,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.43224043715846994,
+    "width": 0.3823628980004187,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.07216494845360824,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5295816287943896,
+    "width": 0.5317526555685875,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.34782608695652173,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.42896174863387976,
+    "width": 0.4467666001460433,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.13503649635036497,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8071779710543504,
+    "width": 0.9680498379072695,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.647410358565737,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.733879781420765,
+    "width": 0.8050308340792681,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.32,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8023995324693183,
+    "width": 0.9573427319472158,
+    "crops_within_10pts": 0.8666666666666667,
+    "worst_crop": 0.6733067729083665,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7210382513661202,
+    "width": 0.8936052948059304,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.17525773195876287,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8299013372752587,
+    "width": 1.1819202864296037,
+    "crops_within_10pts": 0.9666666666666667,
+    "worst_crop": 0.6713147410358565,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7475409836065574,
+    "width": 1.036672630337119,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.37,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8982089449620131,
+    "width": 1.4410674791105922,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7689243027888446,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8467213114754099,
+    "width": 1.1537118521731444,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.48,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8959744233215304,
+    "width": 1.42360016075012,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7649823736780259,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.8193989071038251,
+    "width": 1.2643542149027929,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.1958762886597938,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 30,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9205197841108322,
+    "width": 1.754378168858429,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8326693227091634,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8852459016393442,
+    "width": 1.7005647135904896,
+    "crops_within_10pts": 0.8095238095238095,
+    "worst_crop": 0.58,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5099522156141497,
+    "width": 0.3904745272724873,
+    "crops_within_10pts": 0.7,
+    "worst_crop": 0.3372502937720329,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4737704918032787,
+    "width": 0.3263484927986568,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.1,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5084396163498229,
+    "width": 0.39887643054709077,
+    "crops_within_10pts": 0.7666666666666667,
+    "worst_crop": 0.318448883666275,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.423224043715847,
+    "width": 0.37463998651589453,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.072992700729927,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5256282443535357,
+    "width": 0.5291474189633953,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.34312573443008226,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.4092896174863388,
+    "width": 0.43669036029161423,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.0948905109489051,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8021932689332737,
+    "width": 0.9564068600836001,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.6374501992031872,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.725136612021858,
+    "width": 0.775703676020615,
+    "crops_within_10pts": 0.38095238095238093,
+    "worst_crop": 0.33125,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7953521949877961,
+    "width": 0.9411740132563754,
+    "crops_within_10pts": 0.9666666666666667,
+    "worst_crop": 0.6374501992031872,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7084699453551913,
+    "width": 0.8645276032248034,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.16494845360824742,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8295919419711919,
+    "width": 1.176664359823834,
+    "crops_within_10pts": 0.9666666666666667,
+    "worst_crop": 0.6752988047808764,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7325136612021858,
+    "width": 1.0239554366422103,
+    "crops_within_10pts": 0.5714285714285714,
+    "worst_crop": 0.3686131386861314,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8958025370414934,
+    "width": 1.41514909161709,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7729083665338645,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8404371584699454,
+    "width": 1.1276453543229545,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.54,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8939461652170924,
+    "width": 1.4058769076723823,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.7708578143360753,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.8027322404371585,
+    "width": 1.2432718406539256,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.18556701030927836,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 60,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9189728075904982,
+    "width": 1.7470693099782149,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8346613545816733,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8715846994535519,
+    "width": 1.6420433809325148,
+    "crops_within_10pts": 0.7142857142857143,
+    "worst_crop": 0.63,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.5084396163498229,
+    "width": 0.39252300013065566,
+    "crops_within_10pts": 0.7333333333333333,
+    "worst_crop": 0.3372502937720329,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.46311475409836067,
+    "width": 0.3237388896864734,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.13934426229508196,
+    "worst_crop_name": "sunflower"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.5054144178211695,
+    "width": 0.4003286844014567,
+    "crops_within_10pts": 0.8333333333333334,
+    "worst_crop": 0.3325499412455934,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.41202185792349727,
+    "width": 0.37422224272097343,
+    "crops_within_10pts": 0.47619047619047616,
+    "worst_crop": 0.09375,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.5,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.5210216920485407,
+    "width": 0.529542078479854,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.3372502937720329,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.3983606557377049,
+    "width": 0.4274482464778851,
+    "crops_within_10pts": 0.42857142857142855,
+    "worst_crop": 0.125,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8033620956375263,
+    "width": 0.9576517127608567,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.649402390438247,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7308743169398907,
+    "width": 0.7939413968893972,
+    "crops_within_10pts": 0.38095238095238093,
+    "worst_crop": 0.325,
+    "worst_crop_name": "turmeric"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.7955584585238407,
+    "width": 0.94107536026058,
+    "crops_within_10pts": 0.9333333333333333,
+    "worst_crop": 0.649402390438247,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7,
+    "width": 0.8643646940104361,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.2518248175182482,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.8,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.8255698030183231,
+    "width": 1.1758124997163324,
+    "crops_within_10pts": 0.9666666666666667,
+    "worst_crop": 0.6812749003984063,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.7202185792349727,
+    "width": 1.0042580864862647,
+    "crops_within_10pts": 0.5238095238095238,
+    "worst_crop": 0.3795620437956204,
+    "worst_crop_name": "sweet_potato"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "tier",
+   "A": {
+    "coverage": 0.8954931417374266,
+    "width": 1.4053946537366486,
+    "crops_within_10pts": 0.8666666666666667,
+    "worst_crop": 0.7639593908629442,
+    "worst_crop_name": "coriander"
+   },
+   "B": {
+    "coverage": 0.8368852459016394,
+    "width": 1.1349166165240574,
+    "crops_within_10pts": 0.6190476190476191,
+    "worst_crop": 0.53,
+    "worst_crop_name": "cotton"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "crop",
+   "A": {
+    "coverage": 0.8936023926570181,
+    "width": 1.3980887727056484,
+    "crops_within_10pts": 0.9,
+    "worst_crop": 0.7743830787309048,
+    "worst_crop_name": "onion"
+   },
+   "B": {
+    "coverage": 0.8155737704918032,
+    "width": 1.2347906586276285,
+    "crops_within_10pts": 0.6666666666666666,
+    "worst_crop": 0.28865979381443296,
+    "worst_crop_name": "banana"
+   }
+  },
+  {
+   "seed": 2,
+   "lead": 90,
+   "level": 0.9,
+   "variant": "scaled",
+   "A": {
+    "coverage": 0.9174945855821788,
+    "width": 1.74368590500407,
+    "crops_within_10pts": 1.0,
+    "worst_crop": 0.8227091633466136,
+    "worst_crop_name": "sunflower"
+   },
+   "B": {
+    "coverage": 0.8797814207650273,
+    "width": 1.7065826435619746,
+    "crops_within_10pts": 0.7619047619047619,
+    "worst_crop": 0.6528925619834711,
+    "worst_crop_name": "tobacco"
+   }
+  }
+ ]
+}

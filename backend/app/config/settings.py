@@ -113,6 +113,10 @@ class Settings(BaseSettings):
     # calibrated crop probability (or for an unsupported crop) the farmer confirms the crop.
     VISION_MODEL_VERSION: str | None = None  # None = newest artifact
     VISION_CROP_CONFIRM_THRESHOLD: float = 0.6
+    # Off: the farmer confirms the crop on every photo. On Indian field photos the served model
+    # auto-accepted wheat as maize and chilli as tomato (ml/reports/09_vision.md, section 8), so
+    # keep this off until a retrained model passes that test.
+    VISION_AUTO_ACCEPT_CROP: bool = False
     # F8 surveillance: reporters are HMAC pseudonyms (key below, else JWT_SECRET_KEY).
     SURVEILLANCE_PSEUDONYM_KEY: str | None = None
     OUTBREAK_MIN_REPORTERS: int = 3  # distinct farmers in a week

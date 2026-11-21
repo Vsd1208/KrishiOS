@@ -35,9 +35,12 @@ def latest_vision_artifact(root: Path, version: str | None = None) -> Path | Non
     return max(dirs, key=lambda d: json.loads((d / "labels.json").read_text())["exported_at"])
 
 
-def resolve_threshold(labels: dict[str, Any], default: float) -> float:
+def resolve_threshold(labels: dict[str, Any], default: float, auto_accept: bool = True) -> float:
     """The threshold validated with the artifact wins over the setting. An artifact where no
-    threshold reached the accuracy target (null) never auto-accepts: the farmer is always asked."""
+    threshold reached the accuracy target (null) never auto-accepts: the farmer is always asked.
+    With ``auto_accept`` off the farmer is always asked, whatever the artifact says."""
+    if not auto_accept:
+        return NEVER_AUTO_ACCEPT
     if "confirm_threshold" not in labels:
         return default
     value = labels["confirm_threshold"]
@@ -52,14 +55,15 @@ def _softmax(z: np.ndarray, t: float) -> np.ndarray:
 
 
 class OnnxCropClassifier:
-    def __init__(self, artifact: Path, confirm_threshold: float = 0.6) -> None:
+    def __init__(self, artifact: Path, confirm_threshold: float = 0.6,
+                 auto_accept: bool = True) -> None:
         import onnxruntime as ort  # noqa: PLC0415 - optional local-ml dependency
 
         self._labels: dict[str, Any] = json.loads((artifact / "labels.json").read_text(
             encoding="utf-8"))
         self._session = ort.InferenceSession(str(artifact / "model.onnx"),
                                              providers=["CPUExecutionProvider"])
-        self._threshold = resolve_threshold(self._labels, confirm_threshold)
+        self._threshold = resolve_threshold(self._labels, confirm_threshold, auto_accept)
         self._crops = self._labels["crops"]
         self._conds = self._labels["conditions"]
         self._crop_of_cond = np.array([c["crop"] for c in self._conds])

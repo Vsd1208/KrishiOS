@@ -197,24 +197,39 @@ def ndvi_features(monthly: pd.DataFrame, keys: pd.DataFrame) -> pd.DataFrame:
     crop_year, season, lead_days, window_start, cutoff), e.g. the weather feature rows.
 
     A month is usable only if it ended inside the window and was published (month end +
-    PUBLICATION_LAG_DAYS) strictly before the cutoff."""
+    PUBLICATION_LAG_DAYS) strictly before the cutoff. With a ``good_share`` column in
+    ``monthly``, ``ndvi_good_share`` is the mean share of reliable pixels in the months used."""
 
     m = monthly.dropna(subset=["ndvi"]).copy()
-    m["month_end"] = (pd.to_datetime(m["month_start"]) + pd.offsets.MonthEnd(0))
-    m["published"] = m["month_end"] + pd.Timedelta(days=PUBLICATION_LAG_DAYS)
-    by_d = {int(k): g.sort_values("month_end") for k, g in m.groupby("lgd_district_code")}
+    m["month_end"] = pd.to_datetime(m["month_start"]) + pd.offsets.MonthEnd(0)
+    has_good = "good_share" in m
+    by_d = {}
+    for k, g in m.groupby("lgd_district_code"):
+        g = g.sort_values("month_end")
+        ends = g["month_end"].to_numpy("datetime64[D]")
+        by_d[int(k)] = (ends, g["ndvi"].to_numpy("float64"),
+                        g["good_share"].to_numpy("float64") if has_good else None)
+    lag = np.timedelta64(PUBLICATION_LAG_DAYS, "D")
     rows = []
-    for r in keys.itertuples(index=False):
-        g = by_d.get(int(r.lgd_district_code))
+    for code, start, cutoff in zip(keys["lgd_district_code"].astype(int),
+                                   pd.to_datetime(keys["window_start"]).to_numpy("datetime64[D]"),
+                                   pd.to_datetime(keys["cutoff"]).to_numpy("datetime64[D]"),
+                                   strict=True):
         out = {"ndvi_last": np.nan, "ndvi_mean": np.nan, "ndvi_max": np.nan,
                "ndvi_months": 0, "ndvi_last_month_end": pd.NaT}
-        if g is not None:
-            start, cutoff = pd.Timestamp(r.window_start), pd.Timestamp(r.cutoff)
-            ok = g[(g["month_end"] >= start) & (g["published"] < cutoff)]
-            if len(ok):
-                out.update(ndvi_last=float(ok["ndvi"].iloc[-1]),
-                           ndvi_mean=float(ok["ndvi"].mean()),
-                           ndvi_max=float(ok["ndvi"].max()), ndvi_months=len(ok),
-                           ndvi_last_month_end=ok["month_end"].iloc[-1])
+        if has_good:
+            out["ndvi_good_share"] = np.nan
+        hit = by_d.get(code)
+        if hit is not None:
+            ends, v, good = hit
+            lo = int(np.searchsorted(ends, start, side="left"))
+            hi = int(np.searchsorted(ends + lag, cutoff, side="left"))
+            if hi > lo:
+                part = v[lo:hi]
+                out.update(ndvi_last=float(part[-1]), ndvi_mean=float(part.mean()),
+                           ndvi_max=float(part.max()), ndvi_months=hi - lo,
+                           ndvi_last_month_end=pd.Timestamp(ends[hi - 1]))
+                if good is not None:
+                    out["ndvi_good_share"] = float(good[lo:hi].mean())
         rows.append(out)
     return pd.concat([keys.reset_index(drop=True), pd.DataFrame(rows)], axis=1)

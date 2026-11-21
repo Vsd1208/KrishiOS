@@ -50,3 +50,7 @@ coverage/
 # Generated local artifacts
 *.sqlite
 *.db
+
+# Project-local model cache and database backups (kept with the project, not in git)
+models_cache/
+backups/

@@ -11,6 +11,7 @@ Usage (from ml/)::
 
     python -I scripts/download_india_vision.py inspect
     python -I scripts/download_india_vision.py download
+    python -I scripts/download_india_vision.py unpack     # photos inside downloaded .7z files
 """
 
 from __future__ import annotations
@@ -19,11 +20,14 @@ import hashlib
 import http.client
 import io
 import json
+import shutil
 import struct
+import subprocess
 import sys
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import zipfile
 import zlib
@@ -42,8 +46,9 @@ PHOTO_TYPES = {".jpg": ".jpg", ".jpeg": ".jpg", ".png": ".png"}
 MAX_PIXELS = 80_000_000
 MAX_PHOTO_BYTES = 64_000_000
 SEED = "krishios-india-v1"
-WORKERS = 2  # kept low: the storage link degrades under sustained parallel requests
-PIECE = 128_000
+WORKERS = 3  # kept low: the storage link degrades under sustained parallel requests
+PIECE = 256_000  # starting piece size; adapts between MIN_PIECE and MAX_PIECE
+MIN_PIECE, MAX_PIECE = 128_000, 1_024_000
 RESTARTS = 200
 LEAF = "276b9709"  # MH-SoyaHealthVision's ground-level leaf folder (the other one is drone images)
 
@@ -59,7 +64,7 @@ SETS: dict[str, dict] = {
         "id": "ymt8k9bjkn", "version": 3, "per_class": None,
         "archives": {"Chili Leaf Disease Original Dataset.zip": ("chilli", None)}},
     "tomato_bskkv": {
-        "id": "rv3kxfv47y", "version": 1, "per_class": None, "archives": {},
+        "id": "rv3kxfv47y", "version": 1, "per_class": None, "archives": {}, "crop": "tomato",
         "whole": ["Real world data.7z"]},
     "soybean_mh": {
         "id": "hkbgh5s3b7", "version": 1, "per_class": 70,
@@ -127,6 +132,11 @@ class RangeFile(io.RawIOBase):
 
     def __init__(self, url: str, size: int, budget: Budget) -> None:
         self.url, self.size, self.budget, self.pos = url, size, budget, 0
+        self.target: urllib.parse.SplitResult | None = None  # storage URL after the redirect
+        self.piece = PIECE
+        self.streak = 0
+        self.local = threading.local()  # one kept-alive connection per worker thread
+        self.lock = threading.Lock()
 
     def readable(self) -> bool:
         return True
@@ -143,30 +153,74 @@ class RangeFile(io.RawIOBase):
         return self.pos
 
     def fetch(self, start: int, n: int) -> bytes:
-        """Small separate requests: on this link longer transfers stall, short ones finish."""
+        """Pieces sized to what the link sustains: larger after a run of successes, smaller
+        after a stall (on this link long transfers can stall while short ones finish)."""
         self.budget.check(n)
-        return b"".join(self._piece(p, min(PIECE, start + n - p))
-                        for p in range(start, start + n, PIECE))
+        out, pos, end = [], start, start + n
+        while pos < end:
+            size = min(self.piece, end - pos)
+            out.append(self._piece(pos, size))
+            pos += size
+        return b"".join(out)
+
+    def _resolve(self) -> None:
+        """Follow the dataset link's redirect once and keep the storage URL it points to."""
+        req = urllib.request.Request(self.url, headers={**HEADERS, "Range": "bytes=0-0"})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            self.budget.add(len(r.read()))
+            self.target = urllib.parse.urlsplit(r.geturl())
+
+    def _connection(self) -> http.client.HTTPSConnection:
+        conn = getattr(self.local, "conn", None)
+        if conn is None or getattr(self.local, "host", None) != self.target.netloc:
+            conn = http.client.HTTPSConnection(self.target.netloc, timeout=30)
+            self.local.conn, self.local.host = conn, self.target.netloc
+        return conn
+
+    def _drop_connection(self) -> None:
+        conn = getattr(self.local, "conn", None)
+        if conn is not None:
+            conn.close()
+        self.local.conn = None
+
+    def _adapt(self, ok: bool) -> None:
+        with self.lock:
+            if ok:
+                self.streak += 1
+                if self.streak >= 4 and self.piece < MAX_PIECE:
+                    self.piece, self.streak = min(MAX_PIECE, self.piece * 2), 0
+            else:
+                self.piece, self.streak = max(MIN_PIECE, self.piece // 2), 0
 
     def _piece(self, start: int, n: int) -> bytes:
         for attempt in range(1, 9):
             try:
-                req = urllib.request.Request(self.url, headers={
-                    **HEADERS, "Range": f"bytes={start}-{start + n - 1}"})
-                with urllib.request.urlopen(req, timeout=25) as r:
-                    if r.status != 206:
-                        raise OSError(f"range request returned {r.status}")
-                    data = r.read()
+                if self.target is None:
+                    with self.lock:
+                        if self.target is None:
+                            self._resolve()
+                path = self.target.path + (f"?{self.target.query}" if self.target.query else "")
+                conn = self._connection()
+                conn.request("GET", path, headers={**HEADERS, "Range":
+                                                   f"bytes={start}-{start + n - 1}"})
+                r = conn.getresponse()
+                data = r.read()
                 self.budget.add(len(data))
-                if len(data) != n:
-                    raise OSError("short read")
+                if r.status in (301, 302, 307, 400, 401, 403):  # storage link expired
+                    self.target = None
+                    raise OSError(f"storage returned {r.status}")
+                if r.status != 206 or len(data) != n:
+                    raise OSError(f"range request returned {r.status}, {len(data)} bytes")
+                self._adapt(True)
                 return data
             except (OSError, urllib.error.URLError, http.client.HTTPException) as exc:
                 if isinstance(exc, http.client.IncompleteRead):
                     self.budget.add(len(exc.partial))  # received bytes still count
+                self._drop_connection()
+                self._adapt(False)
                 if attempt == 8:
                     raise
-                time.sleep(min(120, 10 * attempt))
+                time.sleep(min(60, 5 * attempt))
         raise AssertionError("unreachable")
 
     def readinto(self, b) -> int:
@@ -235,6 +289,58 @@ def download_whole(file: dict, folder: Path, budget: Budget) -> None:
         part.unlink()
         raise SystemExit("archive checksum mismatch: partial file removed")
     part.replace(path)
+
+
+def unpack() -> None:
+    """Add the photos inside downloaded .7z archives to the manifest (no network).
+
+    Uses the libarchive ``tar`` shipped with Windows 10+ (and most Linux and macOS systems), which
+    reads .7z and refuses absolute or ``..`` member paths. Extraction goes to a fresh scratch folder
+    that is removed afterwards; only regular JPEG/PNG files inside it are kept, under their hash.
+    """
+    done = set()
+    if MANIFEST.exists():
+        for line in MANIFEST.read_text(encoding="utf-8").splitlines():
+            r = json.loads(line)
+            done.add((r["set"], r["archive"], r["member"]))
+    added: Counter = Counter()
+    with MANIFEST.open("a", encoding="utf-8") as out:
+        for name, spec in SETS.items():
+            folder = ROOT / name
+            archive = folder / "archive.7z"
+            if not spec.get("whole") or not archive.exists():
+                continue
+            scratch = folder / "_unpack"
+            if scratch.exists():
+                shutil.rmtree(scratch)
+            scratch.mkdir()
+            try:
+                subprocess.run(["tar", "-xf", str(archive), "-C", str(scratch)], check=True)
+                base = scratch.resolve()
+                for p in sorted(scratch.rglob("*")):
+                    if p.is_symlink() or not p.is_file() or base not in p.resolve().parents:
+                        continue
+                    suffix = PHOTO_TYPES.get(p.suffix.lower())
+                    member = p.relative_to(scratch).as_posix()
+                    key = (name, spec["whole"][0], member)
+                    if suffix is None or key in done or p.stat().st_size > MAX_PHOTO_BYTES:
+                        continue
+                    saved = save_photo(p.read_bytes(), suffix, folder)
+                    if saved is None:
+                        continue
+                    digest, size = saved
+                    raw_class = p.parent.name
+                    out.write(json.dumps({
+                        "set": name, "archive": spec["whole"][0], "member": member,
+                        "crop": spec["crop"], "raw_class": raw_class, "sha256": digest,
+                        "file": f"{name}/{digest}{suffix}", "width": size[0],
+                        "height": size[1]}) + "\n")
+                    done.add(key)
+                    added[(name, raw_class)] += 1
+            finally:
+                shutil.rmtree(scratch, ignore_errors=True)
+    print(json.dumps({f"{s}|{c}": n for (s, c), n in sorted(added.items())}, indent=1))
+    print(f"added {sum(added.values())} photos")
 
 
 def photos(zf: zipfile.ZipFile) -> list[zipfile.ZipInfo]:
@@ -376,8 +482,11 @@ def download(budget: Budget) -> None:
 
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else ""
-    if mode not in {"inspect", "download"}:
-        raise SystemExit("usage: download_india_vision.py inspect|download")
+    if mode not in {"inspect", "download", "unpack"}:
+        raise SystemExit("usage: download_india_vision.py inspect|download|unpack")
+    if mode == "unpack":
+        unpack()
+        raise SystemExit(0)
     b = Budget()
     if mode == "inspect":
         inspect(b)
