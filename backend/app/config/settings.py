@@ -65,7 +65,10 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 50
 
     # ── LLM / Generative AI ─────────────────────────────────────────────────
-    LLM_PROVIDER: Literal["gemini", "local"] = "local"
+    LLM_PROVIDER: Literal["gemini", "local", "ollama"] = "local"
+    # Phase 10c: real on-device model via Ollama (LLM_PROVIDER=ollama). Must be a local address.
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "qwen2.5:3b"
     LLM_MODEL: str = "gemini-3.6-flash"
     GEMINI_API_KEY: str | None = None
     LLM_TEMPERATURE: float = 0.2

@@ -230,6 +230,73 @@ class GeminiLLMProvider:
             return None
 
 
+# Hosts an Ollama server may run on. Prompts carry farmer text (personal data), so the model must
+# run on this machine or a container beside it, never on a remote server.
+LOCAL_LLM_HOSTS = frozenset({"localhost", "127.0.0.1", "::1", "host.docker.internal", "ollama"})
+
+
+class OllamaLLMProvider:
+    """Real local LLM served by Ollama (open-weight model, e.g. Qwen2.5-3B, 4-bit, on-device)."""
+
+    def __init__(self, base_url: str, model_name: str, timeout_seconds: float = 120.0,
+                 transport: Any = None) -> None:
+        from urllib.parse import urlparse  # noqa: PLC0415
+
+        host = urlparse(base_url).hostname or ""
+        if host not in LOCAL_LLM_HOSTS:
+            raise ValueError(f"OLLAMA_BASE_URL must point to this machine (got host {host!r}); "
+                             "farmer text may not leave the device")
+        self._base_url = base_url.rstrip("/")
+        self._model_name = model_name
+        self._timeout = timeout_seconds
+        self._transport = transport  # tests inject an httpx.MockTransport
+
+    @property
+    def provider_name(self) -> str:
+        return "ollama"
+
+    @property
+    def model_name(self) -> str:
+        return self._model_name
+
+    async def generate(
+        self,
+        prompt: str,
+        system_instruction: str | None = None,
+        temperature: float = 0.2,
+        max_tokens: int = 1000,
+    ) -> LLMResponse:
+        import httpx  # noqa: PLC0415
+
+        messages = ([{"role": "system", "content": system_instruction}]
+                    if system_instruction else [])
+        messages.append({"role": "user", "content": prompt})
+        body = {"model": self._model_name, "messages": messages, "stream": False,
+                "options": {"temperature": temperature, "num_predict": max_tokens}}
+        async with httpx.AsyncClient(timeout=self._timeout, transport=self._transport) as client:
+            resp = await client.post(f"{self._base_url}/api/chat", json=body)
+            resp.raise_for_status()
+            data = resp.json()
+        content = (data.get("message") or {}).get("content", "")
+        prompt_tokens = int(data.get("prompt_eval_count") or 0)
+        completion_tokens = int(data.get("eval_count") or 0)
+        return LLMResponse(
+            content=content,
+            model_name=self._model_name,
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
+            total_tokens=prompt_tokens + completion_tokens,
+            metadata={"provider": self.provider_name, "model": self._model_name,
+                      "done_reason": data.get("done_reason"),
+                      "total_duration_ms": round((data.get("total_duration") or 0) / 1e6)},
+        )
+
+    async def count_tokens(self, text: str) -> int:
+        # Rough budget estimate (no tokenizer call): about 4 characters per token for English,
+        # fewer for Hindi/Telugu, so this errs on the high side for Indic text.
+        return max(1, len(text) // 3)
+
+
 class MockLocalLLMProvider:
     """Deterministic local LLM fallback provider for offline execution and tests."""
 

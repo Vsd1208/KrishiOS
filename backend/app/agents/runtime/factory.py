@@ -13,6 +13,7 @@ from app.agents.providers.llm import (
     GeminiLLMProvider,
     LLMProvider,
     MockLocalLLMProvider,
+    OllamaLLMProvider,
 )
 from app.agents.registry.registry import AgentRegistry
 from app.agents.retrieval_agent import KnowledgeRetrievalAgent
@@ -107,6 +108,19 @@ def _build_llm_provider(
             provider.model_name,
         )
 
+        return provider
+
+    if provider_name == "ollama":
+        provider = OllamaLLMProvider(
+            base_url=settings.OLLAMA_BASE_URL,
+            model_name=settings.OLLAMA_MODEL,
+            timeout_seconds=max(settings.LLM_TIMEOUT_SECONDS, 120.0),
+        )
+        logger.info(
+            "LLM provider selected from configuration | provider={} | model={}",
+            provider.provider_name,
+            provider.model_name,
+        )
         return provider
 
     if provider_name == "local":

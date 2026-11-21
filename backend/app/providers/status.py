@@ -46,6 +46,10 @@ def _llm_info(settings: Settings) -> ActiveProvider:
         info = ProviderInfo("llm", "gemini", settings.LLM_MODEL, ProviderKind.LIVE,
                             sends_data_off_device=True,
                             description="Google Gemini API (prompts leave the device).")
+    elif name == "ollama":
+        info = ProviderInfo("llm", "ollama", settings.OLLAMA_MODEL, ProviderKind.LIVE,
+                            description="Open-weight model served by Ollama on this machine; "
+                                        "prompts stay on the device.")
     else:
         info = ProviderInfo("llm", "local", "krishios-local-v1", ProviderKind.MOCK,
                             description="Deterministic template responder (no real LLM).")
