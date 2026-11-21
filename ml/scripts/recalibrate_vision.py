@@ -16,6 +16,8 @@ recalibration result. A configuration is scored only once.
 Usage (from ml/)::
 
     uv run --no-sync python scripts/recalibrate_vision.py --run <train_run_id>
+    uv run --no-sync python scripts/recalibrate_vision.py --run <id> --experiment E3_india \
+        --with-india
 """
 
 from __future__ import annotations
@@ -27,7 +29,7 @@ import json
 import _bootstrap  # noqa: F401
 import numpy as np
 import pandas as pd
-from train_vision import DATA, RUNS, encode, evaluate
+from train_vision import DATA, INDIA, RUNS, encode, evaluate
 
 from krishios_ml.common.experiment_log import read_records, track_experiment
 from krishios_ml.common.paths import EXPERIMENTS_DIR, REPORTS_DIR
@@ -57,12 +59,23 @@ def main() -> None:
 
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True)
+    ap.add_argument("--experiment", default="E1_all", help="checkpoint prefix in the run folder")
+    ap.add_argument("--with-india", action="store_true",
+                    help="add the Indian field photos (the run was trained with them)")
     args = ap.parse_args()
-    df, crops, conds, crop_of_cond = encode(pd.read_parquet(DATA / "images.parquet"))
+    df = pd.read_parquet(DATA / "images.parquet")
+    df["cache"] = df["cache"].str.replace("\\", "/", regex=False)
+    if args.with_india:
+        df = pd.concat([df, pd.read_parquet(INDIA)], ignore_index=True)
+    df, crops, conds, crop_of_cond = encode(df)
     keys = df.loc[df["crop_canonical"] != "", "crop_label"].unique()
     supported = np.array([c in set(keys) for c in crops])
     config = {"train_run": args.run, "seeds": list(SEEDS), "fit_on": "field validation",
               "target_accuracy": TARGET_ACCURACY, "threshold_on": "plantdoc validation"}
+    if args.experiment != "E1_all":  # only added when set, so earlier config hashes still match
+        config["experiment"] = args.experiment
+    if args.with_india:
+        config["with_india"] = True
     config["config_hash"] = hashlib.sha256(json.dumps(config, sort_keys=True).encode()
                                            ).hexdigest()[:12]
     log_path = EXPERIMENTS_DIR / "vision_recalibrate.jsonl"
@@ -76,7 +89,7 @@ def main() -> None:
     with track_experiment("vision_recalibrate", config, seed=None,
                           split_id="krishios-vision-v1") as rec:
         for seed in SEEDS:
-            name = f"E1_all_seed{seed}.pt"
+            name = f"{args.experiment}_seed{seed}.pt"
             ck = torch.load(RUNS / args.run / name, map_location="cpu", weights_only=False)
             if ck["crops"] != crops or ck["conditions"] != conds:
                 raise SystemExit(f"{name}: labels differ from the dataset")
@@ -109,9 +122,12 @@ def main() -> None:
             ty = test["crop_idx"].to_numpy()
             for group, mask in {"field": test["setting"] == "field",
                                 "source:plantdoc": test["source"] == "plantdoc",
-                                "source:agml_rice_india": test["source"] == "agml_rice_india"
+                                "source:agml_rice_india": test["source"] == "agml_rice_india",
+                                "source:india_field": test["source"] == "india_field",
                                 }.items():
                 m = mask.to_numpy()
+                if not m.any():
+                    continue
                 before = evaluate(test[m], tc[m], td[m], old["crop"], old["condition"],
                                   crop_of_cond)
                 after = evaluate(test[m], tc[m], td[m], t_crop, t_cond, crop_of_cond)

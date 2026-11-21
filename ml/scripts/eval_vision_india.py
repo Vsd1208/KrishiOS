@@ -17,7 +17,7 @@ the same photos.
 
 Usage (from ml/)::
 
-    uv run --no-sync python scripts/eval_vision_india.py [--split test]
+    uv run --no-sync python scripts/eval_vision_india.py [--split test] [--artifact <version>]
 """
 
 from __future__ import annotations
@@ -33,12 +33,12 @@ import pandas as pd
 from PIL import Image, ImageOps
 
 from krishios_ml.common.experiment_log import track_experiment
-from krishios_ml.common.paths import ARTIFACTS_DIR, DATA_DIR, REPORTS_DIR
+from krishios_ml.common.paths import ARTIFACTS_DIR, DATA_DIR, ML_ROOT, REPORTS_DIR
 
 ROOT = DATA_DIR / "raw" / "vision" / "india"
-ARTIFACT = ARTIFACTS_DIR / "vision" / "vision-560b033f785d-202611180856"
+SERVED = "vision-560b033f785d-202611180856"  # the Phase 9 model
+FIELD_CROPS = ("chilli", "potato", "soybean", "tomato", "wheat")  # crops in these photos
 Image.MAX_IMAGE_PIXELS = 80_000_000
-KNOWN_CROPS = {"potato", "soybean", "tomato"}
 # photo label -> model condition (only where the model has the same disease)
 CONDITION_MAP = {
     "potato/early_blight": "potato|early_blight",
@@ -91,16 +91,25 @@ def main() -> None:
 
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", choices=["all", "test"], default="all")
+    ap.add_argument("--artifact", default=SERVED, help="model version under artifacts/vision")
     args = ap.parse_args()
+    artifact = ARTIFACTS_DIR / "vision" / args.artifact
 
-    labels = json.loads((ARTIFACT / "labels.json").read_text(encoding="utf-8"))
+    labels = json.loads((artifact / "labels.json").read_text(encoding="utf-8"))
     crops, conds = labels["crops"], labels["conditions"]
     crop_names = np.array([c["label"] for c in crops])
     supported = np.array([c["supported"] for c in crops])
     cond_names = np.array([c["label"] for c in conds])
     cond_crop = np.array([c["crop"] for c in conds])
     threshold = labels["confirm_threshold"]
+    cut = np.inf if threshold is None else threshold  # null: never auto-accept, like the backend
     temps = labels["temperature"]
+    known_crops = sorted(set(FIELD_CROPS) & set(crop_names))  # crops this model was taught
+    unknown_crops = sorted(set(FIELD_CROPS) - set(known_crops))
+    label_map = pd.read_csv(ML_ROOT / "reference" / "vision_label_map.csv", keep_default_na=False)
+    label_map = label_map[(label_map["source"] == "india_field") & (label_map["crop_label"] != "")]
+    label_target = dict(zip(label_map["raw_class"],
+                            label_map["crop_label"] + "|" + label_map["condition"], strict=True))
 
     files = pd.read_parquet(ROOT / "quality_files.parquet")
     quality = json.loads((ROOT / "quality.json").read_text(encoding="utf-8"))
@@ -115,7 +124,7 @@ def main() -> None:
     files = files[~files["sha256"].str[:12].isin(conflicted)].reset_index(drop=True)
     files["crop"] = files["label"].str.split("/").str[0]
 
-    session = ort.InferenceSession(str(ARTIFACT / "model.onnx"),
+    session = ort.InferenceSession(str(artifact / "model.onnx"),
                                    providers=["CPUExecutionProvider"])
     config = {"artifact": labels["model_version"], "photos": len(files),
               "threshold": threshold, "dedup": "fine dhash <= 20/256, one per group",
@@ -135,22 +144,26 @@ def main() -> None:
         top = pc.argmax(1)
         files["pred_crop"] = crop_names[top]
         files["crop_conf"] = pc.max(1)
-        files["auto_accepted"] = supported[top] & (files["crop_conf"] >= threshold)
+        files["auto_accepted"] = supported[top] & (files["crop_conf"] >= cut)
 
         out: dict = {"photos_by_label": dict(Counter(files["label"]))}
         # 1. crop recognition where the model knows the crop
         crop_rows = {}
-        for crop in sorted(KNOWN_CROPS):
+        for crop in known_crops:
             s = files[files["crop"] == crop]
             ok = s["pred_crop"] == crop
+            sure = s["crop_conf"] >= cut  # what auto-accept would do if the crop were enabled
             crop_rows[crop] = {**rate(int(ok.sum()), len(s)),
                                "predicted": dict(Counter(s["pred_crop"]).most_common(4)),
                                "auto_accepted": rate(int(s["auto_accepted"].sum()), len(s)),
-                               "wrong_and_auto_accepted": int((~ok & s["auto_accepted"]).sum())}
+                               "wrong_and_auto_accepted": int((~ok & s["auto_accepted"]).sum()),
+                               "if_enabled": {"share": rate(int(sure.sum()), len(s)),
+                                              "accuracy": rate(int((ok & sure).sum()),
+                                                               int(sure.sum()))}}
         out["crop_recognition"] = crop_rows
         # 2. crops the model does not know
         unknown = {}
-        for crop in ("chilli", "wheat"):
+        for crop in unknown_crops:
             s = files[files["crop"] == crop]
             unknown[crop] = {"auto_accepted_as_supported": rate(int(s["auto_accepted"].sum()),
                                                                 len(s)),
@@ -172,6 +185,22 @@ def main() -> None:
         disease["potato_balanced_accuracy"] = round(float(np.mean([d["rate"] for d in potato])),
                                                     4)
         out["disease_with_confirmed_crop"] = disease
+        # every photo label whose condition this model has a class for (label map targets)
+        by_label, by_crop = {}, {}
+        for label, target in sorted(label_target.items()):
+            s = files.index[files["label"] == label]
+            if target not in set(cond_names) or len(s) == 0:
+                continue
+            crop = target.split("|")[0]
+            p = softmax(np.where(cond_crop == crop, cl[s], -np.inf), temps["condition"])
+            pred = cond_names[p.argmax(1)]
+            by_label[label] = {**rate(int((pred == target).sum()), len(s)), "target": target,
+                               "predicted": dict(Counter(pred).most_common(3))}
+            by_crop.setdefault(crop, []).append(by_label[label]["rate"])
+        out["disease_all_labels"] = {
+            "by_label": by_label,
+            "balanced_accuracy_by_crop": {c: round(float(np.mean(v)), 4)
+                                          for c, v in sorted(by_crop.items())}}
         # tomato photos whose problem the model has no class for (pests, disorder)
         other = files.index[files["label"].isin(["tomato/Leaf miner", "tomato/Insect attack",
                                                  "tomato/Physiological disorder",
@@ -185,12 +214,22 @@ def main() -> None:
                        "unknown_auto_accepted": {k: v["auto_accepted_as_supported"]["rate"]
                                                  for k, v in unknown.items()},
                        "potato_balanced_accuracy": disease["potato_balanced_accuracy"],
-                       "tomato_alternaria": disease["tomato/Alternaria"]["rate"]}
+                       "tomato_alternaria": disease["tomato/Alternaria"]["rate"],
+                       "disease_balanced_by_crop":
+                           out["disease_all_labels"]["balanced_accuracy_by_crop"]}
         path = REPORTS_DIR / "data" / f"vision_india_{rec.run_id}.json"
         path.write_text(json.dumps({"run_id": rec.run_id, "config": config, **out}, indent=1),
                         encoding="utf-8")
         rec.artifact_path = str(path.relative_to(REPORTS_DIR.parent))
-        files[["sha256", "label", "pred_crop", "crop_conf", "auto_accepted"]].to_parquet(
+        # condition read with the true crop confirmed (for later checks, e.g. photo-size shortcuts)
+        pred_cond = np.full(len(files), "", dtype=object)
+        for crop in known_crops:
+            s = files.index[files["crop"] == crop]
+            p = softmax(np.where(cond_crop == crop, cl[s], -np.inf), temps["condition"])
+            pred_cond[s] = cond_names[p.argmax(1)]
+        files["pred_cond"] = pred_cond
+        cols = ["sha256", "label", "pred_crop", "crop_conf", "auto_accepted", "pred_cond"]
+        files[cols].to_parquet(
             ROOT / f"predictions_{rec.run_id}.parquet", index=False)
     print(json.dumps(out, indent=1))
     print("run_id", rec.run_id)
