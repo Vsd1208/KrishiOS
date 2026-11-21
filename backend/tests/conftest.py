@@ -13,6 +13,10 @@ os.environ.setdefault("APP_VERSION", "0.1.0")
 # Tests are hermetic: never use live market data or a key from a developer's backend/.env.
 os.environ["MARKET_PROVIDER_NAME"] = "mock-market-v1"
 os.environ["DATA_GOV_IN_API_KEY"] = ""
+# Provider choices in a developer's .env (real vision model, LLM) must not change test results.
+os.environ["VISION_PROVIDER"] = "mock-v1"
+os.environ["VISION_MODEL_VERSION"] = ""
+os.environ["LLM_PROVIDER"] = "local"
 os.environ.setdefault("DEBUG", "false")
 os.environ.setdefault("API_PREFIX", "/api/v1")
 os.environ.setdefault("BACKEND_CORS_ORIGINS", '["http://testserver"]')
