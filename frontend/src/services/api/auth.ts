@@ -4,7 +4,7 @@
  * Wraps the backend auth endpoints: login, refresh, logout.
  */
 
-import { apiClient, setAccessToken, setRefreshToken, clearTokens, getRefreshToken } from './client';
+import { apiClient, setAccessToken, setRefreshToken, clearTokens, getRefreshToken, refreshSession } from './client';
 import type { LoginRequest, TokenResponse } from '@/types/auth';
 
 /**
@@ -25,22 +25,8 @@ export async function login(credentials: LoginRequest): Promise<TokenResponse> {
  * Called automatically by the API client on 401, but can also be called manually.
  */
 export async function refreshTokens(): Promise<TokenResponse | null> {
-  const refreshToken = getRefreshToken();
-  if (!refreshToken) return null;
-
-  try {
-    const data = await apiClient.post<TokenResponse>(
-      '/auth/refresh',
-      { refresh_token: refreshToken },
-      { skipAuth: true },
-    );
-    setAccessToken(data.access_token);
-    setRefreshToken(data.refresh_token);
-    return data;
-  } catch {
-    clearTokens();
-    return null;
-  }
+  // Shares the client's single in-flight refresh (React may mount the session restore twice).
+  return refreshSession();
 }
 
 /**
