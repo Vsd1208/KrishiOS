@@ -88,7 +88,7 @@ export const EvaluationPage: React.FC = () => {
 
           <div className="inline-flex items-center gap-2 bg-success-50 border border-success-200 px-3 py-1.5 rounded-lg text-caption text-success-800 self-start sm:self-auto font-semibold">
             <CheckCircle2 className="w-4 h-4 text-success-600" aria-hidden="true" />
-            <span>Audited Against Real Backend APIs</span>
+            <span>Live data from the backend</span>
           </div>
         </div>
       </section>
@@ -127,11 +127,11 @@ export const EvaluationPage: React.FC = () => {
               </div>
             </div>
             <CardTitle as="h3" className="text-heading font-extrabold text-text mt-1">
-              {isIndexLoading ? <Skeleton width={100} height={32} /> : (activeIndex?.alias_name || 'krishios-live')}
+              {isIndexLoading ? <Skeleton width={100} height={32} /> : (activeIndex?.alias_name || '—')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2 border-t border-border text-caption text-text-muted">
-            <span>Version {activeIndex?.version_number ?? 1} • {activeIndex?.chunk_count ?? 250} Chunks</span>
+            <span>Version {activeIndex?.version_number ?? '—'} • {activeIndex?.chunk_count ?? '—'} Chunks</span>
           </CardContent>
         </Card>
 
@@ -166,12 +166,12 @@ export const EvaluationPage: React.FC = () => {
                 <Cpu className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
-            <CardTitle as="h3" className="text-small font-bold text-text mt-1 truncate" title={activeIndex?.embedding_model || 'text-embedding-3-small'}>
-              {isIndexLoading ? <Skeleton width={120} height={24} /> : (activeIndex?.embedding_model || 'text-embedding-3-small')}
+            <CardTitle as="h3" className="text-small font-bold text-text mt-1 truncate" title={activeIndex?.embedding_model || '—'}>
+              {isIndexLoading ? <Skeleton width={120} height={24} /> : (activeIndex?.embedding_model || '—')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2 border-t border-border text-caption text-text-muted">
-            <span>Vector Dimension: {activeIndex?.vector_size ?? 384}</span>
+            <span>Vector Dimension: {activeIndex?.vector_size ?? '—'}</span>
           </CardContent>
         </Card>
       </div>
@@ -191,7 +191,7 @@ export const EvaluationPage: React.FC = () => {
             </div>
           </div>
           <span className="px-3 py-1 rounded-full text-caption font-bold bg-primary-50 text-primary-800 border border-primary-200">
-            Alias: {indexStatus?.alias_name || 'krishios-live'}
+            Alias: {indexStatus?.alias_name || '—'}
           </span>
         </div>
 
@@ -203,14 +203,14 @@ export const EvaluationPage: React.FC = () => {
                 Active Production (Blue)
               </span>
               <span className="text-caption text-success-800 font-semibold">
-                Status: {activeIndex?.status || 'ACTIVE'}
+                Status: {activeIndex?.status || '—'}
               </span>
             </div>
             <div className="space-y-1 text-small text-text">
-              <p>Collection: <code className="font-mono text-caption">{activeIndex?.collection_name || 'krishios_kb_v1'}</code></p>
-              <p>Indexed Documents: <strong>{activeIndex?.document_count ?? 12}</strong></p>
-              <p>Total Chunks: <strong>{activeIndex?.chunk_count ?? 250}</strong></p>
-              <p>Build Mode: <strong>{activeIndex?.build_mode || 'BLUE_GREEN'}</strong></p>
+              <p>Collection: <code className="font-mono text-caption">{activeIndex?.collection_name || '—'}</code></p>
+              <p>Indexed Documents: <strong>{activeIndex?.document_count ?? '—'}</strong></p>
+              <p>Total Chunks: <strong>{activeIndex?.chunk_count ?? '—'}</strong></p>
+              <p>Build Mode: <strong>{activeIndex?.build_mode || '—'}</strong></p>
             </div>
           </div>
 
@@ -221,14 +221,14 @@ export const EvaluationPage: React.FC = () => {
                 Previous / Rollback Candidate
               </span>
               <span className="text-caption text-text-muted">
-                Status: {previousIndex?.status || 'ARCHIVED / READY'}
+                Status: {previousIndex?.status || '—'}
               </span>
             </div>
             <div className="space-y-1 text-small text-text-secondary">
-              <p>Collection: <code className="font-mono text-caption">{previousIndex?.collection_name || 'krishios_kb_v0'}</code></p>
-              <p>Indexed Documents: <strong>{previousIndex?.document_count ?? 10}</strong></p>
-              <p>Total Chunks: <strong>{previousIndex?.chunk_count ?? 210}</strong></p>
-              <p className="text-caption text-text-muted">Available for instant 1-click zero-downtime rollback.</p>
+              <p>Collection: <code className="font-mono text-caption">{previousIndex?.collection_name || '—'}</code></p>
+              <p>Indexed Documents: <strong>{previousIndex?.document_count ?? '—'}</strong></p>
+              <p>Total Chunks: <strong>{previousIndex?.chunk_count ?? '—'}</strong></p>
+              <p className="text-caption text-text-muted">Kept as the rollback version.</p>
             </div>
           </div>
         </div>

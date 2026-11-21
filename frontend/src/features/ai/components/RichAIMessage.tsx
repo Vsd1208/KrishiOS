@@ -12,6 +12,7 @@
  */
 
 import React, { useState } from 'react';
+import i18n from '@/i18n';
 import { ConfidenceBadge } from '@/components/ai/ConfidenceBadge';
 import { RiskBadge } from '@/components/ai/RiskBadge';
 import { CitationCard } from '@/components/ai/CitationCard';
@@ -98,7 +99,7 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-lg bg-primary-100/90 px-2.5 py-1 text-caption font-bold text-primary-800 shadow-xs">
               <Sparkles className="w-3.5 h-3.5 text-primary-700 shrink-0" aria-hidden="true" />
-              KrishiOS Advisory
+              {i18n.t('ui.aiAnswer')}
             </span>
             {riskSeverity && riskSeverity !== 'LOW' && (
               <RiskBadge severity={riskSeverity} size="sm" />
@@ -137,7 +138,7 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
           <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50/80 border border-amber-200 text-caption text-amber-900 shadow-xs">
             <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" aria-hidden="true" />
             <p className="leading-relaxed">
-              <strong>Field Verification Notice:</strong> This recommendation represents a possible risk identification based on available data, not a confirmed field diagnosis. Consult your local agricultural extension officer before heavy chemical application.
+              <strong>{i18n.t('answer.cautionTitle')}</strong> {i18n.t('answer.caution')}
             </p>
           </div>
         )}
@@ -157,17 +158,17 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
               type="button"
               onClick={handleCopy}
               className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface hover:bg-surface-raised text-text-secondary border border-border cursor-pointer transition-colors"
-              title="Copy to clipboard"
+              title={i18n.t('answer.copy')}
             >
               {copied ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-success-600" aria-hidden="true" />
-                  <span className="text-success-700 font-semibold">Copied</span>
+                  <span className="text-success-700 font-semibold">{i18n.t('answer.copied')}</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Copy</span>
+                  <span>{i18n.t('answer.copy')}</span>
                 </>
               )}
             </button>
@@ -180,7 +181,7 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
               onClick={() => setEvidenceExpanded(!evidenceExpanded)}
               className="inline-flex items-center gap-1 font-bold text-primary-700 hover:text-primary-900 cursor-pointer"
             >
-              <span>Why this answer? ({citations.length} sources)</span>
+              <span>{i18n.t('answer.why', { count: citations.length })}</span>
               {evidenceExpanded ? (
                 <ChevronUp className="w-3.5 h-3.5" aria-hidden="true" />
               ) : (
@@ -206,7 +207,7 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
                 <div className="flex items-center justify-between text-caption font-bold text-text uppercase">
                   <span className="flex items-center gap-1.5">
                     <BookOpen className="w-3.5 h-3.5 text-primary-600" aria-hidden="true" />
-                    Verified ICAR &amp; Agronomic Literature
+                    {i18n.t('canvas.tabs.sources')}
                   </span>
                   <FreshnessIndicator freshnessSeconds={3600} size="sm" />
                 </div>
@@ -223,17 +224,14 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
               <div className="space-y-1.5">
                 <span className="flex items-center gap-1.5 text-caption font-bold text-text uppercase">
                   <GitFork className="w-3.5 h-3.5 text-purple-600" aria-hidden="true" />
-                  Agronomic Knowledge Graph Context
+                  {i18n.t('canvas.graph.title')}
                 </span>
                 {evidence.graph_paths.map((gp, idx) => (
                   <div
                     key={idx}
                     className="p-2.5 rounded-lg bg-surface border border-border text-caption font-mono text-text flex items-center justify-between"
                   >
-                    <span>{gp.path}</span>
-                    <span className="px-2 py-0.5 rounded bg-purple-50 text-purple-700 font-bold text-[10px]">
-                      Verified Fact
-                    </span>
+                    <span className="break-words">{gp.path}</span>
                   </div>
                 ))}
               </div>
@@ -246,7 +244,7 @@ export const RichAIMessage: React.FC<RichAIMessageProps> = ({
       {suggestedFollowUps.length > 0 && (
         <div className="space-y-1.5 pl-1">
           <span className="text-caption font-bold text-text-muted uppercase block">
-            Suggested Next Questions:
+            {i18n.t('answer.followUps')}
           </span>
           <div className="flex flex-wrap gap-1.5">
             {suggestedFollowUps.map((prompt, idx) => (

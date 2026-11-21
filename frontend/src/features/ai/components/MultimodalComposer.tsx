@@ -11,6 +11,7 @@
  * No crop is hardcoded here.
  */
 
+import i18n from '@/i18n';
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/Button';
 import { useMultimodalVoice } from '@/features/ai/hooks/useMultimodalVoice';
@@ -48,7 +49,7 @@ interface MultimodalComposerProps {
 export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
   onSend,
   disabled = false,
-  farmContextLabel = 'Farm context unavailable',
+  farmContextLabel,
   crop,
 }) => {
   const [text, setText] = useState('');
@@ -81,14 +82,14 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file (JPG, PNG, WEBP).');
+      alert(i18n.t('composer.badImage'));
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
     const maxSizeBytes = 10 * 1024 * 1024;
     if (file.size > maxSizeBytes) {
-      alert('Please select an image smaller than 10 MB.');
+      alert(i18n.t('composer.bigImage'));
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
@@ -167,13 +168,13 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
         <div className="flex items-center gap-1.5 truncate">
           <Sparkles className="w-3.5 h-3.5 text-primary-600 shrink-0" aria-hidden="true" />
           <span className="truncate">
-            Farm Context: <strong className="text-text font-semibold">{farmContextLabel}</strong>
+            {i18n.t('canvas.context')}{' '}<strong className="text-text font-semibold">{farmContextLabel || '—'}</strong>
           </span>
         </div>
 
         {/* Language Switcher */}
         <div className="flex items-center gap-1 shrink-0 bg-surface-raised/80 p-0.5 rounded-lg border border-border">
-          <span className="text-[10px] font-bold text-text-muted px-1 uppercase">Lang:</span>
+          <span className="text-[10px] font-bold text-text-muted px-1 uppercase">{i18n.t('common.language')}:</span>
           {(['te', 'hi', 'en'] as const).map((lang) => (
             <button
               key={lang}
@@ -214,7 +215,7 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
                 type="button"
                 onClick={handleRemoveImage}
                 className="absolute top-1 right-1 p-1 rounded-full bg-danger-50 text-danger-700 hover:bg-danger-100 cursor-pointer transition-colors"
-                aria-label="Remove image"
+                aria-label={i18n.t('composer.removeImage')}
               >
                 <X className="w-3 h-3" />
               </button>
@@ -230,7 +231,7 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
                 type="button"
                 onClick={handleRemoveVoice}
                 className="p-1 rounded-full hover:bg-primary-200 cursor-pointer ml-1 transition-colors"
-                aria-label="Remove audio"
+                aria-label={i18n.t('composer.removeAudio')}
               >
                 <X className="w-3 h-3" />
               </button>
@@ -246,10 +247,10 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
               </span>
               <div className="ml-auto flex items-center gap-2">
                 <Button variant="outline" size="sm" onClick={cancelRecording}>
-                  Cancel
+                  {i18n.t('common.cancel')}
                 </Button>
                 <Button variant="danger" size="sm" onClick={handleToggleRecord}>
-                  Done
+                  {i18n.t('composer.done')}
                 </Button>
               </div>
             </div>
@@ -280,7 +281,8 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
         <label
           htmlFor="crop-image-upload"
           className="p-2.5 rounded-xl border border-border bg-surface hover:bg-surface-raised text-text-secondary hover:text-primary-700 hover:border-primary-300 cursor-pointer transition-all shrink-0 flex items-center justify-center shadow-xs active:scale-95"
-          title="Attach Crop Image"
+          title={i18n.t('composer.attach')}
+          aria-label={i18n.t('composer.attach')}
         >
           <FileImage className="w-5 h-5 text-primary-600" aria-hidden="true" />
         </label>
@@ -293,8 +295,8 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
               ? 'bg-danger-600 text-white border-danger-700 animate-bounce'
               : 'border-border bg-surface text-text-secondary hover:text-primary-700 hover:bg-surface-raised hover:border-primary-300'
           }`}
-          title={isRecording ? 'Stop Recording' : 'Speak Question'}
-          aria-label={isRecording ? 'Stop recording voice' : 'Record voice question'}
+          title={isRecording ? i18n.t('composer.stop') : i18n.t('hero.voice')}
+          aria-label={isRecording ? i18n.t('composer.stop') : i18n.t('hero.voice')}
         >
           {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5 text-primary-600" />}
         </button>
@@ -307,7 +309,7 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
             resizeTextarea();
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Ask in Telugu, Hindi, or English (e.g. నా వరి ఆకులు పసుపుగా మారుతున్నాయి)..."
+          placeholder={i18n.t('composer.placeholder')}
           rows={1}
           disabled={disabled || isRecording}
           className="flex-1 p-2.5 max-h-32 min-h-[44px] rounded-xl bg-surface border border-border text-small text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 font-sans resize-none transition-all shadow-xs"
@@ -318,7 +320,7 @@ export const MultimodalComposer: React.FC<MultimodalComposerProps> = ({
           onClick={handleSend}
           disabled={!canSend}
           className="h-[44px] px-5 rounded-xl shrink-0 cursor-pointer shadow-sm active:scale-95"
-          aria-label="Send question"
+          aria-label={i18n.t('composer.send')}
         >
           <Send className="w-4 h-4" aria-hidden="true" />
         </Button>

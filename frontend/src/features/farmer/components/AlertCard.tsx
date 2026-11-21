@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { RiskBadge } from '@/components/ai/RiskBadge';
@@ -24,6 +25,7 @@ export const AlertCard: React.FC<AlertCardProps> = ({
   onAcknowledge,
   isAcknowledging,
 }) => {
+  const { t } = useTranslation();
   const isAcknowledged = alert.status === 'ACKNOWLEDGED';
 
   // Map priority/status to severity indicator
@@ -56,18 +58,18 @@ export const AlertCard: React.FC<AlertCardProps> = ({
             {isAcknowledged ? (
               <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
                 <Check className="w-3 h-3" aria-hidden="true" />
-                Acknowledged
+                {t('alertsPage.acknowledged')}
               </span>
             ) : (
               <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-danger-700 bg-danger-100 px-2 py-0.5 rounded animate-pulse">
                 <Bell className="w-3 h-3" aria-hidden="true" />
-                Action Required
+                {t('alertsPage.actionNeeded')}
               </span>
             )}
             {alert.reviewed_by && (
               <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary-700 bg-primary-50 px-2 py-0.5 rounded">
                 <ShieldCheck className="w-3 h-3 text-primary-600" aria-hidden="true" />
-                Officer Verified
+                {t('alertsPage.officerReviewed')}
               </span>
             )}
           </div>
@@ -81,7 +83,7 @@ export const AlertCard: React.FC<AlertCardProps> = ({
           {/* Officer Review Note if any */}
           {alert.review_note && (
             <div className="mt-2 p-2 rounded bg-surface border border-border text-caption text-text-secondary">
-              <strong className="text-text font-semibold">Officer Note:</strong> {alert.review_note}
+              <strong className="text-text font-semibold">{t('alertsPage.officerNote')}</strong> {alert.review_note}
             </div>
           )}
         </div>
@@ -96,7 +98,7 @@ export const AlertCard: React.FC<AlertCardProps> = ({
               disabled={isAcknowledging}
               className="w-full sm:w-auto"
             >
-              {isAcknowledging ? 'Saving...' : 'Acknowledge'}
+              {isAcknowledging ? t('profile.saving') : t('alertsPage.acknowledge')}
             </Button>
           </div>
         )}

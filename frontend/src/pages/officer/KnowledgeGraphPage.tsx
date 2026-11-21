@@ -182,7 +182,7 @@ export const KnowledgeGraphPage: React.FC = () => {
                 <Card key={idx} variant="default" padding="md" className="space-y-2 border-l-4 border-l-primary-500">
                   <div className="flex items-center justify-between">
                     <span className="text-small font-bold text-text">
-                      {res.citation?.title || 'ICAR Agricultural Advisory Guideline'}
+                      {res.citation?.title || '—'}
                     </span>
                     <span className="px-2.5 py-0.5 rounded-full text-caption font-semibold bg-success-50 text-success-700">
                       Score: {Math.round(res.ranking_score * 100)}%
@@ -196,7 +196,7 @@ export const KnowledgeGraphPage: React.FC = () => {
                   <div className="flex items-center gap-3 text-caption text-text-secondary pt-1">
                     <span className="flex items-center gap-1">
                       <Award className="w-3.5 h-3.5 text-primary-600" aria-hidden="true" />
-                      {res.citation?.source || 'ICAR Research Complex'}
+                      {res.citation?.source || '—'}
                     </span>
                     <span>•</span>
                     <span>Chunk ID: <code>{res.chunk_id.slice(0, 8)}</code></span>

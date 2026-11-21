@@ -14,7 +14,23 @@
     "knowledge": "Knowledge",
     "analytics": "Analytics",
     "ask": "Ask AI",
-    "updates": "Govt"
+    "updates": "Govt",
+    "officer": {
+      "dashboard": "Dashboard",
+      "farmers": "Farmers",
+      "reviews": "Reviews",
+      "knowledge": "Knowledge base",
+      "analytics": "Analytics",
+      "evaluation": "Answer quality",
+      "bulletins": "Bulletins",
+      "publish": "Publish advisory",
+      "connect": "Delivery analytics",
+      "grievances": "Grievances and schemes",
+      "yield": "Yield outlook",
+      "outbreaks": "Outbreaks",
+      "feedback": "Farmer feedback",
+      "extension": "Assisted mode"
+    }
   },
   "auth": {
     "login": "Log In",
@@ -751,7 +767,12 @@
     "checkingSession": "Checking your sign-in...",
     "checkingAccess": "Checking access...",
     "roleDenied": "Your account ({{role}}) cannot open this page.",
-    "backHome": "Back to my home page"
+    "backHome": "Back to my home page",
+    "officerNav": "Officer menu",
+    "farmerNav": "Farmer menu",
+    "officerConsole": "Officer console",
+    "expandMenu": "Expand menu",
+    "collapseMenu": "Collapse menu"
   },
   "login": {
     "subtitle": "Enter your registered phone number or email",
@@ -771,5 +792,73 @@
     "textHelp": "Pests, fertilizer, weather or prices",
     "photo": "Check a crop photo",
     "photoHelp": "Possible pests or diseases; you confirm the crop"
+  },
+  "alertsPage": {
+    "title": "Alerts",
+    "subtitle": "Pest, disease and weather alerts for your crop",
+    "active": "New ({{n}})",
+    "all": "All ({{n}})",
+    "none": "No alerts right now",
+    "advisories": "Crop advisories",
+    "practices": "Recommended practices:",
+    "acknowledged": "Seen",
+    "actionNeeded": "New",
+    "officerReviewed": "Reviewed by officer",
+    "officerNote": "Officer note:",
+    "acknowledge": "Mark as seen",
+    "bannerTitle": "New alerts ({{n}})",
+    "viewAll": "See all"
+  },
+  "ui": {
+    "dismiss": "Dismiss",
+    "notifications": "Notifications",
+    "stopAudio": "Stop",
+    "listen": "Listen",
+    "aiAnswer": "AI answer"
+  },
+  "answer": {
+    "cautionTitle": "Please check in the field:",
+    "caution": "This is a possible problem based on the information available, not a confirmed diagnosis. Ask your agriculture officer before using strong chemicals.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "why_one": "Why this answer? ({{count}} source)",
+    "why_other": "Why this answer? ({{count}} sources)",
+    "followUps": "You could also ask:"
+  },
+  "workspace": {
+    "stream": "Chat only",
+    "split": "Chat and details",
+    "newChat": "New chat",
+    "welcome": "Namaste! What would you like to ask about your farm?",
+    "welcomeHelp": "Ask in Telugu, Hindi or English, by voice or text. To check a crop photo for disease, use \"{{chat}}\".",
+    "trust": "Answers use the sources shown with each answer. If no source is shown, check with your agriculture officer.",
+    "pickDoc": "Please choose a document first.",
+    "docUploaded": "Document uploaded.",
+    "docFailed": "Could not upload the document. Please try again.",
+    "uploading": "Uploading...",
+    "upload": "Upload",
+    "closeUpload": "Close",
+    "addDoc": "+ Add a document"
+  },
+  "composer": {
+    "badImage": "Please choose a JPG, PNG or WEBP image.",
+    "bigImage": "Please choose an image smaller than 10 MB.",
+    "removeImage": "Remove photo",
+    "removeAudio": "Remove recording",
+    "attach": "Attach a crop photo",
+    "stop": "Stop recording",
+    "placeholder": "Type your question in Telugu, Hindi or English",
+    "send": "Send",
+    "done": "Done"
+  },
+  "voice": {
+    "noAudio": "No sound was recorded. Please speak into the microphone and try again.",
+    "noMic": "The microphone is blocked or not available. Please allow microphone access in your browser.",
+    "failed": "Your question could not be processed. Please try again.",
+    "listening": "Listening... Tap the square when you finish",
+    "processing": "Understanding your question...",
+    "again": "Ask another question",
+    "tap": "Tap the microphone and speak",
+    "heard": "We heard"
   }
 }

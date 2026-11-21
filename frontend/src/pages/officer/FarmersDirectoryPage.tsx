@@ -125,7 +125,7 @@ export const FarmersDirectoryPage: React.FC = () => {
                         <span>•</span>
                         <span>{f.landholding_acres} Acres</span>
                         <span>•</span>
-                        <span>{plotsCount || 1} Plot(s)</span>
+                        <span>{plotsCount} Plot(s)</span>
                       </div>
                     </div>
 
@@ -170,7 +170,7 @@ export const FarmersDirectoryPage: React.FC = () => {
                 {/* Plot Breakdown */}
                 <div className="space-y-2">
                   <span className="text-caption font-bold text-text uppercase block">
-                    Registered Plots ({farmerFields.length || 1})
+                    Registered Plots ({farmerFields.length})
                   </span>
 
                   {farmerFields.length > 0 ? (
@@ -184,22 +184,15 @@ export const FarmersDirectoryPage: React.FC = () => {
                           <span>{field.area_acres} Ac</span>
                         </div>
                         <div className="text-text-secondary flex justify-between">
-                          <span>Soil: {field.soil_type || 'Black Soil'}</span>
-                          <span>Irrigation: {field.irrigation_type || 'Borewell'}</span>
+                          <span>Soil: {field.soil_type || '—'}</span>
+                          <span>Irrigation: {field.irrigation_type || '—'}</span>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="p-2.5 rounded-lg bg-surface border border-border text-caption space-y-1">
-                      <div className="flex justify-between font-bold text-text">
-                        <span>Main Plot #1</span>
-                        <span>{selectedFarmer.landholding_acres} Ac</span>
-                      </div>
-                      <div className="text-text-secondary flex justify-between">
-                        <span>Soil: Red Sandy Loam</span>
-                        <span>Irrigation: Canal / Borewell</span>
-                      </div>
-                    </div>
+                    <p className="p-2.5 rounded-lg bg-surface border border-border text-caption text-text-muted">
+                      No fields are registered for this farmer.
+                    </p>
                   )}
                 </div>
               </div>
