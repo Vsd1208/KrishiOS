@@ -1,6 +1,6 @@
 # Phase 10: KrishiOS Yield Model and Research (interim)
 
-- **Status:** in progress on `feat/sprint-11-phase10-yield-research`. Last updated 2026-11-19.
+- **Status:** in progress on `feat/sprint-11-phase10-yield-research`. Last updated 2026-11-21.
 - **Serving model:** unchanged. Forecasts still come from the Phase 8 B3 LightGBM.
 - **Test years untouched:** every number below uses the 2016-18 validation years, or forward periods inside
   the training years (2010-12 and 2013-15, each trained only on earlier years). The 2019-22 test split and
@@ -26,6 +26,10 @@ All runs are logged in `ml/experiments/`, and full results are in `ml/reports/da
 | B5 held-out states (5 groups, 3 seeds) | `34354360f130` | `scripts/run_yield_generalisation.py --model b5 --study states` | `yield_gen_b5_states_34354360f130.json` |
 | B3 interval calibration, out of time (3 seeds) | `af450e064e14` | `scripts/run_yield_uncertainty.py` | `yield_uncertainty_af450e064e14.json` |
 | B5 unseen crops and 5-shot (10 crops, 3 seeds) | `f5ee494e6440` | `scripts/run_yield_generalisation.py --model b5 --study crops` | `yield_gen_b5_crops_f5ee494e6440.json` |
+| Global indices vs 99 placebos | `1463bb39371d` | `scripts/run_yield_climate_tests.py --global-only --placebos 99` | `yield_climate_tests_1463bb39371d.json` |
+| B3 held-out states (5 groups, 3 seeds) | `6e6a495c0874` | `scripts/run_yield_generalisation.py --model b3 --study states` | `yield_gen_b3_states_6e6a495c0874.json` |
+| B3 year gap, frozen vs refitted (3 seeds) | `bb69dfe28d9a` | `scripts/run_yield_generalisation.py --model b3 --study years` | `yield_gen_b3_years_bb69dfe28d9a.json` |
+| B3 unseen crops and 5-shot (30 crops, 3 seeds) | `837b485f9102` | `scripts/run_yield_generalisation.py --model b3 --study crops` | `yield_gen_b3_crops_837b485f9102.json` |
 
 `ef6f04b49792` is a one-epoch smoke run of B5 and is not evidence.
 
@@ -126,6 +130,27 @@ That misses the pre-set 0.01 bar (five regions, Bonferroni). The gain is about 0
 is suggestive, not proven, and Nepal rainfall is not used in the served model. Nepal rainfall did not help any
 region it was not routed to, as expected.
 
+**Global indices on their own, 99 placebos** (run `1463bb39371d`; ENSO, IOD, OLR, SOI and TNA move to
+wrong years together; only B3 and B3 + global indices are fitted; ratio MAE):
+
+| Region | B3 | + global indices | Placebo mean | Best placebo | p |
+|---|---|---|---|---|---|
+| Uttar Pradesh, Bihar | 0.2554 | 0.2445 | 0.2474 | 0.2422 | 0.12 |
+| North-west | 0.3815 | 0.3742 | 0.3730 | 0.3658 | 0.64 |
+| Western Himalaya | 0.2866 | 0.2858 | 0.2862 | 0.2835 | 0.36 |
+| North-east | 0.1785 | 0.1791 | 0.1792 | 0.1780 | 0.54 |
+| All India | 0.3106 | 0.3074 | 0.3081 | 0.3058 | 0.19 |
+
+- **No region passes the 0.01 bar.** Most of the drop from adding the indices also appears with
+  wrong-year indices: in Uttar Pradesh and Bihar real indices cut the error by 0.011, wrong-year ones
+  by 0.008 on average. The gain is mostly from extra inputs the trees can split on, not from the
+  real year-to-year climate signal.
+- With the Nepal result above (p = 0.05), no climate driver tested in Phase 10 is proven to add skill
+  to district yield forecasts. None is served. These indices remain the planned inputs of the
+  Phase 10d seasonal rainfall and temperature outlook, a different question.
+- Blocks 1-4 of this test ran with 12 LightGBM threads and blocks 5-12 with 6 (laptop thermal limit).
+  LightGBM results with the same seed can differ slightly across thread counts.
+
 ## 4. River flow: no measurable skill
 
 Modelled daily discharge from Copernicus GloFAS (through the Open-Meteo Flood API, non-commercial use) at 13
@@ -195,7 +220,7 @@ training, and the models were scored with inputs missing (run `8a577ddc2da2`):
 - **B5 still does not replace B3.** Its median (0.2359) is close to B3's (0.2371), but B3 remains
   better on the worst decile and tier B. Nothing from this section is served.
 
-## 6. Held-out states (RQ4, partial)
+## 6. Held-out states and years (RQ4) and unseen crops (RQ5)
 
 States were split into 5 groups balanced by rows. For each group B5 was trained without those
 states and scored on their 2016-18 rows; the comparison model saw them. Both stopped early on the
@@ -208,7 +233,32 @@ other states' rows only (run `34354360f130`, mean over leads, 3 seeds):
 | Tier B median nMAE | 0.276 | 0.325 | +0.049 |
 
 For tier-A crops B5 transfers to unseen states almost without loss; tier-B crops, with little data,
-lose about 18%. Still to run: B3 on the same groups and the year-gap study.
+lose about 18%.
+
+**B3 on the same state groups** (run `6e6a495c0874`, mean over leads, 3 seeds):
+
+| | State seen | State never seen | Change |
+|---|---|---|---|
+| Tier A median nMAE | 0.2369 | 0.2415 | +0.0046 |
+| Tier A worst decile | 0.333 | 0.354 | +0.021 |
+| Tier B median nMAE | 0.251 | 0.341 | +0.090 |
+
+B3 is better than B5 where the state was seen, but loses more in unseen states (tier B +36%
+against +18% for B5). Unseen states end up about level between the two for tier A (0.2415 against
+0.2421).
+
+**Year gap** (run `bb69dfe28d9a`): a B3 model frozen with data up to 2009, against one refitted on
+all years before each period (3 seeds):
+
+| Period | Tier A frozen | Tier A refitted | Worst decile frozen | Worst decile refitted |
+|---|---|---|---|---|
+| 2010-12 | 0.2277 | 0.2277 | 0.298 | 0.298 |
+| 2013-15 | 0.2471 | 0.2519 | 0.371 | 0.361 |
+| 2016-18 | 0.2501 | 0.2415 | 0.375 | 0.352 |
+
+For 2010-12 both models are the same model. Three and six years on, the frozen model is first
+level (better median, worse worst decile), then clearly behind on both. **Refit the model at least once a
+year**, when each season's new APY labels arrive.
 
 **Unseen crops (RQ5, B5).** Ten tier-A crops, fixed before any result (every third crop ordered by
 districts), each removed from training (k = 0) or kept for only 5 random districts (k = 5), and
@@ -227,8 +277,23 @@ scored on its own 2016-18 rows. All models stopped early on the other crops' row
   0.405, sugarcane 0.216 against 0.282). The exception is soybean (0.231 against 0.228).
 - **Five districts of data add nothing** over none: forecasting the ratio to each district's own
   history already carries most of what is crop-specific.
-- RQ5 answer for B5: yes, a shared multi-crop model helps crops with little or no data. B3 on all
-  30 crops is still to run.
+- RQ5 answer for B5: yes, a shared multi-crop model helps crops with little or no data.
+
+**B3 on all 30 tier-A crops** (run `837b485f9102`, 3 seeds; leads 0 and 60 only, to keep the 60 fits
+per seed affordable on the laptop):
+
+| | Median, 30 crops | Median, B5's 10 crops | Crops better than the historical mean |
+|---|---|---|---|
+| District historical mean | 0.283 | 0.283 | n/a |
+| B3, crop seen in training | 0.236 | 0.239 | 28 of 30 |
+| B3, crop never seen | 0.250 | 0.252 | 28 of 30 |
+| B3, crop seen in 5 districts | 0.248 | 0.248 | 28 of 30 |
+
+- B3 also transfers to unseen crops and beats the historical mean for 28 of 30 (not for finger
+  millet and soybean, both about level).
+- On the same 10 crops, **B3 loses about 5% when a crop is unseen; B5 loses about 2%.** For
+  never-seen crops the two are close (B3 0.252, B5 0.249), with different lead sets. B5's advantage
+  for new crops is small.
 
 ## 7. Forecast ranges: calibration per tier
 
@@ -255,9 +320,11 @@ Widths were fitted on 2013-15 forecasts (model trained up to 2010) and checked o
 
 ## 8. Remaining Phase 10 work
 
-1. Held-out states for B3, and the year-gap study (RQ4).
-2. Leave-one-crop-out and k-shot transfer for B3 and B5 (RQ5).
-3. A permutation test of the global climate indices on their own (the largest climate gains, not yet
-   tested against wrong-year placebos).
-4. Score the frozen best configuration on test once, and swap it in behind the yield provider only
-   if it beats B3.
+All validation studies are done. What is left:
+
+1. Fix the best configuration from the validation results above and score it on the 2019-22 test
+   years once.
+2. Swap it in behind the yield provider only if it beats B3 there. On validation no Phase 10
+   variant (NDVI, B5, climate drivers, pretraining, modality dropout) beats plain B3 for tier-A
+   crops with all inputs. B5's possible value is narrow: missing inputs (P2) and crops without data
+   (RQ5).

@@ -3,7 +3,7 @@
 The Sprint 11 plan, phase by phase, with what each phase must deliver and where it stands. Each phase runs on
 its own branch from `main` and stops for review before the next starts. Status details and test counts are in
 [`PROGRESS.md`](PROGRESS.md); the reasons behind each choice are in [`DECISIONS.md`](DECISIONS.md). Last updated
-2026-11-19.
+2026-11-21.
 
 ## Principles that apply to every phase
 
@@ -47,13 +47,14 @@ RQ4 held-out states and years, RQ5 whether a shared multi-crop model helps low-d
 | B5 shared neural model (dekad timeline, masks, crop, season, state and lead embeddings) | Done: does not beat B3 yet | Runs `58b91d618aaa`, `6df72643cd82` |
 | Global and region-routed climate drivers | Done: partial support | Run `8d35785e0f9f` |
 | Permutation tests, including Nepal rainfall for Uttar Pradesh and Bihar | Done with 20 placebos: promising, not proven | Run `14ead9935125` |
+| Global indices alone vs 99 placebos | Done: no region passes (best p = 0.12); not used | Run `1463bb39371d` |
 | River-flow drivers (GloFAS, 13 points) | Done: no measurable skill | Run `d98038796300` |
 | 99-placebo check for Nepal rainfall | Done: p = 0.05, misses the 0.01 bar; not used | Run `f7fcab8f1033` |
 | P1 pretraining with label-efficiency curves | Done: no gain at any label share (5 seeds) | Run `20f973a599b6` |
 | P2 modality dropout per missing-input condition | Done: helps when inputs are missing, costs 0.003 with all inputs | Run `8a577ddc2da2` |
-| Held-out states and years | To do | |
-| Leave-one-crop-out and k-shot transfer | To do | |
-| Uncertainty and calibration per tier | To do | |
+| Held-out states and years | Done: tier A transfers to unseen states (B3 0.237 to 0.241, B5 0.241 to 0.242); tier B worse; refit yearly | Runs `34354360f130`, `6e6a495c0874`, `bb69dfe28d9a` |
+| Leave-one-crop-out and k-shot transfer | Done: never-seen crops beat the historical mean (B3 28 of 30, B5 9 of 10); 5-shot adds nothing | Runs `f5ee494e6440`, `837b485f9102` |
+| Uncertainty and calibration per tier | Done: tier A calibrated; tier B unstable, widths unchanged | Run `af450e064e14` |
 | Single test scoring of the frozen best model; serving swap if better | To do | |
 
 The full results are in [`ml/reports/10_yield_research.md`](../ml/reports/10_yield_research.md).
