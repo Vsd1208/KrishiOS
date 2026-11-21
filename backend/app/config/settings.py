@@ -57,8 +57,10 @@ class Settings(BaseSettings):
     RANKING_WEIGHT_LANGUAGE: float = 0.03
 
     # ── Embedding model (Sprint 2) ────────────────────────────────────────────
-    EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
-    EMBEDDING_MODEL_VERSION: str = "v1"
+    # Phase 10c: multilingual E5 so Hindi/Telugu questions find English guide passages (ML run
+    # bf4365b06b28: recall@5 te 1.00 / hi 1.00 vs 0.21 / 0.03 for all-MiniLM-L6-v2). 384-d.
+    EMBEDDING_MODEL_NAME: str = "intfloat/multilingual-e5-small"
+    EMBEDDING_MODEL_VERSION: str = "e5-small-v1"
 
     # ── Document storage (Sprint 2) ───────────────────────────────────────────
     DOCUMENT_STORAGE_PATH: str = "/data/documents"

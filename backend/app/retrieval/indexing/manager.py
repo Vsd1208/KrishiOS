@@ -84,7 +84,13 @@ class IndexManager:
             await self._indexes.mark_status(index, RetrievalIndexStatus.VALIDATING)
 
             latency_ms = (perf_counter() - started) * 1000
-            report = await self._validator.validate(collection_name, len(records), latency_ms)
+            # Up to 20 passages spread through the index, each searched by its opening words.
+            step = max(1, len(records) // 20)
+            probes = [(str(r.payload["chunk_id"]), str(r.payload["chunk_text"]))
+                      for r in records[::step][:20] if r.payload.get("chunk_text")]
+            report = await self._validator.validate(
+                collection_name, len(records), latency_ms, probes=probes,
+                embed_query=self._embedding_provider.embed_query)
             index.validation_report = report.to_dict()
             if not report.passed:
                 await self._indexes.mark_status(

@@ -5,6 +5,7 @@ import hashlib
 import math
 from typing import Any
 
+from app.knowledge.embeddings.prefixes import embedding_prefix
 from app.retrieval.interfaces.providers import EmbeddingProvider
 
 try:
@@ -50,11 +51,13 @@ class SentenceTransformerEmbeddingProvider(EmbeddingProvider):
         """Embed a batch of texts without blocking the event loop."""
         if not texts:
             return []
-        return await asyncio.to_thread(self._encode, texts)
+        prefix = embedding_prefix(self._model_name, "passage")
+        return await asyncio.to_thread(self._encode, [prefix + t for t in texts])
 
     async def embed_query(self, query: str) -> list[float]:
         """Embed a single retrieval query."""
-        vectors = await self.embed_texts([query])
+        prefix = embedding_prefix(self._model_name, "query")
+        vectors = await asyncio.to_thread(self._encode, [prefix + query])
         return vectors[0]
 
     def _encode(self, texts: list[str]) -> list[list[float]]:

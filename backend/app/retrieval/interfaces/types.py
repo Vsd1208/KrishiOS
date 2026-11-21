@@ -74,6 +74,12 @@ class IndexValidationReport:
     coverage: float
     chunk_integrity: bool
     embedding_integrity: bool
+    # Phase 10c: how the quality numbers were obtained ("self_retrieval" = measured on probe
+    # passages; "count_only" = no probes, so only the counts were checked) and the build time,
+    # which is reported but not gated (embedding a large library on CPU takes minutes).
+    method: str = "count_only"
+    probes: int = 0
+    build_ms: float = 0.0
 
     @property
     def passed(self) -> bool:
@@ -100,6 +106,9 @@ class IndexValidationReport:
             "coverage": self.coverage,
             "chunk_integrity": self.chunk_integrity,
             "embedding_integrity": self.embedding_integrity,
+            "method": self.method,
+            "probes": self.probes,
+            "build_ms": self.build_ms,
             "passed": self.passed,
         }
 

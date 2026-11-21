@@ -31,6 +31,7 @@ import numpy as np
 from loguru import logger
 from sentence_transformers import SentenceTransformer
 
+from app.knowledge.embeddings.prefixes import embedding_prefix
 from app.knowledge.interfaces.chunker import TextChunk
 from app.knowledge.interfaces.vectorstore import VectorPoint
 
@@ -130,7 +131,8 @@ class EmbeddingPipeline:
             return []
 
         t0 = time.perf_counter()
-        texts = [c.text for c in chunks]
+        prefix = embedding_prefix(self._model_name, "passage")
+        texts = [prefix + c.text for c in chunks]
         vectors = self._encode_with_retry(texts)
 
         points: list[VectorPoint] = []
@@ -176,7 +178,7 @@ class EmbeddingPipeline:
             Normalised embedding vector.
         """
         vector: np.ndarray = self._model.encode(
-            [query],
+            [embedding_prefix(self._model_name, "query") + query],
             normalize_embeddings=True,
             show_progress_bar=False,
         )[0]
