@@ -6,8 +6,9 @@
 - Officer brief: the deterministic GovConnect extractor (dates, places, crops, hazards, actions,
   each with its source span) plus an LLM summary in a fixed layout.
 - Farmer summary: three plain sentences and "what to do", translated to the farmer's language.
-- Long documents are summarised part by part, then combined; text beyond ``MAX_CHARS`` is not
-  read, and the answer says so.
+- Long documents are summarised part by part, then combined. At most ``MAX_PARTS`` parts are
+  read: the opening part plus, for a farmer, the parts that mention their crops or places most;
+  ``parts_read`` / ``parts_total`` say how much was read.
 - Safety check: an output line with a number that does not occur in the document is dropped and
   counted (``dropped_lines``), so a dose or date cannot be invented.
 """
@@ -20,7 +21,8 @@ from time import perf_counter
 from typing import Any, Literal
 
 PART_CHARS = 6000
-MAX_CHARS = 30000  # five parts; longer documents are cut and the result says so
+MAX_PARTS = 5  # longer documents: the opening part plus the parts most relevant to the farmer
+MAX_CHARS = PART_CHARS * MAX_PARTS
 Audience = Literal["officer", "farmer"]
 
 PART_SYSTEM = (
@@ -63,7 +65,9 @@ class DocumentAnalysis:
     extracted: dict[str, Any] = field(default_factory=dict)  # officer: structured fields
     pages: int = 0
     chars_read: int = 0
-    truncated: bool = False
+    truncated: bool = False  # True: some parts of the document were not read
+    parts_read: int = 0
+    parts_total: int = 0
     dropped_lines: int = 0
     translation_failed: bool = False
     model: str | None = None
@@ -86,14 +90,66 @@ def keep_supported_lines(output: str, source: str) -> tuple[str, int]:
     return "\n".join(kept).strip(), dropped
 
 
+_SYNONYMS = {"paddy": ["rice", "paddy"], "rice": ["rice", "paddy"], "maize": ["maize", "corn"],
+             "chilli": ["chilli", "chili"], "redgram": ["redgram", "pigeonpea", "arhar"],
+             "bengalgram": ["bengalgram", "chickpea", "gram"]}
+
+
+@dataclass(slots=True)
+class FarmerContext:
+    """Where the farmer is and what they grow; focuses a summary on what applies to them."""
+
+    crops: list[str] = field(default_factory=list)
+    district: str | None = None
+    state: str | None = None
+
+    def terms(self) -> list[str]:
+        out: list[str] = []
+        for crop in self.crops:
+            out += _SYNONYMS.get(crop.lower(), [crop.lower()])
+        out += [x.lower() for x in (self.district, self.state) if x]
+        return out
+
+    def instruction(self) -> str:
+        crops = ", ".join(self.crops) or "their crops"
+        place = ", ".join(x for x in (self.district, self.state) if x) or "their area"
+        return (f"This farmer grows {crops} in {place}. Give only the advice that applies to "
+                "these crops and this place. If the notes say nothing about them, say so "
+                "plainly in the summary.\n")
+
+
+def select_parts(parts: list[str], terms: list[str], max_parts: int = MAX_PARTS) -> list[str]:
+    """Parts to read: all if few; else the opening part plus those that mention the farmer's
+    crops or places most (in document order), filled with the earliest parts if needed."""
+    if len(parts) <= max_parts:
+        return parts
+    if not terms:
+        return parts[:max_parts]
+
+    def hits(part: str) -> int:
+        low = part.lower()
+        return sum(len(re.findall(r"\b" + re.escape(t) + r"\b", low)) for t in terms)
+
+    scored = sorted(range(1, len(parts)), key=lambda i: hits(parts[i]), reverse=True)
+    chosen = {0} | {i for i in scored[:max_parts - 1] if hits(parts[i]) > 0}
+    for i in range(len(parts)):
+        if len(chosen) >= max_parts:
+            break
+        chosen.add(i)
+    return [parts[i] for i in sorted(chosen)]
+
+
 def split_parts(text: str, size: int = PART_CHARS) -> list[str]:
     """Split on paragraph breaks into parts of at most ``size`` characters."""
+    pieces: list[str] = []
+    for para in re.split(r"\n\s*\n", text):  # a paragraph longer than size is cut in pieces
+        pieces += [para[i:i + size] for i in range(0, len(para), size)] or [""]
     parts, current = [], ""
-    for para in re.split(r"\n\s*\n", text):
-        if len(current) + len(para) > size and current:
+    for piece in pieces:
+        if len(current) + len(piece) > size and current:
             parts.append(current)
             current = ""
-        current += para[:size] + "\n\n"
+        current += piece + "\n\n"
     if current.strip():
         parts.append(current)
     return parts
@@ -119,15 +175,19 @@ class DocumentAnalyzer:
         return self._extractor.extract(text).to_dict()
 
     async def analyze(self, data: bytes, filename: str, audience: Audience = "officer",
-                      language: str = "en") -> DocumentAnalysis:
+                      language: str = "en",
+                      context: FarmerContext | None = None) -> DocumentAnalysis:
         t: dict[str, float] = {}
         start = perf_counter()
         full_text, pages = await self._parse(data, filename)
         t["parse"] = (perf_counter() - start) * 1000
-        text = full_text[:MAX_CHARS]
+        all_parts = split_parts(full_text) if full_text.strip() else []
+        parts = select_parts(all_parts, context.terms() if context else [])
+        text = "".join(parts)
         result = DocumentAnalysis(audience=audience, language=language, text="", text_en="",
                                   pages=pages, chars_read=len(text),
-                                  truncated=len(full_text) > MAX_CHARS,
+                                  parts_read=len(parts), parts_total=len(all_parts),
+                                  truncated=len(parts) < len(all_parts),
                                   model=getattr(self._llm, "model_name", None))
         if not text.strip():
             result.text = result.text_en = "No readable text was found in this document."
@@ -135,14 +195,15 @@ class DocumentAnalyzer:
 
         mark = perf_counter()
         notes = []
-        for part in split_parts(text):
+        for part in parts:
             reply = await self._llm.generate(f"Text:\n{part}\n\nKey facts:", PART_SYSTEM,
                                              temperature=0.1, max_tokens=400)
             notes.append(reply.content.strip())
         system, fmt = ((OFFICER_SYSTEM, OFFICER_FORMAT) if audience == "officer"
                        else (FARMER_SYSTEM, FARMER_FORMAT))
+        focus = context.instruction() if context else ""
         reply = await self._llm.generate("Notes from the document:\n" + "\n".join(notes)
-                                         + "\n\n" + fmt, system, temperature=0.1,
+                                         + "\n\n" + focus + fmt, system, temperature=0.1,
                                          max_tokens=500)
         t["summarise"] = (perf_counter() - mark) * 1000
         result.text_en, result.dropped_lines = keep_supported_lines(reply.content.strip(), text)
