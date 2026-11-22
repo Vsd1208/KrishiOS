@@ -10,6 +10,7 @@ from app.assistant.service import (
     Passage,
     build_prompt,
     cited_numbers,
+    strip_markers,
 )
 
 PASSAGES = [Passage("Apply urea in two equal splits at 3 and 6 weeks after transplanting.",
@@ -58,7 +59,7 @@ async def test_answer_with_citations_is_translated_back() -> None:
     out = await AssistantService(llm, se, tr).ask("बासमती में यूरिया कब?", "hi")
     assert out.answered and out.citations[0]["page"] == 30
     assert se.queries == ["<en>बासमती में यूरिया कब?"]  # searched in English
-    assert out.answer == "<hi>Apply urea at 3 and 6 weeks [1]."
+    assert out.answer == "<hi>Apply urea at 3 and 6 weeks."  # markers stripped before translation
     assert tr.calls == [("hi", "en", True), ("en", "hi", True)]  # farmer text stays local
     assert "[1] (Package of Practices for Kharif Crops, page 30)" in llm.prompts[0]
 
@@ -92,3 +93,4 @@ async def test_failed_translation_returns_english_with_flag() -> None:
 def test_cited_numbers_ignores_out_of_range_and_repeats() -> None:
     assert cited_numbers("a [2]. b [1, 2]. c [9].", 2) == [2, 1]
     assert "Question: q" in build_prompt("q", PASSAGES)
+    assert strip_markers("Sow early [1]. Use 40 kg [1, 2].") == "Sow early. Use 40 kg."

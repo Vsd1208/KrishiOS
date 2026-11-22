@@ -86,6 +86,15 @@ def build_prompt(question_en: str, passages: list[Passage]) -> str:
             + f"\n\nQuestion: {question_en}\n\nAnswer in 2-5 short sentences, citing passages.")
 
 
+_MARKER = re.compile(r"\s*\[\d+(?:\s*,\s*\d+)*\]")
+
+
+def strip_markers(text: str) -> str:
+    """Remove [n] citation markers (sources are listed separately). The translation checks
+    treat a marker that comes back as "[ 1 ]" as a leftover placeholder and block the text."""
+    return _MARKER.sub("", text).strip()
+
+
 def cited_numbers(answer: str, n_passages: int) -> list[int]:
     """Passage numbers cited as [k] or [k, m] that exist, in order of first use."""
     seen: list[int] = []
@@ -140,7 +149,7 @@ class AssistantService:
                      "source_url": passages[k - 1].source_url}
                     for k in used]
                 mark = perf_counter()
-                translated, ok = await self._to(text, "en", language)
+                translated, ok = await self._to(strip_markers(text), "en", language)
                 t["translate_out"] = (perf_counter() - mark) * 1000
                 result.answer = translated if ok else text
                 result.translation_failed = not ok
