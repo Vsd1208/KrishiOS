@@ -29,7 +29,8 @@
       "yield": "Yield outlook",
       "outbreaks": "Outbreaks",
       "feedback": "Farmer feedback",
-      "extension": "Assisted mode"
+      "extension": "Assisted mode",
+      "seasonal": "Seasonal Outlook"
     }
   },
   "auth": {
@@ -1071,5 +1072,37 @@
     "again": "Ask another question",
     "tap": "Tap the microphone and speak",
     "heard": "We heard"
+  },
+  "seasonal": {
+    "title": "Seasonal outlook",
+    "subtitle": "Chance of below, near or above normal rainfall and temperature in each district for the coming season.",
+    "disclaimer": "Research outlook based on IMD data up to {{through}}, to read alongside IMD's official forecasts, not instead of them. Review before sharing anything with farmers.",
+    "season": {
+      "JJAS": "Jun-Sep (kharif)",
+      "OND": "Oct-Dec",
+      "JF": "Jan-Feb (rabi)",
+      "MAM": "Mar-May (zaid)"
+    },
+    "state": "State",
+    "allStates": "All states",
+    "district": "District",
+    "var": {
+      "rain": "Rainfall",
+      "tmax": "Day temperature",
+      "tmin": "Night temperature"
+    },
+    "display": {
+      "show": "Tested skill",
+      "weak": "Weak signal",
+      "withhold": "No reliable signal: see IMD's outlook"
+    },
+    "skill": "Skill score on 2006-2024: {{rpss}}",
+    "below": "Below normal",
+    "near": "Near normal",
+    "above": "Above normal",
+    "limits": "Below normal: under {{low}} {{unit}}; above normal: over {{high}} {{unit}}",
+    "noSignal": "No reliable signal",
+    "failed": "The outlook could not be loaded.",
+    "method": "Method: {{method}}. History {{from}}-{{to}}."
   }
 }
