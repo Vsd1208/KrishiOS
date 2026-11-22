@@ -49,7 +49,11 @@ import type {
   ImageAttachment,
   UserMessageContent,
 } from '@/features/ai/types/conversation';
-import { documentsApi } from '@/services/api/documents';
+import {
+  assistantApi,
+  asAnalysisLanguage,
+  type DocumentAnalysisResult,
+} from '@/services/api/assistant';
 import type { BotLanguage } from '@/services/api/conversation';
 import { FarmerChat } from '@/features/conversation/FarmerChat';
 import { useTranslation } from 'react-i18next';
@@ -162,8 +166,20 @@ const AnalystWorkspace: React.FC = () => {
   const [viewMode, setViewMode] = useState<WorkspaceViewMode>('split');
   const [latestImage, setLatestImage] = useState<ImageAttachment | undefined>(undefined);
   const navigate = useNavigate();
-  const [uploadingDocument, setUploadingDocument] = useState(false);
-  const [documentUploadStatus, setDocumentUploadStatus] = useState<string | null>(null);
+  // Document help: the farmer's document is summarised on the KrishiOS server (not stored)
+  type DocPhase = 'idle' | 'queued' | 'working' | 'done' | 'failed' | 'missing';
+  const [docPhase, setDocPhase] = useState<DocPhase>('idle');
+  const [docAhead, setDocAhead] = useState(0);
+  const [docResult, setDocResult] = useState<DocumentAnalysisResult | null>(null);
+  const docCancelled = useRef(false);
+  useEffect(() => () => {
+    docCancelled.current = true;
+  }, []);
+  const uploadingDocument = docPhase === 'queued' || docPhase === 'working';
+  const resetDoc = () => {
+    setDocPhase('idle');
+    setDocResult(null);
+  };
   const [showUploadPanel, setShowUploadPanel] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<File | null>(null);
 
@@ -207,29 +223,35 @@ const AnalystWorkspace: React.FC = () => {
 
   const handleDocumentUpload = async (): Promise<void> => {
     if (!selectedDocument) {
-      setDocumentUploadStatus(i18n.t('workspace.pickDoc'));
+      setDocPhase('missing');
       return;
     }
-
-    setUploadingDocument(true);
-    setDocumentUploadStatus(null);
-
+    setDocResult(null);
+    setDocPhase('queued');
     try {
-      await documentsApi.upload(selectedDocument, {
-        crop: activeCropName?.toLowerCase(),
-        district: farmer?.village || undefined,
+      let job = await assistantApi.analyzeDocument(selectedDocument, {
+        audience: 'farmer',
+        language: asAnalysisLanguage(i18n.language),
+        crops: activeCropName ? [activeCropName.toLowerCase()] : undefined,
       });
-
-      setDocumentUploadStatus(i18n.t('workspace.docUploaded'));
-      setSelectedDocument(null);
-      setShowUploadPanel(false);
+      // A summary takes a few minutes on the server; check every few seconds (up to 20 min).
+      for (let i = 0; i < 400 && !docCancelled.current; i += 1) {
+        if (job.status === 'done' || job.status === 'failed') break;
+        setDocPhase(job.status === 'running' ? 'working' : 'queued');
+        setDocAhead(job.queue_position);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        job = await assistantApi.getDocumentJob(job.job_id);
+      }
+      if (docCancelled.current) return;
+      if (job.status === 'done' && job.result) {
+        setDocResult(job.result);
+        setDocPhase('done');
+      } else {
+        setDocPhase('failed');
+      }
     } catch (error) {
-      console.error('Document upload failed:', error);
-      setDocumentUploadStatus(
-        i18n.t('workspace.docFailed'),
-      );
-    } finally {
-      setUploadingDocument(false);
+      console.error('Document summary failed:', error);
+      if (!docCancelled.current) setDocPhase('failed');
     }
   };
 
@@ -417,11 +439,11 @@ const AnalystWorkspace: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <input
                     type="file"
-                    accept=".pdf,.doc,.docx,.txt"
+                    accept=".pdf,.docx,.txt,.jpg,.jpeg,.png"
                     onChange={(event) => {
                       const file = event.target.files?.[0];
                       setSelectedDocument(file || null);
-                      setDocumentUploadStatus(null);
+                      resetDoc();
                     }}
                     className="block w-full text-sm text-text-secondary file:mr-3 file:rounded-lg file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-primary-700 hover:file:bg-primary-100"
                   />
@@ -434,7 +456,7 @@ const AnalystWorkspace: React.FC = () => {
                       disabled={uploadingDocument || !selectedDocument}
                     >
                       <Upload className="w-3.5 h-3.5 mr-1.5" aria-hidden="true" />
-                      {uploadingDocument ? i18n.t('workspace.uploading') : i18n.t('workspace.upload')}
+                      {uploadingDocument ? i18n.t('workspace.docReading') : i18n.t('workspace.summarise')}
                     </Button>
 
                     <Button
@@ -444,7 +466,7 @@ const AnalystWorkspace: React.FC = () => {
                       onClick={() => {
                         setShowUploadPanel(false);
                         setSelectedDocument(null);
-                        setDocumentUploadStatus(null);
+                        resetDoc();
                       }}
                     >
                       {i18n.t('common.cancel')}
@@ -452,24 +474,52 @@ const AnalystWorkspace: React.FC = () => {
                   </div>
                 </div>
 
-                {documentUploadStatus && (
+                <p className="text-caption text-text-muted">{i18n.t('workspace.docPrivacy')}</p>
+
+                {docPhase !== 'idle' && docPhase !== 'done' && (
                   <div
+                    role="status"
                     className={`flex items-center gap-1.5 text-caption ${
-                      uploadingDocument
-                        ? 'text-text-muted'
-                        : documentUploadStatus.includes('successfully')
-                          ? 'text-success-700 font-medium'
-                          : 'text-danger-700 font-medium'
+                      docPhase === 'failed' || docPhase === 'missing'
+                        ? 'text-danger-700 font-medium'
+                        : 'text-text-muted'
                     }`}
                   >
-                    {uploadingDocument ? (
-                      <Upload className="w-3.5 h-3.5" aria-hidden="true" />
-                    ) : documentUploadStatus.includes('successfully') ? (
-                      <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
-                    ) : (
+                    {docPhase === 'failed' || docPhase === 'missing' ? (
                       <XCircle className="w-3.5 h-3.5" aria-hidden="true" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5" aria-hidden="true" />
                     )}
-                    <span>{documentUploadStatus}</span>
+                    <span>
+                      {docPhase === 'missing'
+                        ? i18n.t('workspace.pickDoc')
+                        : docPhase === 'failed'
+                          ? i18n.t('workspace.docFailed')
+                          : docPhase === 'queued' && docAhead > 0
+                            ? i18n.t('workspace.docQueued', { count: docAhead })
+                            : i18n.t('workspace.docWorking')}
+                    </span>
+                  </div>
+                )}
+
+                {docPhase === 'done' && docResult && (
+                  <div className="rounded-xl border border-border bg-surface p-3 space-y-2" aria-live="polite">
+                    <span className="flex items-center gap-1.5 text-caption font-semibold text-success-700">
+                      <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+                      {i18n.t('workspace.docSummary')}
+                    </span>
+                    <p className="text-small text-text whitespace-pre-line">{docResult.text}</p>
+                    {docResult.translation_failed && (
+                      <p className="text-caption text-text-muted">{i18n.t('workspace.docEnglish')}</p>
+                    )}
+                    {docResult.truncated && (
+                      <p className="text-caption text-text-muted">
+                        {i18n.t('workspace.docPartial', {
+                          read: docResult.parts_read,
+                          total: docResult.parts_total,
+                        })}
+                      </p>
+                    )}
                   </div>
                 )}
               </div>

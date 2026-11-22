@@ -1045,11 +1045,20 @@
     "trust": "Answers use the sources shown with each answer. If no source is shown, check with your agriculture officer.",
     "pickDoc": "Please choose a document first.",
     "docUploaded": "Document uploaded.",
-    "docFailed": "Could not upload the document. Please try again.",
+    "docFailed": "Could not read the document. Please try again.",
     "uploading": "Uploading...",
     "upload": "Upload",
     "closeUpload": "Close",
-    "addDoc": "+ Add a document"
+    "addDoc": "+ Add a document",
+    "summarise": "Summarise",
+    "docReading": "Reading…",
+    "docWorking": "Reading your document. This can take a few minutes; you can keep using the app.",
+    "docQueued_one": "Waiting: {{count}} document ahead of yours.",
+    "docQueued_other": "Waiting: {{count}} documents ahead of yours.",
+    "docSummary": "What this document says for you",
+    "docEnglish": "Shown in English: the translation could not be checked.",
+    "docPartial": "Long document: {{read}} of {{total}} sections read (the ones about your crop first).",
+    "docPrivacy": "Your document is read on the KrishiOS server only, and is not kept."
   },
   "composer": {
     "badImage": "Please choose a JPG, PNG or WEBP image.",
