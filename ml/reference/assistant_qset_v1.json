@@ -24,7 +24,8 @@
     "en": "When should I sow the nursery of paddy variety PR 126 in Punjab?",
     "hi": "पंजाब में धान की किस्म PR 126 की नर्सरी कब बोनी चाहिए?",
     "te": "పంజాబ్‌లో వరి రకం PR 126 నారుమడి ఎప్పుడు వేయాలి?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q02",
@@ -43,7 +44,8 @@
     "en": "How do I control grass weeds in a paddy nursery?",
     "hi": "धान की नर्सरी में घास वाले खरपतवार कैसे नियंत्रित करें?",
     "te": "వరి నారుమడిలో గడ్డి కలుపును ఎలా నివారించాలి?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q03",
@@ -63,7 +65,8 @@
     "en": "How much zinc sulphate should I apply to transplanted paddy for zinc deficiency?",
     "hi": "रोपाई वाले धान में जिंक की कमी के लिए कितना जिंक सल्फेट डालना चाहिए?",
     "te": "నాటు వరిలో జింక్ లోపానికి ఎంత జింక్ సల్ఫేట్ వేయాలి?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q04",
@@ -82,7 +85,8 @@
     "en": "When should urea be applied to basmati rice after transplanting?",
     "hi": "बासमती धान में रोपाई के बाद यूरिया कब डालना चाहिए?",
     "te": "బాస్మతి వరికి నాటిన తర్వాత యూరియా ఎప్పుడు వేయాలి?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q05",
@@ -100,7 +104,8 @@
     "en": "What seed rate should I use for direct-seeded rice?",
     "hi": "सीधी बुवाई वाले धान (DSR) के लिए बीज दर कितनी रखें?",
     "te": "నేరుగా విత్తే వరి (DSR) కి విత్తన మోతాదు ఎంత?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q06",
@@ -118,7 +123,8 @@
     "en": "How much urea does direct-seeded rice need and when?",
     "hi": "सीधी बुवाई वाले धान में कितना यूरिया और कब डालें?",
     "te": "నేరుగా విత్తిన వరికి ఎంత యూరియా, ఎప్పుడు వేయాలి?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q07",
@@ -135,7 +141,8 @@
     "en": "What is the right time to sow kharif maize in Punjab?",
     "hi": "पंजाब में खरीफ मक्का बोने का सही समय क्या है?",
     "te": "పంజాబ్‌లో ఖరీఫ్ మొక్కజొన్న విత్తడానికి సరైన సమయం ఏది?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q08",
@@ -152,7 +159,8 @@
     "en": "When should Bt cotton be sown?",
     "hi": "बीटी कपास की बुवाई कब करनी चाहिए?",
     "te": "బీటీ పత్తిని ఎప్పుడు విత్తాలి?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q09",
@@ -170,7 +178,8 @@
     "en": "Should I spray synthetic pyrethroids on cotton early in the season?",
     "hi": "क्या कपास पर मौसम की शुरुआत में सिंथेटिक पायरेथ्रॉइड का छिड़काव करना चाहिए?",
     "te": "పత్తిపై సీజన్ మొదట్లో సింథటిక్ పైరిత్రాయిడ్ పిచికారీ చేయవచ్చా?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q10",
@@ -189,7 +198,8 @@
     "en": "How can I reduce pink bollworm carry-over in cotton?",
     "hi": "कपास में गुलाबी सुंडी को अगले मौसम तक पहुँचने से कैसे रोकें?",
     "te": "పత్తిలో గులాబీ రంగు కాయ తొలుచు పురుగు తర్వాతి సీజన్‌కు రాకుండా ఎలా ఆపాలి?"
-   }
+   },
+   "split": "dev"
   },
   {
    "id": "q11",
@@ -206,7 +216,8 @@
     "en": "What is the best time to sow wheat?",
     "hi": "गेहूं बोने का सबसे अच्छा समय क्या है?",
     "te": "గోధుమ విత్తడానికి ఉత్తమ సమయం ఏది?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q12",
@@ -224,7 +235,8 @@
     "en": "How much wheat seed should I sow per acre?",
     "hi": "एक एकड़ में गेहूं का कितना बीज बोना चाहिए?",
     "te": "ఒక ఎకరానికి ఎంత గోధుమ విత్తనం వేయాలి?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q13",
@@ -243,7 +255,8 @@
     "en": "How can I manage yellow rust of wheat in organic farming?",
     "hi": "जैविक खेती में गेहूं के पीले रतुए को कैसे नियंत्रित करें?",
     "te": "సేంద్రియ వ్యవసాయంలో గోధుమ పసుపు తుప్పు తెగులును ఎలా నివారించాలి?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q14",
@@ -261,7 +274,8 @@
     "en": "When should toria, gobhi sarson and raya be sown?",
     "hi": "तोरिया, गोभी सरसों और राया की बुवाई कब करें?",
     "te": "తోరియా, గోబీ సర్సోన్, రాయా ఆవాలను ఎప్పుడు విత్తాలి?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q15",
@@ -278,7 +292,8 @@
     "en": "What seed rate is recommended for dry-seeded rainfed rice in Tamil Nadu?",
     "hi": "तमिलनाडु में सूखी बुवाई वाले वर्षा आधारित धान के लिए बीज दर क्या है?",
     "te": "తమిళనాడులో పొడి విత్తనంతో వర్షాధార వరికి విత్తన మోతాదు ఎంత?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q16",
@@ -295,7 +310,8 @@
     "en": "What spacing should I use for irrigated and rainfed maize?",
     "hi": "सिंचित और वर्षा आधारित मक्का में पौधों की दूरी कितनी रखें?",
     "te": "నీటిపారుదల, వర్షాధార మొక్కజొన్నలో మొక్కల మధ్య దూరం ఎంత ఉంచాలి?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q17",
@@ -313,7 +329,8 @@
     "en": "What is the seed rate for groundnut?",
     "hi": "मूंगफली की बीज दर कितनी है?",
     "te": "వేరుశనగ విత్తన మోతాదు ఎంత?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q18",
@@ -331,7 +348,8 @@
     "en": "How much gypsum should be applied to groundnut and when?",
     "hi": "मूंगफली में जिप्सम कितना और कब डालना चाहिए?",
     "te": "వేరుశనగకు జిప్సం ఎంత, ఎప్పుడు వేయాలి?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q19",
@@ -345,7 +363,8 @@
     "en": "What spacing should I use for dragon fruit plants?",
     "hi": "ड्रैगन फ्रूट के पौधों के बीच कितनी दूरी रखनी चाहिए?",
     "te": "డ్రాగన్ ఫ్రూట్ మొక్కల మధ్య ఎంత దూరం ఉంచాలి?"
-   }
+   },
+   "split": "test"
   },
   {
    "id": "q20",
@@ -359,7 +378,9 @@
     "en": "What will the onion price be at the mandi next month?",
     "hi": "अगले महीने मंडी में प्याज का भाव क्या रहेगा?",
     "te": "వచ్చే నెల మార్కెట్‌లో ఉల్లిపాయ ధర ఎంత ఉంటుంది?"
-   }
+   },
+   "split": "test"
   }
- ]
+ ],
+ "split_rule": "Decided 2026-11-22: q01-q10 = dev (compare retrieval/answering options), q11-q20 = test (scored once, after the wording review). Note: the first retrieval baseline, run 6fba3adba44f, was measured on all 20 topics before this split; the only decision taken after it (add Indic-to-English query translation) rests on the weakness seen in every language."
 }

@@ -1,0 +1,637 @@
+{
+ "run_id": "1dbcceed54a7",
+ "config": {
+  "qset": "v1-draft",
+  "split": "dev",
+  "items": 10,
+  "top_k": 5,
+  "page_slack": 1,
+  "endpoint": "/retrieval/search",
+  "query_translation": null
+ },
+ "by_lang": {
+  "en": {
+   "n": 10,
+   "hit@1": 0.5,
+   "hit@5": 0.8,
+   "mrr": 0.625,
+   "median_latency_ms": 399.4
+  },
+  "hi": {
+   "n": 10,
+   "hit@1": 0.2,
+   "hit@5": 0.7,
+   "mrr": 0.408,
+   "median_latency_ms": 419.9
+  },
+  "te": {
+   "n": 10,
+   "hit@1": 0,
+   "hit@5": 0.3,
+   "mrr": 0.15,
+   "median_latency_ms": 495.5
+  }
+ },
+ "rows": [
+  {
+   "id": "q01",
+   "lang": "en",
+   "rank": 4,
+   "latency_ms": 648.6,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     10
+    ],
+    [
+     "Package of Practices for Rabi Crops",
+     13
+    ],
+    [
+     "Package of Practices for Rabi Crops",
+     108
+    ]
+   ]
+  },
+  {
+   "id": "q01",
+   "lang": "hi",
+   "rank": 2,
+   "latency_ms": 374.0,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     10
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     11
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     11
+    ]
+   ]
+  },
+  {
+   "id": "q01",
+   "lang": "te",
+   "rank": 2,
+   "latency_ms": 495.5,
+   "top": [
+    [
+     "Package of Practices for Rabi Crops",
+     56
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     11
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     129
+    ]
+   ]
+  },
+  {
+   "id": "q02",
+   "lang": "en",
+   "rank": null,
+   "latency_ms": 365.0,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     16
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     30
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     142
+    ]
+   ]
+  },
+  {
+   "id": "q02",
+   "lang": "hi",
+   "rank": 3,
+   "latency_ms": 385.9,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     16
+    ],
+    [
+     "Package of Practices for Rabi Crops",
+     45
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     14
+    ]
+   ]
+  },
+  {
+   "id": "q02",
+   "lang": "te",
+   "rank": null,
+   "latency_ms": 372.2,
+   "top": [
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     379
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     117
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     145
+    ]
+   ]
+  },
+  {
+   "id": "q03",
+   "lang": "en",
+   "rank": 1,
+   "latency_ms": 364.3,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     19
+    ],
+    [
+     "Package of Practices for Rabi Crops",
+     36
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     19
+    ]
+   ]
+  },
+  {
+   "id": "q03",
+   "lang": "hi",
+   "rank": 4,
+   "latency_ms": 554.4,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     169
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     399
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     184
+    ]
+   ]
+  },
+  {
+   "id": "q03",
+   "lang": "te",
+   "rank": null,
+   "latency_ms": 969.9,
+   "top": [
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     401
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     399
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     57
+    ]
+   ]
+  },
+  {
+   "id": "q04",
+   "lang": "en",
+   "rank": 1,
+   "latency_ms": 545.7,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     30
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     13
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     27
+    ]
+   ]
+  },
+  {
+   "id": "q04",
+   "lang": "hi",
+   "rank": 1,
+   "latency_ms": 401.3,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     30
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     30
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     18
+    ]
+   ]
+  },
+  {
+   "id": "q04",
+   "lang": "te",
+   "rank": 2,
+   "latency_ms": 396.8,
+   "top": [
+    [
+     "Package of Practices for Rabi Crops",
+     136
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     30
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     149
+    ]
+   ]
+  },
+  {
+   "id": "q05",
+   "lang": "en",
+   "rank": 1,
+   "latency_ms": 417.2,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     33
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     35
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     33
+    ]
+   ]
+  },
+  {
+   "id": "q05",
+   "lang": "hi",
+   "rank": 2,
+   "latency_ms": 463.9,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     35
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     32
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     35
+    ]
+   ]
+  },
+  {
+   "id": "q05",
+   "lang": "te",
+   "rank": 2,
+   "latency_ms": 810.2,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     150
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     32
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     3
+    ]
+   ]
+  },
+  {
+   "id": "q06",
+   "lang": "en",
+   "rank": 2,
+   "latency_ms": 372.4,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     13
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     35
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     159
+    ]
+   ]
+  },
+  {
+   "id": "q06",
+   "lang": "hi",
+   "rank": null,
+   "latency_ms": 386.6,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     18
+    ],
+    [
+     "Package of Practices for Rabi Crops",
+     18
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     30
+    ]
+   ]
+  },
+  {
+   "id": "q06",
+   "lang": "te",
+   "rank": null,
+   "latency_ms": 370.2,
+   "top": [
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     314
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     13
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     374
+    ]
+   ]
+  },
+  {
+   "id": "q07",
+   "lang": "en",
+   "rank": 1,
+   "latency_ms": 468.0,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     38
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     105
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     113
+    ]
+   ]
+  },
+  {
+   "id": "q07",
+   "lang": "hi",
+   "rank": null,
+   "latency_ms": 420.0,
+   "top": [
+    [
+     "Package of Practices for Rabi Crops",
+     40
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     178
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     1
+    ]
+   ]
+  },
+  {
+   "id": "q07",
+   "lang": "te",
+   "rank": null,
+   "latency_ms": 569.4,
+   "top": [
+    [
+     "Package of Practices for Rabi Crops",
+     40
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     73
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     105
+    ]
+   ]
+  },
+  {
+   "id": "q08",
+   "lang": "en",
+   "rank": 1,
+   "latency_ms": 399.4,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     54
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     54
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     56
+    ]
+   ]
+  },
+  {
+   "id": "q08",
+   "lang": "hi",
+   "rank": 1,
+   "latency_ms": 343.6,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     54
+    ],
+    [
+     "Package of Practices for Rabi Crops",
+     43
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     55
+    ]
+   ]
+  },
+  {
+   "id": "q08",
+   "lang": "te",
+   "rank": null,
+   "latency_ms": 548.5,
+   "top": [
+    [
+     "Package of Practices for Rabi Crops",
+     43
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     325
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     324
+    ]
+   ]
+  },
+  {
+   "id": "q09",
+   "lang": "en",
+   "rank": null,
+   "latency_ms": 391.4,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     66
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     66
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     64
+    ]
+   ]
+  },
+  {
+   "id": "q09",
+   "lang": "hi",
+   "rank": 2,
+   "latency_ms": 433.2,
+   "top": [
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     287
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     53
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     376
+    ]
+   ]
+  },
+  {
+   "id": "q09",
+   "lang": "te",
+   "rank": null,
+   "latency_ms": 494.2,
+   "top": [
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     177
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     209
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     320
+    ]
+   ]
+  },
+  {
+   "id": "q10",
+   "lang": "en",
+   "rank": 2,
+   "latency_ms": 350.6,
+   "top": [
+    [
+     "Package of Practices for Kharif Crops",
+     64
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     60
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     64
+    ]
+   ]
+  },
+  {
+   "id": "q10",
+   "lang": "hi",
+   "rank": null,
+   "latency_ms": 419.9,
+   "top": [
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     275
+    ],
+    [
+     "Package of Practices for Rabi Crops",
+     69
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     282
+    ]
+   ]
+  },
+  {
+   "id": "q10",
+   "lang": "te",
+   "rank": null,
+   "latency_ms": 408.1,
+   "top": [
+    [
+     "Package of Practices for Rabi Crops",
+     20
+    ],
+    [
+     "Package of Practices for Kharif Crops",
+     109
+    ],
+    [
+     "Crop Production Guide: Agriculture (2020)",
+     283
+    ]
+   ]
+  }
+ ]
+}

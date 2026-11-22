@@ -1,0 +1,85 @@
+{
+ "provider": "indictrans2 dist-200M (indic-en)",
+ "translations": {
+  "q01": {
+   "hi": "When should a nursery of paddy variety PR 126 be sown in Punjab?",
+   "te": "When to plant rice variety PR 126 in Punjab?"
+  },
+  "q02": {
+   "hi": "How to control weeds in a paddy nursery",
+   "te": "How to Avoid Weeds in Rice Flour"
+  },
+  "q03": {
+   "hi": "How much zinc sulfate should be added to transplanted rice for zinc deficiency?",
+   "te": "How much zinc sulphate should be added to the sown paddy for zinc deficiency?"
+  },
+  "q04": {
+   "hi": "When should urea be added to basmati paddy after transplanting?",
+   "te": "When should urea be applied to basmati paddy after sowing?"
+  },
+  "q05": {
+   "hi": "What is the seed rate for direct sown paddy ( DSR )?",
+   "te": "What is the seed dose of Direct Sowing Rice ( DSR )?"
+  },
+  "q06": {
+   "hi": "How much urea to put in direct sown paddy and when?",
+   "te": "How much urea should be applied to directly sown paddy?"
+  },
+  "q07": {
+   "hi": "What is the best time to sow Kharif maize in Punjab?",
+   "te": "When is the best time to sow Kharif maize in Punjab?"
+  },
+  "q08": {
+   "hi": "When should Bt cotton be sown?",
+   "te": "When to Sow Bt Cotton"
+  },
+  "q09": {
+   "hi": "Should synthetic pyrethroids be sprayed on cotton at the beginning of the season?",
+   "te": "Can synthetic pyrethroid be sprayed on cotton early in the season?"
+  },
+  "q10": {
+   "hi": "How to prevent the pink sundae in cotton from reaching the next season?",
+   "te": "How to stop the pink leaf borer in cotton from coming in the next season?"
+  },
+  "q11": {
+   "hi": "What is the best time to sow wheat?",
+   "te": "What is the best time to sow wheat?"
+  },
+  "q12": {
+   "hi": "How much wheat seed should be sown in an acre?",
+   "te": "How much wheat should be sown per acre?"
+  },
+  "q13": {
+   "hi": "How to control the yellowing of wheat in organic farming?",
+   "te": "How to Prevent Wheat Turmeric Corrosion Pest in Organic Farming"
+  },
+  "q14": {
+   "hi": "When to Sow Toria Cabbage Mustard and Raya",
+   "te": "When to sow Toria and Gobi Sarson and Raya Mustard"
+  },
+  "q15": {
+   "hi": "What is the seed rate for dry sown rainfed paddy in Tamil Nadu?",
+   "te": "What is the seed dose of dry seed to rainfed rice in Tamil Nadu?"
+  },
+  "q16": {
+   "hi": "How to keep plant distance in irrigated and rain-fed maize?",
+   "te": "How much distance should be kept between plants in irrigated rainfed maize?"
+  },
+  "q17": {
+   "hi": "What is the seed rate of groundnut?",
+   "te": "what is the dosage of peanut seed"
+  },
+  "q18": {
+   "hi": "How much and when to add gypsum to peanuts?",
+   "te": "How much and when to apply gypsum to peanuts?"
+  },
+  "q19": {
+   "hi": "How much distance should be kept between dragon fruit plants?",
+   "te": "How much distance should be kept between dragon fruit plants?"
+  },
+  "q20": {
+   "hi": "What will be the price of onion in the market next month?",
+   "te": "what will be the price of onion in the market next month"
+  }
+ }
+}
