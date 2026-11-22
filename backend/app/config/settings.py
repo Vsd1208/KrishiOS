@@ -72,7 +72,7 @@ class Settings(BaseSettings):
     LLM_PROVIDER: Literal["gemini", "local", "ollama"] = "local"
     # Phase 10c: real on-device model via Ollama (LLM_PROVIDER=ollama). Must be a local address.
     OLLAMA_BASE_URL: str = "http://localhost:11434"
-    OLLAMA_MODEL: str = "qwen2.5:3b"
+    OLLAMA_MODEL: str = "qwen2.5:7b"  # chosen on dev run 31f459a7e4b0 (10/30 fully correct vs 5)
     LLM_MODEL: str = "gemini-3.6-flash"
     GEMINI_API_KEY: str | None = None
     LLM_TEMPERATURE: float = 0.2

@@ -21,6 +21,10 @@ services:
     ports:
       - "8000:8000"
 
+    # Phase 10c: lets the backend reach the on-device Ollama server running on the host.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
     volumes:
       - ./backend/app:/app/app
       - ./backend/migrations:/app/migrations

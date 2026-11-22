@@ -31,3 +31,13 @@ def get_assistant_service() -> AssistantService:
 
     return AssistantService(build_llm_provider(), pipeline_searcher(_build_retrieval_pipeline()),
                             TranslationService())
+
+
+@lru_cache(maxsize=1)
+def get_document_analyzer():
+    """One shared document analyser (same LLM and local translation as the assistant)."""
+    from app.agents.runtime.factory import build_llm_provider  # noqa: PLC0415
+    from app.assistant.documents import DocumentAnalyzer  # noqa: PLC0415
+    from app.translation.service import TranslationService  # noqa: PLC0415
+
+    return DocumentAnalyzer(build_llm_provider(), TranslationService())
