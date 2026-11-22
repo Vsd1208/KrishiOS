@@ -15,7 +15,7 @@ All runs are logged in `ml/experiments/`; full results are in `ml/reports/data/`
 
 | Experiment | Run id | Script | Notes |
 |---|---|---|---|
-| Retrieval baseline, all 20 topics (before the split) | `6fba3adba44f` | `scripts/eval_assistant_retrieval.py --split all` | MiniLM-era query path, e5 index v009 |
+| Retrieval baseline, all 20 topics (before the split) | `6fba3adba44f` | `scripts/eval_assistant_retrieval.py --split all` | e5 index v009, question as asked |
 | Retrieval, dev, question as asked | `1dbcceed54a7` | `... --split dev` | index v009 |
 | Retrieval, dev, Hindi/Telugu translated to English first | `894e4efc957b` | `... --split dev --translated` | index v009 |
 | Retrieval, dev, cross-encoder rerank of 25 candidates (rejected) | `f7df6c181acc` | `... --split dev --translated` | code reverted |
