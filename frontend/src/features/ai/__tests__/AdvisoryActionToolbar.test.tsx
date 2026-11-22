@@ -1,28 +1,31 @@
-import { describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+
+import i18n from '@/i18n';
 import { AdvisoryActionToolbar } from '../components/AdvisoryActionToolbar';
 
+beforeEach(async () => {
+  await i18n.changeLanguage('en');
+});
+
 describe('AdvisoryActionToolbar', () => {
-  it('handles save to notebook, print, and escalate to officer', () => {
+  it('prints and hands the question to the officer flow without claiming it was sent', () => {
     const handleEscalate = vi.fn();
+    const print = vi.spyOn(window, 'print').mockImplementation(() => {});
 
-    render(
-      <AdvisoryActionToolbar
-        advisoryText="Apply recommended bio-pesticide"
-        crop="Paddy"
-        onEscalate={handleEscalate}
-      />
-    );
+    render(<AdvisoryActionToolbar advisoryText="Apply bio-pesticide" crop="Paddy" onEscalate={handleEscalate} />);
 
-    const saveBtn = screen.getByRole('button', { name: /Save to Notebook/i });
-    expect(saveBtn).toBeInTheDocument();
-    fireEvent.click(saveBtn);
-    expect(screen.getByText(/Saved to Notebook/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Print' }));
+    expect(print).toHaveBeenCalled();
 
-    const escalateBtn = screen.getByRole('button', { name: /Escalate to Officer/i });
-    expect(escalateBtn).toBeInTheDocument();
-    fireEvent.click(escalateBtn);
-    expect(handleEscalate).toHaveBeenCalled();
-    expect(screen.getByText(/Dispatched to Officer/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Ask an officer' }));
+    expect(handleEscalate).toHaveBeenCalledTimes(1);
+    expect(document.body.textContent).not.toMatch(/Dispatched|Saved to Notebook/);
+    print.mockRestore();
+  });
+
+  it('has no officer button when there is nowhere to send the question', () => {
+    render(<AdvisoryActionToolbar advisoryText="x" />);
+    expect(screen.queryByRole('button', { name: 'Ask an officer' })).not.toBeInTheDocument();
   });
 });

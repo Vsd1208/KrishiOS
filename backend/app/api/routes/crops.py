@@ -5,6 +5,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.dependencies.auth import RequirePermission
+from app.auth.permissions import Permission
 from app.database.session import get_db_session
 from app.schemas.crop import CropCreate, CropResponse, CropUpdate
 from app.services.crop import CropService
@@ -17,7 +19,10 @@ def get_crop_service(session: Annotated[AsyncSession, Depends(get_db_session)]) 
     return CropService(session)
 
 
-@router.post("", response_model=CropResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "", response_model=CropResponse, status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def create_crop(
     payload: CropCreate,
     service: Annotated[CropService, Depends(get_crop_service)],
@@ -42,7 +47,10 @@ async def get_crop(
     return await service.get_crop(crop_id)
 
 
-@router.patch("/{crop_id}", response_model=CropResponse)
+@router.patch(
+    "/{crop_id}", response_model=CropResponse,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def update_crop(
     crop_id: int,
     payload: CropUpdate,
@@ -51,7 +59,10 @@ async def update_crop(
     return await service.update_crop(crop_id, payload)
 
 
-@router.delete("/{crop_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{crop_id}", status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def delete_crop(
     crop_id: int,
     service: Annotated[CropService, Depends(get_crop_service)],

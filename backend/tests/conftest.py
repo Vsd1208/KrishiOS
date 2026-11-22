@@ -13,6 +13,10 @@ os.environ.setdefault("APP_VERSION", "0.1.0")
 # Tests are hermetic: never use live market data or a key from a developer's backend/.env.
 os.environ["MARKET_PROVIDER_NAME"] = "mock-market-v1"
 os.environ["DATA_GOV_IN_API_KEY"] = ""
+# Provider choices in a developer's .env (real vision model, LLM) must not change test results.
+os.environ["VISION_PROVIDER"] = "mock-v1"
+os.environ["VISION_MODEL_VERSION"] = ""
+os.environ["LLM_PROVIDER"] = "local"
 os.environ.setdefault("DEBUG", "false")
 os.environ.setdefault("API_PREFIX", "/api/v1")
 os.environ.setdefault("BACKEND_CORS_ORIGINS", '["http://testserver"]')
@@ -43,3 +47,22 @@ def client() -> Generator[TestClient]:
 def mock_session() -> AsyncMock:
     """Provide an async mock shaped like an SQLAlchemy AsyncSession."""
     return AsyncMock()
+
+
+@pytest.fixture
+def officer_client() -> Generator[TestClient]:
+    """A test client signed in as an agricultural officer (role permissions, no token needed)."""
+    from uuid import uuid4  # noqa: PLC0415
+
+    from app.api.dependencies.auth import AuthContext, get_current_auth_context  # noqa: PLC0415
+    from app.auth.permissions import get_permissions_for_role  # noqa: PLC0415
+    from app.models.user import UserRole  # noqa: PLC0415
+
+    auth = AuthContext(user_uuid=uuid4(), role=UserRole.OFFICER,
+                       permissions=get_permissions_for_role(UserRole.OFFICER), jti=uuid4())
+    app.dependency_overrides.clear()
+    app.dependency_overrides[get_current_auth_context] = lambda: auth
+    with TestClient(app) as test_client:
+        yield test_client
+    app.dependency_overrides.clear()
+

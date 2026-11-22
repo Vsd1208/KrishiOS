@@ -3,6 +3,7 @@
 
 * phase2_benchmarks_colab.ipynb: translation, speech-to-text and text-to-speech
 * phase2_stt_colab.ipynb: speech-to-text only
+* phase10_yield_colab.ipynb: B5 yield experiments P1 (pretraining) and P2 (modality dropout)
 """
 
 import json
@@ -159,6 +160,85 @@ files.download("/content/RESULTS_NAME.zip")
 SETUP = [(CODE, GPU), (CODE, UPLOAD), (CODE, DEPS), (CODE, CUDA12), (CODE, ENV), (CODE, FLEURS),
          (CODE, HELPER)]
 
+P10_INTRO = """# KrishiOS Phase 10: B5 yield model experiments P1 and P2 on a Colab GPU
+
+Runs `ml/scripts/run_yield_p1p2.py` with the **same code** as the repo:
+
+- **P1, self-supervised pretraining:** the weather + satellite NDVI encoder is pretrained without
+  yields (masked reconstruction, cross-modal prediction, both, or none), then fine-tuned on 10, 25,
+  50 and 100% of the training data (label-efficiency curves).
+- **P2, modality dropout:** models trained with and without randomly hidden inputs, scored with
+  NDVI, weather or yield history missing.
+
+5 seeds each. Validation years only: the bundle holds no test-year data. No secrets or tokens
+are needed.
+
+**Before running**
+1. *Runtime > Change runtime type >* **T4 GPU**.
+2. Put `krishios_phase10_bundle.zip` in Google Drive, in a folder **`KrishiOS_colab`** (or let
+   cell 2 ask you to upload it).
+3. **Runtime > Run all**, and allow Google Drive access when asked.
+
+Finished runs are saved to `KrishiOS_colab/` in Drive as they complete. If Colab disconnects, run
+all again: it continues where it stopped. At the end `krishios_phase10_results.zip` is saved to
+the same Drive folder and downloaded: give that file back to Claude Code.
+Expected time on a T4: about 2-3 hours. Keep the browser tab open.
+"""
+
+P10_DRIVE = """# 2. Google Drive (progress survives disconnects) and the bundle
+import os, zipfile, pathlib, subprocess
+from google.colab import drive, files
+drive.mount("/content/drive")
+DRIVE = pathlib.Path("/content/drive/MyDrive/KrishiOS_colab")
+DRIVE.mkdir(parents=True, exist_ok=True)
+ROOT = pathlib.Path("/content/KrishiOS")
+bundle = DRIVE / "krishios_phase10_bundle.zip"
+if not bundle.exists():
+    uploaded = files.upload()
+    bundle = pathlib.Path(next(iter(uploaded)))
+if not (ROOT / "ml").exists():
+    with zipfile.ZipFile(bundle) as z:
+        z.extractall(ROOT)
+commit = (ROOT / "BUNDLE_COMMIT").read_text().strip()
+print("bundle commit:", commit)
+os.environ.update({"KRISHIOS_GIT_COMMIT": commit + "+colab", "PYTHONIOENCODING": "utf-8",
+                   "PYTHONUNBUFFERED": "1", "POSTGRES_PASSWORD": "unused-in-evaluation",
+                   "APP_ENV": "test"})
+"""
+
+P10_RUN = """# 3. Run P1 then P2 (about 2-3 hours). Progress lines are printed as runs finish.
+PROGRESS = DRIVE / "phase10_progress.jsonl"
+LOG = DRIVE / "phase10_log.txt"
+cmd = ["python", "scripts/run_yield_p1p2.py", "--experiment", "both", "--progress", str(PROGRESS)]
+with open(LOG, "a") as log:
+    p = subprocess.Popen(cmd, cwd=ROOT / "ml", stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         text=True)
+    for line in p.stdout:
+        log.write(line)
+        log.flush()
+        if not line.startswith((" ", "{", "}")):
+            print(line, end="")
+print("exit code", p.wait())
+"""
+
+P10_PACK = """# 4. Package the results to Drive and download them
+import shutil, torch
+out = pathlib.Path("/content/krishios_phase10_results")
+if out.exists():
+    shutil.rmtree(out)
+for rel in ("ml/experiments", "ml/reports/data"):
+    if (ROOT / rel).exists():
+        shutil.copytree(ROOT / rel, out / rel)
+for f in (PROGRESS, LOG):
+    if f.exists():
+        shutil.copy(f, out / f.name)
+(out / "GPU.txt").write_text(torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu")
+zip_path = shutil.make_archive("/content/krishios_phase10_results", "zip", out)
+shutil.copy(zip_path, DRIVE / "krishios_phase10_results.zip")
+print("saved to Drive:", DRIVE / "krishios_phase10_results.zip")
+files.download(zip_path)
+"""
+
 
 def _fill(text: str, results: str, minutes: str) -> str:
     return text.replace("RESULTS_NAME", results).replace("MINUTES", minutes)
@@ -175,6 +255,9 @@ NOTEBOOKS = {
             "Phase 2 benchmarks", "Phase 2 speech-to-text benchmarks")), *SETUP,
         (MD, STT_MD), (CODE, STT),
         (CODE, _fill(PACK, "krishios_phase2_stt_results", "")),
+    ],
+    "phase10_yield_colab.ipynb": [
+        (MD, P10_INTRO), (CODE, GPU), (CODE, P10_DRIVE), (CODE, P10_RUN), (CODE, P10_PACK),
     ],
 }
 

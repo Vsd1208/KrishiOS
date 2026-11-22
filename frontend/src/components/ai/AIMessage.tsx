@@ -1,3 +1,4 @@
+import i18n from '@/i18n';
 import React, { useState } from 'react';
 import { Sparkles, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import type { Citation } from '@/types/proactive';
@@ -33,7 +34,7 @@ export const AIMessage: React.FC<AIMessageProps> = ({
   return (
     <article
       role="region"
-      aria-label="AI Generated Advisory Message"
+      aria-label={i18n.t('ui.aiAnswer')}
       className={`relative rounded-lg border border-primary-200/80 bg-primary-50/30 p-4.5 text-text shadow-sm border-l-4 border-l-primary-600 transition-all ${className}`}
     >
       {/* Header bar */}
@@ -41,7 +42,7 @@ export const AIMessage: React.FC<AIMessageProps> = ({
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1 rounded-md bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-800">
             <Sparkles className="w-3.5 h-3.5 text-primary-700 shrink-0" aria-hidden="true" />
-            AI Advisory
+            {i18n.t('ui.aiAnswer')}
           </span>
 
           {timestamp && (
@@ -54,7 +55,7 @@ export const AIMessage: React.FC<AIMessageProps> = ({
             <ConfidenceBadge confidence={confidence} size="sm" showLabel />
           )}
           <span className="text-[11px] uppercase tracking-wider text-text-muted font-medium select-none">
-            KrishiOS Intelligence
+            KrishiOS
           </span>
         </div>
       </header>

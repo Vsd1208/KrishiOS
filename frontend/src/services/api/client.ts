@@ -54,13 +54,16 @@ export function clearTokens(): void {
 }
 
 // ── Refresh Lock ─────────────────────────────────────────────────────────────
-// Prevents multiple concurrent refresh requests when several 401s arrive.
+// One refresh at a time for the whole app: session restore on page load and every 401 retry
+// share it. Refresh tokens rotate, so parallel refreshes would each mint a new token (and the
+// losers could log the user out).
 
-let refreshPromise: Promise<boolean> | null = null;
+let refreshPromise: Promise<TokenResponse | null> | null = null;
 
-async function attemptTokenRefresh(): Promise<boolean> {
+/** Exchange the refresh token for new tokens, joining a refresh already in flight. */
+export function refreshSession(): Promise<TokenResponse | null> {
   const refreshToken = getRefreshToken();
-  if (!refreshToken) return false;
+  if (!refreshToken) return Promise.resolve(null);
 
   // If a refresh is already in progress, wait for it
   if (refreshPromise) return refreshPromise;
@@ -75,22 +78,26 @@ async function attemptTokenRefresh(): Promise<boolean> {
 
       if (!response.ok) {
         clearTokens();
-        return false;
+        return null;
       }
 
       const data = (await response.json()) as TokenResponse;
       setAccessToken(data.access_token);
       setRefreshToken(data.refresh_token);
-      return true;
+      return data;
     } catch {
       clearTokens();
-      return false;
+      return null;
     } finally {
       refreshPromise = null;
     }
   })();
 
   return refreshPromise;
+}
+
+async function attemptTokenRefresh(): Promise<boolean> {
+  return (await refreshSession()) !== null;
 }
 
 // ── Core Request Function ────────────────────────────────────────────────────
@@ -104,6 +111,8 @@ interface RequestOptions {
   timeout?: number;
   /** Additional headers. */
   headers?: Record<string, string>;
+  /** Internal: this is the single retry after a 401. */
+  isRetry?: boolean;
 }
 
 /**
@@ -120,7 +129,12 @@ async function request<T>(
   body?: unknown,
   options: RequestOptions = {},
 ): Promise<T> {
-  const { skipAuth = false, timeout = DEFAULT_TIMEOUT_MS, headers: extraHeaders } = options;
+  const { skipAuth = false, timeout = DEFAULT_TIMEOUT_MS, headers: extraHeaders, isRetry = false } = options;
+
+  // On page load the access token arrives with the session refresh; wait instead of sending a
+  // request that is bound to fail with 401 and start another refresh.
+  if (!skipAuth && !accessToken && refreshPromise) await refreshPromise;
+  const sentToken = skipAuth ? null : accessToken;
 
   const url = `${config.apiBaseUrl}${path}`;
 
@@ -157,11 +171,12 @@ async function request<T>(
   }
 
   // ── Handle 401 with automatic refresh ────────────────────────────────────
-  if (response.status === 401 && !skipAuth) {
-    const refreshed = await attemptTokenRefresh();
+  if (response.status === 401 && !skipAuth && !isRetry) {
+    // Another request may already have refreshed; then just retry with the newer token.
+    const refreshed = (accessToken !== null && accessToken !== sentToken) || (await attemptTokenRefresh());
     if (refreshed) {
-      // Retry the original request with the new token
-      return request<T>(method, path, body, { ...options, skipAuth: false });
+      // Retry the original request once with the new token
+      return request<T>(method, path, body, { ...options, skipAuth: false, isRetry: true });
     }
     // Refresh failed — throw so AuthContext can redirect to login
     throw new ApiError(401, 'unauthorized', 'Session expired. Please log in again.');

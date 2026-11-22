@@ -72,3 +72,25 @@ agml_rice_india,Bacterialblight,paddy,bacterial_leaf_blight,Sethy et al. (Sambal
 agml_rice_india,Blast,paddy,blast,
 agml_rice_india,Brownspot,paddy,brown_spot,
 agml_rice_india,Tungro,paddy,tungro,
+india_field,chilli/Bacterial Spot,chilli,bacterial_spot,Krishna (AP) chilli field photos
+india_field,chilli/Cercospora Leaf Spot,chilli,cercospora_leaf_spot,
+india_field,chilli/Curl Virus,chilli,leaf_curl_virus,
+india_field,chilli/Healthy Leaf,chilli,healthy,
+india_field,chilli/Nutrition Deficiency,chilli,nutrient_deficiency,
+india_field,chilli/White spot,chilli,white_spot,
+india_field,potato/early_blight,potato,early_blight,UP potato field photos
+india_field,potato/healthy,potato,healthy,
+india_field,potato/late_blight,potato,late_blight,
+india_field,soybean/frogeye_leaf_spot,soybean,frogeye_leaf_spot,Maharashtra soybean field photos
+india_field,soybean/healthy,soybean,healthy,
+india_field,soybean/mosaic,soybean,mosaic_virus,
+india_field,soybean/pest_damage,soybean,pest_damage,
+india_field,soybean/rust,soybean,rust,
+india_field,soybean/septoria_brown_spot,soybean,septoria_brown_spot,
+india_field,tomato/Alternaria,tomato,early_blight,Alternaria leaf spot on tomato aligned to early blight (Alternaria solani)
+india_field,tomato/Leaf miner,tomato,leaf_miner,
+india_field,tomato/Alternaria+Leafminer,,,excluded: two conditions in one label
+india_field,tomato/Insect attack,,,excluded: unspecified pest (3 photos)
+india_field,tomato/Physiological disorder,,,excluded: 1 photo
+india_field,wheat/control,wheat,healthy,IARI wheat field photos; 'control' taken as healthy (to confirm with the dataset authors)
+india_field,wheat/diseased,wheat,diseased_unspecified,the dataset does not name the disease; the model can only say 'possibly diseased'

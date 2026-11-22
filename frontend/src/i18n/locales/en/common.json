@@ -14,7 +14,23 @@
     "knowledge": "Knowledge",
     "analytics": "Analytics",
     "ask": "Ask AI",
-    "updates": "Govt"
+    "updates": "Govt",
+    "officer": {
+      "dashboard": "Dashboard",
+      "farmers": "Farmers",
+      "reviews": "Reviews",
+      "knowledge": "Knowledge base",
+      "analytics": "Analytics",
+      "evaluation": "Answer quality",
+      "bulletins": "Bulletins",
+      "publish": "Publish advisory",
+      "connect": "Delivery analytics",
+      "grievances": "Grievances and schemes",
+      "yield": "Yield outlook",
+      "outbreaks": "Outbreaks",
+      "feedback": "Farmer feedback",
+      "extension": "Assisted mode"
+    }
   },
   "auth": {
     "login": "Log In",
@@ -47,7 +63,9 @@
     "citations": "Citations",
     "graphPaths": "Knowledge Graph Paths",
     "activeRules": "Active Rules",
-    "telemetry": "Live Telemetry"
+    "telemetry": "Live Telemetry",
+    "print": "Print",
+    "askOfficer": "Ask an officer"
   },
   "risk": {
     "low": "Low Risk",
@@ -87,14 +105,211 @@
   },
   "farmer": {
     "welcome": "Welcome to KrishiOS",
-    "dashboardSubtitle": "Your agricultural intelligence dashboard"
+    "dashboardSubtitle": "Your agricultural intelligence dashboard",
+    "dash": {
+      "greeting": "Namaste, {{name}}",
+      "greetingNoName": "Namaste",
+      "myCrop": "My crop",
+      "noCrop": "No crop recorded yet",
+      "daysSinceSowing_one": "{{count}} day since sowing",
+      "daysSinceSowing_other": "{{count}} days since sowing",
+      "noSowingDate": "No sowing date recorded.",
+      "status": {
+        "Growing": "Growing",
+        "Sown": "Sown",
+        "Planned": "Planned",
+        "Harvested": "Harvested"
+      },
+      "cropHelp": "Once your crop is registered, it appears here."
+    }
   },
   "officer": {
     "welcome": "Officer Console",
     "dashboardSubtitle": "Agricultural intelligence & review dashboard",
     "pendingReviews": "Pending Reviews",
     "activeAlerts": "Active Alerts",
-    "totalFarmers": "Total Farmers"
+    "totalFarmers": "Total Farmers",
+    "district": "District #{{id}}",
+    "farmerNo": "Farmer #{{id}}",
+    "broadcastTarget": "All farmers (broadcast)",
+    "broadcastButton": "Broadcast an advisory",
+    "priority": {
+      "ALL": "All",
+      "URGENT": "Urgent",
+      "HIGH": "High",
+      "NORMAL": "Normal",
+      "LOW": "Low"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    },
+    "dash": {
+      "defaultRole": "Agricultural officer",
+      "subtitle": "Review advisories before they reach farmers, and follow district alerts",
+      "pendingHint": "Advisories waiting for your approval",
+      "urgent": "{{count}} urgent or high",
+      "warnings": "Weather warnings",
+      "warningsHint": "Severe weather warnings in force",
+      "warningsLink": "District risks",
+      "farmers": "Registered farmers",
+      "plots_one": "{{count}} registered field",
+      "plots_other": "{{count}} registered fields",
+      "farmersLink": "Farmer directory",
+      "graph": "Knowledge graph",
+      "graphHint": "Extracted facts waiting for review",
+      "graphLink": "Review facts",
+      "queue": "Advisories to review",
+      "viewAll": "View all ({{count}})"
+    },
+    "eval": {
+      "kicker": "AI checks",
+      "title": "AI trust and evaluation",
+      "subtitle": "See the sources behind each AI decision, the knowledge index in use, and what is waiting for review",
+      "live": "Live data from the backend",
+      "evidence": "Evidence",
+      "evidenceHint": "Decisions that carry an evidence record",
+      "index": "Knowledge index in use",
+      "versionChunks": "Version {{version}} • {{chunks}} passages",
+      "waiting": "Waiting for review",
+      "waitingHint": "High-impact alerts waiting for an officer",
+      "embedding": "Embedding model",
+      "vectorSize": "Vector size: {{n}}",
+      "versionsTitle": "Knowledge index versions",
+      "versionsHint": "The live version, and the previous one kept for rollback",
+      "alias": "Alias: {{name}}",
+      "liveVersion": "Live version",
+      "status": "Status: {{status}}",
+      "collection": "Collection:",
+      "documents": "Documents:",
+      "chunks": "Passages:",
+      "buildMode": "Build mode:",
+      "previousVersion": "Previous version (rollback)",
+      "rollbackHint": "Kept as the rollback version.",
+      "decisionsTitle": "AI decisions and their evidence",
+      "decisionsHint": "Choose a decision to see the sources, knowledge-graph links and data it used",
+      "decisionsCount_one": "{{count}} decision logged",
+      "decisionsCount_other": "{{count}} decisions logged",
+      "noDecisions": "No decisions recorded yet.",
+      "inspect": "View evidence",
+      "traceNo": "Decision #{{id}}",
+      "advice": "AI advice:",
+      "sources": "Sources ({{count}}):",
+      "noSources": "No sources are attached to this decision.",
+      "graphPath": "Knowledge-graph links:",
+      "review": "Review:",
+      "toOfficer": "Sent to the officer queue",
+      "direct": "Sent directly",
+      "choose": "Choose a decision to see its evidence.",
+      "chooseHint": "You will see its sources, knowledge-graph links and the data it used.",
+      "noticeTitle": "About these numbers:",
+      "notice": "This page shows only numbers the backend reports. Costs, token counts and accuracy scores are not shown until the backend measures them."
+    },
+    "dir": {
+      "title": "Farmer directory",
+      "subtitle": "Farmers in your district, with their land and fields",
+      "search": "Search by name, phone or village",
+      "none": "No farmers found",
+      "noneHint": "Try a different name, phone number or village.",
+      "id": "ID #{{id}}",
+      "acres": "{{n}} acres",
+      "plots_one": "{{count}} field",
+      "plots_other": "{{count}} fields",
+      "details": "Farmer details",
+      "land": "Total land:",
+      "language": "Preferred language:",
+      "contact": "Phone:",
+      "fields": "Registered fields ({{count}})",
+      "soil": "Soil: {{v}}",
+      "irrigation": "Irrigation: {{v}}",
+      "noFields": "No fields are registered for this farmer.",
+      "choose": "Choose a farmer to see their land and fields."
+    },
+    "kg": {
+      "title": "Knowledge base",
+      "subtitle": "Review facts extracted from documents, and search the agricultural documents",
+      "tabGraph": "Extracted facts ({{count}})",
+      "tabSearch": "Search documents",
+      "nonePENDING": "No facts waiting for review",
+      "noneAPPROVED": "No approved facts",
+      "noneREJECTED": "No rejected facts",
+      "noneHint": "Nothing to show in this list.",
+      "searchLabel": "Search the agricultural documents:",
+      "searchPlaceholder": "e.g. stem borer threshold in paddy",
+      "searching": "Searching...",
+      "searchFailed": "The search did not work. Check that the backend is running and try again.",
+      "found_one": "{{count}} result ({{ms}} ms)",
+      "found_other": "{{count}} results ({{ms}} ms)",
+      "score": "Match: {{pct}}%",
+      "chunk": "Passage ID:"
+    },
+    "analytics": {
+      "title": "District risks",
+      "subtitle": "Weather warnings and recent AI risk decisions for your district",
+      "warnings": "Weather warnings in force ({{count}})",
+      "noWarnings": "No severe weather warnings for this district.",
+      "until": "Until {{date}}",
+      "decisions": "Recent AI risk decisions ({{count}})",
+      "noDecisions": "No recent AI risk decisions.",
+      "confidence": "Confidence: {{pct}}%"
+    },
+    "queue": {
+      "title": "Advisories to review",
+      "subtitle": "Check, edit and approve high-impact AI advice before it reaches farmers",
+      "refresh": "Refresh",
+      "search": "Search by farmer number, crop or topic",
+      "empty": "Nothing to review",
+      "emptyHint": "No advisories are waiting for review.",
+      "count": "Waiting for review ({{count}})",
+      "needsOfficer": "Needs an officer's approval",
+      "open": "Review"
+    },
+    "review": {
+      "title": "Review advisory",
+      "description": "Check the advice before it is sent to the farmer",
+      "channel": "Channel: {{channel}}",
+      "via": "by {{channel}}",
+      "edit": "Edit the text",
+      "cancelEdit": "Cancel editing",
+      "editPlaceholder": "Edit the advisory before sending",
+      "note": "Review note (optional):",
+      "notePlaceholder": "e.g. Checked in the field; dose is correct.",
+      "disclaimer": "When you approve, your review is recorded and the advisory is sent to the farmer by {{channel}}.",
+      "failed": "This could not be saved. Check the connection and try again.",
+      "reject": "Reject",
+      "processing": "Saving...",
+      "approve": "Approve and send"
+    },
+    "cand": {
+      "subject": "Subject:",
+      "object": "Object:",
+      "doc": "Document:",
+      "notePlaceholder": "Optional note or source reference",
+      "reject": "Reject",
+      "approve": "Add to graph"
+    },
+    "broadcast": {
+      "title": "Broadcast an advisory to the district",
+      "description": "Creates advice for every registered farmer in the district",
+      "tplPest": "Pest or disease outbreak",
+      "tplRain": "Unseasonal heavy rain",
+      "tplPrice": "Mandi price change",
+      "notesPest": "[Pest or disease, where it was seen, and what farmers should do].",
+      "notesRain": "[Expected rainfall and timing from the official forecast]. Postpone spraying and harvest.",
+      "notesPrice": "[Crop, market and price change, from the mandi data].",
+      "failed": "The advisory could not be sent. Check the connection and try again.",
+      "sent": "Advisory event sent",
+      "decisions": "Advice created:",
+      "eventId": "Event ID:",
+      "done": "Done",
+      "category": "Type of event:",
+      "crop": "Crop:",
+      "district": "District:",
+      "notes": "Advice / notes:",
+      "sending": "Sending...",
+      "submit": "Send to district"
+    }
   },
   "providers": {
     "tab": "Providers",
@@ -109,7 +324,59 @@
     "policyViolations": "Policy warnings"
   },
   "canvas": {
-    "contextNotSet": "Not set"
+    "contextNotSet": "Not set",
+    "title": "Answer details",
+    "context": "Context:",
+    "tabs": {
+      "graph": "Knowledge graph",
+      "weather": "Weather",
+      "vision": "Photo",
+      "sources": "Sources"
+    },
+    "sources": {
+      "title": "Sources for this answer",
+      "subtitle": "Documents the answer was drawn from",
+      "checks": "Answer checks",
+      "grounding": "Grounded in sources",
+      "coherence": "Consistency",
+      "hallucination": "Made-up facts check",
+      "policy": "Safety check",
+      "passed": "Passed",
+      "flagged": "Flagged",
+      "page": "page {{page}}",
+      "match": "{{pct}}% match",
+      "none": "No sources were found for this answer.",
+      "noneHelp": "Treat it as unverified and check with your agriculture officer before acting on it."
+    },
+    "graph": {
+      "title": "Knowledge-graph links",
+      "subtitle": "Facts from the crop knowledge graph that this answer used",
+      "none": "This answer did not use the knowledge graph.",
+      "chain": "Link {{n}}",
+      "confidence": "{{pct}}% confidence"
+    },
+    "weather": {
+      "title": "Weather used in this answer",
+      "district": "District: {{district}}",
+      "temp": "Air temperature",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "rain": "Rainfall",
+      "none": "No weather readings were attached to this answer.",
+      "noneHelp": "See the weather card on your home screen for the latest forecast.",
+      "sprayOk": "Spray window: suitable",
+      "sprayNo": "Spray window: not suitable, postpone spraying"
+    },
+    "vision": {
+      "title": "Your photo",
+      "subtitle": "The crop photo attached to this question",
+      "alt": "Crop photo attached to the question",
+      "none": "No photo is attached to this question.",
+      "possible": "Possible finding",
+      "confidence": "{{pct}}% confidence",
+      "howto": "To check this photo for crop and disease, open \"{{chat}}\" and use its photo button. You will be asked to confirm the crop.",
+      "caution": "Photo findings are possibilities, not a diagnosis. Check with your agriculture officer before using strong chemicals."
+    }
   },
   "chat": {
     "title": "Ask KrishiOS",
@@ -182,7 +449,8 @@
       "created": "registered",
       "duplicate_phone": "already registered",
       "error": "could not register"
-    }
+    },
+    "officerNote": "Asking on a farmer’s behalf and the review queue are for extension workers. As an officer you can register farmers here."
   },
   "feedbackOps": {
     "title": "Farmer feedback",
@@ -550,7 +818,28 @@
     "changeCol": "vs normal",
     "tier": "Tier",
     "lead": "lead {{lead}} d",
-    "needsReview": "needs review"
+    "needsReview": "needs review",
+    "rangeMeaning": "The range is set to hold the actual yield in about 8 of 10 seasons.",
+    "rangeBar": "Forecast {{forecast}}, likely range {{low}} to {{high}}, normal {{normal}}",
+    "legendForecast": "forecast",
+    "legendNormal": "normal",
+    "why": {
+      "tierB": "Tier B crop: fewer past records, so the range is rougher than stated.",
+      "missing": "Missing input: {{list}}. The estimate leans more on past yields.",
+      "ood": "This crop or district is new to the model: treat it as a rough guide."
+    },
+    "whyShort": {
+      "tierB": "fewer records",
+      "missing": "missing {{list}}",
+      "ood": "new to model"
+    },
+    "modality": {
+      "weather": "weather",
+      "yield_history": "past yields",
+      "ndvi": "satellite greenness",
+      "satellite": "satellite data",
+      "soil": "soil data"
+    }
   },
   "insurance": {
     "title": "Crop insurance helper (PMFBY)",
@@ -585,5 +874,202 @@
     "gridLabel": "Reports per district and week",
     "where": "Condition · crop · district",
     "note": "Unverified model findings, not diagnoses."
+  },
+  "profile": {
+    "title": "My profile",
+    "subtitle": "Your details, language and alert choices",
+    "noProfile": "No farmer profile is linked to this login",
+    "village": "Village",
+    "language": "Language",
+    "languageSaved": "Language saved. KrishiOS will reply in this language.",
+    "languageLocalOnly": "The language changes on this device only, because no farmer profile is linked.",
+    "alertsTitle": "Alerts I want",
+    "alerts": {
+      "weather": "Weather and spray alerts",
+      "weatherHelp": "Rain, heat and wind warnings for your crop",
+      "disease": "Pest and disease alerts",
+      "diseaseHelp": "When pest or disease risk rises in your area",
+      "market": "Mandi price alerts",
+      "marketHelp": "Large price changes for your crop at nearby mandis",
+      "scheme": "Scheme alerts",
+      "schemeHelp": "Deadlines and updates for government schemes"
+    },
+    "save": "Save alert choices",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "saveFailed": "Could not save. Please try again.",
+    "prefsFailed": "Could not load your alert choices. Please try again later."
+  },
+  "fieldsPage": {
+    "title": "My fields",
+    "subtitle": "Your registered fields, crops and soil tests",
+    "totalLand": "Total land:",
+    "acres": "{{n}} acres",
+    "none": "No fields are registered for you yet",
+    "noneHelp": "Fields can't be added from the app yet. Once a field is registered for you, it appears here with its crops and soil tests.",
+    "area": "Area",
+    "soilType": "Soil type",
+    "irrigation": "Irrigation",
+    "soilTest": "Latest soil sample",
+    "noSoil": "No soil sample recorded for this field.",
+    "soilFailed": "Could not load soil tests.",
+    "collected": "Collected on {{date}}",
+    "noResults": "Test results are not shown in the app yet; ask your officer or the soil testing lab.",
+    "soilStatus": {
+      "COLLECTED": "collected",
+      "IN_TRANSIT": "on the way to the lab",
+      "TESTING": "being tested",
+      "COMPLETED": "test completed",
+      "DELIVERED": "report delivered"
+    }
+  },
+  "farmSummary": {
+    "title": "My farm",
+    "land": "Land",
+    "acres": "acres",
+    "fields": "Fields",
+    "standing": "Standing crops"
+  },
+  "weatherCard": {
+    "title": "Weather at your village",
+    "none": "No weather reading is available right now."
+  },
+  "errorState": {
+    "offline": {
+      "title": "No connection",
+      "message": "KrishiOS could not be reached. Check your internet connection and try again."
+    },
+    "session": {
+      "title": "Session expired",
+      "message": "Please sign in again to continue."
+    },
+    "denied": {
+      "title": "Not allowed",
+      "message": "Your account does not have access to this page."
+    },
+    "missing": {
+      "title": "Page not found",
+      "message": "This page does not exist or has moved."
+    },
+    "server": {
+      "title": "KrishiOS is having trouble",
+      "message": "Please try again in a few minutes."
+    },
+    "generic": {
+      "title": "Something went wrong",
+      "message": "Please try again."
+    },
+    "crash": {
+      "title": "This page could not be shown",
+      "message": "Something went wrong on this page. Reload to try again, or use the menu to open another page."
+    },
+    "update": {
+      "title": "KrishiOS was updated",
+      "message": "Reload the page to get the latest version."
+    },
+    "reload": "Reload",
+    "loadFailed": {
+      "title": "Some information could not be loaded",
+      "message": "Parts of this page may be missing. Please try again shortly."
+    }
+  },
+  "shell": {
+    "tagline": "Farming advice in your language",
+    "checkingSession": "Checking your sign-in...",
+    "checkingAccess": "Checking access...",
+    "roleDenied": "Your account ({{role}}) cannot open this page.",
+    "backHome": "Back to my home page",
+    "officerNav": "Officer menu",
+    "farmerNav": "Farmer menu",
+    "officerConsole": "Officer console",
+    "expandMenu": "Expand menu",
+    "collapseMenu": "Collapse menu"
+  },
+  "login": {
+    "subtitle": "Enter your registered phone number or email",
+    "identifier": "Phone number or email",
+    "identifierHint": "e.g. 9876543210",
+    "needIdentifier": "Please enter your phone number or email.",
+    "needPassword": "Please enter your password.",
+    "failed": "Sign-in failed. Please try again.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "hero": {
+    "title": "Ask KrishiOS",
+    "voice": "Speak your question",
+    "voiceHelp": "In Telugu, Hindi or English",
+    "text": "Type your question",
+    "textHelp": "Pests, fertilizer, weather or prices",
+    "photo": "Check a crop photo",
+    "photoHelp": "Possible pests or diseases; you confirm the crop"
+  },
+  "alertsPage": {
+    "title": "Alerts",
+    "subtitle": "Pest, disease and weather alerts for your crop",
+    "active": "New ({{n}})",
+    "all": "All ({{n}})",
+    "none": "No alerts right now",
+    "advisories": "Crop advisories",
+    "practices": "Recommended practices:",
+    "acknowledged": "Seen",
+    "actionNeeded": "New",
+    "officerReviewed": "Reviewed by officer",
+    "officerNote": "Officer note:",
+    "acknowledge": "Mark as seen",
+    "bannerTitle": "New alerts ({{n}})",
+    "viewAll": "See all"
+  },
+  "ui": {
+    "dismiss": "Dismiss",
+    "notifications": "Notifications",
+    "stopAudio": "Stop",
+    "listen": "Listen",
+    "aiAnswer": "AI answer"
+  },
+  "answer": {
+    "cautionTitle": "Please check in the field:",
+    "caution": "This is a possible problem based on the information available, not a confirmed diagnosis. Ask your agriculture officer before using strong chemicals.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "why_one": "Why this answer? ({{count}} source)",
+    "why_other": "Why this answer? ({{count}} sources)",
+    "followUps": "You could also ask:"
+  },
+  "workspace": {
+    "stream": "Chat only",
+    "split": "Chat and details",
+    "newChat": "New chat",
+    "welcome": "Namaste! What would you like to ask about your farm?",
+    "welcomeHelp": "Ask in Telugu, Hindi or English, by voice or text. To check a crop photo for disease, use \"{{chat}}\".",
+    "trust": "Answers use the sources shown with each answer. If no source is shown, check with your agriculture officer.",
+    "pickDoc": "Please choose a document first.",
+    "docUploaded": "Document uploaded.",
+    "docFailed": "Could not upload the document. Please try again.",
+    "uploading": "Uploading...",
+    "upload": "Upload",
+    "closeUpload": "Close",
+    "addDoc": "+ Add a document"
+  },
+  "composer": {
+    "badImage": "Please choose a JPG, PNG or WEBP image.",
+    "bigImage": "Please choose an image smaller than 10 MB.",
+    "removeImage": "Remove photo",
+    "removeAudio": "Remove recording",
+    "attach": "Attach a crop photo",
+    "stop": "Stop recording",
+    "placeholder": "Type your question in Telugu, Hindi or English",
+    "send": "Send",
+    "done": "Done"
+  },
+  "voice": {
+    "noAudio": "No sound was recorded. Please speak into the microphone and try again.",
+    "noMic": "The microphone is blocked or not available. Please allow microphone access in your browser.",
+    "failed": "Your question could not be processed. Please try again.",
+    "listening": "Listening... Tap the square when you finish",
+    "processing": "Understanding your question...",
+    "again": "Ask another question",
+    "tap": "Tap the microphone and speak",
+    "heard": "We heard"
   }
 }

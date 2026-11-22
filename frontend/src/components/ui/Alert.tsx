@@ -7,6 +7,7 @@
  * and includes dismiss capability with keyboard accessibility.
  */
 
+import i18n from '@/i18n';
 import React, { forwardRef } from 'react';
 import { Info, CheckCircle, AlertTriangle, XCircle, X } from 'lucide-react';
 
@@ -112,7 +113,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
           <button
             type="button"
             onClick={onDismiss}
-            aria-label="Dismiss alert"
+            aria-label={i18n.t('ui.dismiss')}
             className="shrink-0 p-1 -mr-1 -mt-1 rounded-md text-text-secondary hover:text-text hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 transition-colors"
           >
             <X className="w-4 h-4" aria-hidden="true" />

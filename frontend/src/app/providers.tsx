@@ -8,6 +8,7 @@ import React, { type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/features/auth/AuthContext';
 import { ToastProvider } from '@/components/feedback/Toast';
+import { QueryErrorNotifier } from '@/components/feedback/QueryErrorNotifier';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,7 +28,10 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ToastProvider>{children}</ToastProvider>
+        <ToastProvider>
+          <QueryErrorNotifier />
+          {children}
+        </ToastProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

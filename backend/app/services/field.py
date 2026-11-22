@@ -44,7 +44,12 @@ class FieldService(BaseService):
         await self._commit()
         return updated
 
-    async def list_fields(self, *, offset: int = 0, limit: int = 100) -> Sequence[Field]:
+    async def list_fields(
+        self, *, offset: int = 0, limit: int = 100, farmer_id: int | None = None
+    ) -> Sequence[Field]:
+        """All records, or only one farmer's when ``farmer_id`` is given (a farmer's own view)."""
+        if farmer_id is not None:
+            return await self.fields.list_by_farmer(farmer_id, offset=offset, limit=limit)
         return await self.fields.list(offset=offset, limit=limit)
 
     async def get_field(self, field_id: int) -> Field:

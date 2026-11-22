@@ -7,6 +7,7 @@
  * detected language, agent decision, and spoken audio playback.
  */
 
+import i18n from '@/i18n';
 import React, { useState, useRef, useEffect } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
@@ -81,7 +82,7 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
         });
 
         if (audioBlob.size === 0) {
-          setError('No audio captured. Please speak into the microphone and try again.');
+          setError(i18n.t('voice.noAudio'));
           return;
         }
 
@@ -97,7 +98,7 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
       }, 1000);
     } catch (err) {
       console.error('Microphone access denied:', err);
-      setError('Microphone access denied or unavailable. Please enable microphone permissions in your browser.');
+      setError(i18n.t('voice.noMic'));
     }
   };
 
@@ -123,9 +124,7 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
       setResponse(res);
     } catch (err) {
       console.error('Voice query failed:', err);
-      setError(
-        err instanceof Error ? err.message : 'Voice advisory processing failed. Please try again.',
-      );
+      setError(i18n.t('voice.failed'));
     } finally {
       setIsProcessing(false);
     }
@@ -141,15 +140,15 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Voice Agricultural Advisory"
-      description="Speak your question in Telugu, Hindi, or English"
+      title={i18n.t('hero.voice')}
+      description={i18n.t('hero.voiceHelp')}
       size="lg"
     >
       <div className="space-y-6">
         {/* Language Selector */}
         {!isRecording && !isProcessing && (
           <div className="flex items-center justify-between p-3 rounded-lg bg-surface-raised border border-border">
-            <span className="text-small font-medium text-text">Spoken Language:</span>
+            <span className="text-small font-medium text-text">{i18n.t('common.language')}:</span>
             <div className="flex gap-1.5">
               {(
                 [
@@ -185,7 +184,7 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
                   type="button"
                   onClick={stopRecording}
                   className="relative w-20 h-20 rounded-full bg-danger-600 text-white flex items-center justify-center shadow-lg hover:bg-danger-700 active:scale-95 transition-all cursor-pointer"
-                  aria-label="Stop recording"
+                  aria-label={i18n.t('composer.stop')}
                 >
                   <Square className="w-8 h-8 fill-current" aria-hidden="true" />
                 </button>
@@ -196,13 +195,13 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
                   {formatSeconds(recordingSeconds)}
                 </div>
                 <p className="text-caption text-text-secondary animate-pulse">
-                  Listening... Tap square to submit
+                  {i18n.t('voice.listening')}
                 </p>
               </div>
             </>
           ) : isProcessing ? (
             <div className="py-8 text-center space-y-3">
-              <ThinkingIndicator message="Processing speech & synthesizing advisory..." />
+              <ThinkingIndicator message={i18n.t('voice.processing')} />
             </div>
           ) : (
             <>
@@ -210,14 +209,14 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
                 type="button"
                 onClick={startRecording}
                 className="w-20 h-20 rounded-full bg-primary-600 text-white flex items-center justify-center shadow-lg hover:bg-primary-700 active:scale-95 transition-all cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-300"
-                aria-label="Start recording"
+                aria-label={i18n.t('hero.voice')}
               >
                 <Mic className="w-9 h-9" aria-hidden="true" />
               </button>
 
               <div className="text-center space-y-0.5">
                 <span className="text-body font-bold text-text block">
-                  {response ? 'Ask Another Question' : 'Tap Microphone to Speak'}
+                  {response ? i18n.t('voice.again') : i18n.t('voice.tap')}
                 </span>
                 <span className="text-caption text-text-secondary block">
                   e.g., &ldquo;వరిలో కాండం తొలుచు పురుగు నివారణ ఏమిటి?&rdquo;
@@ -242,7 +241,7 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
             <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-border">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary-600" aria-hidden="true" />
-                <span className="text-small font-bold text-text">Voice Advisory Result</span>
+                <span className="text-small font-bold text-text">{i18n.t('ui.aiAnswer')}</span>
                 <span className="px-2 py-0.5 rounded text-[11px] font-semibold uppercase bg-primary-50 text-primary-700">
                   {response.detected_language}
                 </span>
@@ -253,7 +252,7 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
             {/* Farmer's Transcribed Question */}
             <div className="p-3 rounded-lg bg-surface-raised border border-border">
               <span className="text-[11px] uppercase font-bold text-text-muted block">
-                Transcribed Query
+                {i18n.t('voice.heard')}
               </span>
               <p className="text-body font-medium text-text mt-0.5">
                 &ldquo;{response.raw_transcript}&rdquo;
@@ -263,7 +262,7 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
             {/* AI Advisory Response Text */}
             <div className="space-y-2">
               <span className="text-[11px] uppercase font-bold text-primary-700 block">
-                AI Agricultural Advisory
+                {i18n.t('ui.aiAnswer')}
               </span>
               <p className="text-body text-text whitespace-pre-line leading-relaxed">
                 {response.response_text}
@@ -274,16 +273,16 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
             {response.citations && response.citations.length > 0 && (
               <div className="space-y-2 pt-2 border-t border-border">
                 <span className="text-caption font-semibold text-text-secondary">
-                  Agricultural Sources &amp; Verification:
+                  {i18n.t('canvas.tabs.sources')}
                 </span>
                 <div className="grid grid-cols-1 gap-2">
                   {response.citations.map((c, idx) => (
                     <CitationCard
                       key={idx}
                       citation={{
-                        source_title: c.source_title || 'ICAR / State Agricultural Advisory',
-                        authority: c.authority || 'ICAR Research Institute',
-                        document_type: c.document_type || 'Crop Advisory Guideline',
+                        source_title: c.source_title || '—',
+                        authority: c.authority || undefined,
+                        document_type: c.document_type || undefined,
                         snippet: c.snippet,
                       }}
                     />
@@ -297,12 +296,12 @@ export const VoiceRecorderModal: React.FC<VoiceRecorderModalProps> = ({
         {/* Footer Actions */}
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="ghost" onClick={onClose}>
-            Close
+            {i18n.t('common.close')}
           </Button>
           {response && (
             <Button variant="primary" onClick={startRecording}>
               <RefreshCw className="w-4 h-4 mr-1.5" aria-hidden="true" />
-              Ask Another
+              {i18n.t('voice.again')}
             </Button>
           )}
         </div>

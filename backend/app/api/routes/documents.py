@@ -40,6 +40,8 @@ from loguru import logger
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.dependencies.auth import RequirePermission
+from app.auth.permissions import Permission
 from app.config.settings import get_settings
 from app.database.session import get_db_session
 from app.knowledge.embeddings.pipeline import EmbeddingPipeline
@@ -153,6 +155,7 @@ _ALLOWED_MIMES = {
         "Duplicate detection is performed via SHA-256 hash. "
         "Ingestion runs asynchronously — poll GET /documents/{id} for status."
     ),
+    dependencies=[Depends(RequirePermission(Permission.DOCUMENT_UPLOAD))],
 )
 async def upload_document(
     background_tasks: BackgroundTasks,
@@ -481,6 +484,7 @@ async def _run_ingestion_background(
     "",
     response_model=DocumentListResponse,
     summary="List all ingested documents",
+    dependencies=[Depends(RequirePermission(Permission.DOCUMENT_READ))],
 )
 async def list_documents(
     session: DbSession,
@@ -546,6 +550,7 @@ async def list_documents(
     "/{document_id}",
     response_model=DocumentResponse,
     summary="Get document metadata and status",
+    dependencies=[Depends(RequirePermission(Permission.DOCUMENT_READ))],
 )
 async def get_document(
     document_id: int,
@@ -577,6 +582,7 @@ async def get_document(
     "/{document_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete a document and remove its vectors",
+    dependencies=[Depends(RequirePermission(Permission.DOCUMENT_DELETE))],
 )
 async def delete_document(
     document_id: int,
@@ -643,6 +649,7 @@ async def delete_document(
         "No LLM is involved — this returns raw chunks with scores, "
         "not generated answers."
     ),
+    dependencies=[Depends(RequirePermission(Permission.KNOWLEDGE_SEARCH))],
 )
 async def search_documents(
     request: SearchRequest,

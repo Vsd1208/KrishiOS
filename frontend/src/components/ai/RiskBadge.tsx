@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Shield, AlertTriangle, AlertOctagon, Siren } from 'lucide-react';
 import type { RiskSeverity } from '@/types/proactive';
 
@@ -57,7 +58,9 @@ export const RiskBadge: React.FC<RiskBadgeProps> = ({
   showLabel = true,
   className = '',
 }) => {
+  const { t } = useTranslation();
   const config = riskConfigs[severity] || riskConfigs.LOW;
+  const label = t(`risk.${(riskConfigs[severity] ? severity : 'LOW').toLowerCase()}`, { defaultValue: config.label });
   const IconComponent = config.icon;
 
   const sizeClasses = {
@@ -73,12 +76,12 @@ export const RiskBadge: React.FC<RiskBadgeProps> = ({
   return (
     <span
       role="status"
-      title={`Risk level: ${config.label}. ${config.description}`}
-      aria-label={`Risk level: ${config.label}`}
+      title={label}
+      aria-label={label}
       className={`inline-flex items-center rounded-full border transition-colors select-none ${sizeClasses[size]} ${config.badgeStyle} ${className}`}
     >
       <IconComponent className={`${iconSizes[size]} shrink-0`} aria-hidden="true" />
-      {showLabel && <span>{config.label}</span>}
+      {showLabel && <span>{label}</span>}
     </span>
   );
 };

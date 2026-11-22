@@ -7,10 +7,10 @@ describe('MultimodalComposer', () => {
     render(<MultimodalComposer onSend={vi.fn()} />);
 
     expect(
-      screen.getByPlaceholderText(/Ask in Telugu, Hindi, or English/i)
+      screen.getByPlaceholderText(/Type your question in Telugu, Hindi or English/i)
     ).toBeInTheDocument();
-    expect(screen.getByTitle(/Speak Question/i)).toBeInTheDocument();
-    expect(screen.getByTitle(/Attach Crop Image/i)).toBeInTheDocument();
+    expect(screen.getByTitle(/Speak your question/i)).toBeInTheDocument();
+    expect(screen.getByTitle(/Attach a crop photo/i)).toBeInTheDocument();
   });
 
   it('allows language switching between Telugu, Hindi, and English', () => {
@@ -26,8 +26,8 @@ describe('MultimodalComposer', () => {
     const handleSend = vi.fn();
     render(<MultimodalComposer onSend={handleSend} />);
 
-    const input = screen.getByPlaceholderText(/Ask in Telugu, Hindi, or English/i);
-    const sendButton = screen.getByRole('button', { name: /Send question/i });
+    const input = screen.getByPlaceholderText(/Type your question in Telugu, Hindi or English/i);
+    const sendButton = screen.getByRole('button', { name: 'Send' });
 
     fireEvent.change(input, {
       target: { value: 'What is the best pesticide for stem borer in paddy?' },

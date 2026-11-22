@@ -11,6 +11,7 @@
  * - Body scroll locking while open.
  */
 
+import i18n from '@/i18n';
 import React, { useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
@@ -201,7 +202,7 @@ export const Modal: React.FC<ModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Close dialog"
+                aria-label={i18n.t('common.close')}
                 className="p-1.5 -mr-1.5 -mt-1.5 rounded-lg text-text-secondary hover:text-text hover:bg-surface-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 transition-colors"
               >
                 <X className="w-5 h-5" aria-hidden="true" />

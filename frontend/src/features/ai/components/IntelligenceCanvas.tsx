@@ -39,16 +39,16 @@ export const IntelligenceCanvas: React.FC<IntelligenceCanvasProps> = ({
   const notSet = t('canvas.contextNotSet');
 
   const tabs: { id: CanvasTab; label: string; icon: React.ReactNode }[] = [
-    { id: 'graph', label: 'GraphRAG Chain', icon: <GitFork className="w-3.5 h-3.5" /> },
-    { id: 'telemetry', label: 'Telemetry & Weather', icon: <Activity className="w-3.5 h-3.5" /> },
-    { id: 'vision', label: 'Vision Lab', icon: <Eye className="w-3.5 h-3.5" /> },
-    { id: 'provenance', label: 'Scientific Sources', icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: 'graph', label: t('canvas.tabs.graph'), icon: <GitFork className="w-3.5 h-3.5" /> },
+    { id: 'telemetry', label: t('canvas.tabs.weather'), icon: <Activity className="w-3.5 h-3.5" /> },
+    { id: 'vision', label: t('canvas.tabs.vision'), icon: <Eye className="w-3.5 h-3.5" /> },
+    { id: 'provenance', label: t('canvas.tabs.sources'), icon: <BookOpen className="w-3.5 h-3.5" /> },
     { id: 'providers', label: t('providers.tab'), icon: <Cpu className="w-3.5 h-3.5" /> },
   ];
 
   return (
     <div
-      aria-label="Intelligence Canvas"
+      aria-label={t('canvas.title')}
       className={`flex flex-col h-full bg-surface border-l border-border rounded-2xl overflow-hidden shadow-sm ${className}`}
     >
       {/* Canvas Top Bar */}
@@ -57,10 +57,10 @@ export const IntelligenceCanvas: React.FC<IntelligenceCanvasProps> = ({
           <div className="p-1 rounded-md bg-primary-100 text-primary-700">
             <Layers className="w-4 h-4" />
           </div>
-          <span className="text-small font-bold text-text">Decision Intelligence Canvas</span>
+          <span className="text-small font-bold text-text">{t('canvas.title')}</span>
         </div>
         <span className="text-caption text-text-muted">
-          Context: <strong>{crop ?? notSet}</strong> ({district ?? notSet})
+          {t('canvas.context')} <strong>{crop ?? notSet}</strong> ({district ?? notSet})
         </span>
       </div>
 

@@ -72,7 +72,9 @@ describe('FarmSummaryCard', () => {
     expect(screen.getByText(/Khammam Rural/)).toBeInTheDocument();
     expect(screen.getByText('4.5')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument(); // 2 fields
-    expect(screen.getByText('Verified Farmer')).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument(); // 1 growing crop
+    // No badge the app cannot back up (nothing verifies the farmer).
+    expect(screen.queryByText('Verified Farmer')).not.toBeInTheDocument();
   });
 
   it('renders loading placeholder when isLoading is true', () => {

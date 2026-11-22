@@ -97,7 +97,7 @@ export const OutbreakMapPage: React.FC = () => {
           </table>
         </section>
       )}
-      <p className="text-caption text-text-muted">{grid.data?.note ?? t('outbreak.note')}</p>
+      <p className="text-caption text-text-muted">{t('outbreak.note')}</p>
     </div>
   );
 };

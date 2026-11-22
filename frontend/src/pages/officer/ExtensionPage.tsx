@@ -3,11 +3,12 @@
  * review-before-share queue, and batch registration (up to 50 farmers, consent per batch).
  */
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, MessageSquare, Share2, Trash2, UserPlus, X } from 'lucide-react';
 
+import { AuthContext } from '@/features/auth/AuthContext';
 import { FarmerChat } from '@/features/conversation/FarmerChat';
 import type { BotLanguage } from '@/services/api/conversation';
 import {
@@ -26,7 +27,13 @@ const asBotLanguage = (l: string): BotLanguage =>
 
 export const ExtensionPage: React.FC = () => {
   const { t } = useTranslation();
-  const [tab, setTab] = useState<Tab>('farmers');
+  // "My farmers" and the review queue need the backend's extension:act_as permission (extension
+  // workers, admins). Officers can only register farmers here. Without an auth provider (tests),
+  // every tab is shown.
+  const user = useContext(AuthContext)?.user;
+  const canActAs = !user || user.permissions.includes('extension:act_as');
+  const tabs: Tab[] = canActAs ? ['farmers', 'queue', 'register'] : ['register'];
+  const [tab, setTab] = useState<Tab>(tabs[0] ?? 'register');
   const [assisting, setAssisting] = useState<AssignedFarmer | null>(null);
 
   if (assisting) {
@@ -58,8 +65,9 @@ export const ExtensionPage: React.FC = () => {
   return (
     <div className="space-y-4">
       <h1 className="text-heading font-bold text-text">{t('extension.title')}</h1>
+      {!canActAs && <p className="text-small text-text-secondary">{t('extension.officerNote')}</p>}
       <div role="tablist" className="flex gap-1">
-        {(['farmers', 'queue', 'register'] as const).map((k) => (
+        {tabs.map((k) => (
           <button
             key={k}
             type="button"

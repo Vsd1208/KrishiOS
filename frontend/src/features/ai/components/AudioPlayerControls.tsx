@@ -7,6 +7,7 @@
  * - Multilingual audio synthesis (Telugu, Hindi, English)
  */
 
+import i18n from '@/i18n';
 import React, { useState } from 'react';
 import { Volume2, VolumeX, FastForward } from 'lucide-react';
 
@@ -42,17 +43,17 @@ export const AudioPlayerControls: React.FC<AudioPlayerControlsProps> = ({
             ? 'bg-primary-600 text-white shadow-xs'
             : 'bg-primary-50 text-primary-800 hover:bg-primary-100'
         }`}
-        aria-label={isPlaying ? 'Pause spoken advisory' : 'Listen to advisory in voice'}
+        aria-label={isPlaying ? i18n.t('ui.stopAudio') : i18n.t('ui.listen')}
       >
         {isPlaying ? (
           <>
             <VolumeX className="w-3.5 h-3.5" />
-            <span>Stop</span>
+            <span>{i18n.t('ui.stopAudio')}</span>
           </>
         ) : (
           <>
             <Volume2 className="w-3.5 h-3.5" />
-            <span>Listen Voice</span>
+            <span>{i18n.t('ui.listen')}</span>
           </>
         )}
       </button>

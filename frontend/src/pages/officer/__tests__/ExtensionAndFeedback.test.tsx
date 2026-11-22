@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import i18n from '@/i18n';
 import { extensionApi, feedbackApi } from '@/services/api/extension';
 import { ExtensionPage } from '../ExtensionPage';
+import { AuthContext, type AuthContextType } from '@/features/auth/AuthContext';
 import { parseFarmerLines } from '@/features/extension/parseFarmerLines';
 import { FeedbackDashboardPage } from '../FeedbackDashboardPage';
 
@@ -150,5 +151,21 @@ describe('FeedbackDashboardPage', () => {
     expect(await screen.findAllByText('25%')).not.toHaveLength(0);
     fireEvent.click(await screen.findByRole('button', { name: 'Add to regression suite' }));
     await waitFor(() => expect(fb.triage).toHaveBeenCalledWith('f1', 'converted_to_regression'));
+  });
+});
+
+describe('ExtensionPage for an officer', () => {
+  it('shows only registration, explains why, and never calls the worker-only endpoints', async () => {
+    vi.clearAllMocks();
+    await i18n.changeLanguage('en');
+    const auth = {
+      user: { uuid: 'u', role: 'officer', permissions: ['farmer:create', 'extension:manage'] },
+      isAuthenticated: true, isLoading: false,
+    } as unknown as AuthContextType;
+    wrap(<AuthContext.Provider value={auth}><ExtensionPage /></AuthContext.Provider>);
+    expect(screen.getAllByRole('tab').map((el) => el.textContent)).toEqual(['Register farmers']);
+    expect(screen.getByText(/are for extension workers/)).toBeInTheDocument();
+    expect(ext.myFarmers).not.toHaveBeenCalled();
+    expect(ext.reviewQueue).not.toHaveBeenCalled();
   });
 });

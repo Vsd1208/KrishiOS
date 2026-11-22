@@ -53,7 +53,8 @@ import { documentsApi } from '@/services/api/documents';
 import type { BotLanguage } from '@/services/api/conversation';
 import { FarmerChat } from '@/features/conversation/FarmerChat';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import i18n from '@/i18n';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 /* ============================================================
    COMPONENT
@@ -160,7 +161,7 @@ const AnalystWorkspace: React.FC = () => {
 
   const [viewMode, setViewMode] = useState<WorkspaceViewMode>('split');
   const [latestImage, setLatestImage] = useState<ImageAttachment | undefined>(undefined);
-  const [escalationNotice, setEscalationNotice] = useState<string | null>(null);
+  const navigate = useNavigate();
   const [uploadingDocument, setUploadingDocument] = useState(false);
   const [documentUploadStatus, setDocumentUploadStatus] = useState<string | null>(null);
   const [showUploadPanel, setShowUploadPanel] = useState(false);
@@ -199,18 +200,14 @@ const AnalystWorkspace: React.FC = () => {
     void sendMessage(content);
   };
 
+  // Officer questions go through Help, which creates a real grievance ticket.
   const handleEscalate = (): void => {
-    setEscalationNotice(
-      'Your inquiry has been submitted to the Mandal Agricultural Officer review queue.',
-    );
-    window.setTimeout(() => {
-      setEscalationNotice(null);
-    }, 5000);
+    void navigate('/farmer/help');
   };
 
   const handleDocumentUpload = async (): Promise<void> => {
     if (!selectedDocument) {
-      setDocumentUploadStatus('Please select a document first.');
+      setDocumentUploadStatus(i18n.t('workspace.pickDoc'));
       return;
     }
 
@@ -223,13 +220,13 @@ const AnalystWorkspace: React.FC = () => {
         district: farmer?.village || undefined,
       });
 
-      setDocumentUploadStatus('Document uploaded successfully.');
+      setDocumentUploadStatus(i18n.t('workspace.docUploaded'));
       setSelectedDocument(null);
       setShowUploadPanel(false);
     } catch (error) {
       console.error('Document upload failed:', error);
       setDocumentUploadStatus(
-        error instanceof Error ? error.message : 'Document upload failed. Please try again.',
+        i18n.t('workspace.docFailed'),
       );
     } finally {
       setUploadingDocument(false);
@@ -248,14 +245,8 @@ const AnalystWorkspace: React.FC = () => {
           </div>
           <div>
             <h1 className="text-body font-bold text-text flex items-center gap-2">
-              <span>Multimodal AI Intelligence Workspace</span>
-              <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-success-50 text-success-700 border border-success-200">
-                Agent Runtime v10
-              </span>
+              <span>{i18n.t('chat.advancedWorkspace')}</span>
             </h1>
-            <div className="flex items-center gap-2 text-caption text-text-muted mt-0.5">
-              <span>GraphRAG • CropNet Vision • ICAR Provenance</span>
-            </div>
           </div>
         </div>
 
@@ -264,7 +255,7 @@ const AnalystWorkspace: React.FC = () => {
           <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-raised border border-border text-caption">
             <div className="flex items-center gap-1 text-primary-700 font-semibold">
               <Sprout className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>{activeCropName || 'Crop'}</span>
+              <span>{activeCropName || '—'}</span>
             </div>
             <span className="text-border-strong">•</span>
             <div className="flex items-center gap-1 text-text-secondary">
@@ -283,10 +274,10 @@ const AnalystWorkspace: React.FC = () => {
                   ? 'bg-surface text-text shadow-xs border border-border'
                   : 'text-text-muted hover:text-text'
               }`}
-              title="Stream view"
+              title={i18n.t('workspace.stream')}
             >
               <Maximize2 className="w-3.5 h-3.5" />
-              <span>Stream</span>
+              <span>{i18n.t('workspace.stream')}</span>
             </button>
             <button
               type="button"
@@ -296,10 +287,10 @@ const AnalystWorkspace: React.FC = () => {
                   ? 'bg-surface text-text shadow-xs border border-border'
                   : 'text-text-muted hover:text-text'
               }`}
-              title="Split dual-pane canvas"
+              title={i18n.t('workspace.split')}
             >
               <Columns className="w-3.5 h-3.5" />
-              <span>Split Canvas</span>
+              <span>{i18n.t('workspace.split')}</span>
             </button>
           </div>
 
@@ -312,28 +303,12 @@ const AnalystWorkspace: React.FC = () => {
               className="cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
-              <span>New Chat</span>
+              <span>{i18n.t('workspace.newChat')}</span>
             </Button>
           )}
         </div>
       </header>
 
-      {/* Escalation Notice */}
-      {escalationNotice && (
-        <div className="bg-primary-50 border-b border-primary-200 px-4 py-2.5 text-caption text-primary-900 flex items-center justify-between animate-fadeIn">
-          <div className="flex items-center gap-2 font-medium">
-            <ShieldCheck className="w-4 h-4 text-primary-700 shrink-0" />
-            <span>{escalationNotice}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setEscalationNotice(null)}
-            className="text-primary-700 font-bold hover:underline cursor-pointer ml-2"
-          >
-            Dismiss
-          </button>
-        </div>
-      )}
 
       {/* Main Dual-Pane Workspace Container */}
       <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-12 bg-surface">
@@ -356,24 +331,29 @@ const AnalystWorkspace: React.FC = () => {
 
                 <div className="space-y-2">
                   <h2 className="text-heading font-extrabold text-text tracking-tight">
-                    Namaste! How can KrishiOS assist your farm today?
+                    {i18n.t('workspace.welcome')}
                   </h2>
                   <p className="text-small text-text-secondary max-w-lg mx-auto leading-relaxed">
-                    Ask in Telugu, Hindi, or English using voice or text. You can also attach photos of affected crop leaves for instant diagnostic analysis.
+                    {i18n.t('workspace.welcomeHelp', { chat: i18n.t('chat.simpleChat') })}
                   </p>
                 </div>
 
                 {/* Quick Starter Suggestions */}
                 <div className="space-y-2 text-left pt-2">
                   <span className="text-caption font-bold text-text-muted uppercase tracking-wider block px-1">
-                    Suggested Questions {activeCropName ? `for ${activeCropName}` : ''}:
+                    {i18n.t('answer.followUps')}
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {initialSuggestions.map((suggestion, idx) => (
                       <button
                         key={idx}
                         type="button"
-                        onClick={() => handleSendWrapper({ text: suggestion, language: 'te' })}
+                        onClick={() =>
+                          handleSendWrapper({
+                            text: suggestion,
+                            language: (['te', 'hi', 'en'] as const).find((l) => i18n.language?.startsWith(l)) ?? 'en',
+                          })
+                        }
                         disabled={isProcessing}
                         className="p-3 rounded-xl bg-surface border border-border hover:border-primary-400 hover:bg-primary-50/40 text-small text-text font-medium text-left transition-all cursor-pointer shadow-xs flex items-start justify-between gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                       >
@@ -384,10 +364,10 @@ const AnalystWorkspace: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Trust and Safety Banner */}
+                {/* What the answers are based on: only claims the system backs up */}
                 <div className="p-3.5 rounded-xl bg-surface-raised border border-border text-caption text-text-secondary flex items-center justify-center gap-2 shadow-xs">
                   <ShieldCheck className="w-4 h-4 text-primary-600 shrink-0" aria-hidden="true" />
-                  <span>Grounded in ICAR standard packages of practice &amp; live agromet telemetry</span>
+                  <span>{i18n.t('workspace.trust')}</span>
                 </div>
               </div>
             ) : (
@@ -454,7 +434,7 @@ const AnalystWorkspace: React.FC = () => {
                       disabled={uploadingDocument || !selectedDocument}
                     >
                       <Upload className="w-3.5 h-3.5 mr-1.5" aria-hidden="true" />
-                      {uploadingDocument ? 'Uploading...' : 'Upload'}
+                      {uploadingDocument ? i18n.t('workspace.uploading') : i18n.t('workspace.upload')}
                     </Button>
 
                     <Button
@@ -467,7 +447,7 @@ const AnalystWorkspace: React.FC = () => {
                         setDocumentUploadStatus(null);
                       }}
                     >
-                      Cancel
+                      {i18n.t('common.cancel')}
                     </Button>
                   </div>
                 </div>
@@ -504,7 +484,7 @@ const AnalystWorkspace: React.FC = () => {
                 onClick={() => setShowUploadPanel((value) => !value)}
                 className="text-caption text-text-muted hover:text-primary-700 transition-colors cursor-pointer"
               >
-                {showUploadPanel ? 'Close document upload' : '+ Add knowledge document'}
+                {showUploadPanel ? i18n.t('workspace.closeUpload') : i18n.t('workspace.addDoc')}
               </button>
             </div>
 

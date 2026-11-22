@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import type { AuthUser, UserRole } from '@/types/auth';
 import { Sprout, LogOut, Globe, User as UserIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -55,7 +56,8 @@ export const Header: React.FC<HeaderProps> = ({
   onLogout,
   className = '',
 }) => {
-  const [currentLang, setCurrentLang] = React.useState<string>('en');
+  const { t, i18n } = useTranslation();
+  const currentLang = (i18n.language || 'en').slice(0, 2);
 
   const roleStyle = user?.role
     ? roleBadgeColors[user.role] || roleBadgeColors.farmer
@@ -77,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({
                 KrishiOS
               </span>
               <span className="text-[10px] text-text-muted font-medium uppercase tracking-wider leading-tight hidden sm:block">
-                AI Agricultural Intelligence
+                {t('shell.tagline')}
               </span>
             </div>
           </div>
@@ -88,13 +90,13 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Language Selector */}
           <div className="relative flex items-center">
             <label htmlFor="language-selector" className="sr-only">
-              Select Language
+              {t('common.language')}
             </label>
             <Globe className="w-4 h-4 text-text-muted absolute left-2.5 pointer-events-none" aria-hidden="true" />
             <select
               id="language-selector"
               value={currentLang}
-              onChange={(e) => setCurrentLang(e.target.value)}
+              onChange={(e) => void i18n.changeLanguage(e.target.value)}
               className="appearance-none pl-8 pr-7 py-1.5 text-small bg-surface-raised border border-border rounded-md text-text font-medium hover:border-border-strong focus:outline-none focus-visible:ring-1 focus-visible:ring-primary-500 cursor-pointer min-h-[36px]"
             >
               <option value="en">English</option>
@@ -112,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div
                 className={`hidden md:inline-flex items-center px-2.5 py-0.5 rounded-full text-caption font-medium border capitalize ${roleStyle.bg} ${roleStyle.text} ${roleStyle.border}`}
               >
-                {user.role}
+                {t(`roles.${user.role}`, { defaultValue: user.role })}
               </div>
 
               <div
@@ -135,10 +137,10 @@ export const Header: React.FC<HeaderProps> = ({
             size="sm"
             onClick={onLogout}
             className="text-text-secondary hover:text-danger-600 hover:bg-danger-50 min-h-[36px]"
-            aria-label="Sign out of KrishiOS"
+            aria-label={t('auth.logout')}
             leftIcon={<LogOut className="w-4 h-4" aria-hidden="true" />}
           >
-            <span className="hidden sm:inline">Sign Out</span>
+            <span className="hidden sm:inline">{t('auth.logout')}</span>
           </Button>
         </div>
       </div>

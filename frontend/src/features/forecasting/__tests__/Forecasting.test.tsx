@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import i18n from '@/i18n';
 import { forecastingApi, type YieldForecast } from '@/services/api/forecasting';
 import { YieldCard } from '../YieldCard';
+import { reviewReasons } from '../format';
 import { InsurancePage } from '@/pages/farmer/InsurancePage';
 
 vi.mock('@/services/api/forecasting', async (orig) => ({
@@ -76,5 +77,49 @@ describe('InsurancePage', () => {
     wrap(<InsurancePage />);
     await waitFor(() => expect(screen.getByText(/waiting for an agriculture officer/)).toBeInTheDocument());
     expect(screen.getByRole('link', { name: /Official PMFBY portal/ })).toHaveAttribute('href', 'https://pmfby.gov.in/');
+  });
+});
+
+describe('Phase 10 uncertainty display', () => {
+  beforeEach(async () => {
+    await i18n.changeLanguage('en');
+  });
+
+  it('draws the range bar with forecast, range and normal for screen readers', () => {
+    wrap(<YieldCard forecast={base} />);
+    expect(screen.getByRole('img', { name: 'Forecast 2.80, likely range 2.30 to 3.30, normal 3.50' })).toBeInTheDocument();
+    expect(screen.getByText(/about 8 of 10 seasons/)).toBeInTheDocument();
+    expect(screen.queryByTestId('yield-review-reasons')).not.toBeInTheDocument();
+  });
+
+  it('says why a forecast needs review', () => {
+    wrap(
+      <YieldCard
+        forecast={{ ...base, crop_tier: 'B', missing_modalities: ['weather'], in_distribution: false,
+          requires_human_review: true }}
+      />,
+    );
+    const reasons = screen.getByTestId('yield-review-reasons');
+    expect(reasons).toHaveTextContent(/Tier B crop/);
+    expect(reasons).toHaveTextContent('Missing input: weather. The estimate leans more on past yields.');
+    expect(reasons).toHaveTextContent(/new to the model/);
+  });
+
+  it('shows no bar or reasons for an abstention', () => {
+    wrap(
+      <YieldCard
+        forecast={{ ...base, crop_tier: 'C', abstained: true, predicted_yield: null, interval_low: null,
+          interval_high: null, normal_yield: null, change_vs_normal: null, requires_human_review: true }}
+      />,
+    );
+    expect(screen.queryByTestId('yield-range-bar')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('yield-review-reasons')).not.toBeInTheDocument();
+  });
+
+  it('lists reasons in a fixed order and none for abstentions', () => {
+    expect(reviewReasons({ crop_tier: 'B', missing_modalities: ['ndvi'], in_distribution: false, abstained: false }))
+      .toEqual(['tierB', 'missing', 'ood']);
+    expect(reviewReasons({ crop_tier: 'A', missing_modalities: [], in_distribution: true, abstained: false })).toEqual([]);
+    expect(reviewReasons({ crop_tier: 'C', missing_modalities: [], in_distribution: false, abstained: true })).toEqual([]);
   });
 });

@@ -4,7 +4,7 @@ Read this file at the start of every session, and update it at the end of every 
 
 **Status values:** `todo` · `in-progress` · `done` · `blocked-on-approval` · `blocked`
 
-**Last updated:** 2026-11-18. **Phase 9 is merged to `main`.** Phase 10 (KrishiOS yield model and research) is in progress on `feat/sprint-11-phase10-yield-research`. MODIS NDVI is processed (run `44b6f843e847`) and not yet used by a model.
+**Last updated:** 2026-11-19. **Phase 9 is merged to `main`.** Phase 10 (KrishiOS yield model and research) is in progress on `feat/sprint-11-phase10-yield-research`. New teammates: start with [HANDOVER.md](HANDOVER.md).
 
 ## Phases
 
@@ -20,7 +20,7 @@ Read this file at the start of every session, and update it at the end of every 
 | 7 Yield predictor pipeline | done (weather and NDVI processing); scope-freeze defaults need sign-off | `feat/sprint-11-phase4-govconnect` | [07_yield_predictor_pipeline.md](../ml/reports/07_yield_predictor_pipeline.md) |
 | 8 Yield baselines & integration (+F15) | done (awaiting review) | `feat/sprint-11-phase8-yield-models` | [08_yield_baselines.md](../ml/reports/08_yield_baselines.md) |
 | 9 Real computer vision (+F8) | done | `feat/sprint-11-phase9-vision` | [09_vision.md](../ml/reports/09_vision.md) |
-| 10 KrishiOS yield model & research | in-progress | `feat/sprint-11-phase10-yield-research` | — |
+| 10 KrishiOS yield model & research | in-progress | `feat/sprint-11-phase10-yield-research` | [10_yield_research.md](../ml/reports/10_yield_research.md) (interim) |
 | 10b Farmer toolkit (F9–F12, F14, F7 video) | todo | — | — |
 | 11 Golden journeys, docs, write-up | todo | — | — |
 
@@ -57,8 +57,8 @@ Read this file at the start of every session, and update it at the end of every 
 | Real STT / TTS | done | IndicConformer RNNT recommended: FLEURS CER te 0.073 / hi 0.063 (65d3ea90da08); CPU median 2.2 s/utterance, RTF 0.25 (3d65e68d0266). MMS-TTS demo-only (CC BY-NC); deployable voice in Phase 3 |
 | Conversation / dialogue state | done | Clarify-and-resume, carry-over, re-ask; dialogue task success 0.90 (run 98898e7cfba1, result of record; draft scripts); text + voice turns; optional preload (`PRELOAD_MODELS`) |
 | Govt Connect | in-progress | Publishing side done (Phase 4): upload/compose → extraction with provenance → translate → approve/schedule → targeted delivery → inbox (listen / ask / ack / flag) → RAG with validity → analytics. Automated feeds: Phase 5 (SACHET CAP preferred, ADR-004) |
-| Yield Intelligence | in-progress | B3 multi-crop LightGBM serving: test median nMAE 0.236-0.242 vs 0.273 historical mean; unseen districts 0.222 vs 0.267 (run 37dc01be91cf); 80% intervals cover 0.81-0.85. Forecast import, outlook page, bot card, shortfall drafts. NDVI pending at NASA |
-| Real vision | todo | Field-photo dataset gap |
+| Yield Intelligence | in-progress | B3 multi-crop LightGBM serving: test median nMAE 0.236-0.242 vs 0.273 historical mean; unseen districts 0.222 vs 0.267 (run 37dc01be91cf); 80% intervals cover 0.81-0.85. Forecast import, outlook page, bot card, shortfall drafts. Phase 10: NDVI and B5 do not beat B3 yet; climate drivers under test |
+| Real vision | done | Offline ONNX crop + disease model: PlantDoc crop 86.0%, field disease 79.4% with crop known (run 560b033f785d); field recalibration (6e5a127ea6ea); Indian field photos partly downloaded |
 
 ## Known debt (tracked)
 
@@ -69,9 +69,9 @@ Read this file at the start of every session, and update it at the end of every 
 
 ## Test status (latest)
 
-- **Backend:** 279 passed, 8 skipped (Phase 5); Postgres integration 8 passed.
-- **ml:** 13 passed.
-- **Frontend:** 31 files / 70 tests passed; typecheck, lint (0 errors) and build OK.
+- **Backend:** 322 passed, 11 skipped (Phase 9); Postgres integration 11 passed, migrated to `0017`.
+- **ml:** 55 passed (Phase 10, 2026-11-19).
+- **Frontend:** 33 test files passed; typecheck OK (Phase 9).
 
 ## Pending approvals and actions
 

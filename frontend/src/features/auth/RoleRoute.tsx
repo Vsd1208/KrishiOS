@@ -14,6 +14,7 @@ import type { UserRole } from '@/types/auth';
 import { ShieldAlert, ArrowLeft, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
+import { useTranslation } from 'react-i18next';
 
 export interface RoleRouteProps {
   allowedRoles: UserRole[];
@@ -22,6 +23,7 @@ export interface RoleRouteProps {
 export const RoleRoute: React.FC<RoleRouteProps> = ({ allowedRoles }) => {
   const { user, isLoading, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
@@ -30,10 +32,8 @@ export const RoleRoute: React.FC<RoleRouteProps> = ({ allowedRoles }) => {
         role="status"
         aria-live="polite"
       >
-        <Spinner size="lg" variant="primary" label="Checking permissions..." />
-        <p className="mt-4 text-small text-text-secondary font-medium">
-          Verifying role permissions...
-        </p>
+        <Spinner size="lg" variant="primary" label={t('shell.checkingAccess')} />
+        <p className="mt-4 text-small text-text-secondary font-medium">{t('shell.checkingAccess')}</p>
       </div>
     );
   }
@@ -53,15 +53,11 @@ export const RoleRoute: React.FC<RoleRouteProps> = ({ allowedRoles }) => {
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-heading font-semibold text-text">
-              403 — Access Forbidden
-            </h1>
+            <h1 className="text-heading font-semibold text-text">{t('errorState.denied.title')}</h1>
             <p className="text-body text-text-secondary">
-              Your account with role{' '}
-              <span className="font-semibold text-text capitalize">
-                {user?.role || 'Unknown'}
-              </span>{' '}
-              does not have permission to view this section.
+              {t('shell.roleDenied', {
+                role: user?.role ? t(`roles.${user.role}`, { defaultValue: user.role }) : '—',
+              })}
             </p>
           </div>
 
@@ -86,7 +82,7 @@ export const RoleRoute: React.FC<RoleRouteProps> = ({ allowedRoles }) => {
                 }
               }}
             >
-              Return to Dashboard
+              {t('shell.backHome')}
             </Button>
 
             <Button
@@ -95,7 +91,7 @@ export const RoleRoute: React.FC<RoleRouteProps> = ({ allowedRoles }) => {
               leftIcon={<LogOut className="w-4 h-4" aria-hidden="true" />}
               onClick={() => logout()}
             >
-              Sign Out
+              {t('auth.logout')}
             </Button>
           </div>
         </div>

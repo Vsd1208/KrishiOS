@@ -1,5 +1,7 @@
 """Tests for LiveDataService."""
 
+import uuid
+
 import pytest
 from app.live_data.schemas.common import FreshnessStatus
 from app.live_data.schemas.scheme import SchemeEligibility
@@ -9,14 +11,18 @@ from app.live_data.services.live_data_service import LiveDataService
 @pytest.mark.asyncio
 async def test_live_data_service_weather_and_caching():
     service = LiveDataService()
+    # A location no earlier run is likely to have cached: a local Redis may hold readings from the
+    # app, and the cache keys on coordinates rounded to 0.01 degrees (millions of cells here).
+    n = uuid.uuid4().int
+    lat, lon = 8 + n % 2800 / 100, 68 + (n // 2800) % 3000 / 100
 
     # 1. First call fetches fresh data
-    obs1 = await service.get_current_weather(latitude=17.9689, longitude=79.5941)
+    obs1 = await service.get_current_weather(latitude=lat, longitude=lon)
     assert obs1.freshness == FreshnessStatus.FRESH
     assert obs1.cached is False
 
     # 2. Second call serves from cache
-    obs2 = await service.get_current_weather(latitude=17.9689, longitude=79.5941)
+    obs2 = await service.get_current_weather(latitude=lat, longitude=lon)
     assert obs2.cached is True
     assert obs2.temperature_celsius == obs1.temperature_celsius
 

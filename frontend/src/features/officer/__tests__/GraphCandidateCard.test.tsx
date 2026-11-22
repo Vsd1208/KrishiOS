@@ -33,7 +33,7 @@ describe('GraphCandidateCard', () => {
     expect(screen.getByText('Paddy')).toBeInTheDocument();
     expect(screen.getByText('94%')).toBeInTheDocument();
 
-    const approveButton = screen.getByRole('button', { name: /Approve to Graph/i });
+    const approveButton = screen.getByRole('button', { name: /Add to graph/i });
     fireEvent.click(approveButton);
 
     expect(handleReview).toHaveBeenCalledWith(5, expect.objectContaining({ action: 'APPROVE' }));

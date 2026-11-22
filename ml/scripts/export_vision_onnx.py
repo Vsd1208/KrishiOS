@@ -36,6 +36,12 @@ ATOL = 1e-3
 LICENSE = ("Weights trained on PlantVillage (treated as CC BY-SA 3.0, the paper's licence), "
            "PlantDoc (CC BY 4.0) and Rice Leaf Disease Image Samples (CC BY 4.0); "
            "distribute under CC BY-SA 3.0 with attribution.")
+# Added when the run trained on the Indian field photos (checked on Mendeley Data, 2026-11-21).
+LICENSE_INDIA = (" Also trained on these Mendeley Data sets, each CC BY 4.0: PLDD-UP potato leaf "
+                 "disease, Uttar Pradesh (10.17632/3j4nfkvp2n.1); chili leaf diseases, Krishna "
+                 "river basin (10.17632/ymt8k9bjkn.3); Tomato Leaf Dataset (10.17632/rv3kxfv47y.1);"
+                 " MH-SoyaHealthVision (10.17632/hkbgh5s3b7.1); wheat nitrogen deficiency and leaf "
+                 "rust (10.17632/th422bg4yd.1). Photos were resized and re-encoded.")
 
 
 def display(condition: str) -> str:
@@ -74,6 +80,11 @@ def main() -> None:
     model.load_state_dict(ck["state_dict"])
     model.eval()
     keys = set(pd.read_csv(CATALOG, keep_default_na=False)["crop_canonical"])
+    report = ML_ROOT / "reports" / "data" / f"vision_train_{args.run}.json"
+    exp = args.checkpoint.rsplit("_seed", 1)[0]
+    sources = json.loads(report.read_text(encoding="utf-8"))["config"]["experiments"][exp][
+        "train_sources"]
+    license_text = LICENSE + (LICENSE_INDIA if "india_field" in sources else "")
     supported = set(args.supported) if args.supported is not None else (set(crops) & keys)
     exported = datetime.now(UTC)
     version = f"vision-{args.run}-{exported:%Y%m%d%H%M}"
@@ -111,7 +122,7 @@ def main() -> None:
             "conditions": [{"label": c, "crop": c.split("|")[0],
                             "name": display(c.split("|")[1]),
                             "healthy": c.endswith("|healthy")} for c in conds],
-            "license": LICENSE,
+            "license": license_text,
             "evidence": {"train_run": args.run, "checkpoint": args.checkpoint,
                          "export_run": rec.run_id, "onnx_parity_max_abs_diff": diff,
                          "calibration_run": calibration_run},

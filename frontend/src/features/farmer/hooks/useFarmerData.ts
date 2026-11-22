@@ -15,9 +15,12 @@ import { marketApi } from '@/services/api/market';
 import { alertsApi } from '@/services/api/alerts';
 import { advisoryApi } from '@/services/api/advisory';
 import type { AlertStatus } from '@/types/proactive';
+import type { FieldCrop } from '@/types/domain';
+import { ApiError } from '@/types/api';
 
 export const FARMER_QUERY_KEYS = {
   farmers: ['farmers'] as const,
+  me: ['farmers', 'me'] as const,
   farmer: (id: number) => ['farmers', id] as const,
   fields: ['fields'] as const,
   field: (id: number) => ['fields', id] as const,
@@ -38,38 +41,46 @@ export const FARMER_QUERY_KEYS = {
   preferences: (farmerId?: number) => ['preferences', farmerId] as const,
 };
 
-/** Hook to fetch all farmers and return the active farmer profile. */
+/**
+ * The signed-in farmer's own profile (GET /farmers/me), or a given farmer by id. Null when the
+ * login has no linked farmer profile. It never falls back to another farmer's record.
+ */
 export function useFarmerProfile(farmerId?: number) {
   return useQuery({
-    queryKey: farmerId ? FARMER_QUERY_KEYS.farmer(farmerId) : FARMER_QUERY_KEYS.farmers,
+    queryKey: farmerId ? FARMER_QUERY_KEYS.farmer(farmerId) : FARMER_QUERY_KEYS.me,
     queryFn: async () => {
       if (farmerId) {
         return await farmerApi.getFarmerById(farmerId);
       }
-      const list = await farmerApi.listFarmers();
-      return list.length > 0 ? list[0] : null;
+      try {
+        return await farmerApi.getMe();
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 404) return null;
+        throw err;
+      }
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
 
-/** Hook to fetch registered fields for a farmer. */
+/** The given farmer's fields. Waits for the farmer id and never returns other farmers' fields. */
 export function useFarmerFields(farmerId?: number) {
   return useQuery({
-    queryKey: FARMER_QUERY_KEYS.fields,
+    queryKey: [...FARMER_QUERY_KEYS.fields, farmerId] as const,
     queryFn: async () => {
       const allFields = await farmerApi.listFields();
-      if (farmerId) {
-        return allFields.filter((f) => f.farmer_id === farmerId);
-      }
-      return allFields;
+      return allFields.filter((f) => f.farmer_id === farmerId);
     },
+    enabled: farmerId !== undefined,
     staleTime: 5 * 60 * 1000,
   });
 }
 
-/** Hook to fetch standing crops & field crops. */
+/** The crop catalog and the signed-in farmer's own field crops (only on their fields). */
 export function useFarmerCrops() {
+  const { data: farmer } = useFarmerProfile();
+  const { data: myFields } = useFarmerFields(farmer?.id ?? undefined);
+  const myFieldIds = new Set((myFields ?? []).map((f) => f.id));
   const cropsQuery = useQuery({
     queryKey: FARMER_QUERY_KEYS.crops,
     queryFn: () => farmerApi.listCrops(),
@@ -84,7 +95,7 @@ export function useFarmerCrops() {
 
   return {
     crops: cropsQuery.data ?? [],
-    fieldCrops: fieldCropsQuery.data ?? [],
+    fieldCrops: (fieldCropsQuery.data ?? []).filter((fc) => myFieldIds.has(fc.field_id)),
     isLoading: cropsQuery.isLoading || fieldCropsQuery.isLoading,
     isError: cropsQuery.isError || fieldCropsQuery.isError,
     error: cropsQuery.error || fieldCropsQuery.error,
@@ -98,12 +109,17 @@ const STATUS_RANK: Record<string, number> = { Growing: 0, Sown: 1, Planned: 2 };
  * has none recorded. Never falls back to a made-up crop.
  */
 export function usePrimaryCropName(): string | undefined {
+  return usePrimaryFieldCrop().cropName;
+}
+
+/** The farmer's current field crop record (growing > sown > planned) and its crop name. */
+export function usePrimaryFieldCrop(): { fieldCrop?: FieldCrop; cropName?: string } {
   const { crops, fieldCrops } = useFarmerCrops();
   const active = [...fieldCrops]
     .filter((fc) => fc.status in STATUS_RANK)
     .sort((a, b) => (STATUS_RANK[a.status] ?? 99) - (STATUS_RANK[b.status] ?? 99))[0];
   const crop = crops.find((c) => c.id === active?.crop_id);
-  return crop?.crop_name?.trim() || crop?.name?.trim() || undefined;
+  return { fieldCrop: active, cropName: crop?.crop_name?.trim() || crop?.name?.trim() || undefined };
 }
 
 /** Hook to fetch live weather observations. */

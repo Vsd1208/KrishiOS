@@ -7,12 +7,14 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePendingReviews } from '@/features/officer/hooks/useOfficerData';
 import { ReviewQueueTable } from '@/features/officer/components/ReviewQueueTable';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export const ReviewQueuePage: React.FC = () => {
+  const { t } = useTranslation();
   const [priorityFilter, setPriorityFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -38,10 +40,10 @@ export const ReviewQueuePage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-display font-extrabold text-text tracking-tight">
-            Advisory Review Queue
+            {t('officer.queue.title')}
           </h1>
           <p className="text-body text-text-secondary">
-            Verify, customize, and sign off on high-impact AI recommendations before farmer delivery
+            {t('officer.queue.subtitle')}
           </p>
         </div>
 
@@ -57,7 +59,7 @@ export const ReviewQueuePage: React.FC = () => {
               className={`w-3.5 h-3.5 mr-1.5 ${isFetching ? 'animate-spin' : ''}`}
               aria-hidden="true"
             />
-            <span>Refresh</span>
+            <span>{t('officer.queue.refresh')}</span>
           </Button>
         </div>
       </div>
@@ -77,7 +79,7 @@ export const ReviewQueuePage: React.FC = () => {
                   : 'bg-surface-raised text-text-secondary hover:text-text'
               }`}
             >
-              {p}
+              {t(`officer.priority.${p}`)}
             </button>
           ))}
         </div>
@@ -88,7 +90,7 @@ export const ReviewQueuePage: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by farmer ID, crop, or topic..."
+            placeholder={t('officer.queue.search')}
             className="w-full px-3 py-1.5 rounded-lg bg-surface-raised border border-border text-small text-text placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-primary-500"
           />
         </div>

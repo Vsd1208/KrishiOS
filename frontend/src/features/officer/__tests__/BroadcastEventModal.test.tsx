@@ -23,10 +23,10 @@ describe('BroadcastEventModal', () => {
       />
     );
 
-    expect(screen.getByText('Broadcast Regional Advisory Event')).toBeInTheDocument();
-    expect(screen.getByText('Pest / Disease Outbreak Warning')).toBeInTheDocument();
+    expect(screen.getByText('Broadcast an advisory to the district')).toBeInTheDocument();
+    expect(screen.getByText('Pest or disease outbreak')).toBeInTheDocument();
 
-    const submitButton = screen.getByRole('button', { name: /Broadcast Event/i });
+    const submitButton = screen.getByRole('button', { name: /Send to district/i });
     fireEvent.click(submitButton);
 
     expect(handleEmit).toHaveBeenCalledWith(
@@ -36,7 +36,7 @@ describe('BroadcastEventModal', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Event Successfully Processed')).toBeInTheDocument();
+      expect(screen.getByText('Advisory event sent')).toBeInTheDocument();
     });
   });
 });
