@@ -2,7 +2,7 @@
  "version": "v1-draft",
  "status": "draft: questions and Hindi/Telugu wording to be reviewed by the project owner or an agronomist before scoring",
  "created": "2026-11-22",
- "design": "20 topics, each asked in English, Hindi and Telugu (60 items). 18 are answered in the vetted guides (page = PDF page, 1-based, as stored in the knowledge base); 2 are not covered, to test that the assistant says it does not know. key_facts are what a correct answer must contain; units follow the guide (PAU uses per acre, TNAU per hectare).",
+ "design": "20 topics, each asked in English, Hindi and Telugu (60 items). 18 are answered in the vetted guides (page = PDF page, 1-based, as stored in the knowledge base); 2 are not covered, to test that the assistant says it does not know. key_facts are what a correct answer must contain; units follow the guide (PAU uses per acre, TNAU per hectare). Added 2026-11-22: q21-q22, two more uncovered topics in the dev half, so abstention can be measured on dev too.",
  "sources": {
   "pau_kharif": "Package of Practices for Kharif Crops, Punjab Agricultural University",
   "pau_rabi": "Package of Practices for Rabi Crops, Punjab Agricultural University",
@@ -380,6 +380,36 @@
     "te": "వచ్చే నెల మార్కెట్‌లో ఉల్లిపాయ ధర ఎంత ఉంటుంది?"
    },
    "split": "test"
+  },
+  {
+   "id": "q21",
+   "crop": "apple",
+   "answerable": false,
+   "source": null,
+   "page": null,
+   "split": "dev",
+   "reference": "Not covered by these guides (apple is not in the PAU field-crop or TNAU agriculture guides): the assistant should say it has no verified source.",
+   "key_facts": [],
+   "q": {
+    "en": "How should I prune my apple trees in winter?",
+    "hi": "सर्दियों में सेब के पेड़ों की छंटाई कैसे करें?",
+    "te": "చలికాలంలో ఆపిల్ చెట్లను ఎలా కత్తిరించాలి?"
+   }
+  },
+  {
+   "id": "q22",
+   "crop": null,
+   "answerable": false,
+   "source": null,
+   "page": null,
+   "split": "dev",
+   "reference": "Not answerable from the guides (a weather forecast for this year): the assistant should say it has no verified source and point to IMD.",
+   "key_facts": [],
+   "q": {
+    "en": "When will the monsoon arrive in my village this year?",
+    "hi": "इस साल मेरे गाँव में मानसून कब आएगा?",
+    "te": "ఈ సంవత్సరం మా గ్రామానికి రుతుపవనాలు ఎప్పుడు వస్తాయి?"
+   }
   }
  ],
  "split_rule": "Decided 2026-11-22: q01-q10 = dev (compare retrieval/answering options), q11-q20 = test (scored once, after the wording review). Note: the first retrieval baseline, run 6fba3adba44f, was measured on all 20 topics before this split; the only decision taken after it (add Indic-to-English query translation) rests on the weakness seen in every language."
