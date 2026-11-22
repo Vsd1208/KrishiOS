@@ -5,6 +5,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.dependencies.auth import RequirePermission
+from app.auth.permissions import Permission
 from app.database.session import get_db_session
 from app.schemas.district import DistrictCreate, DistrictResponse, DistrictUpdate
 from app.services.district import DistrictService
@@ -19,7 +21,10 @@ def get_district_service(
     return DistrictService(session)
 
 
-@router.post("", response_model=DistrictResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "", response_model=DistrictResponse, status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def create_district(
     payload: DistrictCreate,
     service: Annotated[DistrictService, Depends(get_district_service)],
@@ -44,7 +49,10 @@ async def get_district(
     return await service.get_district(district_id)
 
 
-@router.patch("/{district_id}", response_model=DistrictResponse)
+@router.patch(
+    "/{district_id}", response_model=DistrictResponse,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def update_district(
     district_id: int,
     payload: DistrictUpdate,
@@ -53,7 +61,10 @@ async def update_district(
     return await service.update_district(district_id, payload)
 
 
-@router.delete("/{district_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{district_id}", status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def delete_district(
     district_id: int,
     service: Annotated[DistrictService, Depends(get_district_service)],

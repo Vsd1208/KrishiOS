@@ -4,10 +4,6 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
-
-from app.api.dependencies.auth import AuthContext, RequirePermission
-from app.auth.permissions import Permission
 from app.agents.api.schemas import (
     AgentExecutionRequest,
     AgentExecutionResponse,
@@ -18,8 +14,11 @@ from app.agents.api.schemas import (
     WorkflowRunResponse,
 )
 from app.agents.execution.context import ExecutionContext
-from app.agents.runtime.factory import get_runtime_engine
 from app.agents.runtime.engine import AgentRuntimeEngine
+from app.agents.runtime.factory import get_runtime_engine
+from app.api.dependencies.auth import AuthContext, RequirePermission
+from app.auth.permissions import Permission
+from fastapi import APIRouter, Depends, HTTPException, status
 
 router = APIRouter(tags=["Agent Runtime"])
 
@@ -71,7 +70,10 @@ async def execute_agent(
     )
 
 
-@router.post("/workflows/run", response_model=WorkflowRunResponse, status_code=status.HTTP_200_OK)
+@router.post(
+    "/workflows/run", response_model=WorkflowRunResponse, status_code=status.HTTP_200_OK,
+    dependencies=[Depends(RequirePermission(Permission.AGENT_EXECUTE))],
+)
 async def run_workflow(
     request: WorkflowRunRequest,
     runtime: Annotated[AgentRuntimeEngine, Depends(_get_runtime)],
@@ -101,7 +103,10 @@ async def run_workflow(
     )
 
 
-@router.get("/agents", response_model=list[AgentInfoResponse], status_code=status.HTTP_200_OK)
+@router.get(
+    "/agents", response_model=list[AgentInfoResponse], status_code=status.HTTP_200_OK,
+    dependencies=[Depends(RequirePermission(Permission.AGENT_EXECUTE))],
+)
 async def list_agents(
     runtime: Annotated[AgentRuntimeEngine, Depends(_get_runtime)],
 ) -> list[AgentInfoResponse]:
@@ -120,7 +125,10 @@ async def list_agents(
     ]
 
 
-@router.get("/agents/{agent_id}", response_model=AgentInfoResponse, status_code=status.HTTP_200_OK)
+@router.get(
+    "/agents/{agent_id}", response_model=AgentInfoResponse, status_code=status.HTTP_200_OK,
+    dependencies=[Depends(RequirePermission(Permission.AGENT_EXECUTE))],
+)
 async def get_agent(
     agent_id: str,
     runtime: Annotated[AgentRuntimeEngine, Depends(_get_runtime)],
@@ -145,7 +153,10 @@ async def get_agent(
     )
 
 
-@router.get("/runtime/status", response_model=RuntimeStatusResponse, status_code=status.HTTP_200_OK)
+@router.get(
+    "/runtime/status", response_model=RuntimeStatusResponse, status_code=status.HTTP_200_OK,
+    dependencies=[Depends(RequirePermission(Permission.AGENT_EXECUTE))],
+)
 async def runtime_status(
     runtime: Annotated[AgentRuntimeEngine, Depends(_get_runtime)],
 ) -> RuntimeStatusResponse:

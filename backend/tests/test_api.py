@@ -29,7 +29,8 @@ class FakeFarmerService:
         )
 
 
-def test_register_farmer_endpoint(client: TestClient) -> None:
+def test_register_farmer_endpoint(officer_client: TestClient) -> None:
+    client = officer_client  # registering farmers needs farmer:create
     app.dependency_overrides[get_farmer_service] = FakeFarmerService
 
     response = client.post(

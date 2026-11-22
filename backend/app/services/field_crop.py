@@ -54,7 +54,12 @@ class FieldCropService(BaseService):
         await self._commit()
         return updated
 
-    async def list_field_crops(self, *, offset: int = 0, limit: int = 100) -> Sequence[FieldCrop]:
+    async def list_field_crops(
+        self, *, offset: int = 0, limit: int = 100, farmer_id: int | None = None
+    ) -> Sequence[FieldCrop]:
+        """All records, or only one farmer's when ``farmer_id`` is given (a farmer's own view)."""
+        if farmer_id is not None:
+            return await self.field_crops.list_by_farmer(farmer_id, offset=offset, limit=limit)
         return await self.field_crops.list(offset=offset, limit=limit)
 
     async def get_field_crop(self, field_crop_id: int) -> FieldCrop:

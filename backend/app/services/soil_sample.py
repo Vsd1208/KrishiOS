@@ -43,7 +43,12 @@ class SoilSampleService(BaseService):
         await self._commit()
         return updated
 
-    async def list_soil_samples(self, *, offset: int = 0, limit: int = 100) -> Sequence[SoilSample]:
+    async def list_soil_samples(
+        self, *, offset: int = 0, limit: int = 100, farmer_id: int | None = None
+    ) -> Sequence[SoilSample]:
+        """All records, or only one farmer's when ``farmer_id`` is given (a farmer's own view)."""
+        if farmer_id is not None:
+            return await self.soil_samples.list_by_farmer(farmer_id, offset=offset, limit=limit)
         return await self.soil_samples.list(offset=offset, limit=limit)
 
     async def get_soil_sample(self, sample_id: int) -> SoilSample:

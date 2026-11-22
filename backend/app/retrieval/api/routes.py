@@ -4,8 +4,9 @@ from typing import Annotated
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Response, status
 
-from app.config.settings import Settings
-from app.config.settings import get_settings
+from app.api.dependencies.auth import RequirePermission
+from app.auth.permissions import Permission
+from app.config.settings import Settings, get_settings
 from app.database.session import async_session_factory
 from app.retrieval.api.dependencies import get_index_service, get_search_service
 from app.retrieval.api.schemas import (
@@ -23,7 +24,10 @@ from app.retrieval.services.search_service import RetrievalSearchService
 router = APIRouter(tags=["Enterprise Retrieval"])
 
 
-@router.post("/indexes/build", response_model=IndexResponse, status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "/indexes/build", response_model=IndexResponse, status_code=status.HTTP_202_ACCEPTED,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def build_index(
     request: IndexBuildRequest,
     service: Annotated[RetrievalIndexService, Depends(get_index_service)],
@@ -33,7 +37,10 @@ async def build_index(
     return IndexResponse.model_validate(index)
 
 
-@router.post("/indexes/promote", response_model=IndexResponse)
+@router.post(
+    "/indexes/promote", response_model=IndexResponse,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def promote_index(
     request: IndexPromoteRequest,
     service: Annotated[RetrievalIndexService, Depends(get_index_service)],
@@ -43,7 +50,10 @@ async def promote_index(
     return IndexResponse.model_validate(index)
 
 
-@router.post("/indexes/rollback", response_model=IndexResponse)
+@router.post(
+    "/indexes/rollback", response_model=IndexResponse,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def rollback_index(
     request: IndexRollbackRequest,
     service: Annotated[RetrievalIndexService, Depends(get_index_service)],
@@ -53,7 +63,10 @@ async def rollback_index(
     return IndexResponse.model_validate(index)
 
 
-@router.get("/indexes", response_model=list[IndexResponse])
+@router.get(
+    "/indexes", response_model=list[IndexResponse],
+    dependencies=[Depends(RequirePermission(Permission.DOCUMENT_READ))],
+)
 async def list_indexes(
     service: Annotated[RetrievalIndexService, Depends(get_index_service)],
 ) -> list[IndexResponse]:
@@ -62,7 +75,10 @@ async def list_indexes(
     return [IndexResponse.model_validate(index) for index in indexes]
 
 
-@router.get("/indexes/status", response_model=IndexStatusResponse)
+@router.get(
+    "/indexes/status", response_model=IndexStatusResponse,
+    dependencies=[Depends(RequirePermission(Permission.DOCUMENT_READ))],
+)
 async def index_status(
     service: Annotated[RetrievalIndexService, Depends(get_index_service)],
     settings: Annotated[Settings, Depends(get_settings)],
@@ -71,7 +87,10 @@ async def index_status(
     return await service.status(settings.RETRIEVAL_LIVE_ALIAS)
 
 
-@router.post("/retrieval/search", response_model=RetrievalSearchResponse)
+@router.post(
+    "/retrieval/search", response_model=RetrievalSearchResponse,
+    dependencies=[Depends(RequirePermission(Permission.KNOWLEDGE_SEARCH))],
+)
 async def search_retrieval(
     request: RetrievalSearchRequest,
     service: Annotated[RetrievalSearchService, Depends(get_search_service)],
@@ -80,7 +99,10 @@ async def search_retrieval(
     return await service.search(request)
 
 
-@router.post("/indexes/build/background", status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "/indexes/build/background", status_code=status.HTTP_202_ACCEPTED,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def build_index_background(
     request: IndexBuildRequest,
     background_tasks: BackgroundTasks,
