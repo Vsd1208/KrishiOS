@@ -151,3 +151,30 @@ def reliability(frame: pd.DataFrame, column: str = "p_above", category_index: in
     g = pd.DataFrame({"bin": cut, "p": frame[column], "hit": hit}).groupby("bin", observed=True)
     return [{"bin": str(k), "n": len(v), "mean_forecast": round(float(v["p"].mean()), 3),
              "observed": round(float(v["hit"].mean()), 3)} for k, v in g if len(v)]
+
+
+def outlook_next(values: pd.DataFrame, regions: np.ndarray, cfg: Config) -> pd.DataFrame:
+    """Recent-normals ("ocn") outlook for the season after the last year in ``values``.
+
+    Uses every year in ``values`` as history. Returns per district the three probabilities and
+    the tercile limits (in the variable's own units) that define below / near / above normal.
+    """
+    if cfg.method != "ocn":
+        raise ValueError("the served outlook uses recent normals only (Phase 10d test)")
+    hyears = np.array(sorted(values.columns))
+    hist = values[hyears].to_numpy(dtype="float64")
+    lo = np.nanpercentile(hist, 100 / 3, axis=1)
+    hi = np.nanpercentile(hist, 200 / 3, axis=1)
+    cat = np.where(hist < lo[:, None], 0, np.where(hist > hi[:, None], 2, 1))
+    recent = hyears >= hyears.max() - cfg.n_recent + 1
+    valid = ~np.isnan(hist[:, recent])
+    counts = np.stack([((cat[:, recent] == c) & valid).sum(axis=1) for c in range(3)], axis=1)
+    p = (counts + cfg.k / 3) / (valid.sum(axis=1, keepdims=True) + cfg.k)
+    if cfg.lam:
+        p = (1 - cfg.lam) * p + cfg.lam * pd.DataFrame(p).groupby(regions).transform(
+            "mean").to_numpy()
+    out = pd.DataFrame(p, columns=["p_below", "p_near", "p_above"])
+    out["district"] = values.index.to_numpy()
+    out["lower_tercile"], out["upper_tercile"] = lo, hi
+    out["history_from"], out["history_to"] = int(hyears.min()), int(hyears.max())
+    return out
