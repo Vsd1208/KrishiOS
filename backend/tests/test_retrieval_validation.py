@@ -54,3 +54,11 @@ async def test_validation_measures_self_retrieval_not_counts() -> None:
     assert math.isclose(report.ndcg, (1 + 1 / math.log2(3)) / 3)
     assert report.build_ms == 600_000.0 and report.latency_ms < 1500  # build time is not gated
     assert report.to_dict()["method"] == "self_retrieval"
+
+
+def test_passage_header_has_title_and_section() -> None:
+    from app.retrieval.indexing.manager import _with_header  # noqa: PLC0415
+
+    assert _with_header("PAU Kharif", "RICE > Unpuddled Direct Seeded Rice (DSR)", "Apply urea") \
+        == "PAU Kharif | RICE > Unpuddled Direct Seeded Rice (DSR)\nApply urea"
+    assert _with_header(None, None, "text") == "text"

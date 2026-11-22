@@ -27,6 +27,26 @@ from app.retrieval.interfaces.types import VectorRecord
 from app.retrieval.validation.validator import IndexValidator
 
 
+def _section_paths(document: KnowledgeDocument) -> dict[int, str]:
+    """Phase 10c: section path per page of a stored PDF (see app.knowledge.parsers.sections)."""
+    from pathlib import Path  # noqa: PLC0415
+
+    from app.config.settings import get_settings  # noqa: PLC0415
+    from app.knowledge.parsers.sections import pdf_section_paths  # noqa: PLC0415
+
+    path = Path(document.storage_path or "")
+    if (not get_settings().RETRIEVAL_SECTION_HEADERS or document.mime_type != "application/pdf"
+            or not path.is_file()):
+        return {}
+    return pdf_section_paths(path.read_bytes())
+
+
+def _with_header(title: str | None, section: str | None, text: str) -> str:
+    """Text that is embedded: "title | section" on the first line, then the passage."""
+    header = " | ".join(x for x in (title, section) if x)
+    return f"{header}\n{text}" if header else text
+
+
 class IndexManager:
     """Coordinate versioned index builds, validation, promotion, and rollback."""
 
@@ -194,14 +214,18 @@ class IndexManager:
             if unchanged and build_mode in {RetrievalBuildMode.INCREMENTAL, RetrievalBuildMode.DELTA}:
                 continue
 
-            texts = [chunk.chunk_text for chunk, _ in items]
+            sections = _section_paths(document)
+            texts = [_with_header(document.title, sections.get(chunk.page_number or 0),
+                                  chunk.chunk_text) for chunk, _ in items]
             vectors = await self._embedding_provider.embed_texts(texts)
             for (chunk, _), vector in zip(items, vectors, strict=True):
+                payload = self._payload(index, chunk, document, checksum, now)
+                payload["section"] = sections.get(chunk.page_number or 0)
                 records.append(
                     VectorRecord(
                         point_id=chunk.chunk_id,
                         vector=vector,
-                        payload=self._payload(index, chunk, document, checksum, now),
+                        payload=payload,
                     )
                 )
             states.append(

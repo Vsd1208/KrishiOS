@@ -45,6 +45,8 @@ class Settings(BaseSettings):
     RETRIEVAL_LIVE_ALIAS: str = "krishios-live"
     RETRIEVAL_DELTA_ALIAS: str = "krishios-delta"
     RERANKER_MODEL_NAME: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+    # Phase 10c: embed each passage with "document title | section path" (from PDF headings).
+    RETRIEVAL_SECTION_HEADERS: bool = True
     RETRIEVAL_CACHE_TTL_SECONDS: int = 300
 
     RANKING_WEIGHT_SEMANTIC: float = 0.45
