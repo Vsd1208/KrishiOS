@@ -115,3 +115,8 @@ api_router.include_router(forecasting_router)
 from app.surveillance.api import router as surveillance_router  # noqa: E402
 
 api_router.include_router(surveillance_router)
+
+# ── Sprint 11, Phase 10c: grounded farming assistant ──
+from app.assistant.api import router as assistant_router  # noqa: E402
+
+api_router.include_router(assistant_router)
