@@ -1,0 +1,53 @@
+{
+ "run_id": "c52a27e374f6",
+ "config": {
+  "years": [
+   1951,
+   2024
+  ],
+  "seasons": {
+   "JJAS": [
+    6,
+    7,
+    8,
+    9
+   ],
+   "OND": [
+    10,
+    11,
+    12
+   ],
+   "JF": [
+    1,
+    2
+   ],
+   "MAM": [
+    3,
+    4,
+    5
+   ]
+  },
+  "variables": [
+   "rain",
+   "tmax",
+   "tmin"
+  ],
+  "aggregation": "area-weighted cells, complete seasons only"
+ },
+ "rows": 215192,
+ "districts": {
+  "rain": 727,
+  "tmax": 726,
+  "tmin": 726
+ },
+ "jjas_mean_rain_mm_by_decade": {
+  "1950s": 995.7,
+  "1960s": 966.8,
+  "1970s": 987.1,
+  "1980s": 991.1,
+  "1990s": 992.4,
+  "2000s": 937.4,
+  "2010s": 965.0,
+  "2020s": 1002.1
+ }
+}
