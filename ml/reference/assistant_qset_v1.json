@@ -1,0 +1,365 @@
+{
+ "version": "v1-draft",
+ "status": "draft: questions and Hindi/Telugu wording to be reviewed by the project owner or an agronomist before scoring",
+ "created": "2026-11-22",
+ "design": "20 topics, each asked in English, Hindi and Telugu (60 items). 18 are answered in the vetted guides (page = PDF page, 1-based, as stored in the knowledge base); 2 are not covered, to test that the assistant says it does not know. key_facts are what a correct answer must contain; units follow the guide (PAU uses per acre, TNAU per hectare).",
+ "sources": {
+  "pau_kharif": "Package of Practices for Kharif Crops, Punjab Agricultural University",
+  "pau_rabi": "Package of Practices for Rabi Crops, Punjab Agricultural University",
+  "tnau_agri": "Crop Production Guide: Agriculture (2020), TNAU and Department of Agriculture, Tamil Nadu"
+ },
+ "items": [
+  {
+   "id": "q01",
+   "crop": "paddy",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 12,
+   "reference": "Sow the nursery of PR 126 between 25 May and 20 June (Punjab).",
+   "key_facts": [
+    "25",
+    "20 June"
+   ],
+   "q": {
+    "en": "When should I sow the nursery of paddy variety PR 126 in Punjab?",
+    "hi": "पंजाब में धान की किस्म PR 126 की नर्सरी कब बोनी चाहिए?",
+    "te": "పంజాబ్‌లో వరి రకం PR 126 నారుమడి ఎప్పుడు వేయాలి?"
+   }
+  },
+  {
+   "id": "q02",
+   "crop": "paddy",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 13,
+   "reference": "Apply butachlor 50 EC at 1200 mL per acre mixed with 60 kg sand, 7 days after broadcasting the nursery seed.",
+   "key_facts": [
+    "butachlor",
+    "1200 mL",
+    "60 kg",
+    "7 days"
+   ],
+   "q": {
+    "en": "How do I control grass weeds in a paddy nursery?",
+    "hi": "धान की नर्सरी में घास वाले खरपतवार कैसे नियंत्रित करें?",
+    "te": "వరి నారుమడిలో గడ్డి కలుపును ఎలా నివారించాలి?"
+   }
+  },
+  {
+   "id": "q03",
+   "crop": "paddy",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 19,
+   "reference": "Apply 25 kg zinc sulphate heptahydrate (21%) or 16 kg zinc sulphate monohydrate (33%) per acre at puddling if the previous crop showed zinc deficiency; if seen in the standing crop, apply the same quantity as soon as possible.",
+   "key_facts": [
+    "25 kg",
+    "zinc sulphate heptahydrate",
+    "16 kg",
+    "per acre",
+    "puddling"
+   ],
+   "q": {
+    "en": "How much zinc sulphate should I apply to transplanted paddy for zinc deficiency?",
+    "hi": "रोपाई वाले धान में जिंक की कमी के लिए कितना जिंक सल्फेट डालना चाहिए?",
+    "te": "నాటు వరిలో జింక్ లోపానికి ఎంత జింక్ సల్ఫేట్ వేయాలి?"
+   }
+  },
+  {
+   "id": "q04",
+   "crop": "paddy",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 30,
+   "reference": "For basmati, apply urea in two equal splits at 3 and 6 weeks after transplanting, preferably when no water is standing; irrigate on the third day after applying urea.",
+   "key_facts": [
+    "two equal splits",
+    "3 weeks",
+    "6 weeks",
+    "after transplanting"
+   ],
+   "q": {
+    "en": "When should urea be applied to basmati rice after transplanting?",
+    "hi": "बासमती धान में रोपाई के बाद यूरिया कब डालना चाहिए?",
+    "te": "బాస్మతి వరికి నాటిన తర్వాత యూరియా ఎప్పుడు వేయాలి?"
+   }
+  },
+  {
+   "id": "q05",
+   "crop": "paddy",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 33,
+   "reference": "For direct-seeded rice use 8-10 kg seed per acre; soak it in 2% potassium nitrate for 12 hours, dry in shade and treat with a fungicide before sowing.",
+   "key_facts": [
+    "8-10 kg",
+    "per acre",
+    "potassium nitrate"
+   ],
+   "q": {
+    "en": "What seed rate should I use for direct-seeded rice?",
+    "hi": "सीधी बुवाई वाले धान (DSR) के लिए बीज दर कितनी रखें?",
+    "te": "నేరుగా విత్తే వరి (DSR) కి విత్తన మోతాదు ఎంత?"
+   }
+  },
+  {
+   "id": "q06",
+   "crop": "paddy",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 34,
+   "reference": "In direct-seeded rice apply 130 kg urea per acre in three equal splits at 4, 6 and 9 weeks after sowing (less after green manure or moong residue).",
+   "key_facts": [
+    "130 kg urea",
+    "three equal splits",
+    "4, 6 and 9 weeks"
+   ],
+   "q": {
+    "en": "How much urea does direct-seeded rice need and when?",
+    "hi": "सीधी बुवाई वाले धान में कितना यूरिया और कब डालें?",
+    "te": "నేరుగా విత్తిన వరికి ఎంత యూరియా, ఎప్పుడు వేయాలి?"
+   }
+  },
+  {
+   "id": "q07",
+   "crop": "maize",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 38,
+   "reference": "Sow kharif maize from the last week of May to the end of June; in fields prone to waterlogging, sow from end of May to early June.",
+   "key_facts": [
+    "last week of May",
+    "end of June"
+   ],
+   "q": {
+    "en": "What is the right time to sow kharif maize in Punjab?",
+    "hi": "पंजाब में खरीफ मक्का बोने का सही समय क्या है?",
+    "te": "పంజాబ్‌లో ఖరీఫ్ మొక్కజొన్న విత్తడానికి సరైన సమయం ఏది?"
+   }
+  },
+  {
+   "id": "q08",
+   "crop": "cotton",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 54,
+   "reference": "Sow Bt cotton between 1 April and 15 May; this gives better yield and escapes insect pests and diseases. Sow in the morning or evening.",
+   "key_facts": [
+    "1 April",
+    "15 May"
+   ],
+   "q": {
+    "en": "When should Bt cotton be sown?",
+    "hi": "बीटी कपास की बुवाई कब करनी चाहिए?",
+    "te": "బీటీ పత్తిని ఎప్పుడు విత్తాలి?"
+   }
+  },
+  {
+   "id": "q09",
+   "crop": "cotton",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 53,
+   "reference": "Avoid synthetic pyrethroids before 15 September to reduce whitefly resurgence; use only recommended insecticides and avoid tank mixes.",
+   "key_facts": [
+    "synthetic pyrethroids",
+    "15",
+    "whitefly"
+   ],
+   "q": {
+    "en": "Should I spray synthetic pyrethroids on cotton early in the season?",
+    "hi": "क्या कपास पर मौसम की शुरुआत में सिंथेटिक पायरेथ्रॉइड का छिड़काव करना चाहिए?",
+    "te": "పత్తిపై సీజన్ మొదట్లో సింథటిక్ పైరిత్రాయిడ్ పిచికారీ చేయవచ్చా?"
+   }
+  },
+  {
+   "id": "q10",
+   "crop": "cotton",
+   "answerable": true,
+   "source": "pau_kharif",
+   "page": 60,
+   "reference": "Use acid-delinted seed (kills pink bollworm larvae), gin retained kapas by end of March, beat cotton sticks to dislodge larvae and store them vertically, do not move stalks to new areas, and use gossyplure 4% (125 g per acre per application) for mating disruption.",
+   "key_facts": [
+    "acid-delinted",
+    "gin",
+    "end of March",
+    "gossyplure"
+   ],
+   "q": {
+    "en": "How can I reduce pink bollworm carry-over in cotton?",
+    "hi": "कपास में गुलाबी सुंडी को अगले मौसम तक पहुँचने से कैसे रोकें?",
+    "te": "పత్తిలో గులాబీ రంగు కాయ తొలుచు పురుగు తర్వాతి సీజన్‌కు రాకుండా ఎలా ఆపాలి?"
+   }
+  },
+  {
+   "id": "q11",
+   "crop": "wheat",
+   "answerable": true,
+   "source": "pau_rabi",
+   "page": 13,
+   "reference": "The first fortnight of November is the optimum sowing time; long-duration varieties can be sown from the fourth week of October.",
+   "key_facts": [
+    "first fortnight of November",
+    "fourth week of October"
+   ],
+   "q": {
+    "en": "What is the best time to sow wheat?",
+    "hi": "गेहूं बोने का सबसे अच्छा समय क्या है?",
+    "te": "గోధుమ విత్తడానికి ఉత్తమ సమయం ఏది?"
+   }
+  },
+  {
+   "id": "q12",
+   "crop": "wheat",
+   "answerable": true,
+   "source": "pau_rabi",
+   "page": 13,
+   "reference": "For conventional sowing use 40 kg seed per acre (45 kg for PBW 869 and Unnat PBW 550).",
+   "key_facts": [
+    "40 kg",
+    "per acre",
+    "45 kg"
+   ],
+   "q": {
+    "en": "How much wheat seed should I sow per acre?",
+    "hi": "एक एकड़ में गेहूं का कितना बीज बोना चाहिए?",
+    "te": "ఒక ఎకరానికి ఎంత గోధుమ విత్తనం వేయాలి?"
+   }
+  },
+  {
+   "id": "q13",
+   "crop": "wheat",
+   "answerable": true,
+   "source": "pau_rabi",
+   "page": 120,
+   "reference": "In organic farming, spray 20% fermented buttermilk (40 L in 200 L water per acre) one month after sowing, then three more sprays at 10-day intervals after yellow rust appears, on moderately resistant varieties.",
+   "key_facts": [
+    "fermented buttermilk",
+    "40 litres",
+    "200 litres",
+    "ten days"
+   ],
+   "q": {
+    "en": "How can I manage yellow rust of wheat in organic farming?",
+    "hi": "जैविक खेती में गेहूं के पीले रतुए को कैसे नियंत्रित करें?",
+    "te": "సేంద్రియ వ్యవసాయంలో గోధుమ పసుపు తుప్పు తెగులును ఎలా నివారించాలి?"
+   }
+  },
+  {
+   "id": "q14",
+   "crop": "mustard",
+   "answerable": true,
+   "source": "pau_rabi",
+   "page": 58,
+   "reference": "Toria: whole of September; gobhi sarson: 10-30 October; raya and African sarson: mid October to mid November.",
+   "key_facts": [
+    "September",
+    "10-30 October",
+    "mid October to mid November"
+   ],
+   "q": {
+    "en": "When should toria, gobhi sarson and raya be sown?",
+    "hi": "तोरिया, गोभी सरसों और राया की बुवाई कब करें?",
+    "te": "తోరియా, గోబీ సర్సోన్, రాయా ఆవాలను ఎప్పుడు విత్తాలి?"
+   }
+  },
+  {
+   "id": "q15",
+   "crop": "paddy",
+   "answerable": true,
+   "source": "tnau_agri",
+   "page": 45,
+   "reference": "For dry-seeded rainfed rice use 75 kg/ha of dry seed; harden seed with 1% KCl for 16 hours and shade dry.",
+   "key_facts": [
+    "75",
+    "KCl"
+   ],
+   "q": {
+    "en": "What seed rate is recommended for dry-seeded rainfed rice in Tamil Nadu?",
+    "hi": "तमिलनाडु में सूखी बुवाई वाले वर्षा आधारित धान के लिए बीज दर क्या है?",
+    "te": "తమిళనాడులో పొడి విత్తనంతో వర్షాధార వరికి విత్తన మోతాదు ఎంత?"
+   }
+  },
+  {
+   "id": "q16",
+   "crop": "maize",
+   "answerable": true,
+   "source": "tnau_agri",
+   "page": 125,
+   "reference": "Use 60 x 25 cm spacing for irrigated maize and 45 x 20 cm for rainfed maize.",
+   "key_facts": [
+    "60 x 25 cm",
+    "45 x 20 cm"
+   ],
+   "q": {
+    "en": "What spacing should I use for irrigated and rainfed maize?",
+    "hi": "सिंचित और वर्षा आधारित मक्का में पौधों की दूरी कितनी रखें?",
+    "te": "నీటిపారుదల, వర్షాధార మొక్కజొన్నలో మొక్కల మధ్య దూరం ఎంత ఉంచాలి?"
+   }
+  },
+  {
+   "id": "q17",
+   "crop": "groundnut",
+   "answerable": true,
+   "source": "tnau_agri",
+   "page": 197,
+   "reference": "Use 120 kg/ha of kernels, or 175 kg/ha for bold-seeded varieties; spacing 30 cm between rows and 10 cm between plants.",
+   "key_facts": [
+    "120 kg/ha",
+    "175 kg/ha",
+    "kernels"
+   ],
+   "q": {
+    "en": "What is the seed rate for groundnut?",
+    "hi": "मूंगफली की बीज दर कितनी है?",
+    "te": "వేరుశనగ విత్తన మోతాదు ఎంత?"
+   }
+  },
+  {
+   "id": "q18",
+   "crop": "groundnut",
+   "answerable": true,
+   "source": "tnau_agri",
+   "page": 197,
+   "reference": "For sulphur deficiency apply gypsum at 400 kg/ha to the soil on the 45th day after sowing.",
+   "key_facts": [
+    "gypsum",
+    "400 kg/ha",
+    "45th day"
+   ],
+   "q": {
+    "en": "How much gypsum should be applied to groundnut and when?",
+    "hi": "मूंगफली में जिप्सम कितना और कब डालना चाहिए?",
+    "te": "వేరుశనగకు జిప్సం ఎంత, ఎప్పుడు వేయాలి?"
+   }
+  },
+  {
+   "id": "q19",
+   "crop": "dragon_fruit",
+   "answerable": false,
+   "source": null,
+   "page": null,
+   "reference": "Not covered by the vetted guides: the assistant should say it has no verified source and suggest asking the local horticulture officer or KVK.",
+   "key_facts": [],
+   "q": {
+    "en": "What spacing should I use for dragon fruit plants?",
+    "hi": "ड्रैगन फ्रूट के पौधों के बीच कितनी दूरी रखनी चाहिए?",
+    "te": "డ్రాగన్ ఫ్రూట్ మొక్కల మధ్య ఎంత దూరం ఉంచాలి?"
+   }
+  },
+  {
+   "id": "q20",
+   "crop": "onion",
+   "answerable": false,
+   "source": null,
+   "page": null,
+   "reference": "Not answerable from the guides (a price forecast): the assistant should say it cannot predict prices and point to official mandi prices.",
+   "key_facts": [],
+   "q": {
+    "en": "What will the onion price be at the mandi next month?",
+    "hi": "अगले महीने मंडी में प्याज का भाव क्या रहेगा?",
+    "te": "వచ్చే నెల మార్కెట్‌లో ఉల్లిపాయ ధర ఎంత ఉంటుంది?"
+   }
+  }
+ ]
+}
