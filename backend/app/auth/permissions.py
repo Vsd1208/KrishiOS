@@ -111,6 +111,7 @@ class Permission:
     GRIEVANCE_SUBMIT = "grievance:submit"
     GRIEVANCE_MANAGE = "grievance:manage"
     SCHEME_MANAGE = "scheme:manage"  # maintain and verify the scheme catalog (F4)
+    OFFICER_READ = "officer:read"  # staff directory (officer profiles), not farmers
 
 
 # ---------------------------------------------------------------------------
@@ -151,6 +152,7 @@ _FARMER_PERMISSIONS: frozenset[str] = frozenset(
 
 _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.OFFICER_READ,
         Permission.CONVERSATION_USE,
         Permission.GOVCONNECT_PUBLISH,
         Permission.GOVCONNECT_READ,
@@ -202,6 +204,7 @@ _OFFICER_PERMISSIONS: frozenset[str] = frozenset(
 
 _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.OFFICER_READ,
         Permission.CONVERSATION_USE,
         Permission.FEEDBACK_SUBMIT,
         Permission.FEEDBACK_REVIEW,
@@ -238,6 +241,7 @@ _AGRONOMIST_PERMISSIONS: frozenset[str] = frozenset(
 
 _EXTENSION_WORKER_PERMISSIONS: frozenset[str] = frozenset(
     {
+        Permission.OFFICER_READ,
         Permission.CONVERSATION_USE,
         Permission.GOVCONNECT_READ,
         Permission.GRIEVANCE_SUBMIT,

@@ -47,3 +47,22 @@ def client() -> Generator[TestClient]:
 def mock_session() -> AsyncMock:
     """Provide an async mock shaped like an SQLAlchemy AsyncSession."""
     return AsyncMock()
+
+
+@pytest.fixture
+def officer_client() -> Generator[TestClient]:
+    """A test client signed in as an agricultural officer (role permissions, no token needed)."""
+    from uuid import uuid4  # noqa: PLC0415
+
+    from app.api.dependencies.auth import AuthContext, get_current_auth_context  # noqa: PLC0415
+    from app.auth.permissions import get_permissions_for_role  # noqa: PLC0415
+    from app.models.user import UserRole  # noqa: PLC0415
+
+    auth = AuthContext(user_uuid=uuid4(), role=UserRole.OFFICER,
+                       permissions=get_permissions_for_role(UserRole.OFFICER), jti=uuid4())
+    app.dependency_overrides.clear()
+    app.dependency_overrides[get_current_auth_context] = lambda: auth
+    with TestClient(app) as test_client:
+        yield test_client
+    app.dependency_overrides.clear()
+

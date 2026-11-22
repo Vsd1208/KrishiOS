@@ -1,5 +1,7 @@
 """Field repository with farmer-field data access queries."""
 
+from collections.abc import Sequence
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -21,3 +23,9 @@ class FieldRepository(BaseRepository[Field]):
         )
         return await self._scalar_one_or_none(statement)
 
+    async def list_by_farmer(self, farmer_id: int, *, offset: int = 0,
+                             limit: int = 100) -> Sequence[Field]:
+        """Fields owned by one farmer (used to scope a farmer's own reads)."""
+        statement = (select(Field).where(Field.farmer_id == farmer_id)
+                     .order_by(Field.id).offset(offset).limit(limit))
+        return (await self.session.scalars(statement)).all()

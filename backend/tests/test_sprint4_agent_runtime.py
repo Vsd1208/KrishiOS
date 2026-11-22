@@ -272,7 +272,8 @@ async def test_runtime_engine_health_check() -> None:
     assert health["status"] in ("healthy", "degraded")
 
 
-def test_api_list_agents(client) -> None:
+def test_api_list_agents(officer_client) -> None:
+    client = officer_client
     response = client.get("/api/v1/agents")
     assert response.status_code == 200
     agents = response.json()
@@ -282,7 +283,8 @@ def test_api_list_agents(client) -> None:
     assert "crop_advisory_agent" in names
 
 
-def test_api_runtime_status(client) -> None:
+def test_api_runtime_status(officer_client) -> None:
+    client = officer_client
     response = client.get("/api/v1/runtime/status")
     assert response.status_code == 200
     data = response.json()
@@ -290,18 +292,21 @@ def test_api_runtime_status(client) -> None:
     assert "metrics" in data
 
 
-def test_api_get_agent_by_id(client) -> None:
+def test_api_get_agent_by_id(officer_client) -> None:
+    client = officer_client
     response = client.get("/api/v1/agents/knowledge_retrieval_agent")
     assert response.status_code == 200
     assert response.json()["name"] == "knowledge_retrieval_agent"
 
 
-def test_api_get_agent_not_found(client) -> None:
+def test_api_get_agent_not_found(officer_client) -> None:
+    client = officer_client
     response = client.get("/api/v1/agents/nonexistent_agent")
     assert response.status_code == 404
 
 
-def test_api_workflow_not_found(client) -> None:
+def test_api_workflow_not_found(officer_client) -> None:
+    client = officer_client
     response = client.post(
         "/api/v1/workflows/run",
         json={"workflow_id": "nonexistent", "goal": "test goal query"},
