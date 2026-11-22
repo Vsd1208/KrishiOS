@@ -1,7 +1,7 @@
 # Phase 10d: District Seasonal Outlook (interim)
 
-- **Status:** research result on `feat/sprint-11-phase10d-seasonal-outlook`; no product screen yet. Last
-  updated 2026-11-22.
+- **Status:** done on `feat/sprint-11-phase10d-seasonal-outlook`: research result plus an officer screen
+  (`/officer/seasonal`) fed by `scripts/export_seasonal_outlook.py`. Last updated 2026-11-22.
 - **Question:** before each IMD season, can KrishiOS give each district the chance of below-, near- or
   above-normal rainfall and temperature, better than "one third each"?
 - **Answer so far:** yes for **temperature** (clear skill in every season), barely for **monsoon rainfall**,
@@ -83,4 +83,9 @@ RPSS against 1/3 each (165,237 district-season forecasts; overall **+0.091**):
   shrinkage. Choosing that needs a fresh, untouched evaluation period (e.g. a rolling-origin design), since
   2006-2024 is now used.
 - Index-based predictors were simple categories; dynamical forecasts (IMD/NMME) were not used.
-- Next: decide with the project owner whether to build the officer-facing temperature outlook.
+- **Built:** `scripts/export_seasonal_outlook.py` writes the outlook (method frozen on dev, display decided
+  by the test skill: show if RPSS >= 0.05, "weak" if >= 0.02, otherwise withheld with a pointer to IMD) to
+  `ml/artifacts/seasonal/<version>/`; the backend serves it to officers at `GET /seasonal/outlook`; the officer
+  page shows per-district bars. The data ends in 2024; a new IMD year needs a rebuild and re-export.
+- Next: crop suggestions once agronomist-reviewed calendars exist; a farmer-facing message only through
+  officer approval.
