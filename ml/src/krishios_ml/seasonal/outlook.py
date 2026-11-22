@@ -32,6 +32,11 @@ class Config:
     lam: float = 0.5  # weight of the state mean
     detrend: bool = False  # terciles of residuals from a linear trend on the history
     use_iod: bool = False
+    # Phase 10d revision: "analog" (ENSO/IOD analog years), "ocn" (optimal climate normals:
+    # category frequencies of the last ``n_recent`` years, which carries trends such as
+    # warming), or "blend" (mean of the two).
+    method: str = "analog"
+    n_recent: int = 10
 
 
 def category(value: float, threshold: float) -> int:
@@ -104,11 +109,20 @@ def hindcast_year(values: pd.DataFrame, states: pd.DataFrame, regions: np.ndarra
         both = same & (states.loc[hyears, "iod"].to_numpy() == st["iod"])
         if both.sum() >= MIN_ANALOGS:
             same = both
-    a = cat_h[:, same]
-    valid = ~np.isnan(hist[:, same])
-    counts = np.stack([((a == c) & valid).sum(axis=1) for c in range(3)], axis=1)
-    n = valid.sum(axis=1, keepdims=True)
-    p_d = (counts + cfg.k / 3) / (n + cfg.k)
+
+    def shrunk(mask: np.ndarray) -> np.ndarray:
+        a = cat_h[:, mask]
+        valid = ~np.isnan(hist[:, mask])
+        counts = np.stack([((a == c) & valid).sum(axis=1) for c in range(3)], axis=1)
+        return (counts + cfg.k / 3) / (valid.sum(axis=1, keepdims=True) + cfg.k)
+
+    recent = hyears >= hyears.max() - cfg.n_recent + 1
+    if cfg.method == "ocn":
+        p_d = shrunk(recent)
+    elif cfg.method == "blend":
+        p_d = (shrunk(same) + shrunk(recent)) / 2
+    else:
+        p_d = shrunk(same)
     p_r = pd.DataFrame(p_d).groupby(regions).transform("mean").to_numpy()
     p = (1 - cfg.lam) * p_d + cfg.lam * p_r
     ok = ~np.isnan(targ)

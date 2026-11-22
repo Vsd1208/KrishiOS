@@ -38,6 +38,11 @@ SEASONS = ("JJAS", "OND", "JF", "MAM")
 VARIABLES = ("rain", "tmax", "tmin")
 GRID = {"k": (3.0, 6.0, 12.0), "lam": (0.0, 0.5, 1.0), "detrend": (False, True),
         "use_iod": (False, True)}
+# Revision 2 (after dev run c9c6c9d5f781 found no analog skill): add optimal climate normals
+# (recent-years category frequencies) and a blend; still chosen on the development years only.
+GRID_V2 = [dict(method=m, n_recent=n, k=k, lam=lam)
+           for m in ("analog", "ocn", "blend") for n in (10, 15) for k in (3.0, 6.0, 12.0)
+           for lam in (0.0, 1.0) if not (m == "analog" and n == 15)]
 
 
 def load_indices() -> pd.DataFrame:
@@ -75,26 +80,28 @@ def summary(frame: pd.DataFrame) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", choices=["dev", "test"], required=True)
+    ap.add_argument("--grid", choices=["v1", "v2"], default="v2")
     args = ap.parse_args()
     table = pd.read_parquet(TABLE)
     indices = load_indices()
     log = EXPERIMENTS_DIR / "seasonal_outlook.jsonl"
 
     if args.stage == "dev":
-        config = {"stage": "dev", "years": [DEV.start, DEV.stop - 1], "grid": GRID,
+        grid = (GRID_V2 if args.grid == "v2" else
+                [dict(k=k, lam=lam, detrend=d, use_iod=i)
+                 for k, lam, d, i in itertools.product(*GRID.values())])
+        config = {"stage": "dev", "years": [DEV.start, DEV.stop - 1], "grid": grid,
                   "selection": "mean RPSS over the 12 season x variable cells"}
         with track_experiment("seasonal_outlook", config, seed=None,
                               split_id="hindcast-expanding") as rec:
             results = []
-            for k, lam, detrend, use_iod in itertools.product(*GRID.values()):
-                cfg = Config(k=k, lam=lam, detrend=detrend, use_iod=use_iod)
-                s = summary(run(table, indices, DEV, cfg))
+            for settings in grid:
+                s = summary(run(table, indices, DEV, Config(**settings)))
                 cells = [v["rpss"] for key, v in s.items() if key != "all"]
-                results.append({"config": cfg.__dict__ if hasattr(cfg, "__dict__") else
-                                dict(k=k, lam=lam, detrend=detrend, use_iod=use_iod),
+                results.append({"config": settings,
                                 "mean_cell_rpss": round(sum(cells) / len(cells), 4),
                                 "pooled": s["all"], "cells": s})
-                print(k, lam, detrend, use_iod, results[-1]["mean_cell_rpss"], flush=True)
+                print(settings, results[-1]["mean_cell_rpss"], flush=True)
             best = max(results, key=lambda r: r["mean_cell_rpss"])
             rec.metrics = {"best": best["config"], "best_mean_cell_rpss": best["mean_cell_rpss"],
                            "best_cells": {k: v["rpss"] for k, v in best["cells"].items()}}
