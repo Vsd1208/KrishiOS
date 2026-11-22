@@ -146,7 +146,8 @@ class AssistantService:
                 result.answer_en = text
                 result.citations = [
                     {"n": k, "title": passages[k - 1].title, "page": passages[k - 1].page,
-                     "source_url": passages[k - 1].source_url}
+                     "source_url": passages[k - 1].source_url,
+                     "similarity": round(passages[k - 1].similarity, 4)}
                     for k in used]
                 mark = perf_counter()
                 translated, ok = await self._to(strip_markers(text), "en", language)

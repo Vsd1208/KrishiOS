@@ -214,6 +214,9 @@ class Settings(BaseSettings):
     ML_DEVICE: str = "auto"  # auto | cpu | cuda (local models)
     # Phase 3: dialogue state store (memory for dev/tests, redis for multi-instance).
     CONVERSATION_STATE_BACKEND: str = "memory"
+    # Phase 10c: who writes chat answers: the agent runtime, or the grounded assistant that answers
+    # only from the vetted guides (cite or decline).
+    CONVERSATION_ANSWER_RUNNER: Literal["agents", "assistant"] = "agents"
     # Load configured local STT/MT models at startup (cold load measured at 78 s).
     PRELOAD_MODELS: bool = False
     # ── Sprint 11, Phase 4: Govt Connect, grievances ─────────────────────────

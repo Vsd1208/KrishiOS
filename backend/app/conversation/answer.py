@@ -94,3 +94,45 @@ class RuntimeAnswerRunner:
                                     district=ctx.district, state=ctx.state, season=ctx.season)
         results = await runtime.execute(ctx.goal_en, ctx.session_id, exec_ctx)
         return assemble(results)
+
+
+class AssistantAnswerRunner:
+    """Phase 10c runner: the grounded assistant (vetted guides, cite or decline).
+
+    The conversation manager has already translated the question to English and translates the
+    reply back, so the assistant runs in English here. A decline returns empty text, which the
+    manager turns into its "no grounded answer" message and flags for officer review.
+    Confidence is the highest search similarity among the cited passages (not a calibrated
+    probability).
+    """
+
+    agent_name = "krishios_assistant"
+
+    def __init__(self, service: Any = None) -> None:
+        self._service = service
+
+    async def run(self, ctx: AnswerContext) -> AssembledAnswer:
+        from app.assistant.service import strip_markers  # noqa: PLC0415
+        from app.assistant.wiring import get_assistant_service  # noqa: PLC0415
+
+        service = self._service or get_assistant_service()
+        out = await service.ask(ctx.goal_en, "en")
+        if not out.answered:
+            return AssembledAnswer(text_en="", agents=[self.agent_name], grounded=False,
+                                   requires_review=True, review_reason="no_source")
+        citations = [{"title": c["title"], "page": c["page"], "source": c["source_url"],
+                      "relevance": c.get("similarity")} for c in out.citations]
+        confidence = max((c.get("similarity") or 0.0) for c in out.citations)
+        return AssembledAnswer(text_en=strip_markers(out.answer_en), citations=citations,
+                               agents=[self.agent_name], grounded=True,
+                               confidence=round(confidence, 3))
+
+
+def build_answer_runner() -> AnswerRunner:
+    """CONVERSATION_ANSWER_RUNNER: "agents" (agent runtime, default) or "assistant"."""
+    from app.config.settings import get_settings  # noqa: PLC0415
+
+    if get_settings().CONVERSATION_ANSWER_RUNNER == "assistant":
+        return AssistantAnswerRunner()
+    return RuntimeAnswerRunner()
+

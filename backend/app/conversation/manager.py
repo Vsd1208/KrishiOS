@@ -30,7 +30,7 @@ from typing import Any
 from loguru import logger
 
 from app.catalog import get_crop_catalog, get_lgd_directory
-from app.conversation.answer import AnswerContext, AnswerRunner, RuntimeAnswerRunner
+from app.conversation.answer import AnswerContext, AnswerRunner, build_answer_runner
 from app.conversation.messages import message
 from app.conversation.state import DialogueState, InMemoryStateStore, Pending, StateStore
 from app.nlu import service as nlu_service
@@ -194,7 +194,7 @@ class ConversationManager:
                  photo_reclassify: PhotoReclassify | None = None,
                  bulletin_lookup: BulletinLookup | None = None) -> None:
         self._store = store or InMemoryStateStore()
-        self._runner = runner or RuntimeAnswerRunner()
+        self._runner = runner or build_answer_runner()
         self._translator = translator or get_translation_service()
         self._sink = sink
         self._tts = tts
