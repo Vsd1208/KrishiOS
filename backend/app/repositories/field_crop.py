@@ -1,10 +1,12 @@
 """Field crop repository for crop history persistence."""
 
+from collections.abc import Sequence
 from datetime import date
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.field import Field
 from app.models.field_crop import FieldCrop
 from app.repositories.base import BaseRepository
 
@@ -29,3 +31,10 @@ class FieldCropRepository(BaseRepository[FieldCrop]):
         )
         return await self._scalar_one_or_none(statement)
 
+    async def list_by_farmer(self, farmer_id: int, *, offset: int = 0,
+                             limit: int = 100) -> Sequence[FieldCrop]:
+        """Crop history on one farmer's fields (used to scope a farmer's own reads)."""
+        statement = (select(FieldCrop).join(Field, Field.id == FieldCrop.field_id)
+                     .where(Field.farmer_id == farmer_id)
+                     .order_by(FieldCrop.id).offset(offset).limit(limit))
+        return (await self.session.scalars(statement)).all()

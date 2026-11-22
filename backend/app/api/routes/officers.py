@@ -5,6 +5,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.dependencies.auth import RequirePermission
+from app.auth.permissions import Permission
 from app.database.session import get_db_session
 from app.schemas.officer import OfficerCreate, OfficerResponse, OfficerUpdate
 from app.services.officer import OfficerService
@@ -19,7 +21,10 @@ def get_officer_service(
     return OfficerService(session)
 
 
-@router.post("", response_model=OfficerResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "", response_model=OfficerResponse, status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def register_officer(
     payload: OfficerCreate,
     service: Annotated[OfficerService, Depends(get_officer_service)],
@@ -27,7 +32,10 @@ async def register_officer(
     return await service.register_officer(payload)
 
 
-@router.get("", response_model=list[OfficerResponse])
+@router.get(
+    "", response_model=list[OfficerResponse],
+    dependencies=[Depends(RequirePermission(Permission.OFFICER_READ))],
+)
 async def list_officers(
     service: Annotated[OfficerService, Depends(get_officer_service)],
     offset: Annotated[int, Query(ge=0)] = 0,
@@ -36,7 +44,10 @@ async def list_officers(
     return list(await service.list_officers(offset=offset, limit=limit))
 
 
-@router.get("/{officer_id}", response_model=OfficerResponse)
+@router.get(
+    "/{officer_id}", response_model=OfficerResponse,
+    dependencies=[Depends(RequirePermission(Permission.OFFICER_READ))],
+)
 async def get_officer(
     officer_id: int,
     service: Annotated[OfficerService, Depends(get_officer_service)],
@@ -44,7 +55,10 @@ async def get_officer(
     return await service.get_officer(officer_id)
 
 
-@router.patch("/{officer_id}", response_model=OfficerResponse)
+@router.patch(
+    "/{officer_id}", response_model=OfficerResponse,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def update_officer(
     officer_id: int,
     payload: OfficerUpdate,
@@ -53,7 +67,10 @@ async def update_officer(
     return await service.update_officer(officer_id, payload)
 
 
-@router.delete("/{officer_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{officer_id}", status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(RequirePermission(Permission.SYSTEM_ADMIN))],
+)
 async def delete_officer(
     officer_id: int,
     service: Annotated[OfficerService, Depends(get_officer_service)],
