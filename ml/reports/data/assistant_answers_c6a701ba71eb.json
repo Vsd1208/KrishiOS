@@ -1,0 +1,822 @@
+{
+ "run_id": "c6a701ba71eb",
+ "config": {
+  "qset": "v1-draft",
+  "split": "dev",
+  "topics": 12,
+  "model": "qwen2.5:7b",
+  "runtime": "ollama",
+  "top_k": 5,
+  "translation": "TranslationService (TRANSLATION_PROVIDER)"
+ },
+ "by_lang": {
+  "en": {
+   "answerable": 10,
+   "answered": 1.0,
+   "fact_recall_when_answered": 0.5,
+   "citation_ok_when_answered": 0.6,
+   "uncovered": 2,
+   "declined_uncovered": 1.0,
+   "translation_failed": 0,
+   "median_seconds": 10.399999999999999
+  },
+  "hi": {
+   "answerable": 10,
+   "answered": 0.9,
+   "fact_recall_when_answered": 0.459,
+   "citation_ok_when_answered": 0.444,
+   "uncovered": 2,
+   "declined_uncovered": 1.0,
+   "translation_failed": 3,
+   "median_seconds": 13.55
+  },
+  "te": {
+   "answerable": 10,
+   "answered": 0.8,
+   "fact_recall_when_answered": 0.479,
+   "citation_ok_when_answered": 0.625,
+   "uncovered": 2,
+   "declined_uncovered": 1.0,
+   "translation_failed": 3,
+   "median_seconds": 12.1
+  }
+ },
+ "rows": [
+  {
+   "id": "q01",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "When should I sow the nursery of paddy variety PR 126 in Punjab?",
+   "query_en": "When should I sow the nursery of paddy variety PR 126 in Punjab?",
+   "answer": "Transplant 25-30 days old nursery of PR 126 (2017) in Punjab, as stated in.",
+   "answer_en": "Transplant 25-30 days old nursery of PR 126 (2017) in Punjab, as stated in [4].",
+   "citations": [
+    {
+     "n": 4,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 11,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 48.9,
+   "fact_recall": 0.5,
+   "citation_ok": true
+  },
+  {
+   "id": "q01",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "पंजाब में धान की किस्म PR 126 की नर्सरी कब बोनी चाहिए?",
+   "query_en": "When should a nursery of paddy variety PR 126 be sown in Punjab?",
+   "answer": "25 - 30 दिन पुरानी पी. आर. 126 किस्म की एक नर्सरी का प्रत्यारोपण किया जाना चाहिए ।",
+   "answer_en": "A nursery of paddy variety PR 126 should be transplanted 25-30 days old [4].",
+   "citations": [
+    {
+     "n": 4,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 11,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 20.6,
+   "fact_recall": 0.5,
+   "citation_ok": true,
+   "in_script": true
+  },
+  {
+   "id": "q01",
+   "lang": "te",
+   "answerable": true,
+   "answered": true,
+   "question": "పంజాబ్‌లో వరి రకం PR 126 నారుమడి ఎప్పుడు వేయాలి?",
+   "query_en": "When to plant rice variety PR 126 in Punjab?",
+   "answer": "PR 126 ( 2017 ) లో పేర్కొన్న విధంగా పంజాబ్లో 25 - 30 రోజుల నాటి నర్సరీని నాటాలి.",
+   "answer_en": "PR 126 (2017) should be transplanted 25-30 days old nursery in Punjab, as stated in [1].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 11,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 13.2,
+   "fact_recall": 0.5,
+   "citation_ok": true,
+   "in_script": true
+  },
+  {
+   "id": "q02",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "How do I control grass weeds in a paddy nursery?",
+   "query_en": "How do I control grass weeds in a paddy nursery?",
+   "answer": "Use of pre-emergence and early post-emergence herbicides provides effective control of grass weeds. For instance, applying Pyrazosulfuron ethyl @ 20 g/ha or Butachlor 1.0 l/ha or Pendimethalin 1.0 l/ha on the 3rd or 4th day after sowing can control weeds in the lowland nursery.",
+   "answer_en": "Use of pre-emergence and early post-emergence herbicides provides effective control of grass weeds. For instance, applying Pyrazosulfuron ethyl @ 20 g/ha or Butachlor 1.0 l/ha or Pendimethalin 1.0 l/ha on the 3rd or 4th day after sowing can control weeds in the lowland nursery. [2]",
+   "citations": [
+    {
+     "n": 2,
+     "title": "Crop Production Guide: Agriculture (2020)",
+     "page": 30,
+     "source_url": "https://agritech.tnau.ac.in/pdf/AGRICULTURE.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 15.5,
+   "fact_recall": 0.25,
+   "citation_ok": false
+  },
+  {
+   "id": "q02",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "धान की नर्सरी में घास वाले खरपतवार कैसे नियंत्रित करें?",
+   "query_en": "How to control weeds in a paddy nursery",
+   "answer": "Weed control in a paddy nursery can be managed through mechanical transplanting with a spacing of 30x12 cm [1]. After transplanting, interculture with a Paddy Weeder 15 days later and again after a fortnight [1]. Alternatively, hand weeding can be done where a paddy weeder cannot be run [1]. Pre-emergence herbicides like Pyrazosulfuron ethyl @ 20 g/ha or Butachlor 1.0 l/ha can also be applied on 3rd or 4th day after sowing [4].",
+   "answer_en": "Weed control in a paddy nursery can be managed through mechanical transplanting with a spacing of 30x12 cm [1]. After transplanting, interculture with a Paddy Weeder 15 days later and again after a fortnight [1]. Alternatively, hand weeding can be done where a paddy weeder cannot be run [1]. Pre-emergence herbicides like Pyrazosulfuron ethyl @ 20 g/ha or Butachlor 1.0 l/ha can also be applied on 3rd or 4th day after sowing [4].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 16,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    },
+    {
+     "n": 4,
+     "title": "Crop Production Guide: Agriculture (2020)",
+     "page": 30,
+     "source_url": "https://agritech.tnau.ac.in/pdf/AGRICULTURE.pdf"
+    }
+   ],
+   "translation_failed": true,
+   "seconds": 31.5,
+   "fact_recall": 0.25,
+   "citation_ok": false
+  },
+  {
+   "id": "q02",
+   "lang": "te",
+   "answerable": true,
+   "answered": true,
+   "question": "వరి నారుమడిలో గడ్డి కలుపును ఎలా నివారించాలి?",
+   "query_en": "How to Avoid Weeds in Rice Flour",
+   "answer": "To avoid weeds in rice, spray 120 mL per acre of Nominee Gold/ Wash out/Taarak/Macho 10 SC (bispyribac) in 150 litres of water at 20-25 days of transplanting [3]. Alternatively, in wet seeded rice, apply Pretilachlor 0.75 kg/ha on 8 DAS, followed by hand weeding on 40 DAS [4].",
+   "answer_en": "To avoid weeds in rice, spray 120 mL per acre of Nominee Gold/ Wash out/Taarak/Macho 10 SC (bispyribac) in 150 litres of water at 20-25 days of transplanting [3]. Alternatively, in wet seeded rice, apply Pretilachlor 0.75 kg/ha on 8 DAS, followed by hand weeding on 40 DAS [4].",
+   "citations": [
+    {
+     "n": 3,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 15,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    },
+    {
+     "n": 4,
+     "title": "Crop Production Guide: Agriculture (2020)",
+     "page": 44,
+     "source_url": "https://agritech.tnau.ac.in/pdf/AGRICULTURE.pdf"
+    }
+   ],
+   "translation_failed": true,
+   "seconds": 30.6,
+   "fact_recall": 0.0,
+   "citation_ok": false
+  },
+  {
+   "id": "q03",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "How much zinc sulphate should I apply to transplanted paddy for zinc deficiency?",
+   "query_en": "How much zinc sulphate should I apply to transplanted paddy for zinc deficiency?",
+   "answer": "Apply 25 kg of zinc sulphate heptahydrate (21%) or 16 kg zinc sulphate monohydrate (33%) per acre at puddling if the previous crop in the field had shown symptoms of zinc deficiency. Where deficiency symptoms appear in the growing crop, apply 10 kg of zinc sulphate heptahydrate (21%) or 6.5 kg zinc sulphate monohydrate (33%) per acre mixed with an equal quantity of dry soil along rows.",
+   "answer_en": "Apply 25 kg of zinc sulphate heptahydrate (21%) or 16 kg zinc sulphate monohydrate (33%) per acre at puddling if the previous crop in the field had shown symptoms of zinc deficiency [3]. Where deficiency symptoms appear in the growing crop, apply 10 kg of zinc sulphate heptahydrate (21%) or 6.5 kg zinc sulphate monohydrate (33%) per acre mixed with an equal quantity of dry soil along rows [5].",
+   "citations": [
+    {
+     "n": 3,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 19,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    },
+    {
+     "n": 5,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 42,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 21.6,
+   "fact_recall": 1.0,
+   "citation_ok": true
+  },
+  {
+   "id": "q03",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "रोपाई वाले धान में जिंक की कमी के लिए कितना जिंक सल्फेट डालना चाहिए?",
+   "query_en": "How much zinc sulfate should be added to transplanted rice for zinc deficiency?",
+   "answer": "For transplanted rice, soil application of 25 kg zinc sulphate heptahydrate or 16 kg zinc sulphate monohydrate per acre is recommended if the soil is zinc-deficient [3]. Alternatively, a zinc sulphate-lime mixture can be used, but the exact dosage for transplanted rice is not specified in the provided passages [2].",
+   "answer_en": "For transplanted rice, soil application of 25 kg zinc sulphate heptahydrate or 16 kg zinc sulphate monohydrate per acre is recommended if the soil is zinc-deficient [3]. Alternatively, a zinc sulphate-lime mixture can be used, but the exact dosage for transplanted rice is not specified in the provided passages [2].",
+   "citations": [
+    {
+     "n": 3,
+     "title": "Crop Production Guide: Agriculture (2020)",
+     "page": 35,
+     "source_url": "https://agritech.tnau.ac.in/pdf/AGRICULTURE.pdf"
+    },
+    {
+     "n": 2,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 42,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": true,
+   "seconds": 25.6,
+   "fact_recall": 0.8,
+   "citation_ok": false
+  },
+  {
+   "id": "q03",
+   "lang": "te",
+   "answerable": true,
+   "answered": false,
+   "question": "నాటు వరిలో జింక్ లోపానికి ఎంత జింక్ సల్ఫేట్ వేయాలి?",
+   "query_en": "How much zinc sulphate should be added to the sown paddy for zinc deficiency?",
+   "answer": "నేను ఉపయోగించే ధృవీకరించిన వ్యవసాయ మార్గదర్శకాలలో ఈ సమాచారం దొరకలేదు, కాబట్టి నమ్మదగిన సమాధానం ఇవ్వలేను. దయచేసి మీ వ్యవసాయ అధికారిని లేదా దగ్గరలోని కేవీకేను అడగండి.",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 7.6
+  },
+  {
+   "id": "q04",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "When should urea be applied to basmati rice after transplanting?",
+   "query_en": "When should urea be applied to basmati rice after transplanting?",
+   "answer": "Urea should be applied in two equal splits at 3 weeks and 6 weeks after transplanting. If possible, apply urea when water is not standing in the field and irrigate on the third day of urea application.",
+   "answer_en": "Urea should be applied in two equal splits at 3 weeks and 6 weeks after transplanting [1]. If possible, apply urea when water is not standing in the field and irrigate on the third day of urea application [1].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 30,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 10.6,
+   "fact_recall": 1.0,
+   "citation_ok": true
+  },
+  {
+   "id": "q04",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "बासमती धान में रोपाई के बाद यूरिया कब डालना चाहिए?",
+   "query_en": "When should urea be added to basmati paddy after transplanting?",
+   "answer": "Urea को प्रत्यारोपण के 3 सप्ताह और 6 सप्ताह बाद दो समान विभाजनों में लगाया जाना चाहिए । urea के आवेदन के तीसरे दिन सिंचाई करें । आवेदन तब किया जाना चाहिए जब खेत में पानी खड़ा न हो ।",
+   "answer_en": "Urea should be applied in two equal splits at 3 weeks and 6 weeks after transplanting [1]. Irrigate on the third day of the application of urea [2]. The application should be done when water is not standing in the field [2].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 30,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    },
+    {
+     "n": 2,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 18,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 14.3,
+   "fact_recall": 1.0,
+   "citation_ok": true,
+   "in_script": true
+  },
+  {
+   "id": "q04",
+   "lang": "te",
+   "answerable": true,
+   "answered": true,
+   "question": "బాస్మతి వరికి నాటిన తర్వాత యూరియా ఎప్పుడు వేయాలి?",
+   "query_en": "When should urea be applied to basmati paddy after sowing?",
+   "answer": "Urea ను 3 వారాలు మరియు మార్పిడి తర్వాత 6 వారాలలో రెండు సమాన విభజనలలో వర్తింపజేయాలి. సాధ్యమైతే పొలంలో నీరు లేనప్పుడు ureaని అప్లై చేయండి మరియు ureaని అప్లై చేసిన మూడవ రోజున నీటిపారుదల చేయండి.",
+   "answer_en": "Urea should be applied in two equal splits at 3 weeks and 6 weeks after transplanting [1]. If possible, apply urea when water is not standing in the field and irrigate on the third day of urea application [1].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 30,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 19.8,
+   "fact_recall": 1.0,
+   "citation_ok": true,
+   "in_script": true
+  },
+  {
+   "id": "q05",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "What seed rate should I use for direct-seeded rice?",
+   "query_en": "What seed rate should I use for direct-seeded rice?",
+   "answer": "Use 8-10 kg seed per acre for direct-seeded rice. Alternatively, a seed rate of 5 kg/ha can be adopted.",
+   "answer_en": "Use 8-10 kg seed per acre for direct-seeded rice [1]. Alternatively, a seed rate of 5 kg/ha can be adopted [4].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 33,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    },
+    {
+     "n": 4,
+     "title": "Crop Production Guide: Agriculture (2020)",
+     "page": 213,
+     "source_url": "https://agritech.tnau.ac.in/pdf/AGRICULTURE.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 9.9,
+   "fact_recall": 0.6666666666666666,
+   "citation_ok": true
+  },
+  {
+   "id": "q05",
+   "lang": "hi",
+   "answerable": true,
+   "answered": false,
+   "question": "सीधी बुवाई वाले धान (DSR) के लिए बीज दर कितनी रखें?",
+   "query_en": "What is the seed rate for direct sown paddy ( DSR )?",
+   "answer": "मुझे यह जानकारी उन सत्यापित खेती मार्गदर्शिकाओं में नहीं मिली जिनका मैं उपयोग करता हूँ, इसलिए मैं भरोसेमंद उत्तर नहीं दे सकता। कृपया अपने कृषि अधिकारी या नज़दीकी केवीके से पूछें।",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 4.8
+  },
+  {
+   "id": "q05",
+   "lang": "te",
+   "answerable": true,
+   "answered": false,
+   "question": "నేరుగా విత్తే వరి (DSR) కి విత్తన మోతాదు ఎంత?",
+   "query_en": "What is the seed dose of Direct Sowing Rice ( DSR )?",
+   "answer": "నేను ఉపయోగించే ధృవీకరించిన వ్యవసాయ మార్గదర్శకాలలో ఈ సమాచారం దొరకలేదు, కాబట్టి నమ్మదగిన సమాధానం ఇవ్వలేను. దయచేసి మీ వ్యవసాయ అధికారిని లేదా దగ్గరలోని కేవీకేను అడగండి.",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 4.4
+  },
+  {
+   "id": "q06",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "How much urea does direct-seeded rice need and when?",
+   "query_en": "How much urea does direct-seeded rice need and when?",
+   "answer": "Apply another dose of 26 kg urea per acre about a fortnight after sowing direct-seeded rice so as to get the seedlings ready for transplanting in 25-30 days. If the nursery of about 45 days or above is to be transplanted, apply another dose of 26 kg urea after 4 weeks of sowing.",
+   "answer_en": "Apply another dose of 26 kg urea per acre about a fortnight after sowing direct-seeded rice so as to get the seedlings ready for transplanting in 25-30 days [1]. If the nursery of about 45 days or above is to be transplanted, apply another dose of 26 kg urea after 4 weeks of sowing [1].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 13,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 15.1,
+   "fact_recall": 0.0,
+   "citation_ok": false
+  },
+  {
+   "id": "q06",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "सीधी बुवाई वाले धान में कितना यूरिया और कब डालें?",
+   "query_en": "How much urea to put in direct sown paddy and when?",
+   "answer": "For direct sown paddy, apply 25 kg urea as a basal dose per acre. Split the remaining urea based on the PAU-Leaf Colour Chart (PAU-LCC) or Green Seeker Optical Sensor, starting 14 days after transplanting and every 7 days thereafter [5].",
+   "answer_en": "For direct sown paddy, apply 25 kg urea as a basal dose per acre. Split the remaining urea based on the PAU-Leaf Colour Chart (PAU-LCC) or Green Seeker Optical Sensor, starting 14 days after transplanting and every 7 days thereafter [5].",
+   "citations": [
+    {
+     "n": 5,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 18,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": true,
+   "seconds": 23.5,
+   "fact_recall": 0.0,
+   "citation_ok": false
+  },
+  {
+   "id": "q06",
+   "lang": "te",
+   "answerable": true,
+   "answered": true,
+   "question": "నేరుగా విత్తిన వరికి ఎంత యూరియా, ఎప్పుడు వేయాలి?",
+   "query_en": "How much urea should be applied to directly sown paddy?",
+   "answer": "According to the sources, 130 kg urea per acre should be applied in three equal splits at 4, 6, and 9 weeks of sowing for directly sown paddy. However, if green manuring with sunnhemp or FYM application @ 6 tonne per acre is done, reduce the urea dose to 90 kg per acre. If summer moong residue has been incorporated after picking pods, apply 110 kg urea per acre [5].",
+   "answer_en": "According to the sources, 130 kg urea per acre should be applied in three equal splits at 4, 6, and 9 weeks of sowing for directly sown paddy. However, if green manuring with sunnhemp or FYM application @ 6 tonne per acre is done, reduce the urea dose to 90 kg per acre. If summer moong residue has been incorporated after picking pods, apply 110 kg urea per acre [5].",
+   "citations": [
+    {
+     "n": 5,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 34,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": true,
+   "seconds": 29.1,
+   "fact_recall": 0.6666666666666666,
+   "citation_ok": true
+  },
+  {
+   "id": "q07",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "What is the right time to sow kharif maize in Punjab?",
+   "query_en": "What is the right time to sow kharif maize in Punjab?",
+   "answer": "The right time to sow kharif maize in Punjab is from the end of April to the end of May, as per the information provided in passage.",
+   "answer_en": "The right time to sow kharif maize in Punjab is from the end of April to the end of May, as per the information provided in passage [2].",
+   "citations": [
+    {
+     "n": 2,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 105,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 8.5,
+   "fact_recall": 0.0,
+   "citation_ok": false
+  },
+  {
+   "id": "q07",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "पंजाब में खरीफ मक्का बोने का सही समय क्या है?",
+   "query_en": "What is the best time to sow Kharif maize in Punjab?",
+   "answer": "पंजाब में खरिफ की बुवाई का सबसे अच्छा समय अप्रैल के अंत से मई के अंत तक है जैसा कि उल्लेख किया गया है ।",
+   "answer_en": "The best time to sow Kharif maize in Punjab is from the end of April to the end of May, as mentioned in [2].",
+   "citations": [
+    {
+     "n": 2,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 105,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 11.1,
+   "fact_recall": 0.0,
+   "citation_ok": false,
+   "in_script": true
+  },
+  {
+   "id": "q07",
+   "lang": "te",
+   "answerable": true,
+   "answered": true,
+   "question": "పంజాబ్‌లో ఖరీఫ్ మొక్కజొన్న విత్తడానికి సరైన సమయం ఏది?",
+   "query_en": "When is the best time to sow Kharif maize in Punjab?",
+   "answer": "పంజాబ్లో ఖరీఫ్ విత్తడానికి ఉత్తమ సమయం ఏప్రిల్ చివరి నుండి మే చివరి వరకు ఉంటుంది.",
+   "answer_en": "The best time to sow Kharif maize in Punjab is from the end of April to the end of May, as per the information provided in passage [1].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 105,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 10.8,
+   "fact_recall": 0.0,
+   "citation_ok": false,
+   "in_script": true
+  },
+  {
+   "id": "q08",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "When should Bt cotton be sown?",
+   "query_en": "When should Bt cotton be sown?",
+   "answer": "Bt cotton should be sown during 1 April to 15 May. Sowing during this period ensures better yield and escapes the attack of insect pests and diseases.",
+   "answer_en": "Bt cotton should be sown during 1 April to 15 May [1]. Sowing during this period ensures better yield and escapes the attack of insect pests and diseases.",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 54,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 7.9,
+   "fact_recall": 1.0,
+   "citation_ok": true
+  },
+  {
+   "id": "q08",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "बीटी कपास की बुवाई कब करनी चाहिए?",
+   "query_en": "When should Bt cotton be sown?",
+   "answer": "कपास को 1 अप्रैल से 15 मई के दौरान बोया जाना चाहिए । यह अवधि बेहतर उपज सुनिश्चित करती है और कीटों और बीमारियों से बचने में मदद करती है ।",
+   "answer_en": "Bt cotton should be sown during 1 April to 15 May [1]. This period ensures better yield and helps in avoiding insect pests and diseases.",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 54,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 10.5,
+   "fact_recall": 1.0,
+   "citation_ok": true,
+   "in_script": true
+  },
+  {
+   "id": "q08",
+   "lang": "te",
+   "answerable": true,
+   "answered": true,
+   "question": "బీటీ పత్తిని ఎప్పుడు విత్తాలి?",
+   "query_en": "When to Sow Bt Cotton",
+   "answer": "మెరుగైన దిగుబడి కోసం మరియు పురుగుల తెగుళ్ళు మరియు వ్యాధులను నివారించడానికి ఏప్రిల్ 1 నుండి మే 15 వరకు పత్తి నాటండి.",
+   "answer_en": "Sow Bt cotton during 1 April to 15 May for better yield and to avoid insect pests and diseases [1].",
+   "citations": [
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 54,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 11.0,
+   "fact_recall": 1.0,
+   "citation_ok": true,
+   "in_script": true
+  },
+  {
+   "id": "q09",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "Should I spray synthetic pyrethroids on cotton early in the season?",
+   "query_en": "Should I spray synthetic pyrethroids on cotton early in the season?",
+   "answer": "No, you should not spray synthetic pyrethroids on cotton early in the season. According to passage, the use of synthetic pyrethroids should be discouraged in cotton to avoid the problem of white fly.",
+   "answer_en": "No, you should not spray synthetic pyrethroids on cotton early in the season. According to passage [4], the use of synthetic pyrethroids should be discouraged in cotton to avoid the problem of white fly.",
+   "citations": [
+    {
+     "n": 4,
+     "title": "Crop Production Guide: Agriculture (2020)",
+     "page": 287,
+     "source_url": "https://agritech.tnau.ac.in/pdf/AGRICULTURE.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 10.2,
+   "fact_recall": 0.3333333333333333,
+   "citation_ok": false
+  },
+  {
+   "id": "q09",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "क्या कपास पर मौसम की शुरुआत में सिंथेटिक पायरेथ्रॉइड का छिड़काव करना चाहिए?",
+   "query_en": "Should synthetic pyrethroids be sprayed on cotton at the beginning of the season?",
+   "answer": "सितंबर से पहले बोलवर्म परिसर के नियंत्रण के लिए सिंथेटिक पायरेथ्रोइड्स का कपास पर छिड़काव नहीं किया जाना चाहिए जैसा कि मार्ग में कहा गया है ।",
+   "answer_en": "No, synthetic pyrethroids should not be sprayed on cotton for the control of bollworm complex before September, as stated in passage [4].",
+   "citations": [
+    {
+     "n": 4,
+     "title": "Crop Production Guide: Agriculture (2020)",
+     "page": 287,
+     "source_url": "https://agritech.tnau.ac.in/pdf/AGRICULTURE.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 12.8,
+   "fact_recall": 0.3333333333333333,
+   "citation_ok": false,
+   "in_script": true
+  },
+  {
+   "id": "q09",
+   "lang": "te",
+   "answerable": true,
+   "answered": true,
+   "question": "పత్తిపై సీజన్ మొదట్లో సింథటిక్ పైరిత్రాయిడ్ పిచికారీ చేయవచ్చా?",
+   "query_en": "Can synthetic pyrethroid be sprayed on cotton early in the season?",
+   "answer": "డానితోల్ / మీథ్రిన్ మరియు ఫాస్టాక్ / ఆల్ఫాగౌర్డ్ / మెరిట్ వంటి సింథటిక్ పైరిత్రాయిడ్లను సీజన్ ప్రారంభంలో పత్తి పై చల్లవచ్చు, అయితే వైట్ ఫ్లై పునరుజ్జీవనం సమస్యను నివారించడానికి వాటి వాడకాన్ని నిరుత్సాహపరచాలి. ముందుగా నాటిన పంటలకు ( ఏప్రిల్ మొదటి పక్షం రోజులలో ) 10 - 20 శాతం మొక్కలు చదరపు మొక్కలు ఉత్పత్తి చేయడం ప్రారంభించినప్పుడు గులాబీ బోల్వర్మ్కు వ్యతిరేకంగా మొదటి స్ప్రే చేయాలి, ముఖ్యంగా పత్తి కర్రలు లేదా జిన్నింగ్ మిల్లుల సమీపంలోని పొలాల్లో.",
+   "answer_en": "Synthetic pyrethroids like Danitol/Meothrin and Fastac/Alphagaurd/Merit can be sprayed on cotton early in the season, but their use should be discouraged to avoid the problem of whitefly resurgence [3]. For early sown crops (first fortnight of April), the first spray against pink bollworm should be done when 10-20 per cent plants start producing squares, particularly in fields near cotton sticks or ginning mills [1].",
+   "citations": [
+    {
+     "n": 3,
+     "title": "Crop Production Guide: Agriculture (2020)",
+     "page": 287,
+     "source_url": "https://agritech.tnau.ac.in/pdf/AGRICULTURE.pdf"
+    },
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 64,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 25.2,
+   "fact_recall": 0.6666666666666666,
+   "citation_ok": false,
+   "in_script": true
+  },
+  {
+   "id": "q10",
+   "lang": "en",
+   "answerable": true,
+   "answered": true,
+   "question": "How can I reduce pink bollworm carry-over in cotton?",
+   "query_en": "How can I reduce pink bollworm carry-over in cotton?",
+   "answer": "To reduce pink bollworm carry-over in cotton, beat the cotton sticks on the ground to dislodge surviving larvae, and stalk the sticks vertically. Additionally, use gossyplure 4% at 125 g per application per acre for mating disruption management.",
+   "answer_en": "To reduce pink bollworm carry-over in cotton, beat the cotton sticks on the ground to dislodge surviving larvae, and stalk the sticks vertically [2]. Additionally, use gossyplure 4% at 125 g per application per acre for mating disruption management [3].",
+   "citations": [
+    {
+     "n": 2,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 60,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    },
+    {
+     "n": 3,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 64,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 10.7,
+   "fact_recall": 0.25,
+   "citation_ok": true
+  },
+  {
+   "id": "q10",
+   "lang": "hi",
+   "answerable": true,
+   "answered": true,
+   "question": "कपास में गुलाबी सुंडी को अगले मौसम तक पहुँचने से कैसे रोकें?",
+   "query_en": "How to prevent the pink sundae in cotton from reaching the next season?",
+   "answer": "गुलाबी कीड़ा को अगले मौसम तक पहुंचने से रोकने के लिए एसिड - इसे बेचने या बोने से पहले बीज को छान लें क्योंकि यह उपचार गुलाबी कीड़ा के लार्वा को मार देता है । इसके अतिरिक्त यदि बीज को बुवाई के लिए बनाए रखना है तो मार्च के अंत तक इसका अम्ल उपचार किया जाना चाहिए और मवेशियों को खिलाया नहीं जाना चाहिए ।",
+   "answer_en": "To prevent the pink bollworm from reaching the next season, acid-delint the seed-cotton before selling or sowing it, as this treatment kills the larvae of the pink bollworm [3]. Additionally, if seed is to be retained for sowing, it should undergo acid treatment by the end of March and not be fed to cattle [3].",
+   "citations": [
+    {
+     "n": 3,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 60,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": false,
+   "seconds": 19.6,
+   "fact_recall": 0.25,
+   "citation_ok": true,
+   "in_script": true
+  },
+  {
+   "id": "q10",
+   "lang": "te",
+   "answerable": true,
+   "answered": true,
+   "question": "పత్తిలో గులాబీ రంగు కాయ తొలుచు పురుగు తర్వాతి సీజన్‌కు రాకుండా ఎలా ఆపాలి?",
+   "query_en": "How to stop the pink leaf borer in cotton from coming in the next season?",
+   "answer": "To prevent the pink bollworm from coming in the next season, after the final picking, shred the infested cotton field to kill the larvae [3]. Also, fumigate the seed left uncrushed in the mills before the end of April with Celphos/Phostoxin/Delicia @ one 3-g tablet per cubic metre space, giving an exposure of 48 hours or use two tablets with an exposure of 24 hours [1].",
+   "answer_en": "To prevent the pink bollworm from coming in the next season, after the final picking, shred the infested cotton field to kill the larvae [3]. Also, fumigate the seed left uncrushed in the mills before the end of April with Celphos/Phostoxin/Delicia @ one 3-g tablet per cubic metre space, giving an exposure of 48 hours or use two tablets with an exposure of 24 hours [1].",
+   "citations": [
+    {
+     "n": 3,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 60,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    },
+    {
+     "n": 1,
+     "title": "Package of Practices for Kharif Crops",
+     "page": 60,
+     "source_url": "https://www.pau.edu/content/ccil/pf/pp_kharif.pdf"
+    }
+   ],
+   "translation_failed": true,
+   "seconds": 25.7,
+   "fact_recall": 0.0,
+   "citation_ok": true
+  },
+  {
+   "id": "q21",
+   "lang": "en",
+   "answerable": false,
+   "answered": false,
+   "question": "How should I prune my apple trees in winter?",
+   "query_en": "How should I prune my apple trees in winter?",
+   "answer": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 3.4
+  },
+  {
+   "id": "q21",
+   "lang": "hi",
+   "answerable": false,
+   "answered": false,
+   "question": "सर्दियों में सेब के पेड़ों की छंटाई कैसे करें?",
+   "query_en": "How to prune apple trees in winter.",
+   "answer": "मुझे यह जानकारी उन सत्यापित खेती मार्गदर्शिकाओं में नहीं मिली जिनका मैं उपयोग करता हूँ, इसलिए मैं भरोसेमंद उत्तर नहीं दे सकता। कृपया अपने कृषि अधिकारी या नज़दीकी केवीके से पूछें।",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 3.7
+  },
+  {
+   "id": "q21",
+   "lang": "te",
+   "answerable": false,
+   "answered": false,
+   "question": "చలికాలంలో ఆపిల్ చెట్లను ఎలా కత్తిరించాలి?",
+   "query_en": "How to cut down apple trees in winter.",
+   "answer": "నేను ఉపయోగించే ధృవీకరించిన వ్యవసాయ మార్గదర్శకాలలో ఈ సమాచారం దొరకలేదు, కాబట్టి నమ్మదగిన సమాధానం ఇవ్వలేను. దయచేసి మీ వ్యవసాయ అధికారిని లేదా దగ్గరలోని కేవీకేను అడగండి.",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 2.6
+  },
+  {
+   "id": "q22",
+   "lang": "en",
+   "answerable": false,
+   "answered": false,
+   "question": "When will the monsoon arrive in my village this year?",
+   "query_en": "When will the monsoon arrive in my village this year?",
+   "answer": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 2.9
+  },
+  {
+   "id": "q22",
+   "lang": "hi",
+   "answerable": false,
+   "answered": false,
+   "question": "इस साल मेरे गाँव में मानसून कब आएगा?",
+   "query_en": "When will the monsoon arrive in my village this year?",
+   "answer": "मुझे यह जानकारी उन सत्यापित खेती मार्गदर्शिकाओं में नहीं मिली जिनका मैं उपयोग करता हूँ, इसलिए मैं भरोसेमंद उत्तर नहीं दे सकता। कृपया अपने कृषि अधिकारी या नज़दीकी केवीके से पूछें।",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 2.7
+  },
+  {
+   "id": "q22",
+   "lang": "te",
+   "answerable": false,
+   "answered": false,
+   "question": "ఈ సంవత్సరం మా గ్రామానికి రుతుపవనాలు ఎప్పుడు వస్తాయి?",
+   "query_en": "When will the monsoon arrive in our village this year?",
+   "answer": "నేను ఉపయోగించే ధృవీకరించిన వ్యవసాయ మార్గదర్శకాలలో ఈ సమాచారం దొరకలేదు, కాబట్టి నమ్మదగిన సమాధానం ఇవ్వలేను. దయచేసి మీ వ్యవసాయ అధికారిని లేదా దగ్గరలోని కేవీకేను అడగండి.",
+   "answer_en": "I could not find this in the verified farming guides I use, so I can't give a reliable answer. Please ask your agriculture officer or the nearest KVK.",
+   "citations": [],
+   "translation_failed": false,
+   "seconds": 4.8
+  }
+ ]
+}
