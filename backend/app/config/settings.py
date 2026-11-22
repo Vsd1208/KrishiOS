@@ -209,6 +209,8 @@ class Settings(BaseSettings):
     ML_DEVICE: str = "auto"  # auto | cpu | cuda (local models)
     # Phase 3: dialogue state store (memory for dev/tests, redis for multi-instance).
     CONVERSATION_STATE_BACKEND: str = "memory"
+    # Phase 10d: pin a seasonal outlook export (None = newest under ML_ARTIFACTS_DIR/seasonal).
+    SEASONAL_OUTLOOK_VERSION: str | None = None
     # Load configured local STT/MT models at startup (cold load measured at 78 s).
     PRELOAD_MODELS: bool = False
     # ── Sprint 11, Phase 4: Govt Connect, grievances ─────────────────────────

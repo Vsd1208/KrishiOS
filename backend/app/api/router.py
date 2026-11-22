@@ -115,3 +115,8 @@ api_router.include_router(forecasting_router)
 from app.surveillance.api import router as surveillance_router  # noqa: E402
 
 api_router.include_router(surveillance_router)
+
+# ── Sprint 11, Phase 10d: district seasonal outlook ──
+from app.seasonal.api import router as seasonal_router  # noqa: E402
+
+api_router.include_router(seasonal_router)

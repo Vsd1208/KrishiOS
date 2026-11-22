@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/layout/Header';
 import {
+  CloudSun,
   LayoutDashboard,
   Users,
   ClipboardCheck,
@@ -126,6 +127,14 @@ const officerNavItems: OfficerNavItem[] = [
     path: '/officer/outbreaks',
     icon: Bug,
     isActive: (pathname) => pathname.startsWith('/officer/outbreaks'),
+  },
+  {
+    id: 'seasonal',
+    label: 'Seasonal Outlook',
+    path: '/officer/seasonal',
+    icon: CloudSun,
+    isActive: (pathname) => pathname.startsWith('/officer/seasonal'),
+    roles: ['officer', 'agronomist', 'admin'],
   },
   {
     id: 'feedback',

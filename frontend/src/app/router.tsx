@@ -41,6 +41,7 @@ const ConnectAnalyticsPage = React.lazy(() => import('@/pages/officer/ConnectAna
 const GrievanceQueuePage = React.lazy(() => import('@/pages/officer/GrievanceQueuePage'));
 const YieldOutlookPage = React.lazy(() => import('@/pages/officer/YieldOutlookPage'));
 const OutbreakMapPage = React.lazy(() => import('@/pages/officer/OutbreakMapPage'));
+const SeasonalOutlookPage = React.lazy(() => import('@/pages/officer/SeasonalOutlookPage'));
 
 /**
  * Give every route a crash screen. Page routes get one inside the shell (the menu stays usable);
@@ -279,6 +280,14 @@ export const router = createBrowserRouter(withErrorScreens([
                     element: (
                       <Suspense fallback={<LoadingState />}>
                         <OutbreakMapPage />
+                      </Suspense>
+                    ),
+                  },
+                  {
+                    path: 'seasonal',
+                    element: (
+                      <Suspense fallback={<LoadingState />}>
+                        <SeasonalOutlookPage />
                       </Suspense>
                     ),
                   },
