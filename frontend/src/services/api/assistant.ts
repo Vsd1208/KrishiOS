@@ -24,6 +24,8 @@ export interface DocumentAnalysisResult {
   dropped_lines: number;
   translation_failed: boolean;
   model: string | null;
+  /** Officer briefs: the rule-based extractor's fields (value, confidence, source spans). */
+  extracted?: Record<string, unknown>;
 }
 
 export interface DocumentJob {

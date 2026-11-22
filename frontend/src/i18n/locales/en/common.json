@@ -29,7 +29,8 @@
       "yield": "Yield outlook",
       "outbreaks": "Outbreaks",
       "feedback": "Farmer feedback",
-      "extension": "Assisted mode"
+      "extension": "Assisted mode",
+      "documents": "Document Briefs"
     }
   },
   "auth": {
@@ -1080,5 +1081,33 @@
     "again": "Ask another question",
     "tap": "Tap the microphone and speak",
     "heard": "We heard"
+  },
+  "docBrief": {
+    "title": "Document briefs",
+    "subtitle": "Upload a circular, advisory or scheme notification and get a short brief: type, dates, who it concerns, actions and places.",
+    "file": "Document (PDF, Word, text or photo)",
+    "language": "Language of the brief",
+    "crops": "Focus crops (optional)",
+    "cropsPlaceholder": "e.g. paddy, cotton",
+    "privacy": "The document is read on the KrishiOS server only and is not stored. A brief takes a few minutes.",
+    "submit": "Make brief",
+    "working": "Working…",
+    "reading": "Reading the document. This takes a few minutes.",
+    "brief": "Brief",
+    "read": "Read {{read}} of {{total}} sections ({{pages}} pages).",
+    "dropped_one": "{{count}} line removed: it was not supported by the document.",
+    "dropped_other": "{{count}} lines removed: they were not supported by the document.",
+    "fields": "Fields found in the text",
+    "fieldsNote": "Found by rules in the document text; check them against the original before acting.",
+    "field": {
+      "authority": "Issued by",
+      "issued_at": "Issued on",
+      "valid_from": "Valid from",
+      "valid_to": "Valid to",
+      "crops": "Crops",
+      "hazards": "Hazards",
+      "severity": "Severity",
+      "actions": "Actions"
+    }
   }
 }

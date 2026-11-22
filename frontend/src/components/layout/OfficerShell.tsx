@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/layout/Header';
 import {
+  FileText,
   LayoutDashboard,
   Users,
   ClipboardCheck,
@@ -126,6 +127,14 @@ const officerNavItems: OfficerNavItem[] = [
     path: '/officer/outbreaks',
     icon: Bug,
     isActive: (pathname) => pathname.startsWith('/officer/outbreaks'),
+  },
+  {
+    id: 'documents',
+    label: 'Document Briefs',
+    path: '/officer/documents',
+    icon: FileText,
+    isActive: (pathname) => pathname.startsWith('/officer/documents'),
+    roles: ['officer', 'agronomist', 'admin'],
   },
   {
     id: 'feedback',

@@ -49,11 +49,8 @@ import type {
   ImageAttachment,
   UserMessageContent,
 } from '@/features/ai/types/conversation';
-import {
-  assistantApi,
-  asAnalysisLanguage,
-  type DocumentAnalysisResult,
-} from '@/services/api/assistant';
+import { asAnalysisLanguage } from '@/services/api/assistant';
+import { useDocumentAnalysis } from '@/features/assistant/useDocumentAnalysis';
 import type { BotLanguage } from '@/services/api/conversation';
 import { FarmerChat } from '@/features/conversation/FarmerChat';
 import { useTranslation } from 'react-i18next';
@@ -167,18 +164,15 @@ const AnalystWorkspace: React.FC = () => {
   const [latestImage, setLatestImage] = useState<ImageAttachment | undefined>(undefined);
   const navigate = useNavigate();
   // Document help: the farmer's document is summarised on the KrishiOS server (not stored)
-  type DocPhase = 'idle' | 'queued' | 'working' | 'done' | 'failed' | 'missing';
-  const [docPhase, setDocPhase] = useState<DocPhase>('idle');
-  const [docAhead, setDocAhead] = useState(0);
-  const [docResult, setDocResult] = useState<DocumentAnalysisResult | null>(null);
-  const docCancelled = useRef(false);
-  useEffect(() => () => {
-    docCancelled.current = true;
-  }, []);
-  const uploadingDocument = docPhase === 'queued' || docPhase === 'working';
+  const doc = useDocumentAnalysis();
+  const [docMissing, setDocMissing] = useState(false);
+  const docPhase = docMissing ? 'missing' : doc.phase;
+  const docAhead = doc.ahead;
+  const docResult = doc.result;
+  const uploadingDocument = doc.busy;
   const resetDoc = () => {
-    setDocPhase('idle');
-    setDocResult(null);
+    setDocMissing(false);
+    doc.reset();
   };
   const [showUploadPanel, setShowUploadPanel] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<File | null>(null);
@@ -223,36 +217,15 @@ const AnalystWorkspace: React.FC = () => {
 
   const handleDocumentUpload = async (): Promise<void> => {
     if (!selectedDocument) {
-      setDocPhase('missing');
+      setDocMissing(true);
       return;
     }
-    setDocResult(null);
-    setDocPhase('queued');
-    try {
-      let job = await assistantApi.analyzeDocument(selectedDocument, {
-        audience: 'farmer',
-        language: asAnalysisLanguage(i18n.language),
-        crops: activeCropName ? [activeCropName.toLowerCase()] : undefined,
-      });
-      // A summary takes a few minutes on the server; check every few seconds (up to 20 min).
-      for (let i = 0; i < 400 && !docCancelled.current; i += 1) {
-        if (job.status === 'done' || job.status === 'failed') break;
-        setDocPhase(job.status === 'running' ? 'working' : 'queued');
-        setDocAhead(job.queue_position);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        job = await assistantApi.getDocumentJob(job.job_id);
-      }
-      if (docCancelled.current) return;
-      if (job.status === 'done' && job.result) {
-        setDocResult(job.result);
-        setDocPhase('done');
-      } else {
-        setDocPhase('failed');
-      }
-    } catch (error) {
-      console.error('Document summary failed:', error);
-      if (!docCancelled.current) setDocPhase('failed');
-    }
+    setDocMissing(false);
+    await doc.analyze(selectedDocument, {
+      audience: 'farmer',
+      language: asAnalysisLanguage(i18n.language),
+      crops: activeCropName ? [activeCropName.toLowerCase()] : undefined,
+    });
   };
 
   const latestAIMessage = [...messages].reverse().find((m) => m.role === 'assistant')?.aiContent;
