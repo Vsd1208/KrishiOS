@@ -11,6 +11,7 @@ from app.assistant.documents import (
     MAX_CHARS,
     DocumentAnalyzer,
     FarmerContext,
+    keep_crop_consistent_lines,
     keep_supported_lines,
     select_parts,
     split_parts,
@@ -185,3 +186,19 @@ def test_endpoint_rules(_reset, client: TestClient) -> None:
                    data={"audience": "officer"})
         body = _poll(c, r.json()["job_id"])
         assert body["result"]["extracted"]["fields"]
+
+
+def test_advice_moved_to_another_crop_is_dropped() -> None:
+    """Real case (NAAS advisory, 20 July 2026): the model gave the cowpea anthracnose spray as
+    advice for rice; every number was in the document, so only a crop check catches it."""
+    source = ("Paddy: transplant 20-25-day-old seedlings at 20 x 10 cm and keep 2-3 cm water. "
+              + "Maize is sown in June. " * 30
+              + "Cowpea: during the rainy season there is a chance of anthracnose; spray "
+              "Carbendazim at 1 g per litre of water.")
+    out = ("Summary: focus on paddy.\n"
+           "- Spray Carbendazim 1 g per litre for anthracnose in rice.\n"
+           "- Transplant 20-25-day-old paddy seedlings at 20 x 10 cm.\n"
+           "- Spray Carbendazim at 1 g per litre against anthracnose in cowpea.")
+    kept, dropped = keep_crop_consistent_lines(out, source)
+    assert dropped == 1 and "in rice" not in kept
+    assert "paddy seedlings" in kept and "in cowpea" in kept and kept.startswith("Summary")

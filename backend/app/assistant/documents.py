@@ -9,8 +9,9 @@
 - Long documents are summarised part by part, then combined. At most ``MAX_PARTS`` parts are
   read: the opening part plus, for a farmer, the parts that mention their crops or places most;
   ``parts_read`` / ``parts_total`` say how much was read.
-- Safety check: an output line with a number that does not occur in the document is dropped and
-  counted (``dropped_lines``), so a dose or date cannot be invented.
+- Safety checks: an output line is dropped and counted (``dropped_lines``) if it has a number
+  the document does not contain, or attaches a specific product or disease to a crop that the
+  document never mentions near it (so a dose cannot be invented or moved to another crop).
 """
 
 from __future__ import annotations
@@ -139,6 +140,66 @@ def select_parts(parts: list[str], terms: list[str], max_parts: int = MAX_PARTS)
     return [parts[i] for i in sorted(chosen)]
 
 
+# Crop names (and common synonyms) used to check that advice stays with its crop.
+CROP_WORDS = {
+    "paddy": ("paddy", "rice"), "rice": ("paddy", "rice"), "cotton": ("cotton",),
+    "maize": ("maize", "corn"), "wheat": ("wheat",), "chilli": ("chilli", "chili"),
+    "tomato": ("tomato",), "groundnut": ("groundnut",), "cowpea": ("cowpea",),
+    "banana": ("banana",), "coconut": ("coconut",), "sugarcane": ("sugarcane",),
+    "soybean": ("soybean",), "redgram": ("redgram", "pigeonpea", "arhar", "tur"),
+    "onion": ("onion",), "brinjal": ("brinjal",), "okra": ("okra", "bhindi"),
+    "mango": ("mango",), "turmeric": ("turmeric",), "mustard": ("mustard",),
+    "sorghum": ("sorghum", "jowar"), "bajra": ("bajra", "pearl millet"),
+    "blackgram": ("blackgram", "urd"), "greengram": ("greengram", "moong"),
+}
+NEAR_CHARS = 350  # how close a specific term must be to the crop in the document
+RARE_MAX = 4  # a word used at most this often in the document is a specific term
+MIN_TERM_CHARS = 8  # ... and at least this long (product or disease names, not 'against')
+
+
+def _words(text: str) -> list[str]:
+    return re.findall(r"[a-z][a-z-]{5,}", text.lower())
+
+
+def keep_crop_consistent_lines(output: str, source: str) -> tuple[str, int]:
+    """Drop dose lines that attach a specific product or disease to a crop the document never
+    mentions near it (e.g. a cowpea fungicide presented as advice for rice). Only lines with a
+    number are checked; specific terms are rare, long words (8+ letters) of the document."""
+    low = source.lower()
+    counts: dict[str, int] = {}
+    for w in _words(low):
+        counts[w] = counts.get(w, 0) + 1
+    crop_terms = {t for terms in CROP_WORDS.values() for t in terms}
+    kept, dropped = [], 0
+    for line in output.splitlines():
+        line_low = line.lower()
+        if not re.search(r"\d", line_low):
+            kept.append(line)
+            continue
+        crops = [t for t in crop_terms if re.search(r"\b" + re.escape(t) + r"\b", line_low)]
+        groups = {tuple(CROP_WORDS[k]) for k in CROP_WORDS for t in crops if t in CROP_WORDS[k]}
+        rare = [w for w in set(_words(line_low)) if len(w) >= MIN_TERM_CHARS
+                and 0 < counts.get(w, 0) <= RARE_MAX and w not in crop_terms]
+        if not groups or not rare:
+            kept.append(line)
+            continue
+        ok = True
+        for word in rare:  # every specific term must sit near one of the line's crops
+            near = False
+            for m in re.finditer(re.escape(word), low):
+                window = low[max(0, m.start() - NEAR_CHARS): m.end() + NEAR_CHARS]
+                if any(re.search(r"\b" + re.escape(t) + r"\b", window)
+                       for g in groups for t in g):
+                    near = True
+                    break
+            ok = ok and near
+        if ok:
+            kept.append(line)
+        else:
+            dropped += 1
+    return "\n".join(kept).strip(), dropped
+
+
 def split_parts(text: str, size: int = PART_CHARS) -> list[str]:
     """Split on paragraph breaks into parts of at most ``size`` characters."""
     pieces: list[str] = []
@@ -206,7 +267,9 @@ class DocumentAnalyzer:
                                          + "\n\n" + focus + fmt, system, temperature=0.1,
                                          max_tokens=500)
         t["summarise"] = (perf_counter() - mark) * 1000
-        result.text_en, result.dropped_lines = keep_supported_lines(reply.content.strip(), text)
+        checked, dropped_numbers = keep_supported_lines(reply.content.strip(), text)
+        result.text_en, dropped_crops = keep_crop_consistent_lines(checked, text)
+        result.dropped_lines = dropped_numbers + dropped_crops
 
         if audience == "officer":
             result.extracted = self._extract(text)
